@@ -16,16 +16,22 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
+    private static final String[] AUTH_WHITELIST = {"/images/**", "/css/**", "/js/**", "/WEB-INF/views/**", "/login"};
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers(AUTH_WHITELIST).permitAll()
                         .anyRequest().authenticated()
                 )
                 .cors(Customizer.withDefaults())
-                .csrf(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults())
+                .formLogin(form -> form.loginPage("/login")
+                        .usernameParameter("email")
+                        .passwordParameter("password")
+                        .failureUrl("/login?error=true")
+                        .defaultSuccessUrl("/home", true))
                 .logout(Customizer.withDefaults());
         return http.build();
     }

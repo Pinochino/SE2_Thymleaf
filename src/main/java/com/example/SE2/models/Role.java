@@ -20,8 +20,8 @@ import java.util.UUID;
 public class Role extends AbstractEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
     @Enumerated(EnumType.STRING)
     RoleName name;

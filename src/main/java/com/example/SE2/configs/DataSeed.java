@@ -55,7 +55,7 @@ public class DataSeed implements CommandLineRunner {
 
         if (user == null) {
             user = User.builder()
-                    .fistName("John")
+                    .firstName("John")
                     .lastName("Doe")
                     .email(adminEmail)
                     .password(passwordEncoder.encode("123456"))

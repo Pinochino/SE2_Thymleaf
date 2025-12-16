@@ -37,6 +37,9 @@ public class User extends AbstractEntity {
 
     String avatar;
 
+    @Builder.Default
+    boolean isLoggedIn =  Boolean.FALSE;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JsonManagedReference
     @JoinTable(name = "user_role",

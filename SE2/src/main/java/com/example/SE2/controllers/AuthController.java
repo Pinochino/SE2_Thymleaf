@@ -1,5 +1,6 @@
 package com.example.SE2.controllers;
 
+import com.example.SE2.constants.Provider;
 import com.example.SE2.constants.RoleName;
 import com.example.SE2.dtos.request.LoginRequest;
 import com.example.SE2.dtos.request.RegisterRequest;
@@ -68,6 +69,7 @@ public class AuthController {
         }
 
         oldUser.setLoggedIn(true);
+        oldUser.setProvider(Provider.LOCAL);
         userRepository.save(oldUser);
         return "redirect:/";
     }

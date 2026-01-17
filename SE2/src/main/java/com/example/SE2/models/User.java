@@ -1,5 +1,6 @@
 package com.example.SE2.models;
 
+import com.example.SE2.constants.Provider;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,7 +30,6 @@ public class User extends AbstractEntity {
     @Column(unique = true, nullable = false)
     String email;
 
-    @Column(nullable = false)
     String password;
 
     String phone;
@@ -38,6 +38,9 @@ public class User extends AbstractEntity {
 
     @Builder.Default
     boolean isLoggedIn =  Boolean.FALSE;
+
+    @Enumerated(EnumType.STRING)
+    Provider provider;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JsonManagedReference

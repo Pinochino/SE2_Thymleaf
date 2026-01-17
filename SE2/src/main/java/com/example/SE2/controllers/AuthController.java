@@ -38,7 +38,7 @@ public class AuthController {
     }
 
     //    [GET] /api/auth/login
-    @GetMapping("/login")
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(@RequestParam(value = "error", required = false) String error,
                         Model model) {
         model.addAttribute("loginRequest", new LoginRequest());
@@ -51,10 +51,10 @@ public class AuthController {
         return "auth/login";
     }
 
-    @PostMapping("/perform-login")
+    @RequestMapping(value = "/perform-login", method = RequestMethod.POST)
     public String login(@Valid @ModelAttribute("loginRequest") LoginRequest request,
-                           BindingResult bindingResult,
-                           Model model
+                        BindingResult bindingResult,
+                        Model model
     ) {
 
         if (bindingResult.hasErrors()) {
@@ -73,19 +73,17 @@ public class AuthController {
     }
 
 
-
-
-    @GetMapping("/register")
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String register(Model model) {
         model.addAttribute("registerRequest", new RegisterRequest());
         return "auth/register";
     }
 
-    @PostMapping("/register")
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(@Valid @ModelAttribute("registerRequest") RegisterRequest request,
                            BindingResult bindingResult,
                            Model model
-                           ) {
+    ) {
 
         if (bindingResult.hasErrors()) {
             return "auth/register";

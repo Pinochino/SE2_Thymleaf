@@ -5,6 +5,8 @@ import com.example.SE2.models.User;
 import com.example.SE2.repositories.UserRepository;
 import com.example.SE2.security.UserDetailImpl;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,11 +16,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AdminController {
 
     private final UserRepository userRepository;
@@ -34,7 +37,8 @@ public class AdminController {
         this.sessionRegistry = sessionRegistry;
     }
 
-    @GetMapping("/user-management")
+    //    [GET] /admin/users/list
+    @RequestMapping(value = "/users/list", method = RequestMethod.GET)
     public String userManagement(Model model) {
         List<User> user = userRepository.findAll();
 
@@ -42,9 +46,10 @@ public class AdminController {
         return "admin/user-management";
     }
 
-    @PostMapping("/filter/is-login")
+    //    [POST] /admin/users/filter/is-login
+    @RequestMapping(value = "/users/filter/is-login", method = RequestMethod.POST)
     public String getUsersFromSessionRegistry(Model model) {
-        List<User> onlineUsers =  sessionRegistry.getAllPrincipals().stream()
+        List<User> onlineUsers = sessionRegistry.getAllPrincipals().stream()
                 .filter(u -> !sessionRegistry.getAllSessions(u, false).isEmpty())
                 .map(u -> userRepository.findUserByEmail(((UserDetailImpl) u).getUsername()))
                 .collect(Collectors.toList());
@@ -53,14 +58,16 @@ public class AdminController {
         return "/admin/user-management";
     }
 
-    @GetMapping("/edit/{id}")
-    public String update(@PathVariable UUID id, Model model) {
+    //    [GET] /admin/users/edit/:id
+    @RequestMapping(value = "/users/edit/{id}", method = RequestMethod.GET)
+    public String update(@PathVariable String id, Model model) {
         User user = userRepository.getById(id);
         model.addAttribute("user", user);
         return "admin/update-user";
     }
 
-    @PostMapping("/update/{id}")
+    //    [POST] /admin/users/update/:id
+    @RequestMapping(value = "/users/update/{id}", method = RequestMethod.POST)
     public String update(@PathVariable("id") String id,
                          @Valid UpdateUserRequest formUser,
                          BindingResult result,
@@ -69,13 +76,13 @@ public class AdminController {
             return "admin/update-user";
         }
 
-        User updatedUser = userRepository.getById(UUID.fromString(id));
+        User updatedUser = userRepository.getById(id);
 
         if (updatedUser == null) {
             throw new RuntimeException("User not found");
         }
 
-        updatedUser.setId(UUID.fromString(id));
+        updatedUser.setId(id);
         updatedUser.setFirstName(formUser.getFirstName());
         updatedUser.setLastName(formUser.getLastName());
         updatedUser.setEmail(formUser.getEmail());
@@ -85,12 +92,18 @@ public class AdminController {
         return "redirect:/admin/user-management";
     }
 
-    @GetMapping("/delete/{id}")
+    //    [GET] /admin/users/delete/:id
+    @RequestMapping(value = "/users/delete/{id}", method = RequestMethod.DELETE)
     public String deleteUser(@PathVariable("id") String id, Model model) {
-        User user = userRepository.getById(UUID.fromString(id));
+        User user = userRepository.getById(id);
 
         if (user == null) {
             throw new RuntimeException("User not found");
+        }
+
+
+        if (Objects.equals(user.getEmail(), "admin@gmail.com")) {
+            throw new RuntimeException("Admin account cannot be deleted");
         }
 
         userRepository.delete(user);

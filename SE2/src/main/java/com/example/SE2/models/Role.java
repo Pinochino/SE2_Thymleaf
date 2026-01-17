@@ -8,7 +8,6 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "roles")
@@ -17,6 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 public class Role extends AbstractEntity {
 
     @Id
@@ -33,4 +33,6 @@ public class Role extends AbstractEntity {
     @ManyToMany(mappedBy = "roles")
     @JsonBackReference
     Set<User> users = new HashSet<>();
+
+
 }

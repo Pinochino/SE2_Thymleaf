@@ -1,12 +1,14 @@
 package com.example.SE2.configs;
 
 
+import com.example.SE2.security.UserDetailServiceImpl;
 import com.example.SE2.security.oauth2.CustomOAuth2User;
 import com.example.SE2.security.oauth2.CustomOAuth2UserService;
 import com.example.SE2.services.users.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +23,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,12 +39,15 @@ public class SecurityConfig {
 
     private CustomOAuth2UserService oAuth2UserService;
     private UserService userService;
+    private UserDetailServiceImpl userDetailService;
 
     @Autowired
     public SecurityConfig(CustomOAuth2UserService oAuth2UserService,
-                          UserService userService) {
+                          UserService userService,
+                          UserDetailServiceImpl userDetailService) {
         this.oAuth2UserService = oAuth2UserService;
         this.userService = userService;
+        this.userDetailService = userDetailService;
     }
 
     @Bean
@@ -61,15 +68,20 @@ public class SecurityConfig {
                 )
                 .logout(Customizer.withDefaults())
                 .oauth2Login(login -> login.loginPage("/login")
-                        .userInfoEndpoint(info ->info.userService(oAuth2UserService))
+                        .userInfoEndpoint(info -> info.userService(oAuth2UserService))
                         .successHandler(new AuthenticationSuccessHandler() {
                             @Override
-                            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                                                Authentication authentication) throws IOException, ServletException {
+                            public void onAuthenticationSuccess(@NotNull HttpServletRequest request,
+                                                                @NotNull HttpServletResponse response,
+                                                                @NotNull Authentication authentication) throws IOException, ServletException {
 
                                 CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
 
-                                userService.processOAuthPostLogin(oauthUser.getEmail());
+                                if (oauthUser == null) {
+                                    return;
+                                }
+
+                                userService.processOAuthPostLogin(oauthUser.getEmail(), oauthUser.getName());
 
                                 response.sendRedirect("/");
                             }
@@ -79,6 +91,9 @@ public class SecurityConfig {
                         session.maximumSessions(10)
                                 .sessionRegistry(sessionRegistry()))
                 .exceptionHandling(exception -> exception.accessDeniedPage("/access-denied"))
+                .rememberMe(rememberMe -> rememberMe.rememberMeParameter("remember-me")
+                        .key("springRocks")
+                        .userDetailsService(userDetailService))
         ;
         return http.build();
     }
@@ -94,4 +109,12 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
+
+//    @Bean
+//    public RememberMeServices rememberMeServices(UserDetailServiceImpl userDetailService) {
+//        TokenBasedRememberMeServices.RememberMeTokenAlgorithm encodingAlgorithm = TokenBasedRememberMeServices.RememberMeTokenAlgorithm.SHA256;
+//        TokenBasedRememberMeServices rememberMe = new TokenBasedRememberMeServices(myKey, userDetailsService, encodingAlgorithm);
+//
+//        return rememberMe;
+//    }
 }

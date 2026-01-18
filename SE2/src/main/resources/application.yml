@@ -1,24 +1,30 @@
 server:
-    port: 9000
+  port: 9000
 spring:
-    application:
-        name: SE2
-    datasource:
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        password: 123456
-        url: jdbc:mysql://localhost:3306/se2?createDatabaseIfNotExist=true
-        username: root
-    jpa:
-        hibernate:
-            ddl-auto: update
-        show-sql: true
-    security:
-        oauth2:
-            client:
-                registration:
-                    google:
-                        client-id: ${GOOGLE_CLIENT_ID}
-                        client-secret: ${GOOGLE_CLIENT_SECRET}
-                        scope: email
+  application:
+    name: SE2
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: 123456
+    url: jdbc:mysql://localhost:3306/se2?createDatabaseIfNotExist=true
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope: email
+          github:
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}
+            scope:
+              - email
+              - user
 
 

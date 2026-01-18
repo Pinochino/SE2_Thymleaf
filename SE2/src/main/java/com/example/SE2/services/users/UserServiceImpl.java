@@ -18,12 +18,13 @@ public class UserServiceImpl implements UserService{
     UserRepository userRepository;
 
     @Override
-    public void processOAuthPostLogin(String email) {
-        User user = userRepository.findUserByEmail(email);
+    public void processOAuthPostLogin(String email, String firstName) {
+        User user = userRepository.findUserByEmailOrFirstName(email, firstName) ;
 
         if(user == null){
             user = User.builder()
                     .email(email)
+                    .firstName(firstName)
                     .provider(Provider.GOOGLE)
                     .build();
             userRepository.save(user);

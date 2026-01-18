@@ -27,7 +27,7 @@ public class User extends AbstractEntity {
 
     String lastName;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     String email;
 
     String password;

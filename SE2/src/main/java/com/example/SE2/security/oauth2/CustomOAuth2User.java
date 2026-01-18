@@ -30,7 +30,9 @@ public class CustomOAuth2User implements OAuth2User {
     @Override
     @NonNull
     public String getName() {
-        return Objects.requireNonNull(oAuth2User.getAttribute("email"));
+        return oAuth2User.getAttribute("email") != null ?
+                oAuth2User.getAttribute("email") :
+                oAuth2User.getAttribute("login");
     }
 
     public String getEmail() {

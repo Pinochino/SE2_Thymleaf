@@ -3,11 +3,13 @@ package com.example.SE2.controllers;
 import com.example.SE2.constants.Provider;
 import com.example.SE2.constants.RoleName;
 import com.example.SE2.dtos.request.LoginRequest;
+import com.example.SE2.dtos.request.MailRequest;
 import com.example.SE2.dtos.request.RegisterRequest;
 import com.example.SE2.models.Role;
 import com.example.SE2.models.User;
 import com.example.SE2.repositories.RoleRepository;
 import com.example.SE2.repositories.UserRepository;
+import com.example.SE2.services.mail.MailService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Controller
@@ -28,14 +32,17 @@ public class AuthController {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
 
     @Autowired
     public AuthController(UserRepository userRepository,
                           PasswordEncoder passwordEncoder,
-                          RoleRepository roleRepository) {
+                          RoleRepository roleRepository,
+                          MailService mailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.mailService = mailService;
     }
 
     //    [GET] /api/auth/login
@@ -71,6 +78,7 @@ public class AuthController {
         oldUser.setLoggedIn(true);
         oldUser.setProvider(Provider.LOCAL);
         userRepository.save(oldUser);
+
         return "redirect:/";
     }
 
@@ -116,6 +124,20 @@ public class AuthController {
                 .build();
 
         userRepository.save(oldUser);
+
+        Map<String, Object> objectMap = new HashMap<String, Object>();
+        objectMap.put("name", oldUser.getEmail());
+        objectMap.put("content", "<p>This is a <strong>complex</strong> email with HTML content and CSS styling.</p>");
+
+        MailRequest mailRequest = MailRequest.builder()
+                .to(oldUser.getEmail())
+                .subject("Registration Confirmation")
+                .templateName("email-template")
+                .model(objectMap)
+                .build();
+
+        mailService.sendMail(mailRequest);
+
         return "redirect:/login";
     }
 

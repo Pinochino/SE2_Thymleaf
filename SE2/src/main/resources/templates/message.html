@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Notification</title>
+</head>
+<body>
+<h2 th:text="${title != null ? title : 'Notification'}"></h2>
+<p th:text="${message}"></p>
+<a th:href="@{/login}">Go to Login</a>
+</body>
+</html>

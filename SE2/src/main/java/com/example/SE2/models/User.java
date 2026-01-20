@@ -42,6 +42,8 @@ public class User extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     Provider provider;
 
+    String resetPasswordToken;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JsonManagedReference
     @JoinTable(name = "user_role",

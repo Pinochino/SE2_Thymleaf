@@ -35,11 +35,15 @@ import java.util.stream.Collectors;
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
-    private static final String[] PUBLIC_WHITELIST = {"/images/**", "/css/**", "/js/**", "/WEB-INF/views/**", "/login", "/register", "/favicon.ico", "/oauth/**"};
+    private static final String[] PUBLIC_WHITELIST = {"/images/**",
+            "/css/**",
+            "/js/**",
+            "/WEB-INF/views/**", "/login", "/register", "/favicon.ico", "/oauth/**", "/forgot-password",
+            "/reset-password"};
 
-    private CustomOAuth2UserService oAuth2UserService;
-    private UserService userService;
-    private UserDetailServiceImpl userDetailService;
+    private final CustomOAuth2UserService oAuth2UserService;
+    private final UserService userService;
+    private final UserDetailServiceImpl userDetailService;
 
     @Autowired
     public SecurityConfig(CustomOAuth2UserService oAuth2UserService,
@@ -104,11 +108,6 @@ public class SecurityConfig {
         return new SessionRegistryImpl();
     }
 
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
 
 //    @Bean
 //    public RememberMeServices rememberMeServices(UserDetailServiceImpl userDetailService) {

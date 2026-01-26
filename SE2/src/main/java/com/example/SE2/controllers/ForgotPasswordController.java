@@ -6,29 +6,30 @@ import com.example.SE2.services.mail.MailService;
 import com.example.SE2.services.users.UserService;
 import com.example.SE2.utils.AuthUtil;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 @Controller
-@RequiredArgsConstructor
-@Getter
-@Setter
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ForgotPasswordController {
 
-    MailService mailService;
-    UserService userService;
+    private final MailService mailService;
+    private final UserService userService;
+
+    @Autowired
+    public ForgotPasswordController(MailService mailService, UserService userService) {
+        this.mailService = mailService;
+        this.userService = userService;
+    }
 
     @GetMapping("/forgot-password")
     public String forgotPassword(Model model) {
@@ -48,13 +49,13 @@ public class ForgotPasswordController {
             Map<String, Object> objectMap = new HashMap<String, Object>();
             objectMap.put("resetPasswordLink", resetPasswordLink);
 
-            MailRequest mailRequest = MailRequest.builder()
-                    .to(email)
-                    .subject("Reset Password")
-                    .templateName("email-reset-password")
-                    .body(resetPasswordLink)
-                    .model(objectMap)
-                    .build();
+            MailRequest mailRequest = new MailRequest();
+            mailRequest.setTo(email);
+            mailRequest.setSubject("Reset Password");
+            mailRequest.setTemplateName("email-reset-password");
+            mailRequest.setBody(resetPasswordLink);
+            mailRequest.setModel(objectMap);
+
             mailService.sendMail(mailRequest);
             model.addAttribute("message", "We have sent a reset password link to your email. Please check your email address and try again.");
         } catch (Exception e) {

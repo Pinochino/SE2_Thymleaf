@@ -4,9 +4,9 @@ spring:
   application:
     name: SE2
   datasource:
-    password: 123456
-    url: jdbc:postgresql://localhost:5432/se2
     username: postgres
+    password: 123456
+    url: jdbc:postgresql://localhost:5433/se2
   jpa:
     hibernate:
       ddl-auto: update

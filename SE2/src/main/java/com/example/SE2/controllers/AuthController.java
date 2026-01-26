@@ -11,7 +11,8 @@ import com.example.SE2.repositories.RoleRepository;
 import com.example.SE2.repositories.UserRepository;
 import com.example.SE2.services.mail.MailService;
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -26,8 +27,9 @@ import java.util.Set;
 
 @Controller
 //@RequestMapping("${project.prefix}/auth")
-@Slf4j
 public class AuthController {
+
+    private final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -114,14 +116,13 @@ public class AuthController {
         Set<Role> roles = new HashSet<>();
         roles.add(role);
 
-        oldUser = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .phone(request.getPhone())
-                .roles(roles)
-                .build();
+        oldUser = new User();
+        oldUser.setFirstName(request.getFirstName());
+        oldUser.setLastName(request.getLastName());
+        oldUser.setEmail(request.getEmail());
+        oldUser.setPassword(passwordEncoder.encode(request.getPassword()));
+        oldUser.setRoles(roles);
+        oldUser.setPhone(request.getPhone());
 
         userRepository.save(oldUser);
 
@@ -129,12 +130,12 @@ public class AuthController {
         objectMap.put("name", oldUser.getEmail());
         objectMap.put("content", "<p>This is a <strong>complex</strong> email with HTML content and CSS styling.</p>");
 
-        MailRequest mailRequest = MailRequest.builder()
-                .to(oldUser.getEmail())
-                .subject("Registration Confirmation")
-                .templateName("email-template")
-                .model(objectMap)
-                .build();
+        MailRequest mailRequest = new MailRequest();
+        mailRequest.setTo(request.getEmail());
+        mailRequest.setSubject("Registration Confirmation");
+        mailRequest.setTemplateName("email-template");
+        mailRequest.setModel(objectMap);
+
 
         mailService.sendMail(mailRequest);
 

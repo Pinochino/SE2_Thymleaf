@@ -5,8 +5,6 @@ import com.example.SE2.models.User;
 import com.example.SE2.repositories.UserRepository;
 import com.example.SE2.security.UserDetailImpl;
 import jakarta.validation.Valid;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +19,6 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AdminController {
 
     private final UserRepository userRepository;

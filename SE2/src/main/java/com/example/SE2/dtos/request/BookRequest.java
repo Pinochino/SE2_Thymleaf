@@ -1,5 +1,7 @@
 package com.example.SE2.dtos.request;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class BookRequest {
 
     private String title;
@@ -8,15 +10,23 @@ public class BookRequest {
 
     private Long categoryId;
 
-    private String image;
+    private MultipartFile imageFile;
+
+    private String imagePath;
+
+    private String author;
 
     public BookRequest() {
     }
 
-    public BookRequest(String title, String description, String image) {
+    public BookRequest(String title, String description, Long categoryId, MultipartFile imageFile, String imagePath,
+                       String author) {
         this.title = title;
         this.description = description;
-        this.image = image;
+        this.categoryId = categoryId;
+        this.imageFile = imageFile;
+        this.imagePath = imagePath;
+        this.author = author;
     }
 
     public String getTitle() {
@@ -43,11 +53,27 @@ public class BookRequest {
         this.categoryId = categoryId;
     }
 
-    public String getImage() {
-        return image;
+    public MultipartFile getImageFile() {
+        return imageFile;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImageFile(MultipartFile imageFile) {
+        this.imageFile = imageFile;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }

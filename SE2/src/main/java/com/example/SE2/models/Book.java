@@ -18,6 +18,8 @@ public class Book {
 
     private boolean status;
 
+    @Lob()
+    @Column(columnDefinition = "TEXT", name = "description")
     private String description;
 
     private String author;

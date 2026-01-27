@@ -10,6 +10,7 @@ import com.example.SE2.repositories.BookRepository;
 import com.example.SE2.repositories.CategoryRepository;
 import com.example.SE2.repositories.UserRepository;
 import com.example.SE2.security.UserDetailImpl;
+import com.example.SE2.services.file.FileService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.session.SessionRegistry;
@@ -18,7 +19,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -34,16 +37,26 @@ public class AdminController {
     private final SessionRegistry sessionRegistry;
     private final BookRepository bookRepository;
     private final CategoryRepository categoryRepository;
+    private final FileService fileService;
 
     @Autowired
-    public AdminController(UserRepository userRepository, PasswordEncoder passwordEncoder, SessionRegistry sessionRegistry, BookRepository bookRepository, CategoryRepository categoryRepository) {
+    public AdminController(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder,
+                           SessionRegistry sessionRegistry,
+                           BookRepository bookRepository,
+                           CategoryRepository categoryRepository,
+                           FileService fileService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.sessionRegistry = sessionRegistry;
         this.bookRepository = bookRepository;
         this.categoryRepository = categoryRepository;
+        this.fileService = fileService;
     }
 
+    /**
+     * USER
+     */
 
     //    [GET] /admin/users/list
     @RequestMapping(value = "/users/list", method = RequestMethod.GET)
@@ -77,9 +90,9 @@ public class AdminController {
     //    [POST] /admin/users/update/:id
     @RequestMapping(value = "/users/update/{id}", method = RequestMethod.POST)
     public String updateUser(@PathVariable("id") String id,
-                         @Valid UpdateUserRequest formUser,
-                         BindingResult result,
-                         Model model) {
+                             @Valid UpdateUserRequest formUser,
+                             BindingResult result,
+                             Model model) {
         if (result.hasErrors()) {
             return "admin/update-user";
         }
@@ -119,6 +132,10 @@ public class AdminController {
     }
 
 
+    /**
+     * BOOK
+     */
+
     @RequestMapping(value = "/books/list", method = RequestMethod.GET)
     public String listBook(Model model) {
         List<Book> books = bookRepository.findAll();
@@ -128,7 +145,7 @@ public class AdminController {
 
     @RequestMapping(value = "/books/create", method = RequestMethod.GET)
     public String createBook(@RequestParam(value = "error", required = false) String error,
-                         Model model) {
+                             Model model) {
         List<Category> categories = categoryRepository.findAll();
         model.addAttribute("categories", categories);
 
@@ -141,6 +158,16 @@ public class AdminController {
             @Valid @ModelAttribute("bookRequest") BookRequest bookRequest,
             BindingResult bindingResult,
             Model model) {
+
+        MultipartFile file = bookRequest.getImageFile();
+
+        String savedPath = null;
+        String fileName = null;
+
+        if (file != null && !file.isEmpty()) {
+            savedPath = fileService.store(file);
+            fileName = Paths.get(savedPath).getFileName().toString();
+        }
 
         if (bindingResult.hasErrors()) {
             return "admin/book-create";
@@ -165,6 +192,8 @@ public class AdminController {
         Book newBook = new Book();
         newBook.setTitle(bookRequest.getTitle());
         newBook.setDescription(bookRequest.getDescription());
+        newBook.setAuthor(bookRequest.getAuthor());
+        newBook.setImage(fileName);
         newBook.setCategories(categories);
         bookRepository.save(newBook);
 
@@ -182,6 +211,10 @@ public class AdminController {
         bookRepository.delete(book);
         return "redirect:/admin/books/list";
     }
+
+    /**
+     * CATEGORY
+     */
 
     @RequestMapping(value = "/categories/create", method = RequestMethod.GET)
     public String createCategory(Model model) {

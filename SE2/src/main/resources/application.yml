@@ -37,6 +37,12 @@ spring:
           starttls:
             enable: true
 
+ai:
+  ollama:
+    chat:
+      options:
+        model: bge-m3
+
 
 
 

@@ -8,6 +8,8 @@ public class BookRequest {
 
     private String description;
 
+    private String content;
+
     private Long categoryId;
 
     private MultipartFile imageFile;
@@ -19,10 +21,10 @@ public class BookRequest {
     public BookRequest() {
     }
 
-    public BookRequest(String title, String description, Long categoryId, MultipartFile imageFile, String imagePath,
-                       String author) {
+    public BookRequest(String title, String description, String content, Long categoryId, MultipartFile imageFile, String imagePath, String author) {
         this.title = title;
         this.description = description;
+        this.content = content;
         this.categoryId = categoryId;
         this.imageFile = imageFile;
         this.imagePath = imagePath;
@@ -75,5 +77,13 @@ public class BookRequest {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

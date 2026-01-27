@@ -21,7 +21,7 @@ public class Category {
     @JoinTable(
             name = "category_book",
             joinColumns = @JoinColumn(name = "category_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id)"))
+            inverseJoinColumns = @JoinColumn(name = "book_id"))
     @JsonManagedReference
     private Set<Book> books = new HashSet<>();
 

@@ -3,8 +3,8 @@ package com.example.SE2.models;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Category {
@@ -17,14 +17,18 @@ public class Category {
 
     private String description;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany
+    @JoinTable(
+            name = "category_book",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id)"))
     @JsonManagedReference
-    private List<Book> books = new ArrayList<>();
+    private Set<Book> books = new HashSet<>();
 
     public Category() {
     }
 
-    public Category(long id, String name, String description, List<Book> books) {
+    public Category(long id, String name, String description, Set<Book> books) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -55,11 +59,11 @@ public class Category {
         this.description = description;
     }
 
-    public List<Book> getBooks() {
+    public Set<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(List<Book> books) {
+    public void setBooks(Set<Book> books) {
         this.books = books;
     }
 }

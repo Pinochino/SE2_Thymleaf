@@ -20,15 +20,13 @@
             <th scope="col">ID</th>
             <th scope="col">Title</th>
             <th scope="col">Description</th>
-            <th scope="col">Author</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="book : ${books}">
-            <th th:text="${book.id}">1</th>
-            <td th:text="${book.title}"></td>
-            <td th:text="${book.description}"></td>
-            <td th:text="${book.author}"></td>
+        <tr th:each="category : ${categories}">
+            <th th:text="${category.id}">1</th>
+            <td th:text="${category.name}"></td>
+            <td th:text="${category.description}"></td>
         </tr>
 
         </tbody>

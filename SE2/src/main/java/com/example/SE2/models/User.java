@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "users")
 public class User extends AbstractEntity {
 
     @Id
@@ -37,7 +38,9 @@ public class User extends AbstractEntity {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JsonManagedReference
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
     public User(LocalDateTime createdAt, LocalDateTime updatedAt) {

@@ -1,7 +1,13 @@
 package com.example.SE2.controllers;
 
+import com.example.SE2.dtos.request.BookRequest;
+import com.example.SE2.dtos.request.CategoryRequest;
 import com.example.SE2.dtos.request.UpdateUserRequest;
+import com.example.SE2.models.Book;
+import com.example.SE2.models.Category;
 import com.example.SE2.models.User;
+import com.example.SE2.repositories.BookRepository;
+import com.example.SE2.repositories.CategoryRepository;
 import com.example.SE2.repositories.UserRepository;
 import com.example.SE2.security.UserDetailImpl;
 import jakarta.validation.Valid;
@@ -13,8 +19,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -24,19 +32,22 @@ public class AdminController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final SessionRegistry sessionRegistry;
+    private final BookRepository bookRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
-    public AdminController(UserRepository userRepository,
-                           PasswordEncoder passwordEncoder,
-                           SessionRegistry sessionRegistry) {
+    public AdminController(UserRepository userRepository, PasswordEncoder passwordEncoder, SessionRegistry sessionRegistry, BookRepository bookRepository, CategoryRepository categoryRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.sessionRegistry = sessionRegistry;
+        this.bookRepository = bookRepository;
+        this.categoryRepository = categoryRepository;
     }
+
 
     //    [GET] /admin/users/list
     @RequestMapping(value = "/users/list", method = RequestMethod.GET)
-    public String userManagement(Model model) {
+    public String listUser(Model model) {
         List<User> user = userRepository.findAll();
 
         model.addAttribute("users", user);
@@ -57,7 +68,7 @@ public class AdminController {
 
     //    [GET] /admin/users/edit/:id
     @RequestMapping(value = "/users/edit/{id}", method = RequestMethod.GET)
-    public String update(@PathVariable String id, Model model) {
+    public String updateUser(@PathVariable String id, Model model) {
         User user = userRepository.getById(id);
         model.addAttribute("user", user);
         return "admin/update-user";
@@ -65,7 +76,7 @@ public class AdminController {
 
     //    [POST] /admin/users/update/:id
     @RequestMapping(value = "/users/update/{id}", method = RequestMethod.POST)
-    public String update(@PathVariable("id") String id,
+    public String updateUser(@PathVariable("id") String id,
                          @Valid UpdateUserRequest formUser,
                          BindingResult result,
                          Model model) {
@@ -105,6 +116,102 @@ public class AdminController {
 
         userRepository.delete(user);
         return "redirect:/admin/user-management";
+    }
+
+
+    @RequestMapping(value = "/books/list", method = RequestMethod.GET)
+    public String listBook(Model model) {
+        List<Book> books = bookRepository.findAll();
+        model.addAttribute("books", books);
+        return "admin/book-management";
+    }
+
+    @RequestMapping(value = "/books/create", method = RequestMethod.GET)
+    public String createBook(@RequestParam(value = "error", required = false) String error,
+                         Model model) {
+        List<Category> categories = categoryRepository.findAll();
+        model.addAttribute("categories", categories);
+
+        model.addAttribute("bookRequest", new BookRequest());
+        return "admin/book-create";
+    }
+
+    @RequestMapping(value = "/books/perform-create", method = RequestMethod.POST)
+    public String createBook(
+            @Valid @ModelAttribute("bookRequest") BookRequest bookRequest,
+            BindingResult bindingResult,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "admin/book-create";
+        }
+
+        Book book = bookRepository.findBookByTitle(bookRequest.getTitle());
+
+        if (book != null) {
+            throw new RuntimeException("Book have already been created");
+        }
+
+
+        Category category = categoryRepository.getById(bookRequest.getCategoryId());
+
+        if (category == null) {
+            throw new RuntimeException("Category does not exist");
+        }
+
+        Set<Category> categories = new HashSet<>();
+        categories.add(category);
+
+        Book newBook = new Book();
+        newBook.setTitle(bookRequest.getTitle());
+        newBook.setDescription(bookRequest.getDescription());
+        newBook.setCategories(categories);
+        bookRepository.save(newBook);
+
+        return "redirect:/admin/books/list";
+    }
+
+    @RequestMapping(value = "/books/delete/{id}", method = RequestMethod.DELETE)
+    public String deleteBook(@PathVariable("id") Long id, Model model) {
+        Book book = bookRepository.getById(id);
+
+        if (book == null) {
+            throw new RuntimeException("Book not found");
+        }
+
+        bookRepository.delete(book);
+        return "redirect:/admin/books/list";
+    }
+
+    @RequestMapping(value = "/categories/create", method = RequestMethod.GET)
+    public String createCategory(Model model) {
+        model.addAttribute("category", new CategoryRequest());
+        return "admin/category-create";
+    }
+
+    @RequestMapping(value = "categories/perform-create", method = RequestMethod.POST)
+    public String createCategory(@Valid @ModelAttribute("categoryRequest") CategoryRequest categoryRequest,
+                                 BindingResult bindingResult,
+                                 Model model) {
+        Category category = categoryRepository.findCategoryByName(categoryRequest.getName());
+
+        if (category != null) {
+            throw new RuntimeException("Category have already been created");
+        }
+
+        Category newCategory = new Category();
+        newCategory.setName(categoryRequest.getName());
+        newCategory.setDescription(categoryRequest.getDescription());
+        categoryRepository.save(newCategory);
+
+        return "redirect:/admin/categories/list";
+    }
+
+    @RequestMapping(value = "/categories/list", method = RequestMethod.GET)
+    public String listCategory(Model model) {
+        List<Category> categories = categoryRepository.findAll();
+        model.addAttribute("categories", categories);
+        return "admin/category-management";
     }
 
 

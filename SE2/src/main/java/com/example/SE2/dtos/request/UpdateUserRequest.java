@@ -1,7 +1,5 @@
 package com.example.SE2.dtos.request;
 
-
-
 public class UpdateUserRequest {
 
     private String firstName;

@@ -1,5 +1,9 @@
 package com.example.SE2.dtos.request;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class RegisterRequest {
 
@@ -7,8 +11,12 @@ public class RegisterRequest {
 
     private String lastName;
 
+    @Email(message = "Email is not valid format")
+    @NotBlank(message = "Email is required")
     private String email;
 
+    @Size(min = 4, message = "Password has at least {min} characters")
+    @NotBlank(message = "Password is required")
     private String password;
 
     private String phone;

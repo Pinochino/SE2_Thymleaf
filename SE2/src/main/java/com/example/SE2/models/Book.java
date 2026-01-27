@@ -3,6 +3,9 @@ package com.example.SE2.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 public class Book {
 
@@ -10,6 +13,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(unique = true)
     private String title;
 
     private boolean status;
@@ -18,21 +22,23 @@ public class Book {
 
     private String author;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
+    private String image;
+
+    @ManyToMany(mappedBy = "books")
     @JsonBackReference
-    private Category category;
+    private Set<Category> categories = new HashSet<>();
 
     public Book() {
     }
 
-    public Book(long id, String title, boolean status, String description, String author, Category category) {
+    public Book(long id, String title, boolean status, String description, String author, Set<Category> categories, String image) {
         this.id = id;
         this.title = title;
         this.status = status;
         this.description = description;
         this.author = author;
-        this.category = category;
+        this.categories = categories;
+        this.image = image;
     }
 
     public long getId() {
@@ -75,11 +81,19 @@ public class Book {
         this.author = author;
     }
 
-    public Category getCategory() {
-        return category;
+    public Set<Category> getCategories() {
+        return categories;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

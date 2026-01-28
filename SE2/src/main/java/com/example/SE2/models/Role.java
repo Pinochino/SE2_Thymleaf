@@ -3,28 +3,20 @@ package com.example.SE2.models;
 import com.example.SE2.constants.RoleName;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "roles")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Role extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
-    RoleName name;
+    private RoleName name;
 
     public Role(RoleName name) {
         this.name = name;
@@ -32,5 +24,46 @@ public class Role extends AbstractEntity {
 
     @ManyToMany(mappedBy = "roles")
     @JsonBackReference
-    Set<User> users = new HashSet<>();
+    private Set<User> users = new HashSet<>();
+
+
+
+    public Role(LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(createdAt, updatedAt);
+    }
+
+    public Role() {
+
+    }
+
+    public Role(LocalDateTime createdAt, LocalDateTime updatedAt, Long id, RoleName name, Set<User> users) {
+        super(createdAt, updatedAt);
+        this.id = id;
+        this.name = name;
+        this.users = users;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public RoleName getName() {
+        return name;
+    }
+
+    public void setName(RoleName name) {
+        this.name = name;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 }

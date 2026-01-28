@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_adminLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content" class="d-flex justify-content-center align-items-center flex-column w-100">
+    <h2 class="text-center">Book Create</h2>
+
+    <form method="post" th:action="@{/admin/categories/perform-create}" th:object="${category}">
+        <div class="mb-3">
+            <label for="Name" class="form-label">Name: </label>
+            <input type="text" class="form-control" id="Name" th:field="*{name}">
+        </div>
+        <div class="form-floating">
+            <textarea class="form-control" placeholder="Leave a comment here" id="description" style="height: 100px" th:field="*{description}"></textarea>
+            <label for="description">Description: </label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>
+</body>
+</html>

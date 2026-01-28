@@ -18,13 +18,13 @@
         <form th:action="@{/register}" method="post" class="border p-5 rounded" th:object="${registerRequest}">
             <div class="text-center mb-3">
                 <p>Sign up with:</p>
-                <button  type="button"  class="btn btn-link btn-floating mx-1">
-                    <i class="bi bi-facebook"></i>
-                </button>
+                <a th:href="@{/oauth2/authorization/github}"  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary btn-floating mx-1 rounded-circle">
+                    <i class="bi bi-github"></i>
+                </a>
 
-                <button  type="button"  class="btn btn-link btn-floating mx-1">
+                <a  th:href="@{/oauth2/authorization/google}" type="button" data-mdb-button-init data-mdb-ripple-init class="btn  btn-outline-danger rounded-circle btn-floating mx-1">
                     <i class="bi bi-google"></i>
-                </button>
+                </a>
 
             </div>
 

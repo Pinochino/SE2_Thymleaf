@@ -14,19 +14,23 @@
 <body>
 <div layout:fragment="content" class="d-flex justify-content-center align-items-center flex-column w-100">
 
+    <p th:if="${loginError}" class="alert alert-warning text-center" th:text="${loginError}"></p>
+
     <!-- Pills content -->
     <div class="tab-content">
         <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
-            <form  th:action="@{/login}" method="post" th:object="${loginRequest}" class="border p-5 w-100 rounded">
+            <form th:action="@{/login}" method="post" th:object="${loginRequest}" class="border p-5 w-100 rounded">
                 <div class="text-center mb-3">
                     <p>Sign in with:</p>
-                    <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary btn-floating mx-1 rounded-circle">
-                        <i class="bi bi-facebook"></i>
-                    </button>
+                    <a th:href="@{/oauth2/authorization/github}" type="button" data-mdb-button-init data-mdb-ripple-init
+                       class="btn btn-outline-primary btn-floating mx-1 rounded-circle">
+                        <i class="bi bi-github"></i>
+                    </a>
 
-                    <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn  btn-outline-danger rounded-circle btn-floating mx-1">
+                    <a th:href="@{/oauth2/authorization/google}" type="button" data-mdb-button-init data-mdb-ripple-init
+                       class="btn  btn-outline-danger rounded-circle btn-floating mx-1">
                         <i class="bi bi-google"></i>
-                    </button>
+                    </a>
                 </div>
 
                 <p class="text-center">or:</p>
@@ -34,7 +38,8 @@
                 <!-- Email input -->
                 <div data-mdb-input-init class="form-outline mb-4">
                     <label class="form-label" for="loginEmail">Email: </label>
-                    <input type="email" id="loginEmail" class="form-control" th:field="*{email}" autocomplete="new-email" placeholder="Enter email"/>
+                    <input type="email" id="loginEmail" class="form-control" th:field="*{email}"
+                           autocomplete="new-email" placeholder="Enter email"/>
                     <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
 
                 </div>
@@ -42,7 +47,8 @@
                 <!-- Password input -->
                 <div data-mdb-input-init class="form-outline mb-4">
                     <label class="form-label" for="loginPassword">Password: </label>
-                    <input type="password" id="loginPassword" class="form-control" th:field="*{password}" autocomplete="new-password" placeholder="Enter password"/>
+                    <input type="password" id="loginPassword" class="form-control" th:field="*{password}"
+                           autocomplete="new-password" placeholder="Enter password"/>
                     <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
 
                 </div>
@@ -52,20 +58,21 @@
                     <div class="col-md-6 d-flex justify-content-center">
                         <!-- Checkbox -->
                         <div class="form-check mb-3 mb-md-0">
-                            <input class="form-check-input" type="checkbox" value="" id="loginCheck" checked />
+                            <input class="form-check-input" type="checkbox" value="true" id="loginCheck"
+                                   name="remember-me"/>
                             <label class="form-check-label" for="loginCheck"> Remember me </label>
                         </div>
                     </div>
 
                     <div class="col-md-6 d-flex justify-content-center">
                         <!-- Simple link -->
-                        <a href="#">Forgot password?</a>
+                        <a th:href="@{/forgot-password}">Forgot password?</a>
                     </div>
                 </div>
 
                 <!-- Submit button -->
                 <div class="d-flex justify-content-center align-items-center mb-3">
-                    <button type="submit"  class="btn btn-primary w-100">Sign in</button>
+                    <button type="submit" class="btn btn-primary w-100">Sign in</button>
                 </div>
 
                 <!-- Register buttons -->

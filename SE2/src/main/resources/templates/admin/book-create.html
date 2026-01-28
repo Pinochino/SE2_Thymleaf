@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_adminLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content" class="d-flex justify-content-center align-items-center flex-column w-100">
+    <h2>Book Create</h2>
+
+    <form method="post" th:action="@{/admin/books/perform-create}" th:object="${bookRequest}" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="title" class="form-label">Title: </label>
+            <input type="text" class="form-control" id="title" th:field="*{title}">
+        </div>
+
+        <div class="form-floating mb-3">
+            <textarea class="form-control" placeholder="Leave a comment here" id="description" style="height: 100px"
+                      th:field="*{description}"></textarea>
+            <label for="description">Description: </label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <textarea class="form-control" placeholder="Leave a comment here" id="content" style="height: 100px"
+                      th:field="*{content}"></textarea>
+            <label for="content">Content: </label>
+        </div>
+
+        <div class="mb-3">
+            <label for="author" class="form-label">Author: </label>
+            <input type="text" class="form-control" id="author" th:field="*{author}">
+        </div>
+
+        <div class="mb-3">
+            <select class="form-select" aria-label="Default select example" th:field="*{categoryId}">
+                <option th:each="category : ${categories}" th:value="${category.id}"
+                        th:text="${category.name}"></option>
+            </select>
+        </div>
+
+        <div class="input-group mb-3">
+            <input type="file" class="form-control" id="image" th:field="*{imageFile}" name="imageFile" >
+            <label class="input-group-text" for="image" >Upload</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>
+</body>
+</html>

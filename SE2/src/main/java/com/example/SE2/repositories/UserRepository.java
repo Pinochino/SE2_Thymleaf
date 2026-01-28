@@ -9,9 +9,14 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, UUID> {
+public interface UserRepository extends JpaRepository<User, String> {
     User findUserByEmail(String email);
 
     @Query("select u from User u where u.isLoggedIn=true")
     List<User> findUsersByLoggedIn();
+
+    @Query("select u from User u where u.email=?1 or u.firstName=?2")
+    User findUserByEmailOrFirstName(String email, String firstName);
+
+    User findUserByResetPasswordToken(String resetToken);
 }

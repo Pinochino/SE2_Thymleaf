@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,8 +17,7 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalException {
 
-    private static Logger logger = LoggerFactory.getLogger(GlobalException.class);
-
+    private final Logger log = LoggerFactory.getLogger(GlobalException.class);
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -36,11 +36,15 @@ public class GlobalException {
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String exception(final Throwable throwable, final Model model) {
-        logger.error("Exception during execution of SpringSecurity application", throwable);
+        log.error("Exception during execution of SpringSecurity application", throwable);
         String errorMessage = (throwable != null ? throwable.getMessage() : "Unknown error");
         model.addAttribute("errorMessage", errorMessage);
         return "error";
     }
 
+    @ExceptionHandler(NoResourceFoundException.class)
+    public String noResourceFoundException(final NoResourceFoundException ex) {
+        return "public/pageNotFound";
+    }
 
 }

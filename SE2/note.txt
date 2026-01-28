@@ -1,0 +1,7 @@
+docker-compose up -d
+docker exec -it pgvector psql -U postgres -d se2
+CREATE EXTENSION IF NOT EXISTS vector;
+\dx
+
+docker-compose down -v
+

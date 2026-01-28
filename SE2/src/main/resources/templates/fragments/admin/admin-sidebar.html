@@ -37,17 +37,36 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link text-white">
-                    <i class="bi bi-grid"></i>
-                    Products
+                <a th:href="@{/admin/categories/list}" class="nav-link text-white">
+                    <i class="bi bi-person-circle"></i>
+                    Categories
                 </a>
             </li>
             <li>
-                <a th:href="@{/admin/user-management}" class="nav-link text-white">
+                <a th:href="@{/admin/categories/create}" class="nav-link text-white">
                     <i class="bi bi-person-circle"></i>
-                    Customers
+                    Create category
                 </a>
             </li>
+            <li>
+                <a th:href="@{/admin/books/list}" class="nav-link text-white">
+                    <i class="bi bi-person-circle"></i>
+                    Books
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/books/create}" class="nav-link text-white">
+                    <i class="bi bi-person-circle"></i>
+                    Create Book
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/users/list}" class="nav-link text-white">
+                    <i class="bi bi-person-circle"></i>
+                    Users
+                </a>
+            </li>
+
         </ul>
         <hr>
         <div class="dropdown" bis_skin_checked="1">

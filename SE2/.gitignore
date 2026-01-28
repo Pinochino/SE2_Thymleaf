@@ -38,4 +38,7 @@ build/
 
 .env
 .env.dev
+
+/.env.dev
+/.env
 >>>>>>> development

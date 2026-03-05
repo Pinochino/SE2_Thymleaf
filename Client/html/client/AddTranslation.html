@@ -1,0 +1,1426 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NRW – Submit Translation Contribution</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        font-family: "DM Sans", sans-serif;
+        box-sizing: border-box;
+      }
+      .mono {
+        font-family: "DM Mono", monospace;
+      }
+
+      :root {
+        --bg: #0d1117;
+        --surface: #161b27;
+        --surface2: #1a2035;
+        --surface3: #1e2535;
+        --border: #252d3d;
+        --text: #e2e8f0;
+        --muted: #64748b;
+        --accent: #3b82f6;
+        --accent-h: #2563eb;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        margin: 0;
+      }
+
+      /* NAVBAR */
+      .navbar {
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        z-index: 40;
+      }
+
+      /* SEARCH */
+      .search-wrap {
+        position: relative;
+      }
+      .search-input {
+        background: var(--surface3);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text);
+        padding: 8px 36px;
+        font-size: 13px;
+        outline: none;
+        width: 100%;
+        transition: border-color 0.2s;
+      }
+      .search-input::placeholder {
+        color: var(--muted);
+      }
+      .search-input:focus {
+        border-color: var(--accent);
+      }
+
+      /* TABS */
+      .tab {
+        padding: 14px 4px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--muted);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+        background: none;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+      }
+      .tab:hover {
+        color: var(--text);
+      }
+      .tab.active {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+        font-weight: 600;
+      }
+
+      /* CARDS */
+      .card {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+      }
+
+      /* NOVEL COVER */
+      .novel-cover {
+        width: 100%;
+        aspect-ratio: 3/4;
+        border-radius: 10px;
+        overflow: hidden;
+        background: linear-gradient(
+          160deg,
+          #2a3050 0%,
+          #1a2240 50%,
+          #252010 100%
+        );
+      }
+      .novel-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* GENRE BADGE */
+      .genre-badge {
+        display: inline-block;
+        padding: 2px 9px;
+        border-radius: 5px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .badge-fantasy {
+        background: rgba(124, 58, 237, 0.15);
+        color: #a78bfa;
+        border: 1px solid rgba(124, 58, 237, 0.25);
+      }
+      .badge-cultivation {
+        background: rgba(16, 185, 129, 0.12);
+        color: #6ee7b7;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+      }
+
+      /* GUIDELINES BOX */
+      .guidelines {
+        background: rgba(59, 130, 246, 0.05);
+        border: 1px solid rgba(59, 130, 246, 0.15);
+        border-radius: 10px;
+        padding: 14px 16px;
+      }
+      .guideline-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.5;
+        margin-bottom: 8px;
+      }
+      .guideline-item:last-child {
+        margin-bottom: 0;
+      }
+      .guideline-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--accent);
+        flex-shrink: 0;
+        margin-top: 6px;
+      }
+
+      /* CHAPTER SELECT */
+      .chapter-select {
+        width: 100%;
+        background: var(--surface3);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text);
+        padding: 12px 40px 12px 16px;
+        font-size: 14px;
+        outline: none;
+        appearance: none;
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      .chapter-select:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+      }
+
+      /* TRANSLATION TEXTAREA */
+      .translation-area {
+        width: 100%;
+        background: var(--surface3);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text);
+        padding: 16px;
+        font-size: 14px;
+        line-height: 1.7;
+        outline: none;
+        resize: vertical;
+        min-height: 320px;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+        font-family: "DM Sans", sans-serif;
+      }
+      .translation-area::placeholder {
+        color: #3d4f6a;
+      }
+      .translation-area:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+      }
+
+      /* CHAR COUNT */
+      .char-count {
+        font-size: 11px;
+        font-family: "DM Mono", monospace;
+      }
+      .char-count.warn {
+        color: #f59e0b;
+      }
+      .char-count.error {
+        color: #ef4444;
+      }
+      .char-count.ok {
+        color: var(--muted);
+      }
+
+      /* BUTTONS */
+      .btn-cancel {
+        padding: 11px 24px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          border-color 0.2s;
+      }
+      .btn-cancel:hover {
+        background: var(--surface3);
+        border-color: var(--muted);
+      }
+
+      .btn-submit {
+        padding: 11px 28px;
+        border-radius: 10px;
+        background: var(--accent);
+        border: none;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.1s,
+          box-shadow 0.2s;
+        box-shadow: 0 4px 16px rgba(59, 130, 246, 0.35);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .btn-submit:hover {
+        background: var(--accent-h);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45);
+      }
+      .btn-submit:active {
+        transform: scale(0.98);
+      }
+      .btn-submit:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      /* WORD COUNT BAR */
+      .wc-bar {
+        height: 3px;
+        border-radius: 99px;
+        background: var(--border);
+        overflow: hidden;
+      }
+      .wc-fill {
+        height: 100%;
+        border-radius: 99px;
+        background: var(--accent);
+        transition: width 0.3s;
+      }
+
+      /* SUCCESS MODAL */
+      #success-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 80;
+        background: rgba(0, 0, 0, 0.65);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+      #success-modal.show {
+        display: flex;
+        animation: fadeIn 0.2s ease;
+      }
+      .modal-box {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 32px 28px;
+        max-width: 380px;
+        width: 100%;
+        text-align: center;
+        animation: scaleIn 0.22s ease;
+      }
+
+      /* TOAST */
+      #toast {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        padding: 11px 18px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #fff;
+        opacity: 0;
+        transform: translateY(12px);
+        transition:
+          opacity 0.3s,
+          transform 0.3s;
+        pointer-events: none;
+        z-index: 99;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      }
+      #toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* FOOTER */
+      footer {
+        background: var(--surface);
+        border-top: 1px solid var(--border);
+      }
+
+      /* MOBILE NAV */
+      #mobile-nav {
+        display: none;
+      }
+      #mobile-nav.open {
+        display: block;
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes scaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.93);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .fade-up {
+        animation: fadeUp 0.35s ease both;
+      }
+      .fade-up-2 {
+        animation: fadeUp 0.35s 0.1s ease both;
+      }
+
+      ::-webkit-scrollbar {
+        width: 5px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 99px;
+      }
+
+      /* Markdown toolbar btn */
+      .md-btn {
+        padding: 5px 10px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        background: var(--surface2);
+        color: var(--muted);
+        font-size: 12px;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s;
+        font-weight: 600;
+      }
+      .md-btn:hover {
+        background: var(--surface3);
+        color: var(--text);
+      }
+
+      /* Field label */
+      .field-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 8px;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SUCCESS MODAL -->
+    <div id="success-modal">
+      <div class="modal-box">
+        <div
+          class="w-16 h-16 rounded-full mx-auto mb-5 flex items-center justify-center"
+          style="
+            background: rgba(34, 197, 94, 0.12);
+            border: 2px solid rgba(34, 197, 94, 0.25);
+          "
+        >
+          <svg
+            class="w-8 h-8"
+            style="color: #22c55e"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        </div>
+        <h3 class="text-lg font-700 text-white mb-2" style="font-weight: 700">
+          Contribution Submitted!
+        </h3>
+        <p class="text-sm mb-6" style="color: var(--muted)">
+          Your translation has been submitted for review. You'll be notified
+          once it's approved by the editorial team.
+        </p>
+        <div class="flex gap-3 justify-center">
+          <button
+            onclick="closeSuccess()"
+            class="btn-cancel"
+            style="padding: 9px 20px; font-size: 13px"
+          >
+            Close
+          </button>
+          <button
+            onclick="submitAnother()"
+            class="btn-submit"
+            style="padding: 9px 20px; font-size: 13px; box-shadow: none"
+          >
+            Submit Another
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast"></div>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+      <div
+        class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4"
+      >
+        <a href="#" class="flex items-center gap-2 shrink-0">
+          <div
+            class="w-7 h-7 rounded-md flex items-center justify-center"
+            style="background: #3b82f6"
+          >
+            <svg
+              class="w-4 h-4 text-white"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.966 8.966 0 00-6 2.292m0-14.25v14.25"
+              />
+            </svg>
+          </div>
+          <span class="font-700 text-white text-base" style="font-weight: 700"
+            >NRW</span
+          >
+        </a>
+
+        <div class="hidden md:flex items-center gap-7">
+          <a
+            href="#"
+            class="text-sm font-600 text-white"
+            style="font-weight: 600"
+            >Home</a
+          >
+          <a
+            href="#"
+            class="text-sm hover:text-white transition"
+            style="color: var(--muted)"
+            >Favourite</a
+          >
+          <a
+            href="#"
+            class="text-sm hover:text-white transition"
+            style="color: var(--muted)"
+            >Contribute</a
+          >
+        </div>
+
+        <div class="flex items-center gap-2 flex-1 md:flex-none justify-end">
+          <div class="search-wrap hidden sm:block w-44 lg:w-56">
+            <svg
+              class="absolute w-4 h-4 pointer-events-none"
+              style="
+                left: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--muted);
+              "
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+            <input
+              type="text"
+              placeholder="Search novels..."
+              class="search-input"
+            />
+            <svg
+              class="absolute w-4 h-4 pointer-events-none"
+              style="
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--muted);
+              "
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+              />
+            </svg>
+          </div>
+          <button
+            class="hidden sm:flex w-9 h-9 rounded-lg items-center justify-center hover:bg-white/5 transition"
+            style="color: var(--muted)"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+              />
+            </svg>
+          </button>
+          <div
+            class="w-8 h-8 rounded-full hidden sm:flex items-center justify-center shrink-0 overflow-hidden cursor-pointer"
+            style="background: linear-gradient(135deg, #c9a98a, #e8c9b0)"
+          >
+            <svg
+              class="w-5 h-5 text-white/60"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"
+              />
+            </svg>
+          </div>
+          <button
+            onclick="
+              document.getElementById('mobile-nav').classList.toggle('open')
+            "
+            class="md:hidden w-9 h-9 rounded-lg flex items-center justify-center hover:bg-white/5 transition"
+            style="color: var(--muted)"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div id="mobile-nav" style="border-top: 1px solid var(--border)">
+        <div class="max-w-6xl mx-auto px-4 py-3 space-y-1">
+          <a
+            href="#"
+            class="block text-sm font-600 text-white py-2"
+            style="font-weight: 600"
+            >Home</a
+          >
+          <a href="#" class="block text-sm py-2" style="color: var(--muted)"
+            >Favourite</a
+          >
+          <a href="#" class="block text-sm py-2" style="color: var(--muted)"
+            >Contribute</a
+          >
+          <div class="search-wrap pt-2 pb-1">
+            <svg
+              class="absolute w-4 h-4 pointer-events-none"
+              style="
+                left: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--muted);
+              "
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+            <input
+              type="text"
+              placeholder="Search novels..."
+              class="search-input"
+              style="padding-left: 32px"
+            />
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ===== TABS ===== -->
+    <div
+      style="background: var(--surface); border-bottom: 1px solid var(--border)"
+    >
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div
+          class="flex gap-6 sm:gap-8 overflow-x-auto"
+          style="scrollbar-width: none"
+        >
+          <button class="tab">User Info</button>
+          <button class="tab">Favourited Novels</button>
+          <button class="tab active">Translation Contributions</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MAIN ===== -->
+    <main
+      class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10"
+      style="min-height: calc(100vh - 56px - 49px - 300px)"
+    >
+      <!-- Page title -->
+      <h1
+        class="text-2xl sm:text-3xl font-700 text-white mb-8 fade-up"
+        style="font-weight: 700"
+      >
+        Submit Translation Contribution
+      </h1>
+
+      <!-- Two-column layout -->
+      <div class="flex flex-col lg:flex-row gap-6 fade-up-2">
+        <!-- ── LEFT: Novel Info ── -->
+        <div class="w-full lg:w-72 xl:w-80 shrink-0 space-y-4">
+          <!-- Novel card -->
+          <div class="card p-4">
+            <!-- Cover -->
+            <div class="novel-cover mb-4">
+              <img
+                src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=533&fit=crop&crop=center"
+                alt="Shadow of the Eternal Throne"
+                onerror="this.style.display = 'none'"
+              />
+            </div>
+
+            <!-- Title -->
+            <h2
+              class="text-base font-700 text-white mb-2"
+              style="font-weight: 700"
+            >
+              Shadow of the Eternal Throne
+            </h2>
+
+            <!-- Genre badges -->
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="genre-badge badge-fantasy">Fantasy</span>
+              <span class="genre-badge badge-cultivation">Cultivation</span>
+            </div>
+
+            <!-- Meta table -->
+            <div
+              class="space-y-2.5"
+              style="border-top: 1px solid var(--border); padding-top: 14px"
+            >
+              <div class="flex items-center justify-between">
+                <span class="text-xs" style="color: var(--muted)">Author</span>
+                <span
+                  class="text-xs font-500 text-white"
+                  style="font-weight: 500"
+                  >Li Wei Chen</span
+                >
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs" style="color: var(--muted)">Status</span>
+                <span
+                  class="text-xs font-600 text-white"
+                  style="font-weight: 600"
+                  >Ongoing</span
+                >
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs" style="color: var(--muted)"
+                  >Total Chapters</span
+                >
+                <span class="text-xs mono" style="color: var(--muted)"
+                  >200</span
+                >
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs" style="color: var(--muted)"
+                  >Translated</span
+                >
+                <span class="text-xs mono" style="color: var(--muted)"
+                  >45 / 200</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Guidelines -->
+          <div class="card p-4">
+            <div class="flex items-center gap-2 mb-3">
+              <svg
+                class="w-4 h-4 shrink-0"
+                style="color: var(--accent)"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <p class="text-sm font-700 text-white" style="font-weight: 700">
+                Translation Guidelines
+              </p>
+            </div>
+            <div class="guidelines">
+              <div class="guideline-item">
+                <div class="guideline-dot"></div>
+                <span>Maintain consistent character names.</span>
+              </div>
+              <div class="guideline-item">
+                <div class="guideline-dot"></div>
+                <span>Ensure flow and grammatical accuracy.</span>
+              </div>
+              <div class="guideline-item">
+                <div class="guideline-dot"></div>
+                <span
+                  >Avoid MTL (Machine Translation) without heavy editing.</span
+                >
+              </div>
+              <div class="guideline-item">
+                <div class="guideline-dot"></div>
+                <span>Use proper honorifics where appropriate.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /LEFT -->
+
+        <!-- ── RIGHT: Form ── -->
+        <div class="flex-1 min-w-0">
+          <div class="card p-5 sm:p-7">
+            <!-- Chapter select -->
+            <div class="mb-6">
+              <label class="field-label" for="chapter-select"
+                >Select Chapter</label
+              >
+              <div class="relative">
+                <select
+                  id="chapter-select"
+                  class="chapter-select"
+                  onchange="onChapterChange(this.value)"
+                >
+                  <option value="">Select a chapter...</option>
+                  <optgroup label="Available for Translation">
+                    <option value="46">
+                      Chapter 46: The Sovereign's Trial
+                    </option>
+                    <option value="47">Chapter 47: Fragments of Will</option>
+                    <option value="48">Chapter 48: Beyond the Veil</option>
+                    <option value="49">Chapter 49: The Last Council</option>
+                    <option value="50">Chapter 50: Dawn of the Empire</option>
+                  </optgroup>
+                </select>
+                <svg
+                  class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none"
+                  style="color: var(--muted)"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+              <!-- Chapter info (shown after selection) -->
+              <div
+                id="chapter-info"
+                style="display: none"
+                class="mt-3 flex items-center gap-3 text-xs"
+                style="color: var(--muted)"
+              >
+                <div class="flex items-center gap-1.5">
+                  <svg
+                    class="w-3.5 h-3.5"
+                    style="color: var(--accent)"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <span
+                    id="chapter-word-count"
+                    style="color: var(--muted)"
+                  ></span>
+                </div>
+                <span style="color: var(--border)">•</span>
+                <span id="chapter-status-label" style="color: #6ee7b7"></span>
+              </div>
+            </div>
+
+            <!-- Translation Content -->
+            <div class="mb-4">
+              <div class="flex items-center justify-between mb-2">
+                <label
+                  class="field-label"
+                  style="margin-bottom: 0"
+                  for="translation-content"
+                  >Translation Content</label
+                >
+                <!-- Markdown toolbar -->
+                <div class="hidden sm:flex items-center gap-1.5">
+                  <button
+                    class="md-btn"
+                    onclick="insertMd('**', '**')"
+                    title="Bold"
+                  >
+                    <b>B</b>
+                  </button>
+                  <button
+                    class="md-btn"
+                    onclick="insertMd('*', '*')"
+                    title="Italic"
+                    style="font-style: italic"
+                  >
+                    <i>I</i>
+                  </button>
+                  <button
+                    class="md-btn"
+                    onclick="insertMd('\n> ', '')"
+                    title="Quote"
+                  >
+                    "
+                  </button>
+                  <button
+                    class="md-btn"
+                    onclick="insertMd('\n---\n', '')"
+                    title="Divider"
+                  >
+                    —
+                  </button>
+                </div>
+              </div>
+
+              <textarea
+                id="translation-content"
+                class="translation-area"
+                placeholder="Start typing your translation here. Use Markdown for formatting if needed..."
+                oninput="onTextInput()"
+                maxlength="50000"
+              ></textarea>
+
+              <!-- Word/char count -->
+              <div class="flex items-center justify-between mt-2">
+                <div class="wc-bar flex-1 mr-4" style="max-width: 200px">
+                  <div class="wc-fill" id="wc-fill" style="width: 0%"></div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span id="word-count" class="char-count ok">0 words</span>
+                  <span style="color: var(--border); font-size: 11px">|</span>
+                  <span id="char-count" class="char-count ok">0 / 50,000</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Additional notes -->
+            <div class="mb-6">
+              <label
+                class="field-label"
+                for="notes"
+                style="font-size: 13px; font-weight: 500"
+              >
+                Translator Notes
+                <span style="color: var(--muted); font-weight: 400"
+                  >(optional)</span
+                >
+              </label>
+              <textarea
+                id="notes"
+                rows="3"
+                style="
+                  width: 100%;
+                  background: var(--surface3);
+                  border: 1px solid var(--border);
+                  border-radius: 10px;
+                  color: var(--text);
+                  padding: 12px 16px;
+                  font-size: 13px;
+                  outline: none;
+                  resize: vertical;
+                  transition:
+                    border-color 0.2s,
+                    box-shadow 0.2s;
+                  font-family: &quot;DM Sans&quot;, sans-serif;
+                "
+                placeholder="Add any notes for the reviewers (e.g. uncertain terms, cultural references)..."
+              ></textarea>
+            </div>
+
+            <!-- Validation message -->
+            <div
+              id="validation-msg"
+              style="display: none"
+              class="mb-4 flex items-center gap-2 text-sm"
+              style="color: #ef4444"
+            >
+              <svg
+                class="w-4 h-4 shrink-0"
+                fill="none"
+                stroke="#ef4444"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+              <span id="validation-text"></span>
+            </div>
+
+            <!-- Action buttons -->
+            <div
+              class="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3"
+            >
+              <button class="btn-cancel" onclick="handleCancel()">
+                Cancel
+              </button>
+              <button
+                id="submit-btn"
+                class="btn-submit"
+                onclick="handleSubmit()"
+              >
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                  />
+                </svg>
+                Submit Contribution
+              </button>
+            </div>
+          </div>
+          <!-- /card -->
+        </div>
+        <!-- /RIGHT -->
+      </div>
+      <!-- /two-col -->
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+          <div>
+            <div class="flex items-center gap-2 mb-3">
+              <div
+                class="w-7 h-7 rounded-md flex items-center justify-center"
+                style="background: #3b82f6"
+              >
+                <svg
+                  class="w-4 h-4 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.966 8.966 0 00-6 2.292m0-14.25v14.25"
+                  />
+                </svg>
+              </div>
+              <span class="font-700 text-white text-sm" style="font-weight: 700"
+                >NRW</span
+              >
+            </div>
+            <p class="text-xs leading-relaxed" style="color: var(--muted)">
+              The next generation of reading. Experience AI-powered translations
+              and personalized discoveries.
+            </p>
+          </div>
+          <div>
+            <p
+              class="text-sm font-600 text-white mb-3"
+              style="font-weight: 600"
+            >
+              Platform
+            </p>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="#"
+                  class="text-xs hover:text-white transition"
+                  style="color: var(--muted)"
+                  >Trending</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-xs hover:text-white transition"
+                  style="color: var(--muted)"
+                  >Latest Updates</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-xs hover:text-white transition"
+                  style="color: var(--muted)"
+                  >Completed</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-xs hover:text-white transition"
+                  style="color: var(--muted)"
+                  >AI Recommendations</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <p
+              class="text-sm font-600 text-white mb-3"
+              style="font-weight: 600"
+            >
+              Community
+            </p>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="#"
+                  class="text-xs hover:text-white transition"
+                  style="color: var(--muted)"
+                  >Forums</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-xs hover:text-white transition"
+                  style="color: var(--muted)"
+                  >Discord Server</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-xs hover:text-white transition"
+                  style="color: var(--muted)"
+                  >Translator Recruitment</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-xs hover:text-white transition"
+                  style="color: var(--muted)"
+                  >Writer Portal</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <p
+              class="text-sm font-600 text-white mb-3"
+              style="font-weight: 600"
+            >
+              Support
+            </p>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="#"
+                  class="text-xs hover:text-white transition"
+                  style="color: var(--muted)"
+                  >Help Center</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-xs hover:text-white transition"
+                  style="color: var(--muted)"
+                  >Report Issue</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-xs hover:text-white transition"
+                  style="color: var(--muted)"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-xs hover:text-white transition"
+                  style="color: var(--muted)"
+                  >Terms of Service</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="flex flex-col sm:flex-row items-center justify-between gap-3"
+          style="border-top: 1px solid var(--border); padding-top: 24px"
+        >
+          <p class="text-xs" style="color: var(--muted)">
+            © 2026 NRW. All rights reserved.
+          </p>
+          <div class="flex gap-5">
+            <a
+              href="#"
+              class="text-xs hover:text-white transition"
+              style="color: var(--muted)"
+              >Twitter</a
+            >
+            <a
+              href="#"
+              class="text-xs hover:text-white transition"
+              style="color: var(--muted)"
+              >Instagram</a
+            >
+            <a
+              href="#"
+              class="text-xs hover:text-white transition"
+              style="color: var(--muted)"
+              >Facebook</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // ── CHAPTER INFO ──────────────────────────────────────────────
+      const chapterData = {
+        46: { words: "~3,200 source words", status: "Available" },
+        47: { words: "~2,800 source words", status: "Available" },
+        48: { words: "~4,100 source words", status: "Available" },
+        49: { words: "~3,500 source words", status: "Available" },
+        50: { words: "~2,950 source words", status: "Available" },
+      };
+
+      function onChapterChange(val) {
+        const info = document.getElementById("chapter-info");
+        if (!val) {
+          info.style.display = "none";
+          return;
+        }
+        const d = chapterData[val];
+        if (d) {
+          document.getElementById("chapter-word-count").textContent = d.words;
+          document.getElementById("chapter-status-label").textContent =
+            "✓ " + d.status;
+          info.style.display = "flex";
+        }
+        hideValidation();
+      }
+
+      // ── WORD / CHAR COUNT ─────────────────────────────────────────
+      const MAX_CHARS = 50000;
+      const MIN_WORDS = 50;
+
+      function onTextInput() {
+        const ta = document.getElementById("translation-content");
+        const text = ta.value;
+        const chars = text.length;
+        const words =
+          text.trim() === ""
+            ? 0
+            : text.trim().split(/\s+/).filter(Boolean).length;
+
+        // Word count
+        const wcEl = document.getElementById("word-count");
+        wcEl.textContent = words + " word" + (words !== 1 ? "s" : "");
+        wcEl.className = "char-count " + (words < MIN_WORDS ? "warn" : "ok");
+
+        // Char count
+        const ccEl = document.getElementById("char-count");
+        ccEl.textContent =
+          chars.toLocaleString() + " / " + MAX_CHARS.toLocaleString();
+        const ratio = chars / MAX_CHARS;
+        ccEl.className =
+          "char-count " +
+          (ratio > 0.9 ? "error" : ratio > 0.75 ? "warn" : "ok");
+
+        // Progress bar
+        const pct = Math.min((words / 500) * 100, 100); // 500 words = "full"
+        const fill = document.getElementById("wc-fill");
+        fill.style.width = pct + "%";
+        fill.style.background = words < MIN_WORDS ? "#f59e0b" : "#3b82f6";
+
+        hideValidation();
+      }
+
+      // ── MARKDOWN HELPERS ──────────────────────────────────────────
+      function insertMd(before, after) {
+        const ta = document.getElementById("translation-content");
+        const start = ta.selectionStart;
+        const end = ta.selectionEnd;
+        const selected = ta.value.substring(start, end);
+        const replacement = before + (selected || "text") + after;
+        ta.setRangeText(replacement, start, end, "select");
+        ta.focus();
+        onTextInput();
+      }
+
+      // ── VALIDATION ────────────────────────────────────────────────
+      function showValidation(msg) {
+        const el = document.getElementById("validation-msg");
+        document.getElementById("validation-text").textContent = msg;
+        el.style.display = "flex";
+      }
+      function hideValidation() {
+        document.getElementById("validation-msg").style.display = "none";
+      }
+
+      // ── SUBMIT ────────────────────────────────────────────────────
+      function handleSubmit() {
+        const chapter = document.getElementById("chapter-select").value;
+        const content = document
+          .getElementById("translation-content")
+          .value.trim();
+        const words =
+          content === "" ? 0 : content.split(/\s+/).filter(Boolean).length;
+
+        if (!chapter) {
+          showValidation("Please select a chapter to translate.");
+          document.getElementById("chapter-select").focus();
+          return;
+        }
+        if (words < MIN_WORDS) {
+          showValidation(
+            `Translation must be at least ${MIN_WORDS} words. You have ${words}.`,
+          );
+          document.getElementById("translation-content").focus();
+          return;
+        }
+
+        // Show loading state
+        const btn = document.getElementById("submit-btn");
+        btn.disabled = true;
+        btn.innerHTML = `<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Submitting…`;
+
+        // Simulate async submit
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg> Submit Contribution`;
+          document.getElementById("success-modal").classList.add("show");
+        }, 1200);
+      }
+
+      // ── CANCEL ────────────────────────────────────────────────────
+      function handleCancel() {
+        if (
+          document.getElementById("translation-content").value.trim().length > 0
+        ) {
+          if (!confirm("Are you sure you want to discard your translation?"))
+            return;
+        }
+        resetForm();
+        showToast("Draft discarded", "#64748b");
+      }
+
+      function resetForm() {
+        document.getElementById("chapter-select").value = "";
+        document.getElementById("translation-content").value = "";
+        document.getElementById("notes").value = "";
+        document.getElementById("chapter-info").style.display = "none";
+        document.getElementById("word-count").textContent = "0 words";
+        document.getElementById("char-count").textContent = "0 / 50,000";
+        document.getElementById("wc-fill").style.width = "0%";
+        hideValidation();
+      }
+
+      // ── SUCCESS MODAL ─────────────────────────────────────────────
+      function closeSuccess() {
+        document.getElementById("success-modal").classList.remove("show");
+      }
+      function submitAnother() {
+        closeSuccess();
+        resetForm();
+      }
+      document
+        .getElementById("success-modal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeSuccess();
+        });
+
+      // ── TOAST ─────────────────────────────────────────────────────
+      function showToast(msg, color) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.style.background = color || "#3b82f6";
+        t.classList.add("show");
+        setTimeout(() => t.classList.remove("show"), 2600);
+      }
+
+      // ── TEXTAREA FOCUS STYLE ──────────────────────────────────────
+      document.getElementById("notes").addEventListener("focus", function () {
+        this.style.borderColor = "var(--accent)";
+        this.style.boxShadow = "0 0 0 3px rgba(59,130,246,.12)";
+      });
+      document.getElementById("notes").addEventListener("blur", function () {
+        this.style.borderColor = "var(--border)";
+        this.style.boxShadow = "none";
+      });
+    </script>
+  </body>
+</html>

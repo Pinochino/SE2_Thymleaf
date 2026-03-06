@@ -334,47 +334,6 @@ body {
   margin-top: 2px;
 }
 
-/* ── Footer ── */
-footer {
-  background: var(--navy-950);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-.footer-heading {
-  font-family: "DM Sans", sans-serif;
-  font-weight: 600;
-  font-size: 0.82rem;
-  color: var(--text-primary);
-  margin-bottom: 14px;
-}
-.footer-link {
-  display: block;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-  transition: color 0.15s;
-  cursor: pointer;
-}
-.footer-link:hover {
-  color: var(--text-secondary);
-}
-.footer-social {
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-muted);
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.footer-social:hover {
-  border-color: rgba(77, 159, 255, 0.4);
-  color: var(--primary);
-}
-
 /* ── View All link ── */
 .view-all {
   font-size: 0.75rem;

@@ -1,0 +1,892 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NRW – Next Generation Reading</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ["Cinzel", "serif"],
+              body: ["DM Sans", "sans-serif"],
+              mono: ["DM Mono", "monospace"],
+            },
+            colors: {
+              navy: {
+                950: "#0b0f1a",
+                900: "#0f1421",
+                800: "#151c2e",
+                700: "#1c2540",
+                600: "#243052",
+              },
+              azure: {
+                400: "#4d9fff",
+                500: "#2d87f5",
+                600: "#1a6fd4",
+              },
+              gold: {
+                accent: "#c9a84c",
+                soft: "#e2c97e",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <link href="../css/Homepage.css" type="text/css" rel="stylesheet" />
+    <link href="../css/components.css" type="text/css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- ══════════════════════ NAVBAR ══════════════════════ -->
+    <nav class="navbar">
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14"
+      >
+        <!-- Logo -->
+        <div class="flex items-center gap-2 shrink-0">
+          <div
+            style="
+              width: 28px;
+              height: 28px;
+              background: linear-gradient(135deg, #2d87f5, #4d9fff);
+              border-radius: 6px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            "
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#07090f"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            </svg>
+          </div>
+          <span class="logo-mark">NRW</span>
+        </div>
+
+        <!-- Desktop Nav Links -->
+        <div class="hidden md:flex items-center gap-7 ml-8">
+          <a class="nav-link active" href="#">Home</a>
+          <a class="nav-link" href="#">Favourite</a>
+          <a class="nav-link" href="#">Contribute</a>
+        </div>
+
+        <!-- Search + Icons -->
+        <div class="flex items-center gap-3 ml-auto">
+          <div class="relative hidden sm:block">
+            <svg
+              class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            <input
+              class="search-bar"
+              type="text"
+              placeholder="Search novels..."
+            />
+          </div>
+          <!-- Notifications Dropdown -->
+          <div class="relative" id="notification-dropdown-container">
+            <button
+              class="w-8 h-8 flex items-center justify-center rounded-lg border border-white/8 text-slate-400 hover:text-slate-200 transition-colors relative"
+              id="notification-bell"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+              </svg>
+              <span
+                id="notification-badge"
+                style="
+                  position: absolute;
+                  top: 6px;
+                  right: 6px;
+                  width: 6px;
+                  height: 6px;
+                  background: #4d9fff;
+                  border-radius: 50%;
+                  border: 1.5px solid #0b0f1a;
+                "
+              ></span>
+            </button>
+            <!-- Notification Dropdown Menu -->
+            <div
+              id="notification-dropdown"
+              class="notification-dropdown hidden"
+            >
+              <!-- Notification Header -->
+              <div class="notification-header">
+                <span class="notification-title">Notifications</span>
+                <button class="mark-all-read">Mark all as read</button>
+              </div>
+              <!-- Notification List -->
+              <div class="notification-list">
+                <!-- Unread Notification 1 -->
+                <div class="notification-item unread">
+                  <div class="notification-icon">
+                    <svg
+                      class="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
+                      />
+                    </svg>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      New chapter released: <strong>Chapter 90</strong>
+                    </p>
+                    <p class="notification-meta">
+                      The Villainess Turns the Hourglass • 2 hrs ago
+                    </p>
+                  </div>
+                </div>
+                <!-- Unread Notification 2 -->
+                <div class="notification-item unread">
+                  <div class="notification-icon">
+                    <svg
+                      class="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                      />
+                    </svg>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      <strong>Neon Pulse</strong> is now in your favorites
+                    </p>
+                    <p class="notification-meta">System • 5 hrs ago</p>
+                  </div>
+                </div>
+                <!-- Unread Notification 3 -->
+                <div class="notification-item unread">
+                  <div class="notification-icon">
+                    <svg
+                      class="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
+                      />
+                    </svg>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      Your account is now verified
+                    </p>
+                    <p class="notification-meta">1 day ago</p>
+                  </div>
+                </div>
+                <!-- Read Notification -->
+                <div class="notification-item">
+                  <div class="notification-icon">
+                    <svg
+                      class="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
+                      />
+                    </svg>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-text">
+                      New chapter released: <strong>Chapter 316</strong>
+                    </p>
+                    <p class="notification-meta">
+                      Omniscient Reader's Viewpoint • 2 days ago
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- Notification Footer -->
+              <div class="notification-footer">
+                <a href="#" class="view-all-notifications"
+                  >View All Notifications</a
+                >
+              </div>
+            </div>
+          </div>
+          <!-- User Dropdown -->
+          <div class="relative" id="user-dropdown-container">
+            <div
+              class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white cursor-pointer"
+              style="background: linear-gradient(135deg, #2d87f5, #4d9fff)"
+              id="user-icon"
+            >
+              U
+            </div>
+            <!-- Dropdown Menu -->
+            <div id="user-dropdown" class="user-dropdown hidden">
+              <!-- User Profile Section -->
+              <div class="dropdown-header">
+                <div class="dropdown-avatar">
+                  <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                    />
+                  </svg>
+                </div>
+                <div class="dropdown-user-info">
+                  <p class="dropdown-user-name">User Name</p>
+                  <p class="dropdown-user-email">user@example.com</p>
+                </div>
+              </div>
+              <div class="dropdown-divider"></div>
+              <!-- Menu Items -->
+              <a href="#" class="dropdown-item">
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                  />
+                </svg>
+                <span>My Profile</span>
+              </a>
+              <a href="#" class="dropdown-item">
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+                <span>Settings</span>
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="#" class="dropdown-item logout-item">
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+                  />
+                </svg>
+                <span>Log Out</span>
+              </a>
+            </div>
+          </div>
+          <!-- Mobile hamburger -->
+          <button
+            id="hamburger"
+            class="md:hidden w-8 h-8 flex items-center justify-center text-slate-400"
+            onclick="
+              document.getElementById('mobile-menu').classList.toggle('open')
+            "
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <!-- Mobile menu -->
+      <div
+        id="mobile-menu"
+        style="
+          background: rgba(7, 9, 15, 0.98);
+          border-top: 1px solid rgba(255, 255, 255, 0.06);
+        "
+      >
+        <div class="px-4 py-3 flex flex-col gap-1">
+          <div class="relative mb-2">
+            <svg
+              class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            <input
+              class="search-bar w-full"
+              type="text"
+              placeholder="Search novels..."
+            />
+          </div>
+          <a class="nav-link py-2" href="#">Home</a>
+          <a class="nav-link py-2" href="#">Favourite</a>
+          <a class="nav-link py-2" href="#">Contribute</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ══════════════════════ HERO ══════════════════════ -->
+    <section class="hero">
+      <div class="hero-art"></div>
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 flex items-center"
+        style="min-height: 420px"
+      >
+        <div style="max-width: 500px; padding: 48px 0">
+          <div class="trending-badge mb-5">
+            <span class="trending-dot"></span>
+            Trending Now
+          </div>
+          <h1 class="hero-title mb-2">
+            Chronicles of the<br />
+            <span class="hero-title-accent">Astral Void</span>
+          </h1>
+          <div
+            class="flex items-center gap-3 mb-4"
+            style="font-size: 0.75rem; color: #64748b"
+          >
+            <span class="flex items-center gap-1">
+              <span class="star">★</span>
+              <span
+                style="
+                  color: #c9a84c;
+                  font-family: &quot;DM Mono&quot;, monospace;
+                  font-size: 0.7rem;
+                "
+                >4.9</span
+              >
+            </span>
+            <span class="w-px h-3" style="background: #334155"></span>
+            <span>Sci-Fi / Fantasy</span>
+            <span class="w-px h-3" style="background: #334155"></span>
+            <span>By A.R. Vance</span>
+          </div>
+          <p
+            style="
+              font-size: 0.82rem;
+              color: #94a3b8;
+              line-height: 1.6;
+              margin-bottom: 28px;
+              max-width: 380px;
+            "
+          >
+            In a universe where AI gods rule the stars, a lone scavenger
+            discovers a secret that could rewrite existence itself. Join Elara
+            on a journey through the neon-soaked ruins of old Earth.
+          </p>
+          <button class="read-btn">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            </svg>
+            Read Now
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════ MAIN CONTENT ══════════════════════ -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-14">
+      <!-- ── Currently Reading ── -->
+      <section>
+        <div class="mb-5">
+          <h2 class="section-title text-xl">Currently Reading</h2>
+          <p class="section-label">Continue where you left off.</p>
+        </div>
+        <div class="cards-grid cards-grid-5" id="reading-grid">
+          <!-- Card 1 with rating -->
+          <div>
+            <div class="novel-card">
+              <div class="novel-card-inner"></div>
+              <div class="rating-badge">★ 4.8</div>
+            </div>
+            <p class="novel-card-title">Shadow Realm</p>
+            <p class="novel-card-meta">Fantasy • Completed</p>
+          </div>
+          <!-- Card 2 -->
+          <div>
+            <div class="novel-card"><div class="novel-card-inner"></div></div>
+            <p class="novel-card-title">Neon Pulse</p>
+            <p class="novel-card-meta">Sci-Fi • Ongoing</p>
+          </div>
+          <!-- Card 3 -->
+          <div>
+            <div class="novel-card"><div class="novel-card-inner"></div></div>
+            <p class="novel-card-title">Reborn as a Slime</p>
+            <p class="novel-card-meta">Isekai • Ongoing</p>
+          </div>
+          <!-- Card 4 -->
+          <div>
+            <div class="novel-card"><div class="novel-card-inner"></div></div>
+            <p class="novel-card-title">Blade of Zen</p>
+            <p class="novel-card-meta">Action • Completed</p>
+          </div>
+          <!-- Add card -->
+          <div>
+            <div class="add-card">
+              <div class="add-card-plus">+</div>
+              <p style="font-size: 0.7rem; color: #475569; line-height: 1.4">
+                Discover more novels to add to your reading list.
+              </p>
+              <a
+                style="
+                  font-size: 0.7rem;
+                  color: #4d9fff;
+                  margin-top: 6px;
+                  cursor: pointer;
+                "
+                >Browse Library</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Favourite Novels ── -->
+      <section>
+        <div class="flex items-end justify-between mb-5">
+          <div>
+            <h2 class="section-title text-xl">Favorite Novels</h2>
+            <p class="section-label">Your personal collection.</p>
+          </div>
+          <button class="manage-btn">
+            <svg
+              class="w-3.5 h-3.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M12 20h9" />
+              <path
+                d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"
+              />
+            </svg>
+            Manage
+          </button>
+        </div>
+        <div class="cards-grid cards-grid-5">
+          <div>
+            <div class="novel-card">
+              <div class="novel-card-inner"></div>
+              <div class="rating-badge">★ 4.8</div>
+            </div>
+            <p class="novel-card-title">Shadow Realm</p>
+            <p class="novel-card-meta">Fantasy • Completed</p>
+          </div>
+          <div>
+            <div class="novel-card"><div class="novel-card-inner"></div></div>
+            <p class="novel-card-title">Neon Pulse</p>
+            <p class="novel-card-meta">Sci-Fi • Ongoing</p>
+          </div>
+          <div>
+            <div class="novel-card"><div class="novel-card-inner"></div></div>
+            <p class="novel-card-title">Reborn as a Slime</p>
+            <p class="novel-card-meta">Isekai • Ongoing</p>
+          </div>
+          <div>
+            <div class="novel-card"><div class="novel-card-inner"></div></div>
+            <p class="novel-card-title">Blade of Zen</p>
+            <p class="novel-card-meta">Action • Completed</p>
+          </div>
+          <div>
+            <div class="novel-card"><div class="novel-card-inner"></div></div>
+            <p class="novel-card-title">The Last Kingdom</p>
+            <p class="novel-card-meta">Historical • Ongoing</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Recommended for You ── -->
+      <section>
+        <div class="mb-5">
+          <h2 class="section-title text-xl">Recommended for You</h2>
+          <p class="section-label">
+            Based on your reading of "Sci-Fi" and "System".
+          </p>
+        </div>
+        <div class="cards-grid cards-grid-5">
+          <div>
+            <div class="novel-card">
+              <div class="novel-card-inner"></div>
+              <div class="rating-badge">★ 4.7</div>
+            </div>
+            <p class="novel-card-title">Shadow Realm</p>
+            <p class="novel-card-meta">Fantasy • Completed</p>
+          </div>
+          <div>
+            <div class="novel-card"><div class="novel-card-inner"></div></div>
+            <p class="novel-card-title">Neon Pulse</p>
+            <p class="novel-card-meta">Sci-Fi • Ongoing</p>
+          </div>
+          <div>
+            <div class="novel-card"><div class="novel-card-inner"></div></div>
+            <p class="novel-card-title">Reborn as a Slime</p>
+            <p class="novel-card-meta">Isekai • Ongoing</p>
+          </div>
+          <div>
+            <div class="novel-card"><div class="novel-card-inner"></div></div>
+            <p class="novel-card-title">Blade of Zen</p>
+            <p class="novel-card-meta">Action • Completed</p>
+          </div>
+          <div>
+            <div class="novel-card"><div class="novel-card-inner"></div></div>
+            <p class="novel-card-title">The Last Kingdom</p>
+            <p class="novel-card-meta">Historical • Ongoing</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Hot Novels ── -->
+      <section>
+        <div class="flex items-end justify-between mb-5">
+          <div>
+            <h2 class="section-title text-xl">Hot Novels</h2>
+            <p class="section-label">Most popular stories right now.</p>
+          </div>
+          <a class="view-all">View All +</a>
+        </div>
+        <div class="cards-grid cards-grid-5">
+          <div>
+            <div class="novel-card">
+              <div class="novel-card-inner"></div>
+              <div class="rating-badge">★ 4.8</div>
+            </div>
+            <p class="novel-card-title">Shadow Realm</p>
+            <p class="novel-card-meta">Fantasy • Completed</p>
+          </div>
+          <div>
+            <div class="novel-card"><div class="novel-card-inner"></div></div>
+            <p class="novel-card-title">Neon Pulse</p>
+            <p class="novel-card-meta">Sci-Fi • Ongoing</p>
+          </div>
+          <div>
+            <div class="novel-card"><div class="novel-card-inner"></div></div>
+            <p class="novel-card-title">Reborn as a Slime</p>
+            <p class="novel-card-meta">Isekai • Ongoing</p>
+          </div>
+          <div>
+            <div class="novel-card"><div class="novel-card-inner"></div></div>
+            <p class="novel-card-title">Blade of Zen</p>
+            <p class="novel-card-meta">Action • Completed</p>
+          </div>
+          <div>
+            <div class="novel-card"><div class="novel-card-inner"></div></div>
+            <p class="novel-card-title">The Last Kingdom</p>
+            <p class="novel-card-meta">Historical • Ongoing</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── New Updates ── -->
+      <section>
+        <div class="flex items-end justify-between mb-5">
+          <div>
+            <h2 class="section-title text-xl">New Updates</h2>
+            <p class="section-label">Fresh chapters just released.</p>
+          </div>
+          <a class="view-all">View All +</a>
+        </div>
+        <div
+          class="overflow-x-auto rounded-lg"
+          style="
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+          "
+        >
+          <table class="updates-table" style="min-width: 560px">
+            <thead>
+              <tr style="padding: 0 20px">
+                <th style="padding-left: 20px">Novel Name</th>
+                <th>Genre</th>
+                <th>Latest Chapter</th>
+                <th style="padding-right: 20px; text-align: right">Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding-left: 20px">
+                  <span class="novel-name-link"
+                    >The Villainess Turns the Hourglass</span
+                  >
+                </td>
+                <td>
+                  <span style="font-size: 0.75rem; color: #64748b"
+                    >Romance</span
+                  >
+                </td>
+                <td><span class="chapter-tag">Chapter 89</span></td>
+                <td style="padding-right: 20px; text-align: right">
+                  <span class="time-label">2 hrs ago</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding-left: 20px">
+                  <span class="novel-name-link"
+                    >Omniscient Reader's Viewpoint</span
+                  >
+                </td>
+                <td>
+                  <span style="font-size: 0.75rem; color: #64748b"
+                    >Fantasy</span
+                  >
+                </td>
+                <td><span class="chapter-tag">Chapter 317</span></td>
+                <td style="padding-right: 20px; text-align: right">
+                  <span class="time-label">3 hrs ago</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding-left: 20px">
+                  <span class="novel-name-link">Library of Heaven's Path</span>
+                </td>
+                <td>
+                  <span style="font-size: 0.75rem; color: #64748b"
+                    >Xianxia</span
+                  >
+                </td>
+                <td><span class="chapter-tag">Chapter 1980</span></td>
+                <td style="padding-right: 20px; text-align: right">
+                  <span class="time-label">4 hrs ago</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding-left: 20px">
+                  <span class="novel-name-link">Overgeared</span>
+                </td>
+                <td>
+                  <span style="font-size: 0.75rem; color: #64748b">Action</span>
+                </td>
+                <td><span class="chapter-tag">Chapter 1450</span></td>
+                <td style="padding-right: 20px; text-align: right">
+                  <span class="time-label">5 hrs ago</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding-left: 20px" style="border-bottom: none">
+                  <span class="novel-name-link">Lord of the Mysteries</span>
+                </td>
+                <td>
+                  <span style="font-size: 0.75rem; color: #64748b"
+                    >Mystery</span
+                  >
+                </td>
+                <td><span class="chapter-tag">Chapter 302</span></td>
+                <td
+                  style="
+                    padding-right: 20px;
+                    text-align: right;
+                    border-bottom: none;
+                  "
+                >
+                  <span class="time-label">6 hrs ago</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <!-- ══════════════════════ FOOTER ══════════════════════ -->
+    <footer class="mt-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-10">
+          <!-- Brand -->
+          <div class="col-span-2 sm:col-span-1">
+            <div class="flex items-center gap-2 mb-4">
+              <div
+                style="
+                  width: 26px;
+                  height: 26px;
+                  background: linear-gradient(135deg, #2d87f5, #4d9fff);
+                  border-radius: 5px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+              >
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#07090f"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                </svg>
+              </div>
+              <span class="logo-mark" style="font-size: 0.9rem">NRW</span>
+            </div>
+            <p
+              style="
+                font-size: 0.72rem;
+                color: #475569;
+                line-height: 1.6;
+                max-width: 200px;
+              "
+            >
+              The next generation of reading. Experience AI-powered translations
+              and personalised discoveries.
+            </p>
+          </div>
+          <!-- Platform -->
+          <div>
+            <p class="footer-heading">Platform</p>
+            <a class="footer-link">Trending</a>
+            <a class="footer-link">Latest Updates</a>
+            <a class="footer-link">Completed</a>
+            <a class="footer-link">AI Recommendations</a>
+          </div>
+          <!-- Community -->
+          <div>
+            <p class="footer-heading">Community</p>
+            <a class="footer-link">Forums</a>
+            <a class="footer-link">Discord Server</a>
+            <a class="footer-link">Translator Recruitment</a>
+            <a class="footer-link">Writer Portal</a>
+          </div>
+          <!-- Support -->
+          <div>
+            <p class="footer-heading">Support</p>
+            <a class="footer-link">Help Center</a>
+            <a class="footer-link">Report Issue</a>
+            <a class="footer-link">Privacy Policy</a>
+            <a class="footer-link">Terms of Service</a>
+          </div>
+        </div>
+
+        <div
+          class="mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4"
+          style="border-top: 1px solid rgba(255, 255, 255, 0.06)"
+        >
+          <p style="font-size: 0.68rem; color: #334155">
+            © 2025 NRW. All rights reserved.
+          </p>
+          <div class="flex items-center gap-2">
+            <div class="footer-social" title="Twitter">
+              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.259 5.63L18.244 2.25Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"
+                />
+              </svg>
+            </div>
+            <div class="footer-social" title="Instagram">
+              <svg
+                class="w-3.5 h-3.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
+              </svg>
+            </div>
+            <div class="footer-social" title="Discord">
+              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.001.022.015.043.036.055a19.9 19.9 0 0 0 5.993 3.03.077.077 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="../js/main.js"></script>
+  </body>
+</html>

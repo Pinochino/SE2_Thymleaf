@@ -1,0 +1,1576 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NRW – Chapter 42: The Whispering Void</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-parchment: #f2ede3;
+        --bg-dark: #1a1a1a;
+        --text-main: #2c2416;
+        --text-muted: #7a6f5e;
+        --accent: #7c3aed;
+        --accent-light: #ede9fe;
+        --font-serif: "Lora", Georgia, serif;
+        --font-sans: "DM Sans", sans-serif;
+        --font-size: 17px;
+      }
+      .dark-theme {
+        --bg-parchment: #1a1a1a;
+        --text-main: #d4cfc7;
+        --text-muted: #6b6560;
+      }
+
+      * {
+        font-family: var(--font-sans);
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg-parchment);
+        color: var(--text-main);
+        transition:
+          background 0.3s,
+          color 0.3s;
+        margin: 0;
+      }
+
+      /* ---- TOPBAR ---- */
+      #topbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: var(--bg-parchment);
+        border-bottom: 1px solid rgba(124, 58, 237, 0.12);
+        transition: background 0.3s;
+      }
+      .dark-theme #topbar {
+        border-bottom-color: rgba(255, 255, 255, 0.08);
+      }
+
+      /* ---- READING CONTENT ---- */
+      #reader-content {
+        font-family: var(--font-serif);
+        font-size: var(--font-size);
+        line-height: 1.9;
+        color: var(--text-main);
+        transition:
+          font-size 0.2s,
+          color 0.3s;
+      }
+      #reader-content em {
+        font-style: italic;
+        color: var(--text-muted);
+      }
+
+      /* ---- PROGRESS BAR ---- */
+      #reading-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: var(--accent);
+        z-index: 100;
+        transition: width 0.1s linear;
+        width: 0%;
+      }
+
+      /* ---- CHAPTER SIDEBAR ---- */
+      #chapter-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 220px;
+        background: var(--bg-parchment);
+        border-right: 1px solid rgba(124, 58, 237, 0.12);
+        z-index: 60;
+        overflow-y: auto;
+        transform: translateX(-100%);
+        transition:
+          transform 0.25s ease,
+          background 0.3s;
+        display: flex;
+        flex-direction: column;
+      }
+      #chapter-sidebar.open {
+        transform: translateX(0);
+      }
+      .dark-theme #chapter-sidebar {
+        border-right-color: rgba(255, 255, 255, 0.08);
+      }
+
+      /* Chapter item */
+      .chapter-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 7px 14px;
+        font-size: 13px;
+        cursor: pointer;
+        color: var(--text-main);
+        transition: background 0.15s;
+        border-radius: 8px;
+        margin: 0 6px 1px;
+        font-family: var(--font-sans);
+      }
+      .chapter-item:hover {
+        background: rgba(124, 58, 237, 0.08);
+      }
+      .chapter-item.active {
+        background: var(--accent);
+        color: #fff;
+        font-weight: 600;
+      }
+      .chapter-item.locked {
+        color: var(--text-muted);
+        cursor: not-allowed;
+      }
+      .volume-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        padding: 12px 20px 4px;
+        font-family: var(--font-sans);
+      }
+
+      /* ---- COMMENT SIDEBAR ---- */
+      #comment-sidebar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 280px;
+        background: var(--bg-parchment);
+        border-left: 1px solid rgba(124, 58, 237, 0.12);
+        z-index: 60;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transform: translateX(100%);
+        transition:
+          transform 0.25s ease,
+          background 0.3s;
+      }
+      #comment-sidebar.open {
+        transform: translateX(0);
+      }
+      .dark-theme #comment-sidebar {
+        border-left-color: rgba(255, 255, 255, 0.08);
+      }
+
+      /* ---- SETTINGS PANEL ---- */
+      #settings-panel {
+        position: fixed;
+        top: 52px;
+        right: 12px;
+        width: 240px;
+        background: #fff;
+        border: 1px solid rgba(124, 58, 237, 0.2);
+        border-radius: 14px;
+        z-index: 70;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+        padding: 16px;
+        display: none;
+        transition: background 0.3s;
+      }
+      #settings-panel.open {
+        display: block;
+        animation: fadeDown 0.18s ease;
+      }
+      .dark-theme #settings-panel {
+        background: #252525;
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+
+      /* Theme swatch */
+      .theme-swatch {
+        width: 52px;
+        height: 36px;
+        border-radius: 8px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: border-color 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .theme-swatch.selected {
+        border-color: var(--accent);
+      }
+
+      /* Font size slider */
+      input[type="range"] {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 4px;
+        border-radius: 99px;
+        background: #ddd4f0;
+        outline: none;
+        cursor: pointer;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--accent);
+        cursor: pointer;
+        box-shadow: 0 1px 4px rgba(124, 58, 237, 0.4);
+      }
+
+      /* Font family toggle */
+      .font-toggle {
+        flex: 1;
+        padding: 8px 4px;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 13px;
+        cursor: pointer;
+        border: 1px solid #e5e7eb;
+        transition:
+          background 0.15s,
+          border-color 0.15s;
+      }
+      .font-toggle.active {
+        background: var(--accent-light);
+        border-color: var(--accent);
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .dark-theme .font-toggle {
+        border-color: #333;
+        color: #aaa;
+      }
+      .dark-theme .font-toggle.active {
+        background: #2d1f4e;
+        border-color: var(--accent);
+        color: #c4b5fd;
+      }
+
+      /* ---- RIGHT FLOATING ACTIONS ---- */
+      #float-actions {
+        position: fixed;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        z-index: 40;
+      }
+      .float-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: var(--bg-parchment);
+        border: 1px solid rgba(124, 58, 237, 0.18);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--text-muted);
+        transition:
+          background 0.15s,
+          color 0.15s,
+          border-color 0.15s;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
+      .float-btn:hover,
+      .float-btn.active {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent);
+      }
+
+      /* ---- BOTTOM NAV ---- */
+      #bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--bg-parchment);
+        border-top: 1px solid rgba(124, 58, 237, 0.12);
+        z-index: 45;
+        transition: background 0.3s;
+      }
+      .dark-theme #bottom-nav {
+        border-top-color: rgba(255, 255, 255, 0.08);
+      }
+
+      /* Comment items */
+      .comment-item {
+        padding: 12px 16px;
+        border-bottom: 1px solid rgba(124, 58, 237, 0.08);
+      }
+      .dark-theme .comment-item {
+        border-bottom-color: rgba(255, 255, 255, 0.06);
+      }
+      .avatar-chip {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+        flex-shrink: 0;
+        font-family: var(--font-sans);
+      }
+
+      /* Comment input */
+      .comment-input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        font-size: 13px;
+        color: var(--text-main);
+        font-family: var(--font-sans);
+      }
+      .comment-input::placeholder {
+        color: var(--text-muted);
+      }
+
+      /* Overlay backdrop */
+      #backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.25);
+        z-index: 55;
+        display: none;
+        cursor: pointer;
+      }
+
+      /* Search input in sidebar */
+      .sidebar-search {
+        width: 100%;
+        background: rgba(124, 58, 237, 0.06);
+        border: 1px solid rgba(124, 58, 237, 0.15);
+        border-radius: 8px;
+        padding: 7px 10px 7px 30px;
+        font-size: 12px;
+        color: var(--text-main);
+        outline: none;
+        font-family: var(--font-sans);
+        transition: border-color 0.2s;
+      }
+      .sidebar-search::placeholder {
+        color: var(--text-muted);
+      }
+      .sidebar-search:focus {
+        border-color: var(--accent);
+      }
+
+      @keyframes fadeDown {
+        from {
+          opacity: 0;
+          transform: translateY(-6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      ::-webkit-scrollbar {
+        width: 4px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(124, 58, 237, 0.2);
+        border-radius: 99px;
+      }
+
+      /* Mobile adjustments */
+      @media (max-width: 640px) {
+        #chapter-sidebar {
+          width: 85vw;
+          max-width: 300px;
+        }
+        #comment-sidebar {
+          width: 92vw;
+          max-width: 320px;
+        }
+        #float-actions {
+          display: none;
+        }
+        #settings-panel {
+          right: 8px;
+          left: 8px;
+          width: auto;
+        }
+      }
+
+      /* Highlighted paragraph */
+      .para-highlight {
+        background: rgba(124, 58, 237, 0.07);
+        border-radius: 6px;
+        padding: 2px 4px;
+        margin: -2px -4px;
+      }
+    </style>
+  </head>
+  <body id="body">
+    <!-- Reading progress bar -->
+    <div id="reading-progress"></div>
+
+    <!-- Backdrop -->
+    <div id="backdrop" onclick="closeAll()"></div>
+
+    <!-- ===== CHAPTER SIDEBAR ===== -->
+    <aside id="chapter-sidebar">
+      <div
+        class="flex items-center justify-between px-4 py-3 border-b"
+        style="border-color: rgba(124, 58, 237, 0.12)"
+      >
+        <div>
+          <p
+            class="text-[10px] uppercase tracking-widest font-700"
+            style="color: var(--text-muted); font-weight: 700"
+          >
+            Table of Contents
+          </p>
+        </div>
+        <button
+          onclick="closeSidebar('chapter')"
+          class="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-purple-50 transition"
+          style="color: var(--text-muted)"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Search -->
+      <div class="px-3 py-2.5 relative">
+        <svg
+          class="absolute left-5.5 top-1/2 -translate-y-0.5 w-3.5 h-3.5 pointer-events-none"
+          style="left: 22px; color: var(--text-muted)"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
+        </svg>
+        <input
+          type="text"
+          class="sidebar-search"
+          placeholder="Search chapters..."
+          style="padding-left: 28px"
+        />
+      </div>
+
+      <div class="flex-1 overflow-y-auto pb-4">
+        <p class="volume-label">Volume 1: The Awakening</p>
+        <div class="chapter-item">
+          <span>Chapter 1: The Beginning</span
+          ><svg
+            class="w-3.5 h-3.5 text-green-500"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        </div>
+        <div class="chapter-item">
+          <span>Chapter 2: Shadow Falls</span
+          ><svg
+            class="w-3.5 h-3.5 text-green-500"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        </div>
+
+        <p class="volume-label">Volume 2: The Journey</p>
+        <div class="chapter-item">
+          <span>Chapter 25: Crossroads</span
+          ><svg
+            class="w-3.5 h-3.5 text-green-500"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        </div>
+
+        <p class="volume-label">Volume 3: The Void</p>
+        <div class="chapter-item">
+          <span>Chapter 40: Echoes</span
+          ><svg
+            class="w-3.5 h-3.5 text-green-500"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        </div>
+        <div class="chapter-item">
+          <span>Chapter 41: Into the Deep</span
+          ><svg
+            class="w-3.5 h-3.5 text-green-500"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        </div>
+        <div class="chapter-item active">
+          <span>Chapter 42: The Whispering Void</span>
+        </div>
+        <div class="chapter-item" style="justify-content: flex-start; gap: 8px">
+          <span>Chapter 43: The First Light</span
+          ><span
+            class="text-[10px] font-700 px-1.5 py-0.5 rounded"
+            style="background: #ede9fe; color: #7c3aed; font-weight: 700"
+            >NEW</span
+          >
+        </div>
+        <div
+          class="chapter-item locked"
+          style="justify-content: flex-start; gap: 8px"
+        >
+          <span>Chapter 44: Resolution</span>
+          <svg
+            class="w-3 h-3 ml-auto"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+            />
+          </svg>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ===== COMMENT SIDEBAR ===== -->
+    <aside id="comment-sidebar">
+      <div
+        class="flex items-center justify-between px-4 py-3 border-b shrink-0"
+        style="border-color: rgba(124, 58, 237, 0.12)"
+      >
+        <p
+          class="text-[10px] font-700 uppercase tracking-widest"
+          style="color: var(--text-muted); font-weight: 700"
+        >
+          Paragraph Comments
+        </p>
+        <button
+          onclick="closeSidebar('comment')"
+          class="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-purple-50 transition"
+          style="color: var(--text-muted)"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Quoted paragraph -->
+      <div
+        class="mx-3 mt-3 p-3 rounded-lg text-xs italic shrink-0"
+        style="
+          background: rgba(124, 58, 237, 0.07);
+          color: var(--text-muted);
+          border-left: 3px solid var(--accent);
+          line-height: 1.6;
+        "
+      >
+        "Suddenly, the air pressure dropped. It wasn't a wind, but a vacuum,
+        sucking the warmth from her skin…"
+      </div>
+
+      <!-- Comments list -->
+      <div class="flex-1 overflow-y-auto mt-2">
+        <!-- Comment JD -->
+        <div class="comment-item">
+          <div class="flex items-start gap-2.5">
+            <div
+              class="avatar-chip"
+              style="background: #dbeafe; color: #1d4ed8"
+            >
+              JD
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-2 mb-1">
+                <span
+                  class="text-xs font-600"
+                  style="font-weight: 600; color: var(--text-main)"
+                  >John Doe</span
+                >
+                <span class="text-[10px]" style="color: var(--text-muted)"
+                  >2h ago</span
+                >
+              </div>
+              <p
+                class="text-xs leading-relaxed"
+                style="color: var(--text-muted)"
+              >
+                The description here is visceral. I can almost feel the cold
+                vacuum.
+              </p>
+              <div class="flex items-center gap-3 mt-2">
+                <button
+                  class="flex items-center gap-1 text-[11px] transition hover:text-purple-600"
+                  style="color: var(--text-muted)"
+                >
+                  <svg
+                    class="w-3 h-3"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+                    />
+                  </svg>
+                  12
+                </button>
+                <button
+                  class="text-[11px] transition hover:text-purple-600"
+                  style="color: var(--text-muted)"
+                >
+                  Reply
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comment SA -->
+        <div class="comment-item">
+          <div class="flex items-start gap-2.5">
+            <div
+              class="avatar-chip"
+              style="background: #fce7f3; color: #be185d"
+            >
+              SA
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-2 mb-1">
+                <span
+                  class="text-xs font-600"
+                  style="font-weight: 600; color: var(--text-main)"
+                  >Sarah A.</span
+                >
+                <span class="text-[10px]" style="color: var(--text-muted)"
+                  >45m ago</span
+                >
+              </div>
+              <p
+                class="text-xs leading-relaxed"
+                style="color: var(--text-muted)"
+              >
+                This reminds me of the Void description in Chapter 12. Nice
+                callback!
+              </p>
+              <div class="flex items-center gap-3 mt-2">
+                <button
+                  class="flex items-center gap-1 text-[11px] transition hover:text-purple-600"
+                  style="color: var(--text-muted)"
+                >
+                  <svg
+                    class="w-3 h-3"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+                    />
+                  </svg>
+                  5
+                </button>
+                <button
+                  class="text-[11px] transition hover:text-purple-600"
+                  style="color: var(--text-muted)"
+                >
+                  Reply
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comment MK -->
+        <div class="comment-item">
+          <div class="flex items-start gap-2.5">
+            <div
+              class="avatar-chip"
+              style="background: #d1fae5; color: #065f46"
+            >
+              MK
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-2 mb-1">
+                <span
+                  class="text-xs font-600"
+                  style="font-weight: 600; color: var(--text-main)"
+                  >Mike K.</span
+                >
+                <span class="text-[10px]" style="color: var(--text-muted)"
+                  >15m ago</span
+                >
+              </div>
+              <p
+                class="text-xs leading-relaxed"
+                style="color: var(--text-muted)"
+              >
+                Exactly! The consistency in world-building is top notch.
+              </p>
+              <div class="flex items-center gap-3 mt-2">
+                <button
+                  class="flex items-center gap-1 text-[11px] transition hover:text-purple-600"
+                  style="color: var(--text-muted)"
+                >
+                  <svg
+                    class="w-3 h-3"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+                    />
+                  </svg>
+                  2
+                </button>
+                <button
+                  class="text-[11px] transition hover:text-purple-600"
+                  style="color: var(--text-muted)"
+                >
+                  Reply
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comment Luna -->
+        <div class="comment-item">
+          <div class="flex items-start gap-2.5">
+            <div
+              class="avatar-chip"
+              style="background: #fef3c7; color: #92400e"
+            >
+              L
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-2 mb-1">
+                <span
+                  class="text-xs font-600"
+                  style="font-weight: 600; color: var(--text-main)"
+                  >Luna</span
+                >
+                <span class="text-[10px]" style="color: var(--text-muted)"
+                  >Just now</span
+                >
+              </div>
+              <p
+                class="text-xs leading-relaxed"
+                style="color: var(--text-muted)"
+              >
+                Can't wait to see what entity appears next.
+              </p>
+              <div class="flex items-center gap-3 mt-2">
+                <button
+                  class="flex items-center gap-1 text-[11px] transition hover:text-purple-600"
+                  style="color: var(--text-muted)"
+                >
+                  <svg
+                    class="w-3 h-3"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+                    />
+                  </svg>
+                  0
+                </button>
+                <button
+                  class="text-[11px] transition hover:text-purple-600"
+                  style="color: var(--text-muted)"
+                >
+                  Reply
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add comment input -->
+      <div
+        class="px-3 py-3 border-t shrink-0 flex items-center gap-2"
+        style="border-color: rgba(124, 58, 237, 0.12)"
+      >
+        <input
+          type="text"
+          class="comment-input"
+          placeholder="Add a comment..."
+        />
+        <button
+          class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition"
+          style="background: var(--accent); color: #fff"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+            />
+          </svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ===== SETTINGS PANEL ===== -->
+    <div id="settings-panel" onclick="event.stopPropagation()">
+      <p
+        class="text-[10px] font-700 uppercase tracking-widest mb-3"
+        style="color: var(--text-muted); font-weight: 700"
+      >
+        Theme
+      </p>
+      <div class="flex gap-2 mb-4">
+        <div
+          class="theme-swatch selected"
+          id="swatch-light"
+          onclick="setTheme('light')"
+          style="background: #f2ede3"
+        >
+          <svg
+            class="w-4 h-4"
+            style="color: #7c3aed"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        </div>
+        <div
+          class="theme-swatch"
+          id="swatch-dark"
+          onclick="setTheme('dark')"
+          style="background: #1a1a1a; border-color: #333"
+        ></div>
+      </div>
+
+      <p
+        class="text-[10px] font-700 uppercase tracking-widest mb-2.5"
+        style="color: var(--text-muted); font-weight: 700"
+      >
+        Size
+      </p>
+      <div class="flex items-center gap-2 mb-4">
+        <span class="text-xs" style="color: var(--text-muted)">A-</span>
+        <input
+          type="range"
+          id="font-slider"
+          min="14"
+          max="22"
+          value="17"
+          oninput="setFontSize(this.value)"
+          class="flex-1"
+        />
+        <span class="text-xs" style="color: var(--text-muted)">A+</span>
+      </div>
+
+      <p
+        class="text-[10px] font-700 uppercase tracking-widest mb-2.5"
+        style="color: var(--text-muted); font-weight: 700"
+      >
+        Font Family
+      </p>
+      <div class="flex gap-2">
+        <button
+          class="font-toggle active"
+          id="font-serif"
+          onclick="setFont('serif')"
+          style="font-family: &quot;Lora&quot;, serif"
+        >
+          Serif
+        </button>
+        <button
+          class="font-toggle"
+          id="font-sans"
+          onclick="setFont('sans')"
+          style="font-family: &quot;DM Sans&quot;, sans-serif"
+        >
+          Sans-Serif
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== TOPBAR ===== -->
+    <header id="topbar">
+      <div
+        class="flex items-center justify-between px-4 h-13"
+        style="height: 52px"
+      >
+        <!-- Left: back + title -->
+        <div class="flex items-center gap-3 min-w-0">
+          <a
+            href="#"
+            class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-purple-50 transition shrink-0"
+            style="color: var(--text-muted)"
+          >
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </a>
+          <div class="min-w-0">
+            <p
+              class="text-[10px] font-700 uppercase tracking-widest truncate"
+              style="color: var(--text-muted); font-weight: 700"
+            >
+              Shadows of the Empire
+            </p>
+            <p
+              class="text-sm font-600 truncate"
+              style="font-weight: 600; color: var(--text-main)"
+            >
+              Chapter 42: The Whispering Void
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: actions -->
+        <div class="flex items-center gap-1.5 shrink-0">
+          <!-- TOC toggle -->
+          <button
+            onclick="toggleSidebar('chapter')"
+            id="toc-btn"
+            class="w-9 h-9 rounded-lg flex items-center justify-center transition hover:bg-purple-50"
+            style="color: var(--text-muted)"
+            title="Table of Contents"
+          >
+            <svg
+              class="w-4.5 h-4.5"
+              style="width: 18px; height: 18px"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4 6h16M4 10h16M4 14h10M4 18h6"
+              />
+            </svg>
+          </button>
+          <!-- Contribute -->
+          <button
+            class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-600 transition"
+            style="
+              background: var(--accent-light);
+              color: var(--accent);
+              font-weight: 600;
+            "
+          >
+            <svg
+              class="w-3.5 h-3.5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3 5h12M9 3v2m1.048 3.938A9 9 0 0121 12.42"
+              />
+            </svg>
+            Contribute
+          </button>
+          <!-- Bookmark -->
+          <button
+            class="w-9 h-9 rounded-lg flex items-center justify-center transition hover:bg-purple-50"
+            style="color: var(--text-muted)"
+            title="Bookmark"
+          >
+            <svg
+              class="w-4.5 h-4.5"
+              style="width: 18px; height: 18px"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+              />
+            </svg>
+          </button>
+          <!-- Settings -->
+          <button
+            onclick="
+              event.stopPropagation();
+              toggleSettings();
+            "
+            id="settings-btn"
+            class="w-9 h-9 rounded-lg flex items-center justify-center transition hover:bg-purple-50"
+            style="color: var(--text-muted)"
+            title="Reading Settings"
+          >
+            <svg
+              class="w-4.5 h-4.5"
+              style="width: 18px; height: 18px"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===== RIGHT FLOATING ACTIONS ===== -->
+    <div id="float-actions">
+      <button
+        onclick="toggleSidebar('comment')"
+        id="float-comment-btn"
+        class="float-btn"
+        title="Paragraph comments"
+      >
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+          />
+        </svg>
+      </button>
+      <button class="float-btn" title="Bookmark paragraph">
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- ===== MAIN READING AREA ===== -->
+    <main id="main-content" style="padding-bottom: 80px">
+      <div class="max-w-2xl mx-auto px-5 sm:px-8 pt-8 pb-4" id="reader-content">
+        <p
+          class="text-center text-xs font-700 uppercase tracking-widest mb-3"
+          style="color: var(--text-muted); font-weight: 700"
+        >
+          Volume 3
+        </p>
+        <h1
+          class="text-center text-2xl sm:text-3xl font-700 mb-10 leading-snug"
+          style="
+            font-family: &quot;Lora&quot;, serif;
+            font-weight: 700;
+            color: var(--text-main);
+          "
+        >
+          Chapter 42: The Whispering Void
+        </h1>
+
+        <p class="mb-6">
+          The silence in the cavern was absolute, a heavy blanket that smothered
+          sound and thought alike. Elara held her breath, the crystal in her
+          hand pulsing with a faint, rhythmic blue light that cast long, dancing
+          shadows against the damp stone walls. She knew they were close. The
+          ancient texts had spoken of this place, the threshold where the
+          material world began to fray at the edges.
+        </p>
+
+        <p class="mb-6">
+          "Do not look into the abyss," Kaelen had warned her, his voice
+          trembling for the first time since she had known him. But how could
+          one avoid the very thing they had journeyed so far to confront? Her
+          boots scuffed against the gravel, the sound impossibly loud in the
+          stillness.
+        </p>
+
+        <p
+          class="mb-6 para-highlight"
+          id="highlighted-para"
+          style="cursor: pointer"
+          onclick="toggleSidebar('comment')"
+          title="Click to view paragraph comments"
+        >
+          Suddenly, the air pressure dropped. It wasn't a wind, but a vacuum,
+          sucking the warmth from her skin. The darkness ahead seemed to
+          solidify, coalescing into shapes that defied geometry. She tightened
+          her grip on the hilt of her blade, the leather warm and familiar
+          against her palm. This was it. The Whispering Void.
+        </p>
+
+        <p class="mb-6">
+          A voice echoed, not in the air, but directly inside her mind.
+          <em>"You bring light to a place that has only known hunger."</em> It
+          wasn't malicious, merely observant, cold and ancient as the stars
+          themselves. Elara steeled herself. She hadn't come for conversation.
+        </p>
+
+        <!-- Section break -->
+        <p
+          class="text-center text-lg my-8"
+          style="color: var(--text-muted); letter-spacing: 0.5em"
+        >
+          ···
+        </p>
+
+        <p class="mb-6">
+          Kaelen stepped up beside her, his own weapon drawn, a shimmering blade
+          of starlight glass. "Remember the formation," he whispered. "Whatever
+          happens, do not break the circle." She nodded, though fear was a cold
+          knot in her stomach. They were two against infinity.
+        </p>
+
+        <p class="mb-6">
+          The Void shifted. It didn't attack; it simply… expanded. The ground
+          beneath them trembled, not with an earthquake's violence, but with the
+          shudder of a waking giant. Elara raised the crystal high. "By the
+          light of Siglis," she chanted, the words tasting of ash and ozone, "I
+          command you to yield!"
+        </p>
+
+        <p class="mb-6">
+          For a heartbeat, everything went utterly, impossibly still. Then the
+          Void answered — not with words, but with a sound that had no name in
+          any language she had ever studied. It was the sound of something
+          ancient learning, for the very first time, what it meant to be afraid.
+        </p>
+
+        <p class="mb-6">The crystal shattered.</p>
+
+        <p class="mb-6">
+          The light it released was not white. It was every color that had ever
+          existed and a dozen more that had no right to, blazing outward in a
+          wave that pressed against the walls of reality itself. Kaelen shouted
+          her name. She couldn't hear him over the roar. She could only hold her
+          ground, close her eyes, and trust that the formation would hold.
+        </p>
+      </div>
+    </main>
+
+    <!-- ===== BOTTOM NAVIGATION ===== -->
+    <nav id="bottom-nav">
+      <div
+        class="max-w-2xl mx-auto px-4 h-16 flex items-center justify-between gap-4"
+      >
+        <!-- Previous -->
+        <a href="#" class="flex items-center gap-2.5 group min-w-0">
+          <div
+            class="w-8 h-8 rounded-full border flex items-center justify-center shrink-0 transition group-hover:border-purple-400 group-hover:text-purple-600"
+            style="
+              border-color: rgba(124, 58, 237, 0.2);
+              color: var(--text-muted);
+            "
+          >
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </div>
+          <div class="min-w-0 hidden sm:block">
+            <p
+              class="text-[10px] uppercase tracking-widest"
+              style="color: var(--text-muted); font-weight: 600"
+            >
+              Previous
+            </p>
+            <p
+              class="text-xs truncate"
+              style="color: var(--text-main); font-weight: 500"
+            >
+              Chapter 41: Into the Deep
+            </p>
+          </div>
+        </a>
+
+        <!-- Chapter indicator -->
+        <div class="flex flex-col items-center shrink-0">
+          <svg
+            class="w-5 h-5 mb-0.5"
+            style="color: var(--text-muted)"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.966 8.966 0 00-6 2.292m0-14.25v14.25"
+            />
+          </svg>
+          <p
+            class="text-[10px] uppercase tracking-widest"
+            style="color: var(--text-muted); font-weight: 700"
+          >
+            Chapter 42
+          </p>
+        </div>
+
+        <!-- Next -->
+        <a
+          href="#"
+          class="flex items-center gap-2.5 group min-w-0 flex-row-reverse sm:flex-row"
+        >
+          <div
+            class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition"
+            style="background: var(--accent); color: #fff"
+          >
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </div>
+          <div class="min-w-0 text-right hidden sm:block">
+            <p
+              class="text-[10px] uppercase tracking-widest"
+              style="color: var(--text-muted); font-weight: 600"
+            >
+              Next
+            </p>
+            <p
+              class="text-xs truncate"
+              style="color: var(--text-main); font-weight: 500"
+            >
+              Chapter 43: The First Light
+            </p>
+          </div>
+        </a>
+      </div>
+    </nav>
+
+    <script>
+      // ============================================================
+      // STATE
+      // ============================================================
+      const state = {
+        chapterOpen: false,
+        commentOpen: false,
+        settingsOpen: false,
+      };
+
+      // ============================================================
+      // HELPERS
+      // ============================================================
+      function el(id) {
+        return document.getElementById(id);
+      }
+
+      function showBackdrop() {
+        el("backdrop").style.display = "block";
+      }
+      function hideBackdrop() {
+        el("backdrop").style.display = "none";
+      }
+
+      function updateBackdrop() {
+        if (state.chapterOpen || state.commentOpen) showBackdrop();
+        else hideBackdrop();
+      }
+
+      // ============================================================
+      // CHAPTER SIDEBAR
+      // ============================================================
+      function openChapterSidebar() {
+        // Close comment if open
+        if (state.commentOpen) _closeComment();
+        state.chapterOpen = true;
+        el("chapter-sidebar").classList.add("open");
+        updateBackdrop();
+      }
+
+      function closeChapterSidebar() {
+        state.chapterOpen = false;
+        el("chapter-sidebar").classList.remove("open");
+        updateBackdrop();
+      }
+
+      function toggleSidebarChapter() {
+        state.chapterOpen ? closeChapterSidebar() : openChapterSidebar();
+      }
+
+      // ============================================================
+      // COMMENT SIDEBAR
+      // ============================================================
+      function openCommentSidebar() {
+        if (state.chapterOpen) closeChapterSidebar();
+        state.commentOpen = true;
+        el("comment-sidebar").classList.add("open");
+        const fb = el("float-comment-btn");
+        if (fb) fb.classList.add("active");
+        updateBackdrop();
+      }
+
+      function _closeComment() {
+        state.commentOpen = false;
+        el("comment-sidebar").classList.remove("open");
+        const fb = el("float-comment-btn");
+        if (fb) fb.classList.remove("active");
+      }
+
+      function closeCommentSidebar() {
+        _closeComment();
+        updateBackdrop();
+      }
+
+      function toggleSidebarComment() {
+        state.commentOpen ? closeCommentSidebar() : openCommentSidebar();
+      }
+
+      // Unified toggle called from HTML
+      function toggleSidebar(type) {
+        if (type === "chapter") toggleSidebarChapter();
+        else toggleSidebarComment();
+      }
+
+      // Called from close (×) buttons inside sidebars
+      function closeSidebar(type) {
+        if (type === "chapter") closeChapterSidebar();
+        else closeCommentSidebar();
+      }
+
+      // Called by backdrop click
+      function closeAll() {
+        closeChapterSidebar();
+        closeCommentSidebar();
+        closeSettings();
+      }
+
+      // ============================================================
+      // SETTINGS PANEL
+      // ============================================================
+      function toggleSettings() {
+        state.settingsOpen = !state.settingsOpen;
+        el("settings-panel").classList.toggle("open", state.settingsOpen);
+        // Close sidebars when settings opens
+        if (state.settingsOpen) {
+          closeChapterSidebar();
+          closeCommentSidebar();
+        }
+      }
+
+      function closeSettings() {
+        state.settingsOpen = false;
+        el("settings-panel").classList.remove("open");
+      }
+
+      // Close settings on outside click (stop propagation on the button itself)
+      document.addEventListener("click", function (e) {
+        if (!state.settingsOpen) return;
+        const panel = el("settings-panel");
+        const btn = el("settings-btn");
+        if (!panel.contains(e.target) && !btn.contains(e.target)) {
+          closeSettings();
+        }
+      });
+
+      // ============================================================
+      // READING PROGRESS
+      // ============================================================
+      window.addEventListener("scroll", function () {
+        const doc = document.documentElement;
+        const total = doc.scrollHeight - doc.clientHeight;
+        const pct = total > 0 ? (doc.scrollTop / total) * 100 : 0;
+        el("reading-progress").style.width = pct + "%";
+      });
+
+      // ============================================================
+      // THEME
+      // ============================================================
+      function setTheme(theme) {
+        const body = el("body");
+        if (theme === "dark") {
+          body.classList.add("dark-theme");
+          el("settings-panel").style.background = "#252525";
+          el("swatch-light").classList.remove("selected");
+          el("swatch-dark").classList.add("selected");
+        } else {
+          body.classList.remove("dark-theme");
+          el("settings-panel").style.background = "#fff";
+          el("swatch-light").classList.add("selected");
+          el("swatch-dark").classList.remove("selected");
+        }
+      }
+
+      // ============================================================
+      // FONT SIZE
+      // ============================================================
+      function setFontSize(val) {
+        el("reader-content").style.fontSize = val + "px";
+      }
+
+      // ============================================================
+      // FONT FAMILY
+      // ============================================================
+      function setFont(type) {
+        const content = el("reader-content");
+        const serifBtn = el("font-serif");
+        const sansBtn = el("font-sans");
+        if (type === "serif") {
+          content.style.fontFamily = "'Lora', Georgia, serif";
+          serifBtn.classList.add("active");
+          sansBtn.classList.remove("active");
+        } else {
+          content.style.fontFamily = "'DM Sans', sans-serif";
+          sansBtn.classList.add("active");
+          serifBtn.classList.remove("active");
+        }
+      }
+    </script>
+  </body>
+</html>

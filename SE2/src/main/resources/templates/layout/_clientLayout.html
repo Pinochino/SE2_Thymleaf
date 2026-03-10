@@ -1,29 +1,420 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-</head>
-<body>
+<!doctype html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title layout:title-pattern="$CONTENT_TITLE - MySite">MySite</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-<header th:insert="~{fragments/client/client-header :: header}"></header>
+    <!-- Font link -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Cinzel -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Dancing+Script:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Inter -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Noto serif -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
 
-<main id="content" layout:fragment="content">
-</main>
+    <style type="text/tailwindcss">
+      @theme {
+        /* App theme */
+        --color-primary-d: #0f172a;
+        --color-primary-l: #e5e7eb;
+        --color-secondary-d: #111827;
+        --color-secondary-l: #ffffff;
+        --color-btn: #144bb8;
+        --color-noti: #ef4444;
 
-<footer th:insert="~{fragments/client/client-footer :: footer}"></footer>
+        /* Font colors */
+        --color-hg: #ffffff;
+        --color-nor: #d1d5db;
+        --color-lw: #94a3b8;
+        --color-link: #6366f1;
 
-<script th:src="@{/js/main.js}"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-        crossorigin="anonymous"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-</body>
+        /* Fonts */
+        --font-head: "Cinzel", serif;
+        --font-nor: "Inter", sans-serif;
+        --font-notation: "Noto Serif", serif;
+      }
+    </style>
+
+    <style>
+      /* Search input placeholder color */
+      .search-input::placeholder {
+        color: #94a3b8;
+      }
+      .search-input:focus {
+        outline: none;
+      }
+
+      /* Active nav link underline */
+      .nav-link-active {
+        position: relative;
+      }
+      .nav-link-active::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #fff;
+        border-radius: 2px;
+      }
+
+      /* Login button hover */
+      .login-btn:hover {
+        background-color: #1a5cd6;
+        transition: background-color 0.2s ease;
+      }
+    </style>
+  </head>
+
+  <body class="bg-primary-d min-h-screen">
+    <header>
+      <nav
+        class="bg-primary-d flex items-center h-14"
+        style="padding-left: 24px; padding-right: 24px"
+      >
+        <!-- Logo -->
+        <div class="logo flex items-center shrink-0" style="gap: 8px">
+          <img src="../../static/assets/Logo.svg" alt="" />
+          <span class="text-hg font-bold font-head">NRW</span>
+        </div>
+
+        <!-- Nav links -->
+        <ul
+          class="flex items-center list-none m-0 p-0 font-nor"
+          style="
+            margin-left: 40px;
+            gap: 32px;
+            font-family: &quot;Inter&quot;, sans-serif;
+          "
+        >
+          <!-- Home -->
+          <li>
+            <a
+              href="#"
+              class="text-nor text-sm font-normal hover:text-white transition-colors"
+            >
+              Home
+            </a>
+          </li>
+          <!-- Favourite -->
+          <li>
+            <a
+              href="#"
+              class="text-nor text-sm font-normal hover:text-white transition-colors"
+            >
+              Favourite
+            </a>
+          </li>
+          <!-- Contribute -->
+          <li>
+            <a
+              href="#"
+              class="text-nor text-sm font-normal hover:text-white transition-colors"
+            >
+              Contribute
+            </a>
+          </li>
+        </ul>
+
+        <!-- Spacer -->
+        <div class="flex-1"></div>
+
+        <!-- Search section -->
+        <div
+          class="search-sec flex items-center bg-secondary-d border border-white/[0.12] rounded-full gap-2"
+          style="width: 292px; padding: 7px 14px"
+        >
+          <!-- Search icon -->
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="shrink-0 cursor-pointer"
+          >
+            <circle
+              cx="6.5"
+              cy="6.5"
+              r="5"
+              stroke="#94a3b8"
+              stroke-width="1.5"
+            />
+            <path
+              d="M10.5 10.5L14 14"
+              stroke="#94a3b8"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+          </svg>
+          <input
+            type="text"
+            placeholder="Search novels..."
+            class="search-input bg-transparent text-nor text-sm flex-1 border-none"
+            style="font-family: &quot;Inter&quot;, sans-serif"
+          />
+          <!-- Filter / sliders icon -->
+          <button
+            class="shrink-0 text-lw hover:text-nor transition-colors cursor-pointer"
+          >
+            <img src="SE2\src\main\resources\static\assets\Logo.svg" alt="" />
+          </button>
+        </div>
+
+        <!-- ===== LOGGED-IN STATE ===== -->
+        <!-- Toggle this section vs the guest section based on auth state -->
+        <div
+          class="flex items-center"
+          id="loggedInState"
+          style="margin-left: 16px; gap: 14px"
+        >
+          <!-- Notification bell -->
+          <button
+            class="hover:opacity-80 transition-opacity"
+            style="line-height: 0; padding: 2px"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              class="cursor-pointer"
+            >
+              <path
+                d="M10 2C7.24 2 5 4.24 5 7V11L3 13V14H17V13L15 11V7C15 4.24 12.76 2 10 2Z"
+                stroke="#d1d5db"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M10 18C11.1 18 12 17.1 12 16H8C8 17.1 8.9 18 10 18Z"
+                fill="#d1d5db"
+              />
+            </svg>
+          </button>
+
+          <button
+            class="rounded-full overflow-hidden shrink-0 cursor-pointer"
+            style="width: 30px; height: 30px; line-height: 0"
+          >
+            <img
+              src="https://i.pravatar.cc/30?img=3"
+              alt="User avatar"
+              style="
+                width: 30px;
+                height: 30px;
+                object-fit: cover;
+                border-radius: 9999px;
+              "
+            />
+          </button>
+        </div>
+
+        <div
+          class="hidden items-center"
+          id="guestState"
+          style="margin-left: 16px"
+        >
+          <button
+            class="login-btn flex items-center bg-secondary-d border border-white/15 text-nor text-sm font-medium hover:text-white transition-all"
+            style="
+              font-family: &quot;Inter&quot;, sans-serif;
+              gap: 8px;
+              padding: 7px 16px;
+              border-radius: 8px;
+            "
+          >
+            <!-- Login arrow icon -->
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 3H3C2.45 3 2 3.45 2 4V12C2 12.55 2.45 13 3 13H6"
+                stroke="#d1d5db"
+                stroke-width="1.4"
+                stroke-linecap="round"
+              />
+              <path
+                d="M10 5L14 8L10 11"
+                stroke="#d1d5db"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M14 8H6"
+                stroke="#d1d5db"
+                stroke-width="1.4"
+                stroke-linecap="round"
+              />
+            </svg>
+            Login
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main layout:fragment="content">
+      <!-- Default content if child doesn't override -->
+      <div class="p-8">
+        <!-- Demo toggle for testing both states -->
+        <!-- <div class="mt-6 flex gap-3">
+          <button
+            onclick="
+              document
+                .getElementById('loggedInState')
+                .classList.remove('hidden');
+              document.getElementById('loggedInState').classList.add('flex');
+              document.getElementById('guestState').classList.add('hidden');
+              document.getElementById('guestState').classList.remove('flex');
+            "
+            class="text-xs px-3 py-1.5 rounded bg-white/10 text-nor hover:bg-white/20 transition-colors"
+            style="font-family: &quot;Inter&quot;, sans-serif"
+          >
+            Show Logged In State
+          </button>
+          <button
+            onclick="
+              document.getElementById('guestState').classList.remove('hidden');
+              document.getElementById('guestState').classList.add('flex');
+              document.getElementById('loggedInState').classList.add('hidden');
+              document.getElementById('loggedInState').classList.remove('flex');
+            "
+            class="text-xs px-3 py-1.5 rounded bg-white/10 text-nor hover:bg-white/20 transition-colors"
+            style="font-family: &quot;Inter&quot;, sans-serif"
+          >
+            Show Guest State
+          </button>
+        </div> -->
+      </div>
+    </main>
+
+    <footer class="bg-primary-d font-nor">
+      <!-- Main footer content -->
+      <div
+        class="grid gap-0 px-10 pt-12 pb-10"
+        style="grid-template-columns: 280px 1fr 1fr 1fr"
+      >
+        <!-- Brand column -->
+        <div class="pr-8">
+          <div class="flex items-center gap-2 mb-4">
+            <img src="../../static/assets/Logo.svg" alt="" />
+            <span class="text-hg font-bold font-head text-sm tracking-widest"
+              >NRW</span
+            >
+          </div>
+          <p class="text-lw text-xs leading-relaxed m-0 max-w-[220px]">
+            The next generation of reading.<br />
+            Experience AI-powered translations and personalized discoveries.
+          </p>
+        </div>
+
+        <!-- Link columns rendered by JS -->
+        <div id="footer-columns" class="contents"></div>
+      </div>
+
+      <!-- Divider -->
+      <div class="h-px bg-white/[0.08] mx-10"></div>
+
+      <!-- Bottom bar -->
+      <div class="flex items-center justify-between px-10 py-5">
+        <p class="text-lw text-xs m-0">© 2026 NRW. All rights reserved.</p>
+        <div id="footer-socials" class="flex items-center gap-6"></div>
+      </div>
+    </footer>
+
+    <script>
+      const footerColumns = [
+        {
+          title: "Platform",
+          links: [
+            { label: "Trending", href: "#" },
+            { label: "Latest Updates", href: "#" },
+            { label: "Completed", href: "#" },
+            { label: "AI Recommendations", href: "#" },
+          ],
+        },
+        {
+          title: "Community",
+          links: [
+            { label: "Forums", href: "#" },
+            { label: "Discord Server", href: "#" },
+            { label: "Translator Recruitment", href: "#" },
+            { label: "Writer Portal", href: "#" },
+          ],
+        },
+        {
+          title: "Support",
+          links: [
+            { label: "Help Center", href: "#" },
+            { label: "Report Issue", href: "#" },
+            { label: "Privacy Policy", href: "#" },
+            { label: "Terms of Service", href: "#" },
+          ],
+        },
+      ];
+
+      const footerSocials = [
+        { label: "Twitter", href: "#" },
+        { label: "Instagram", href: "#" },
+        { label: "Facebook", href: "#" },
+      ];
+
+      // Render link columns
+      const colContainer = document.getElementById("footer-columns");
+      footerColumns.forEach(({ title, links }) => {
+        const col = document.createElement("div");
+        col.innerHTML = `
+      <h4 class="text-hg text-sm font-semibold mt-0 mb-[18px]">${title}</h4>
+      <ul class="list-none m-0 p-0 flex flex-col gap-3">
+        ${links
+          .map(
+            ({ label, href }) => `
+          <li>
+            <a href="${href}" class="text-lw text-xs no-underline hover:text-nor transition-colors">
+              ${label}
+            </a>
+          </li>
+        `,
+          )
+          .join("")}
+      </ul>
+    `;
+        colContainer.appendChild(col);
+      });
+
+      // Render socials
+      const socialsContainer = document.getElementById("footer-socials");
+      footerSocials.forEach(({ label, href }) => {
+        const a = document.createElement("a");
+        a.href = href;
+        a.textContent = label;
+        a.className =
+          "text-lw text-xs no-underline hover:text-nor transition-colors";
+        socialsContainer.appendChild(a);
+      });
+    </script>
+  </body>
 </html>

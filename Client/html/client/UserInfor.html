@@ -10,98 +10,177 @@
       rel="stylesheet"
     />
     <style>
-      * { font-family: 'DM Sans', sans-serif; box-sizing: border-box; }
+      * {
+        font-family: "DM Sans", sans-serif;
+        box-sizing: border-box;
+      }
 
       /* ── COLOURS ── */
       :root {
-        --bg:        #0d1117;
-        --surface:   #161b27;
-        --surface2:  #1e2535;
-        --border:    #252d3d;
-        --text:      #e2e8f0;
-        --muted:     #64748b;
-        --accent:    #3b82f6;
-        --accent-h:  #2563eb;
+        --bg: #0d1117;
+        --surface: #161b27;
+        --surface2: #1e2535;
+        --border: #252d3d;
+        --text: #e2e8f0;
+        --muted: #64748b;
+        --accent: #3b82f6;
+        --accent-h: #2563eb;
       }
 
-      body { background: var(--bg); color: var(--text); min-height: 100vh; margin: 0; }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        margin: 0;
+      }
 
       /* ── NAVBAR ── */
       .navbar {
         background: var(--surface);
         border-bottom: 1px solid var(--border);
-        position: sticky; top: 0; z-index: 40;
+        position: sticky;
+        top: 0;
+        z-index: 40;
       }
 
       /* ── SEARCH ── */
-      .search-wrap { position: relative; }
-      .search-input {
-        background: var(--surface2); border: 1px solid var(--border);
-        border-radius: 8px; color: var(--text);
-        padding: 8px 36px 8px 36px; font-size: 13px;
-        outline: none; width: 100%;
-        transition: border-color .2s;
+      .search-wrap {
+        position: relative;
       }
-      .search-input::placeholder { color: var(--muted); }
-      .search-input:focus { border-color: var(--accent); }
+      .search-input {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text);
+        padding: 8px 36px 8px 36px;
+        font-size: 13px;
+        outline: none;
+        width: 100%;
+        transition: border-color 0.2s;
+      }
+      .search-input::placeholder {
+        color: var(--muted);
+      }
+      .search-input:focus {
+        border-color: var(--accent);
+      }
 
       /* ── TABS ── */
       .tab {
-        padding: 14px 4px; font-size: 14px; font-weight: 500;
-        color: var(--muted); cursor: pointer;
+        padding: 14px 4px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--muted);
+        cursor: pointer;
         border-bottom: 2px solid transparent;
-        transition: color .2s, border-color .2s;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
         white-space: nowrap;
       }
-      .tab:hover { color: var(--text); }
-      .tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+      .tab:hover {
+        color: var(--text);
+      }
+      .tab.active {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+        font-weight: 600;
+      }
 
       /* ── FORM FIELDS ── */
-      .field-label { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 8px; display: block; }
-      .field {
-        width: 100%; background: var(--surface2);
-        border: 1px solid var(--border); border-radius: 10px;
-        color: var(--text); padding: 12px 16px; font-size: 14px;
-        outline: none; transition: border-color .2s, box-shadow .2s;
+      .field-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text);
+        margin-bottom: 8px;
+        display: block;
       }
-      .field::placeholder { color: var(--muted); }
-      .field:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,.15); }
+      .field {
+        width: 100%;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text);
+        padding: 12px 16px;
+        font-size: 14px;
+        outline: none;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      .field::placeholder {
+        color: var(--muted);
+      }
+      .field:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+      }
 
       /* ── AVATAR UPLOAD ── */
       .avatar-ring {
-        width: 108px; height: 108px; border-radius: 50%;
+        width: 108px;
+        height: 108px;
+        border-radius: 50%;
         background: linear-gradient(135deg, #c9a98a 0%, #e8c9b0 100%);
-        display: flex; align-items: center; justify-content: center;
-        position: relative; flex-shrink: 0;
-        box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        flex-shrink: 0;
+        box-shadow:
+          0 0 0 3px var(--surface),
+          0 0 0 5px var(--border);
       }
       .avatar-inner {
-        width: 72px; height: 72px; border-radius: 50%;
-        background: rgba(255,255,255,.25);
-        display: flex; align-items: center; justify-content: center;
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       .avatar-cam {
-        position: absolute; bottom: 4px; right: 4px;
-        width: 28px; height: 28px; border-radius: 50%;
-        background: var(--accent); border: 2px solid var(--surface);
-        display: flex; align-items: center; justify-content: center;
-        cursor: pointer; transition: background .2s;
+        position: absolute;
+        bottom: 4px;
+        right: 4px;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--accent);
+        border: 2px solid var(--surface);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.2s;
       }
-      .avatar-cam:hover { background: var(--accent-h); }
+      .avatar-cam:hover {
+        background: var(--accent-h);
+      }
 
       /* ── MEMBER BADGE ── */
       .member-badge {
-        display: inline-flex; align-items: center; gap: 5px;
-        padding: 4px 10px; border-radius: 6px;
-        background: rgba(59,130,246,.12); color: var(--accent);
-        font-size: 12px; font-weight: 500;
-        border: 1px solid rgba(59,130,246,.2);
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: 6px;
+        background: rgba(59, 130, 246, 0.12);
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 500;
+        border: 1px solid rgba(59, 130, 246, 0.2);
       }
 
       /* ── SECTION HEADING ── */
       .section-heading {
-        display: flex; align-items: center; gap-8px;
-        font-size: 18px; font-weight: 700; color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text);
         padding-bottom: 14px;
         border-bottom: 1px solid var(--border);
         margin-bottom: 24px;
@@ -109,58 +188,122 @@
 
       /* ── BUTTONS ── */
       .btn-cancel {
-        padding: 10px 24px; border-radius: 10px;
-        border: 1px solid var(--border); background: transparent;
-        color: var(--text); font-size: 14px; font-weight: 500;
-        cursor: pointer; transition: background .2s, border-color .2s;
+        padding: 10px 24px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          border-color 0.2s;
       }
-      .btn-cancel:hover { background: var(--surface2); border-color: var(--muted); }
+      .btn-cancel:hover {
+        background: var(--surface2);
+        border-color: var(--muted);
+      }
       .btn-save {
-        padding: 10px 28px; border-radius: 10px;
-        background: var(--accent); border: none;
-        color: #fff; font-size: 14px; font-weight: 600;
-        cursor: pointer; transition: background .2s, transform .1s, box-shadow .2s;
-        box-shadow: 0 4px 14px rgba(59,130,246,.35);
+        padding: 10px 28px;
+        border-radius: 10px;
+        background: var(--accent);
+        border: none;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.1s,
+          box-shadow 0.2s;
+        box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
       }
-      .btn-save:hover { background: var(--accent-h); box-shadow: 0 6px 20px rgba(59,130,246,.45); }
-      .btn-save:active { transform: scale(.98); }
+      .btn-save:hover {
+        background: var(--accent-h);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45);
+      }
+      .btn-save:active {
+        transform: scale(0.98);
+      }
 
       /* ── SAVE SUCCESS TOAST ── */
       #toast {
-        position: fixed; bottom: 24px; right: 24px;
-        background: #22c55e; color: #fff;
-        padding: 12px 20px; border-radius: 10px;
-        font-size: 13px; font-weight: 600;
-        box-shadow: 0 8px 24px rgba(34,197,94,.3);
-        opacity: 0; transform: translateY(12px);
-        transition: opacity .3s, transform .3s; pointer-events: none; z-index: 99;
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: #22c55e;
+        color: #fff;
+        padding: 12px 20px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        box-shadow: 0 8px 24px rgba(34, 197, 94, 0.3);
+        opacity: 0;
+        transform: translateY(12px);
+        transition:
+          opacity 0.3s,
+          transform 0.3s;
+        pointer-events: none;
+        z-index: 99;
       }
-      #toast.show { opacity: 1; transform: translateY(0); }
+      #toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
 
       /* ── FOOTER ── */
-      footer { background: var(--surface); border-top: 1px solid var(--border); }
+      footer {
+        background: var(--surface);
+        border-top: 1px solid var(--border);
+      }
 
       /* ── MOBILE MENU ── */
-      #mobile-nav { display: none; }
-      #mobile-nav.open { display: block; }
+      #mobile-nav {
+        display: none;
+      }
+      #mobile-nav.open {
+        display: block;
+      }
 
       /* ── ANIMATIONS ── */
       @keyframes fadeUp {
-        from { opacity:0; transform:translateY(12px); }
-        to   { opacity:1; transform:translateY(0); }
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
-      .fade-up { animation: fadeUp .35s ease both; }
-      .fade-up-2 { animation: fadeUp .35s .08s ease both; }
+      .fade-up {
+        animation: fadeUp 0.35s ease both;
+      }
+      .fade-up-2 {
+        animation: fadeUp 0.35s 0.08s ease both;
+      }
 
-      ::-webkit-scrollbar { width: 5px; }
-      ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+      ::-webkit-scrollbar {
+        width: 5px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 99px;
+      }
 
       /* ── AVATAR UPLOAD HIDDEN INPUT ── */
-      #avatar-input { display: none; }
+      #avatar-input {
+        display: none;
+      }
 
       /* Tab panel visibility */
-      .tab-panel { display: none; }
-      .tab-panel.active { display: block; }
+      .tab-panel {
+        display: none;
+      }
+      .tab-panel.active {
+        display: block;
+      }
     </style>
   </head>
   <body>
@@ -376,7 +519,7 @@
             <a href="../client/FavoritedNovels.html">Favourited Novels</a>
           </button>
           <button class="tab" onclick="switchTab('translations', this)">
-           <a href="../client/Translations.html">Translation Contributions</a>
+            <a href="../client/Translations.html">Translation Contributions</a>
           </button>
         </div>
       </div>

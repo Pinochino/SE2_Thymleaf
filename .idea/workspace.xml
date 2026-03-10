@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7cc8aaf3-6d48-46c3-91e4-548fafc3a8c7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Client/html/client/UserInfor.html" beforeDir="false" afterPath="$PROJECT_DIR$/Client/html/client/UserInfor.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/Client/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SE2/src/main/resources/templates/layout/_clientLayout.html" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {}
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Pinochino/SE2_Thymleaf.git&quot;,
+    &quot;accountId&quot;: &quot;bfe58fd9-cbe6-4040-bc31-ddae8bef2646&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="36F53Sw0D6x7xAQeesPVgYqhYdC" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;vinh__feat/initialize__prototype&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Java/Springboot/Book_e-Comerece&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Java\Springboot\Book_e-Comerece\SE2\src\main\resources\templates\layout" />
+      <recent name="D:\Java\Springboot\Book_e-Comerece\Client\css" />
+      <recent name="D:\Java\Springboot\Book_e-Comerece\Client\html" />
+    </key>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7cc8aaf3-6d48-46c3-91e4-548fafc3a8c7" name="Changes" comment="" />
+      <created>1764589281204</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1764589281204</updated>
+    </task>
+    <servers />
+  </component>
+</project>

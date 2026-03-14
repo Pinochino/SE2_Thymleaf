@@ -5,14 +5,294 @@
 >
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Home Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
 <div layout:fragment="content">
-    <h2>Hello world</h2>
-    <form th:action="@{/logout}" method="post">
-        <button type="submit" class="btn btn-outline-primary">Logout</button>
-    </form>
+    <!--    <h2>Hello world</h2>-->
+    <!--    <form th:action="@{/logout}" method="post">-->
+    <!--        <button type="submit" class="btn btn-outline-primary">Logout</button>-->
+    <!--    </form>-->
+    <!-- ══════════════════════ HERO ══════════════════════ -->
+    <section class="hero">
+        <div class="hero-art"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 relative"
+             style="z-index:10;display:flex;align-items:center;min-height:420px;">
+            <div style="max-width:500px;padding:48px 0;">
+                <div class="trending-badge mb-5">
+                    <span class="trending-dot"></span>
+                    Trending Now
+                </div>
+                <h1 class="hero-title mb-2">
+                    Chronicles of the<br/><span class="hero-title-accent">Astral Void</span>
+                </h1>
+                <div class="flex items-center gap-3 mb-4" style="font-size:0.75rem;color:#64748b;">
+            <span class="flex items-center gap-1">
+              <span class="star">★</span>
+              <span style="color:#c9a84c;font-family:'DM Mono',monospace;font-size:0.7rem;">4.9</span>
+            </span>
+                    <span style="width:1px;height:12px;background:#334155;display:block;"></span>
+                    <span>Sci-Fi / Fantasy</span>
+                    <span style="width:1px;height:12px;background:#334155;display:block;"></span>
+                    <span>By A.R. Vance</span>
+                </div>
+                <p style="font-size:0.82rem;color:#94a3b8;line-height:1.6;margin-bottom:28px;max-width:380px;">
+                    In a universe where AI gods rule the stars, a lone scavenger discovers a secret that could rewrite
+                    existence itself. Join Elara on a journey through the neon-soaked ruins of old Earth.
+                </p>
+                <button class="read-btn">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                    </svg>
+                    <a href="../client/BookDetail.html">Read Now</a>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════ MAIN CONTENT ══════════════════════ -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-14">
+
+        <!-- Currently Reading -->
+        <section>
+            <div class="mb-5">
+                <h2 class="section-title text-xl">Currently Reading</h2>
+                <p class="section-label">Continue where you left off.</p>
+            </div>
+            <div class="cards-grid cards-grid-5" id="reading-grid">
+                <div>
+                    <div class="novel-card">
+                        <div class="novel-card-inner"></div>
+                        <div class="rating-badge">★ 4.8</div>
+                    </div>
+                    <p class="novel-card-title">Shadow Realm</p>
+                    <p class="novel-card-meta">Fantasy • Completed</p>
+                </div>
+                <div>
+                    <div class="novel-card">
+                        <div class="novel-card-inner"></div>
+                    </div>
+                    <p class="novel-card-title">Neon Pulse</p>
+                    <p class="novel-card-meta">Sci-Fi • Ongoing</p>
+                </div>
+                <div>
+                    <div class="novel-card">
+                        <div class="novel-card-inner"></div>
+                    </div>
+                    <p class="novel-card-title">Reborn as a Slime</p>
+                    <p class="novel-card-meta">Isekai • Ongoing</p>
+                </div>
+                <div>
+                    <div class="novel-card">
+                        <div class="novel-card-inner"></div>
+                    </div>
+                    <p class="novel-card-title">Blade of Zen</p>
+                    <p class="novel-card-meta">Action • Completed</p>
+                </div>
+                <div>
+                    <div class="add-card">
+                        <div class="add-card-plus">+</div>
+                        <p style="font-size:0.7rem;color:#475569;line-height:1.4;text-align:center;">Discover more
+                            novels to add to your reading list.</p>
+                        <a style="font-size:0.7rem;color:#4de0d0;margin-top:6px;cursor:pointer;">Browse Library</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Favourite Novels -->
+        <section>
+            <div class="flex items-end justify-between mb-5">
+                <div>
+                    <h2 class="section-title text-xl">Favorite Novels</h2>
+                    <p class="section-label">Your personal collection.</p>
+                </div>
+                <button class="manage-btn">
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path d="M12 20h9"></path>
+                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                    </svg>
+                    Manage
+                </button>
+            </div>
+            <div class="cards-grid cards-grid-5">
+                <div>
+                    <div class="novel-card">
+                        <div class="novel-card-inner"></div>
+                        <div class="rating-badge">★ 4.8</div>
+                    </div>
+                    <p class="novel-card-title">Shadow Realm</p>
+                    <p class="novel-card-meta">Fantasy • Completed</p></div>
+                <div>
+                    <div class="novel-card">
+                        <div class="novel-card-inner"></div>
+                    </div>
+                    <p class="novel-card-title">Neon Pulse</p>
+                    <p class="novel-card-meta">Sci-Fi • Ongoing</p></div>
+                <div>
+                    <div class="novel-card">
+                        <div class="novel-card-inner"></div>
+                    </div>
+                    <p class="novel-card-title">Reborn as a Slime</p>
+                    <p class="novel-card-meta">Isekai • Ongoing</p></div>
+                <div>
+                    <div class="novel-card">
+                        <div class="novel-card-inner"></div>
+                    </div>
+                    <p class="novel-card-title">Blade of Zen</p>
+                    <p class="novel-card-meta">Action • Completed</p></div>
+                <div>
+                    <div class="novel-card">
+                        <div class="novel-card-inner"></div>
+                    </div>
+                    <p class="novel-card-title">The Last Kingdom</p>
+                    <p class="novel-card-meta">Historical • Ongoing</p></div>
+            </div>
+        </section>
+
+        <!-- Recommended -->
+        <section>
+            <div class="mb-5">
+                <h2 class="section-title text-xl">Recommended for You</h2>
+                <p class="section-label">Based on your reading of "Sci-Fi" and "System".</p>
+            </div>
+            <div class="cards-grid cards-grid-5">
+                <div>
+                    <div class="novel-card">
+                        <div class="novel-card-inner"></div>
+                        <div class="rating-badge">★ 4.7</div>
+                    </div>
+                    <p class="novel-card-title">Shadow Realm</p>
+                    <p class="novel-card-meta">Fantasy • Completed</p></div>
+                <div>
+                    <div class="novel-card">
+                        <div class="novel-card-inner"></div>
+                    </div>
+                    <p class="novel-card-title">Neon Pulse</p>
+                    <p class="novel-card-meta">Sci-Fi • Ongoing</p></div>
+                <div>
+                    <div class="novel-card">
+                        <div class="novel-card-inner"></div>
+                    </div>
+                    <p class="novel-card-title">Reborn as a Slime</p>
+                    <p class="novel-card-meta">Isekai • Ongoing</p></div>
+                <div>
+                    <div class="novel-card">
+                        <div class="novel-card-inner"></div>
+                    </div>
+                    <p class="novel-card-title">Blade of Zen</p>
+                    <p class="novel-card-meta">Action • Completed</p></div>
+                <div>
+                    <div class="novel-card">
+                        <div class="novel-card-inner"></div>
+                    </div>
+                    <p class="novel-card-title">The Last Kingdom</p>
+                    <p class="novel-card-meta">Historical • Ongoing</p></div>
+            </div>
+        </section>
+
+        <!-- Hot Novels -->
+        <section>
+            <div class="flex items-end justify-between mb-5">
+                <div><h2 class="section-title text-xl">Hot Novels</h2>
+                    <p class="section-label">Most popular stories right now.</p></div>
+                <a class="view-all">View All +</a>
+            </div>
+            <div class="cards-grid cards-grid-5">
+                <div>
+                    <div class="novel-card">
+                        <div class="novel-card-inner"></div>
+                        <div class="rating-badge">★ 4.8</div>
+                    </div>
+                    <p class="novel-card-title">Shadow Realm</p>
+                    <p class="novel-card-meta">Fantasy • Completed</p></div>
+                <div>
+                    <div class="novel-card">
+                        <div class="novel-card-inner"></div>
+                    </div>
+                    <p class="novel-card-title">Neon Pulse</p>
+                    <p class="novel-card-meta">Sci-Fi • Ongoing</p></div>
+                <div>
+                    <div class="novel-card">
+                        <div class="novel-card-inner"></div>
+                    </div>
+                    <p class="novel-card-title">Reborn as a Slime</p>
+                    <p class="novel-card-meta">Isekai • Ongoing</p></div>
+                <div>
+                    <div class="novel-card">
+                        <div class="novel-card-inner"></div>
+                    </div>
+                    <p class="novel-card-title">Blade of Zen</p>
+                    <p class="novel-card-meta">Action • Completed</p></div>
+                <div>
+                    <div class="novel-card">
+                        <div class="novel-card-inner"></div>
+                    </div>
+                    <p class="novel-card-title">The Last Kingdom</p>
+                    <p class="novel-card-meta">Historical • Ongoing</p></div>
+            </div>
+        </section>
+
+        <!-- New Updates -->
+        <section>
+            <div class="flex items-end justify-between mb-5">
+                <div><h2 class="section-title text-xl">New Updates</h2>
+                    <p class="section-label">Fresh chapters just released.</p></div>
+                <a class="view-all">View All +</a>
+            </div>
+            <div class="overflow-x-auto rounded-lg"
+                 style="border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);">
+                <table class="updates-table" style="min-width:560px;">
+                    <thead>
+                    <tr>
+                        <th style="padding-left:20px;">Novel Name</th>
+                        <th>Genre</th>
+                        <th>Latest Chapter</th>
+                        <th style="padding-right:20px;text-align:right;">Time</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td style="padding-left:20px;"><span
+                                class="novel-name-link">The Villainess Turns the Hourglass</span></td>
+                        <td><span style="font-size:0.75rem;color:#64748b;">Romance</span></td>
+                        <td><span class="chapter-tag">Chapter 89</span></td>
+                        <td style="padding-right:20px;text-align:right;"><span class="time-label">2 hrs ago</span></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left:20px;"><span
+                                class="novel-name-link">Omniscient Reader's Viewpoint</span></td>
+                        <td><span style="font-size:0.75rem;color:#64748b;">Fantasy</span></td>
+                        <td><span class="chapter-tag">Chapter 317</span></td>
+                        <td style="padding-right:20px;text-align:right;"><span class="time-label">3 hrs ago</span></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left:20px;"><span class="novel-name-link">Library of Heaven's Path</span>
+                        </td>
+                        <td><span style="font-size:0.75rem;color:#64748b;">Xianxia</span></td>
+                        <td><span class="chapter-tag">Chapter 1980</span></td>
+                        <td style="padding-right:20px;text-align:right;"><span class="time-label">4 hrs ago</span></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left:20px;"><span class="novel-name-link">Overgeared</span></td>
+                        <td><span style="font-size:0.75rem;color:#64748b;">Action</span></td>
+                        <td><span class="chapter-tag">Chapter 1450</span></td>
+                        <td style="padding-right:20px;text-align:right;"><span class="time-label">5 hrs ago</span></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left:20px;"><span class="novel-name-link">Lord of the Mysteries</span></td>
+                        <td><span style="font-size:0.75rem;color:#64748b;">Mystery</span></td>
+                        <td><span class="chapter-tag">Chapter 302</span></td>
+                        <td style="padding-right:20px;text-align:right;border-bottom:none;"><span class="time-label">6 hrs ago</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
 </div>
 </body>
 </html>

@@ -4,19 +4,183 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 
-<footer th:fragment="footer">
-    <h2>Client Footer</h2>
+<footer th:fragment="footer" style="background: #161b27; border-top: 1px solid #1f2937">
+    <!-- ===== FOOTER ===== -->
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+            <!-- Brand -->
+            <div>
+                <div class="flex items-center gap-2 mb-3">
+                    <div
+                            class="w-7 h-7 rounded-md bg-violet-600 flex items-center justify-center"
+                    >
+                        <svg
+                                class="w-4 h-4 text-white"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                        >
+                            <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.966 8.966 0 00-6 2.292m0-14.25v14.25"
+                            />
+                        </svg>
+                    </div>
+                    <span
+                            class="text-white font-700 text-base"
+                            style="font-weight: 700"
+                    >NRW</span
+                    >
+                </div>
+                <p class="text-xs text-gray-500 leading-relaxed">
+                    The next generation of reading. Experience AI-powered translations
+                    and personalized discoveries.
+                </p>
+            </div>
+
+            <!-- Platform -->
+            <div>
+                <p class="text-sm text-white mb-3" style="font-weight: 600">
+                    Platform
+                </p>
+                <ul class="space-y-2">
+                    <li>
+                        <a
+                                href="#"
+                                class="text-xs text-gray-500 hover:text-gray-300 transition"
+                        >Trending</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                                href="#"
+                                class="text-xs text-gray-500 hover:text-gray-300 transition"
+                        >Latest Updates</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                                href="#"
+                                class="text-xs text-gray-500 hover:text-gray-300 transition"
+                        >Completed</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                                href="#"
+                                class="text-xs text-gray-500 hover:text-gray-300 transition"
+                        >AI Recommendations</a
+                        >
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Community -->
+            <div>
+                <p class="text-sm text-white mb-3" style="font-weight: 600">
+                    Community
+                </p>
+                <ul class="space-y-2">
+                    <li>
+                        <a
+                                href="#"
+                                class="text-xs text-gray-500 hover:text-gray-300 transition"
+                        >Forums</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                                href="#"
+                                class="text-xs text-gray-500 hover:text-gray-300 transition"
+                        >Discord Server</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                                href="#"
+                                class="text-xs text-gray-500 hover:text-gray-300 transition"
+                        >Translator Recruitment</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                                href="#"
+                                class="text-xs text-gray-500 hover:text-gray-300 transition"
+                        >Writer Portal</a
+                        >
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Support -->
+            <div>
+                <p class="text-sm text-white mb-3" style="font-weight: 600">
+                    Support
+                </p>
+                <ul class="space-y-2">
+                    <li>
+                        <a
+                                href="#"
+                                class="text-xs text-gray-500 hover:text-gray-300 transition"
+                        >Help Center</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                                href="#"
+                                class="text-xs text-gray-500 hover:text-gray-300 transition"
+                        >Report Issue</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                                href="#"
+                                class="text-xs text-gray-500 hover:text-gray-300 transition"
+                        >Privacy Policy</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                                href="#"
+                                class="text-xs text-gray-500 hover:text-gray-300 transition"
+                        >Terms of Service</a
+                        >
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div
+                class="border-t border-gray-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3"
+        >
+            <p class="text-xs text-gray-600">© 2026 NRW. All rights reserved.</p>
+            <div class="flex gap-4">
+                <a
+                        href="#"
+                        class="text-xs text-gray-500 hover:text-gray-300 transition"
+                >Twitter</a
+                >
+                <a
+                        href="#"
+                        class="text-xs text-gray-500 hover:text-gray-300 transition"
+                >Instagram</a
+                >
+                <a
+                        href="#"
+                        class="text-xs text-gray-500 hover:text-gray-300 transition"
+                >Facebook</a
+                >
+            </div>
+        </div>
+    </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
+
 </body>
 </html>

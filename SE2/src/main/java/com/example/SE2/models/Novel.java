@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Book {
+public class Novel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,23 +33,24 @@ public class Book {
 
     private String image;
 
-    @JdbcTypeCode(SqlTypes.VECTOR)
-    @Array(length = 1024)
-    @Column(columnDefinition = "VECTOR(1024)")
-    private float[] embedding;
+//    @JdbcTypeCode(SqlTypes.VECTOR)
+//    @Array(length = 1024)
+//    @Column(columnDefinition = "VECTOR(1024)")
+//    private float[] embedding;
 
-    @ManyToMany(mappedBy = "books")
+    @ManyToMany(mappedBy = "novels")
     @JsonBackReference
     private Set<Category> categories = new HashSet<>();
 
-    public Book() {
+    public Novel() {
     }
 
-    public Book(long id, String title,
-                boolean status, String description,
-                String content, String author,
-                String image, float[] embedding,
-                Set<Category> categories) {
+    public Novel(long id, String title,
+                 boolean status, String description,
+                 String content, String author,
+                 String image,
+//                 float[] embedding,
+                 Set<Category> categories) {
         this.id = id;
         this.title = title;
         this.status = status;
@@ -57,7 +58,7 @@ public class Book {
         this.content = content;
         this.author = author;
         this.image = image;
-        this.embedding = embedding;
+//        this.embedding = embedding;
         this.categories = categories;
     }
 
@@ -125,11 +126,11 @@ public class Book {
         this.content = content;
     }
 
-    public float[] getEmbedding() {
-        return embedding;
-    }
-
-    public void setEmbedding(float[] embedding) {
-        this.embedding = embedding;
-    }
+//    public float[] getEmbedding() {
+//        return embedding;
+//    }
+//
+//    public void setEmbedding(float[] embedding) {
+//        this.embedding = embedding;
+//    }
 }

@@ -2,7 +2,7 @@ package com.example.SE2.dtos.request;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class BookRequest {
+public class NovelRequest {
 
     private String title;
 
@@ -18,10 +18,10 @@ public class BookRequest {
 
     private String author;
 
-    public BookRequest() {
+    public NovelRequest() {
     }
 
-    public BookRequest(String title, String description, String content, Long categoryId, MultipartFile imageFile, String imagePath, String author) {
+    public NovelRequest(String title, String description, String content, Long categoryId, MultipartFile imageFile, String imagePath, String author) {
         this.title = title;
         this.description = description;
         this.content = content;

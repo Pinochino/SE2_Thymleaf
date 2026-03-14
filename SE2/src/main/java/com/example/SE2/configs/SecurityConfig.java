@@ -57,9 +57,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) -> authorize
-//                        .requestMatchers(PUBLIC_WHITELIST).permitAll()
-//                        .requestMatchers("/admin/**").hasRole("SUPER_ADMIN")
-                        .anyRequest().permitAll())
+                        .requestMatchers(PUBLIC_WHITELIST).permitAll()
+                        .requestMatchers("/admin/**").hasRole("SUPER_ADMIN")
+                        .anyRequest().authenticated())
                 .cors(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
 //                .csrf(AbstractHttpConfigurer::disable)

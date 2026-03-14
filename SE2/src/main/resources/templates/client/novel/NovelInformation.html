@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_clientLayout}"
+>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>NRW – The Alchemist's Horizon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+            href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
+            rel="stylesheet"
+    />
+    <style>
+        * {
+            font-family: "DM Sans", sans-serif;
+        }
+
+        .mono {
+            font-family: "DM Mono", monospace;
+        }
+
+        body {
+            background: #0f1117;
+            color: #e5e7eb;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #161b27;
+            border-bottom: 1px solid #1f2937;
+        }
+
+        /* Hero section */
+        .hero-section {
+            background: linear-gradient(135deg, #1a1f2e 0%, #0f1117 100%);
+        }
+
+        /* Cards */
+        .card-dark {
+            background: #1a1f2e;
+            border: 1px solid #252d3d;
+            border-radius: 12px;
+        }
+
+        /* Genre badge */
+        .badge-genre {
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            background: #252d3d;
+            color: #9ca3af;
+            letter-spacing: 0.04em;
+        }
+
+        .badge-genre.primary {
+            background: #2d1f4e;
+            color: #c4b5fd;
+        }
+
+        /* Progress bar */
+        .progress-track {
+            background: #252d3d;
+            border-radius: 999px;
+            height: 4px;
+        }
+
+        .progress-fill {
+            background: #f59e0b;
+            border-radius: 999px;
+            height: 4px;
+            width: 0%;
+            transition: width 0.6s ease;
+        }
+
+        /* Tab */
+        .tab-active {
+            border-bottom: 2px solid #f59e0b;
+            color: #f59e0b;
+            font-weight: 600;
+        }
+
+        .tab-inactive {
+            border-bottom: 2px solid transparent;
+            color: #6b7280;
+        }
+
+        .tab-inactive:hover {
+            color: #9ca3af;
+        }
+
+        /* Chapter row */
+        .chapter-row {
+            border-bottom: 1px solid #1f2937;
+            transition: background 0.15s;
+        }
+
+        .chapter-row:hover {
+            background: #1f2937;
+        }
+
+        .chapter-row:last-child {
+            border-bottom: none;
+        }
+
+        .chapter-locked {
+            color: #4b5563;
+        }
+
+        /* Star rating interactive */
+        .star-btn {
+            color: #374151;
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+
+        .star-btn:hover,
+        .star-btn.active {
+            color: #f59e0b;
+        }
+
+        /* Comment input */
+        .comment-input {
+            background: #0f1117;
+            border: 1px solid #252d3d;
+            border-radius: 10px;
+            color: #e5e7eb;
+            outline: none;
+            resize: none;
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .comment-input:focus {
+            border-color: #f59e0b;
+        }
+
+        .comment-input::placeholder {
+            color: #4b5563;
+        }
+
+        /* Avatar generic */
+        .avatar {
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* Dropdown */
+        #mobile-menu {
+            display: none;
+        }
+
+        #mobile-menu.open {
+            display: block;
+        }
+
+        /* Search bar */
+        .search-bar {
+            background: #252d3d;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: #e5e7eb;
+            outline: none;
+            padding: 7px 12px 7px 34px;
+            font-size: 13px;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+
+        .search-bar::placeholder {
+            color: #6b7280;
+        }
+
+        .search-bar:focus {
+            border-color: #f59e0b;
+        }
+
+        /* Read more toggle */
+        .synopsis-full {
+            display: none;
+        }
+
+        .synopsis-full.open {
+            display: block;
+        }
+
+        /* Fade-in */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-up {
+            animation: fadeUp 0.4s ease both;
+        }
+
+        .fade-up-2 {
+            animation: fadeUp 0.4s 0.1s ease both;
+        }
+
+        .fade-up-3 {
+            animation: fadeUp 0.4s 0.2s ease both;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #252d3d;
+            border-radius: 99px;
+        }
+
+        /* Novel cover placeholder */
+        .novel-cover-img {
+            background: linear-gradient(
+                    160deg,
+                    #1e3a5f 0%,
+                    #0f2444 40%,
+                    #1a1205 100%
+            );
+            position: relative;
+            overflow: hidden;
+        }
+
+        .novel-cover-img::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%230f2444'/%3E%3Ccircle cx='50' cy='60' r='30' fill='%23f59e0b' opacity='.15'/%3E%3Crect x='0' y='60' width='100' height='40' fill='%23142a4a' opacity='.8'/%3E%3C/svg%3E") center/cover no-repeat;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen" layout:fragment="content">
+
+
+<!-- ===== HERO ===== -->
+<section class="hero-section py-8 sm:py-10 fade-up">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="flex flex-col sm:flex-row gap-6">
+            <!-- Cover -->
+            <div
+                    class="novel-cover-img w-32 h-44 sm:w-36 sm:h-52 lg:w-40 lg:h-56 rounded-xl shrink-0 shadow-2xl mx-auto sm:mx-0 overflow-hidden"
+            >
+                <img
+                        src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=560&fit=crop&crop=center"
+                        alt="Novel Cover"
+                        class="w-full h-full object-cover opacity-90"
+                        onerror="this.style.display = 'none'"
+                />
+            </div>
+
+            <!-- Info -->
+            <div class="flex-1 min-w-0 text-center sm:text-left">
+                <h1
+                        class="text-2xl sm:text-3xl lg:text-4xl text-white mb-2 leading-tight"
+                        style="font-weight: 700"
+                >
+                    The Alchemist's Horizon
+                </h1>
+
+                <div
+                        class="flex flex-wrap items-center justify-center sm:justify-start gap-x-3 gap-y-1 text-sm text-gray-400 mb-3"
+                >
+              <span class="flex items-center gap-1">
+                <svg
+                        class="w-3.5 h-3.5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                >
+                  <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                  />
+                </svg>
+                By
+                <span class="text-gray-200 ml-1" style="font-weight: 500"
+                >Elena Vance</span
+                >
+              </span>
+                    <span class="text-gray-600 hidden sm:inline">•</span>
+                    <span class="flex items-center gap-1">
+                <svg
+                        class="w-3.5 h-3.5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                >
+                  <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M3 5h12M9 3v2m1.048 3.938A9 9 0 0121 12.42"
+                  />
+                </svg>
+                Trans:
+                <span class="text-gray-200 ml-1" style="font-weight: 500"
+                >Moonlight Team</span
+                >
+              </span>
+                </div>
+
+                <!-- Stars -->
+                <div
+                        class="flex items-center justify-center sm:justify-start gap-2 mb-3"
+                >
+                    <div class="flex gap-0.5">
+                        <span class="text-yellow-400 text-lg">★★★★★</span>
+                    </div>
+                    <span class="text-white text-base" style="font-weight: 700"
+                    >4.8</span
+                    >
+                    <span class="text-gray-500 text-xs">(2.4k ratings)</span>
+                </div>
+
+                <!-- Tags -->
+                <div
+                        class="flex flex-wrap justify-center sm:justify-start gap-2 mb-5"
+                >
+                    <span class="badge-genre primary">FANTASY</span>
+                    <span class="badge-genre">Magic</span>
+                    <span class="badge-genre">Adventure</span>
+                    <span class="badge-genre">System</span>
+                    <span class="badge-genre">Alchemy</span>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex flex-wrap justify-center sm:justify-start gap-3">
+                    <button
+                            class="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm transition shadow-lg"
+                            style="background: #f59e0b; color: #0f1117; font-weight: 700"
+                    >
+                        <svg
+                                class="w-4 h-4"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                        >
+                            <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.966 8.966 0 00-6 2.292m0-14.25v14.25"
+                            />
+                        </svg>
+                        <a href="../client/ChapterPage.html">Read Now</a>
+                    </button>
+                    <button
+                            class="flex items-center gap-2 px-5 py-2.5 rounded-xl border text-sm transition"
+                            style="
+                  border-color: #f59e0b;
+                  color: #f59e0b;
+                  background: transparent;
+                  font-weight: 600;
+                "
+                    >
+                        <svg
+                                class="w-4 h-4"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                        >
+                            <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                            />
+                        </svg>
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reading Progress -->
+        <div class="card-dark mt-6 p-4">
+            <div class="flex items-center justify-between mb-2">
+                <div>
+                    <p
+                            class="text-[10px] uppercase tracking-widest text-gray-500 mb-1"
+                            style="font-weight: 600"
+                    >
+                        Reading Progress
+                    </p>
+                    <p class="text-sm text-gray-300">
+                        Currently at Chapter
+                        <span class="text-white" style="font-weight: 600">0</span> /
+                        1245
+                    </p>
+                </div>
+                <span class="text-yellow-400 text-sm mono" style="font-weight: 600"
+                >0%</span
+                >
+            </div>
+            <div class="progress-track my-2">
+                <div class="progress-fill" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                <span>Start</span>
+                <span>Latest: Ch. 1245</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== SYNOPSIS ===== -->
+<section class="max-w-6xl mx-auto px-4 sm:px-6 py-6 fade-up-2">
+    <div class="card-dark p-5 sm:p-6">
+        <h2 class="text-base text-white mb-3" style="font-weight: 700">
+            Synopsis
+        </h2>
+        <p class="text-sm text-gray-400 leading-relaxed">
+            In a world where alchemy dictates the hierarchy of power, young Elian
+            discovers an ancient manuscript that defies the established laws of
+            equivalent exchange. Cast out from the prestigious Royal Academy, he
+            must navigate the treacherous borderlands known as the Horizon.
+        </p>
+        <div id="synopsis-full" class="synopsis-full">
+            <p class="text-sm text-gray-400 leading-relaxed mt-3">
+                Armed with forbidden knowledge and an unbreakable will, Elian forges
+                alliances with outcasts, rebels, and forgotten spirits — each
+                carrying their own secrets. As political factions close in and
+                ancient powers stir, the line between salvation and destruction
+                blurs with every transmutation.
+            </p>
+            <p class="text-sm text-gray-400 leading-relaxed mt-3">
+                The Horizon is not just a place — it is a test. And Elian is about
+                to discover that some equations were never meant to be balanced.
+            </p>
+        </div>
+        <button
+                onclick="toggleSynopsis()"
+                id="read-more-btn"
+                class="mt-3 text-sm text-yellow-500 hover:text-yellow-400 transition flex items-center gap-1"
+                style="font-weight: 500"
+        >
+            Read More
+            <svg
+                    id="read-more-chevron"
+                    class="w-3.5 h-3.5 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    viewBox="0 0 24 24"
+            >
+                <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M19 9l-7 7-7-7"
+                />
+            </svg>
+        </button>
+    </div>
+</section>
+
+<!-- ===== CHAPTERS TAB ===== -->
+<section class="max-w-6xl mx-auto px-4 sm:px-6 pb-6 fade-up-3">
+    <!-- Tab bar -->
+    <div class="flex gap-6 border-b border-gray-800 mb-4">
+        <button class="tab-active pb-3 text-sm flex items-center gap-2">
+            Chapters
+            <span
+                    class="w-5 h-5 rounded-full bg-yellow-500 text-black text-[10px] flex items-center justify-center"
+                    style="font-weight: 700"
+            >0</span
+            >
+        </button>
+    </div>
+
+    <!-- Latest Updates -->
+    <div class="card-dark overflow-hidden">
+        <div
+                class="flex items-center justify-between px-5 py-4 border-b border-gray-800"
+        >
+            <h3 class="text-sm text-white" style="font-weight: 700">
+                Latest Updates
+            </h3>
+            <button class="text-gray-500 hover:text-gray-300 transition">
+                <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                >
+                    <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"
+                    />
+                </svg>
+            </button>
+        </div>
+
+        <div>
+            <!-- Ch 452 - latest / bold -->
+            <div class="chapter-row px-5 py-3.5 cursor-pointer">
+                <div class="flex items-start sm:items-center justify-between gap-3">
+                    <div class="min-w-0">
+                        <p class="text-sm text-white" style="font-weight: 600">
+                            Chapter 452: The Final Ingredient
+                        </p>
+                        <p class="text-xs text-gray-500 mt-0.5">Vol 4. The Void War</p>
+                    </div>
+                    <span class="text-xs text-gray-500 shrink-0 mono"
+                    >2 hours ago</span
+                    >
+                </div>
+            </div>
+
+            <div
+                    class="chapter-row px-5 py-3.5 cursor-pointer flex items-center justify-between gap-3"
+            >
+                <p class="text-sm text-gray-300 hover:text-white transition">
+                    Chapter 451: Betrayal at the Gates
+                </p>
+                <span class="text-xs text-gray-500 shrink-0 mono">1 day ago</span>
+            </div>
+
+            <div
+                    class="chapter-row px-5 py-3.5 cursor-pointer flex items-center justify-between gap-3"
+            >
+                <p class="text-sm text-gray-300 hover:text-white transition">
+                    Chapter 450: Equivalent Exchange
+                </p>
+                <span class="text-xs text-gray-500 shrink-0 mono">3 days ago</span>
+            </div>
+
+            <!-- Locked -->
+            <div
+                    class="chapter-row px-5 py-3.5 cursor-not-allowed flex items-center justify-between gap-3"
+            >
+                <div class="flex items-center gap-2">
+                    <p class="text-sm chapter-locked">Chapter 449: Locked Memory</p>
+                    <svg
+                            class="w-3.5 h-3.5 text-gray-600"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            viewBox="0 0 24 24"
+                    >
+                        <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                        />
+                    </svg>
+                </div>
+                <span class="text-xs text-gray-600 shrink-0 mono">4 days ago</span>
+            </div>
+
+            <div
+                    class="chapter-row px-5 py-3.5 cursor-pointer flex items-center justify-between gap-3"
+            >
+                <p class="text-sm text-gray-300 hover:text-white transition">
+                    Chapter 448: The Silent Forest
+                </p>
+                <span class="text-xs text-gray-500 shrink-0 mono">1 week ago</span>
+            </div>
+
+            <div
+                    class="chapter-row px-5 py-3.5 cursor-pointer flex items-center justify-between gap-3"
+            >
+                <p class="text-sm text-gray-300 hover:text-white transition">
+                    Chapter 447: First Steps
+                </p>
+                <span class="text-xs text-gray-500 shrink-0 mono">1 week ago</span>
+            </div>
+        </div>
+
+        <div class="px-5 py-4 text-center border-t border-gray-800">
+            <a
+                    href="#"
+                    class="text-sm text-yellow-500 hover:text-yellow-400 transition"
+                    style="font-weight: 500"
+            >View All Chapters</a
+            >
+        </div>
+    </div>
+</section>
+
+<!-- ===== DISCUSSION & RATINGS ===== -->
+<section class="max-w-6xl mx-auto px-4 sm:px-6 pb-10">
+    <div class="card-dark overflow-hidden">
+        <div class="px-5 py-4 border-b border-gray-800">
+            <h3 class="text-base text-white" style="font-weight: 700">
+                Discussion &amp; Ratings
+            </h3>
+        </div>
+
+        <!-- Rating summary -->
+        <div
+                class="mx-4 sm:mx-5 my-4 rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row items-center sm:items-start gap-5"
+                style="background: #0f1117; border: 1px solid #252d3d"
+        >
+            <div class="text-center shrink-0">
+                <p class="text-5xl text-white" style="font-weight: 700">4.8</p>
+                <div class="flex justify-center gap-0.5 mt-1">
+                    <span class="text-yellow-400 text-xl">★★★★★</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">2.4k ratings</p>
+            </div>
+            <div class="flex flex-col items-center sm:items-start gap-1.5">
+                <p class="text-sm text-gray-400 mb-1">Rate this novel:</p>
+                <div class="flex gap-1" id="star-rating">
+                    <button class="star-btn" data-val="1" onclick="setRating(1)">
+                        ★
+                    </button>
+                    <button class="star-btn" data-val="2" onclick="setRating(2)">
+                        ★
+                    </button>
+                    <button class="star-btn" data-val="3" onclick="setRating(3)">
+                        ★
+                    </button>
+                    <button class="star-btn" data-val="4" onclick="setRating(4)">
+                        ★
+                    </button>
+                    <button class="star-btn" data-val="5" onclick="setRating(5)">
+                        ★
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comment input -->
+        <div class="px-4 sm:px-5 pb-4 flex gap-3">
+            <div
+                    class="w-9 h-9 avatar bg-gradient-to-br from-yellow-500 to-orange-600 text-black text-sm shrink-0 mt-0.5"
+                    style="font-weight: 700"
+            >
+                U
+            </div>
+            <div class="flex-1 min-w-0">
+            <textarea
+                    class="comment-input"
+                    rows="2"
+                    placeholder="Share your thoughts about this novel..."
+            ></textarea>
+                <div class="flex justify-end mt-2">
+                    <button
+                            class="px-4 py-2 rounded-lg text-sm transition"
+                            style="background: #f59e0b; color: #0f1117; font-weight: 700"
+                    >
+                        Post Comment
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-800"></div>
+
+        <!-- Comment 1 -->
+        <div class="px-4 sm:px-5 py-4">
+            <div class="flex gap-3">
+                <div
+                        class="w-9 h-9 avatar bg-gradient-to-br from-slate-600 to-slate-800 text-gray-300 text-xs shrink-0"
+                        style="font-weight: 700"
+                >
+                    D
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex flex-wrap items-center gap-2 mb-1">
+                <span class="text-sm text-white" style="font-weight: 600"
+                >DragonReader99</span
+                >
+                        <span class="text-xs text-gray-500">2 hours ago</span>
+                    </div>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        The character development in the last arc has been insane. I
+                        never expected Elian to make that choice regarding the
+                        Philosopher's Stone.
+                    </p>
+                    <button
+                            class="text-xs text-yellow-500 hover:text-yellow-400 mt-2 transition"
+                            style="font-weight: 500"
+                    >
+                        Reply
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-800"></div>
+
+        <!-- Comment 2 with reply -->
+        <div class="px-4 sm:px-5 py-4">
+            <div class="flex gap-3">
+                <div
+                        class="w-9 h-9 avatar bg-gradient-to-br from-violet-700 to-indigo-800 text-gray-300 text-xs shrink-0"
+                        style="font-weight: 700"
+                >
+                    A
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex flex-wrap items-center gap-2 mb-1">
+                <span class="text-sm text-white" style="font-weight: 600"
+                >AlchemyMaster</span
+                >
+                        <span class="text-xs text-gray-500">5 hours ago</span>
+                    </div>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        Does anyone know when the next mass release is? I'm dying to
+                        know what happens next!
+                    </p>
+                    <button
+                            class="text-xs text-yellow-500 hover:text-yellow-400 mt-2 transition"
+                            style="font-weight: 500"
+                    >
+                        Reply
+                    </button>
+
+                    <!-- Nested reply -->
+                    <div class="mt-4 ml-3 pl-3 border-l-2 border-gray-700">
+                        <div class="flex gap-3">
+                            <div
+                                    class="w-8 h-8 avatar bg-gradient-to-br from-violet-700 to-indigo-800 text-gray-300 text-xs shrink-0"
+                                    style="font-weight: 700"
+                            >
+                                A
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex flex-wrap items-center gap-2 mb-1">
+                      <span class="text-sm text-white" style="font-weight: 600"
+                      >AlchemyMaster</span
+                      >
+                                    <span class="text-xs text-gray-500">5 hours ago</span>
+                                </div>
+                                <p class="text-sm text-gray-400 leading-relaxed">
+                                    Does anyone know when the next mass release is? I'm dying
+                                    to know what happens next!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-800 px-5 py-4 text-center">
+            <button class="text-sm text-gray-400 hover:text-white transition">
+                Load more comments
+            </button>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    // Synopsis toggle
+    function toggleSynopsis() {
+        const full = document.getElementById("synopsis-full");
+        const btn = document.getElementById("read-more-btn");
+        const chev = document.getElementById("read-more-chevron");
+        const open = full.classList.toggle("open");
+        btn.childNodes[0].textContent = open ? "Read Less " : "Read More ";
+        chev.style.transform = open ? "rotate(180deg)" : "rotate(0deg)";
+    }
+
+    // Star rating
+    function setRating(val) {
+        document.querySelectorAll(".star-btn").forEach((btn) => {
+            btn.classList.toggle("active", parseInt(btn.dataset.val) <= val);
+        });
+    }
+
+    document.querySelectorAll(".star-btn").forEach((btn) => {
+        btn.addEventListener("mouseenter", () => {
+            const v = parseInt(btn.dataset.val);
+            document.querySelectorAll(".star-btn").forEach((b) => {
+                b.style.color = parseInt(b.dataset.val) <= v ? "#f59e0b" : "";
+            });
+        });
+        btn.addEventListener("mouseleave", () => {
+            document.querySelectorAll(".star-btn").forEach((b) => {
+                b.style.color = b.classList.contains("active") ? "#f59e0b" : "";
+            });
+        });
+    });
+</script>
+</body>
+</html>

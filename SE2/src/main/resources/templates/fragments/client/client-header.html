@@ -4,17 +4,222 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <header th:fragment="header">
-    <div class="d-flex justify-content-between">
-        <h2>Client Header</h2>
+    <nav
+            class="bg-primary-d flex items-center h-14"
+            style="padding-left: 24px; padding-right: 24px"
+    >
+        <!-- Logo -->
+        <div class="logo flex items-center shrink-0" style="gap: 8px">
+            <svg
+                    width="33"
+                    height="30"
+                    viewBox="0 0 33 30"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                        d="M16.5 29.25C15.3 28.3 14 27.5625 12.6 27.0375C11.2 26.5125 9.75 26.25 8.25 26.25C7.2 26.25 6.16875 26.3875 5.15625 26.6625C4.14375 26.9375 3.175 27.325 2.25 27.825C1.725 28.1 1.21875 28.0875 0.73125 27.7875C0.24375 27.4875 0 27.05 0 26.475V8.4C0 8.125 0.06875 7.8625 0.20625 7.6125C0.34375 7.3625 0.55 7.175 0.825 7.05C1.975 6.45 3.175 6 4.425 5.7C5.675 5.4 6.95 5.25 8.25 5.25C9.7 5.25 11.1188 5.4375 12.5063 5.8125C13.8938 6.1875 15.225 6.75 16.5 7.5V25.65C17.775 24.85 19.1125 24.25 20.5125 23.85C21.9125 23.45 23.325 23.25 24.75 23.25C25.65 23.25 26.5312 23.325 27.3937 23.475C28.2562 23.625 29.125 23.85 30 24.15V6.15C30.375 6.275 30.7438 6.40625 31.1063 6.54375C31.4688 6.68125 31.825 6.85 32.175 7.05C32.45 7.175 32.6562 7.3625 32.7938 7.6125C32.9313 7.8625 33 8.125 33 8.4V26.475C33 27.05 32.7562 27.4875 32.2687 27.7875C31.7812 28.0875 31.275 28.1 30.75 27.825C29.825 27.325 28.8563 26.9375 27.8438 26.6625C26.8312 26.3875 25.8 26.25 24.75 26.25C23.25 26.25 21.8 26.5125 20.4 27.0375C19 27.5625 17.7 28.3 16.5 29.25ZM19.5 21.75V7.5L27 0V15L19.5 21.75ZM13.5 24.1875V9.3375C12.675 8.9875 11.8187 8.71875 10.9312 8.53125C10.0437 8.34375 9.15 8.25 8.25 8.25C7.325 8.25 6.425 8.3375 5.55 8.5125C4.675 8.6875 3.825 8.95 3 9.3V24.1875C3.875 23.8625 4.74375 23.625 5.60625 23.475C6.46875 23.325 7.35 23.25 8.25 23.25C9.15 23.25 10.0312 23.325 10.8938 23.475C11.7563 23.625 12.625 23.8625 13.5 24.1875Z"
+                        fill="#6366F1"
+                />
+            </svg>
+            <span class="text-hg font-bold font-head">NRW</span>
+        </div>
 
-    </div>
+        <!-- Nav links -->
+        <ul
+                class="flex items-center list-none m-0 p-0 font-nor"
+                style="
+            margin-left: 40px;
+            gap: 32px;
+            font-family: &quot;Inter&quot;, sans-serif;
+          "
+        >
+            <!-- Home -->
+            <li>
+                <a
+                        href="#"
+                        class="text-nor text-sm font-normal hover:text-white transition-colors"
+                >
+                    Home
+                </a>
+            </li>
+            <!-- Favourite -->
+            <li>
+                <a
+                        href="#"
+                        class="text-nor text-sm font-normal hover:text-white transition-colors"
+                >
+                    Favourite
+                </a>
+            </li>
+            <!-- Contribute -->
+            <li>
+                <a
+                        href="#"
+                        class="text-nor text-sm font-normal hover:text-white transition-colors"
+                >
+                    Contribute
+                </a>
+            </li>
+        </ul>
+
+        <!-- Spacer -->
+        <div class="flex-1"></div>
+
+        <!-- Search section -->
+        <div
+                class="search-sec flex items-center bg-secondary-d border border-white/[0.12] rounded-full gap-2"
+                style="width: 292px; padding: 7px 14px"
+        >
+            <!-- Search icon -->
+            <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="shrink-0 cursor-pointer"
+            >
+                <circle
+                        cx="6.5"
+                        cy="6.5"
+                        r="5"
+                        stroke="#94a3b8"
+                        stroke-width="1.5"
+                />
+                <path
+                        d="M10.5 10.5L14 14"
+                        stroke="#94a3b8"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                />
+            </svg>
+            <input
+                    type="text"
+                    placeholder="Search novels..."
+                    class="search-input bg-transparent text-nor text-sm flex-1 border-none"
+                    style="font-family: &quot;Inter&quot;, sans-serif"
+            />
+            <!-- Filter / sliders icon -->
+            <button
+                    class="shrink-0 text-lw hover:text-nor transition-colors cursor-pointer"
+            >
+                <svg
+                        width="15"
+                        height="15"
+                        viewBox="0 0 15 15"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                            d="M6.66667 15V10H8.33333V11.6667H15V13.3333H8.33333V15H6.66667ZM0 13.3333V11.6667H5V13.3333H0ZM3.33333 10V8.33333H0V6.66667H3.33333V5H5V10H3.33333ZM6.66667 8.33333V6.66667H15V8.33333H6.66667ZM10 5V0H11.6667V1.66667H15V3.33333H11.6667V5H10ZM0 3.33333V1.66667H8.33333V3.33333H0Z"
+                            fill="#9CA3AF"
+                    />
+                </svg>
+            </button>
+        </div>
+
+        <!-- ===== LOGGED-IN STATE ===== -->
+        <!-- Toggle this section vs the guest section based on auth state -->
+        <div
+                class="flex items-center"
+                id="loggedInState"
+                style="margin-left: 16px; gap: 14px"
+        >
+            <!-- Notification bell -->
+            <button
+                    class="hover:opacity-80 transition-opacity"
+                    style="line-height: 0; padding: 2px"
+            >
+                <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="cursor-pointer"
+                >
+                    <path
+                            d="M10 2C7.24 2 5 4.24 5 7V11L3 13V14H17V13L15 11V7C15 4.24 12.76 2 10 2Z"
+                            stroke="#d1d5db"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                    />
+                    <path
+                            d="M10 18C11.1 18 12 17.1 12 16H8C8 17.1 8.9 18 10 18Z"
+                            fill="#d1d5db"
+                    />
+                </svg>
+            </button>
+
+            <button
+                    class="rounded-full overflow-hidden shrink-0 cursor-pointer"
+                    style="width: 30px; height: 30px; line-height: 0"
+            >
+                <img
+                        src="https://i.pravatar.cc/30?img=3"
+                        alt="User avatar"
+                        style="
+                width: 30px;
+                height: 30px;
+                object-fit: cover;
+                border-radius: 9999px;
+              "
+                />
+            </button>
+        </div>
+
+        <div
+                class="hidden items-center"
+                id="guestState"
+                style="margin-left: 16px"
+        >
+            <button
+                    class="login-btn flex items-center bg-secondary-d border border-white/15 text-nor text-sm font-medium hover:text-white transition-all"
+                    style="
+              font-family: &quot;Inter&quot;, sans-serif;
+              gap: 8px;
+              padding: 7px 16px;
+              border-radius: 8px;
+            "
+            >
+                <!-- Login arrow icon -->
+                <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                            d="M6 3H3C2.45 3 2 3.45 2 4V12C2 12.55 2.45 13 3 13H6"
+                            stroke="#d1d5db"
+                            stroke-width="1.4"
+                            stroke-linecap="round"
+                    />
+                    <path
+                            d="M10 5L14 8L10 11"
+                            stroke="#d1d5db"
+                            stroke-width="1.4"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                    />
+                    <path
+                            d="M14 8H6"
+                            stroke="#d1d5db"
+                            stroke-width="1.4"
+                            stroke-linecap="round"
+                    />
+                </svg>
+                Login
+            </button>
+        </div>
+    </nav>
 
 </header>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"

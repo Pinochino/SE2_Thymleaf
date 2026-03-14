@@ -1,13 +1,13 @@
 package com.example.SE2.controllers;
 
-import com.example.SE2.dtos.request.BookRequest;
+import com.example.SE2.dtos.request.NovelRequest;
 import com.example.SE2.dtos.request.CategoryRequest;
 import com.example.SE2.dtos.request.UpdateUserRequest;
-import com.example.SE2.models.Book;
+import com.example.SE2.models.Novel;
 import com.example.SE2.models.Category;
 import com.example.SE2.models.User;
-import com.example.SE2.repositories.BookRepository;
 import com.example.SE2.repositories.CategoryRepository;
+import com.example.SE2.repositories.NovelRepository;
 import com.example.SE2.repositories.UserRepository;
 import com.example.SE2.security.UserDetailImpl;
 import com.example.SE2.services.file.FileService;
@@ -35,7 +35,7 @@ public class AdminController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final SessionRegistry sessionRegistry;
-    private final BookRepository bookRepository;
+    private final NovelRepository novelRepository;
     private final CategoryRepository categoryRepository;
     private final FileService fileService;
 
@@ -43,13 +43,13 @@ public class AdminController {
     public AdminController(UserRepository userRepository,
                            PasswordEncoder passwordEncoder,
                            SessionRegistry sessionRegistry,
-                           BookRepository bookRepository,
+                           NovelRepository novelRepository,
                            CategoryRepository categoryRepository,
                            FileService fileService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.sessionRegistry = sessionRegistry;
-        this.bookRepository = bookRepository;
+        this.novelRepository = novelRepository;
         this.categoryRepository = categoryRepository;
         this.fileService = fileService;
     }
@@ -133,33 +133,33 @@ public class AdminController {
 
 
     /**
-     * BOOK
+     * NOVEL
      */
 
-    @RequestMapping(value = "/books/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/novels/list", method = RequestMethod.GET)
     public String listBook(Model model) {
-        List<Book> books = bookRepository.findAll();
-        model.addAttribute("books", books);
-        return "admin/book-management";
+        List<Novel> novels = novelRepository.findAll();
+        model.addAttribute("novels", novels);
+        return "admin/novel-management";
     }
 
-    @RequestMapping(value = "/books/create", method = RequestMethod.GET)
+    @RequestMapping(value = "/novels/create", method = RequestMethod.GET)
     public String createBook(@RequestParam(value = "error", required = false) String error,
                              Model model) {
         List<Category> categories = categoryRepository.findAll();
         model.addAttribute("categories", categories);
 
-        model.addAttribute("bookRequest", new BookRequest());
-        return "admin/book-create";
+        model.addAttribute("bookRequest", new NovelRequest());
+        return "admin/novel-create";
     }
 
-    @RequestMapping(value = "/books/perform-create", method = RequestMethod.POST)
+    @RequestMapping(value = "/novels/perform-create", method = RequestMethod.POST)
     public String createBook(
-            @Valid @ModelAttribute("bookRequest") BookRequest bookRequest,
+            @Valid @ModelAttribute("bookRequest") NovelRequest novelRequest,
             BindingResult bindingResult,
             Model model) {
 
-        MultipartFile file = bookRequest.getImageFile();
+        MultipartFile file = novelRequest.getImageFile();
 
         String savedPath = null;
         String fileName = null;
@@ -170,17 +170,17 @@ public class AdminController {
         }
 
         if (bindingResult.hasErrors()) {
-            return "admin/book-create";
+            return "admin/novel-create";
         }
 
-        Book book = bookRepository.findBookByTitle(bookRequest.getTitle());
+        Novel novel = novelRepository.findBookByTitle(novelRequest.getTitle());
 
-        if (book != null) {
-            throw new RuntimeException("Book have already been created");
+        if (novel != null) {
+            throw new RuntimeException("Novel have already been created");
         }
 
 
-        Category category = categoryRepository.getById(bookRequest.getCategoryId());
+        Category category = categoryRepository.getById(novelRequest.getCategoryId());
 
         if (category == null) {
             throw new RuntimeException("Category does not exist");
@@ -189,26 +189,26 @@ public class AdminController {
         Set<Category> categories = new HashSet<>();
         categories.add(category);
 
-        Book newBook = new Book();
-        newBook.setTitle(bookRequest.getTitle());
-        newBook.setDescription(bookRequest.getDescription());
-        newBook.setAuthor(bookRequest.getAuthor());
-        newBook.setImage(fileName);
-        newBook.setCategories(categories);
-        bookRepository.save(newBook);
+        Novel newNovel = new Novel();
+        newNovel.setTitle(novelRequest.getTitle());
+        newNovel.setDescription(novelRequest.getDescription());
+        newNovel.setAuthor(novelRequest.getAuthor());
+        newNovel.setImage(fileName);
+        newNovel.setCategories(categories);
+        novelRepository.save(newNovel);
 
-        return "redirect:/admin/books/list";
+        return "redirect:/admin/novels/list";
     }
 
-    @RequestMapping(value = "/books/delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/novels/delete/{id}", method = RequestMethod.DELETE)
     public String deleteBook(@PathVariable("id") Long id, Model model) {
-        Book book = bookRepository.getById(id);
+        Novel novel = novelRepository.getById(id);
 
-        if (book == null) {
-            throw new RuntimeException("Book not found");
+        if (novel == null) {
+            throw new RuntimeException("Novel not found");
         }
 
-        bookRepository.delete(book);
+        novelRepository.delete(novel);
         return "redirect:/admin/books/list";
     }
 
@@ -247,5 +247,12 @@ public class AdminController {
         return "admin/category-management";
     }
 
+    /*
+        Translation
+     */
+    @RequestMapping("/translations")
+    public String manageTranslation() {
+        return "admin/translation-management";
+    }
 
 }

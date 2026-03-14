@@ -19,20 +19,20 @@ public class Category {
 
     @ManyToMany
     @JoinTable(
-            name = "category_book",
+            name = "category_novel",
             joinColumns = @JoinColumn(name = "category_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id"))
+            inverseJoinColumns = @JoinColumn(name = "novel_id"))
     @JsonManagedReference
-    private Set<Book> books = new HashSet<>();
+    private Set<Novel> novels = new HashSet<>();
 
     public Category() {
     }
 
-    public Category(long id, String name, String description, Set<Book> books) {
+    public Category(long id, String name, String description, Set<Novel> novels) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.books = books;
+        this.novels = novels;
     }
 
     public long getId() {
@@ -59,11 +59,11 @@ public class Category {
         this.description = description;
     }
 
-    public Set<Book> getBooks() {
-        return books;
+    public Set<Novel> getNovels() {
+        return novels;
     }
 
-    public void setBooks(Set<Book> books) {
-        this.books = books;
+    public void setNovels(Set<Novel> novels) {
+        this.novels = novels;
     }
 }

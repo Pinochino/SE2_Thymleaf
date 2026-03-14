@@ -36,9 +36,6 @@ build/
 .env.dev
 =======
 
-.env
-.env.dev
-
 /.env.dev
 /.env
 >>>>>>> development

@@ -94,8 +94,7 @@ public class AuthController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(@Valid @ModelAttribute("registerRequest") RegisterRequest request,
                            BindingResult bindingResult,
-                           Model model
-    ) {
+                           Model model) {
 
         if (bindingResult.hasErrors()) {
             return "auth/register";
@@ -104,30 +103,32 @@ public class AuthController {
         User oldUser = userRepository.findUserByEmail(request.getEmail());
 
         if (oldUser != null) {
-            throw new RuntimeException("Email already in use");
+            bindingResult.rejectValue("email", "error.email", "Email already in use");
+            return "auth/register";
         }
 
         Role role = roleRepository.findRoleByName(RoleName.USER);
 
         if (role == null) {
-            throw new RuntimeException("Role not found");
+            bindingResult.reject("error.role", "Role not found");
+            return "auth/register";
         }
 
         Set<Role> roles = new HashSet<>();
         roles.add(role);
 
-        oldUser = new User();
-        oldUser.setFirstName(request.getFirstName());
-        oldUser.setLastName(request.getLastName());
-        oldUser.setEmail(request.getEmail());
-        oldUser.setPassword(passwordEncoder.encode(request.getPassword()));
-        oldUser.setRoles(roles);
-        oldUser.setPhone(request.getPhone());
+        User user = new User();
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRoles(roles);
+        user.setPhone(request.getPhone());
 
-        userRepository.save(oldUser);
+        userRepository.save(user);
 
-        Map<String, Object> objectMap = new HashMap<String, Object>();
-        objectMap.put("name", oldUser.getEmail());
+        Map<String, Object> objectMap = new HashMap<>();
+        objectMap.put("name", user.getEmail());
         objectMap.put("content", "<p>This is a <strong>complex</strong> email with HTML content and CSS styling.</p>");
 
         MailRequest mailRequest = new MailRequest();
@@ -135,7 +136,6 @@ public class AuthController {
         mailRequest.setSubject("Registration Confirmation");
         mailRequest.setTemplateName("email-template");
         mailRequest.setModel(objectMap);
-
 
         mailService.sendMail(mailRequest);
 

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_novelAdminLayout}">
+<head>
+    <title>Manage Novels - NRW Admin</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header-left">
+            <h1>Manage Novels</h1>
+            <p>View and manage all novels in the platform</p>
+        </div>
+        <div class="page-header-right">
+            <button class="btn-notification">
+                <i class="bi bi-bell"></i>
+                <span class="notification-badge">3</span>
+            </button>
+            <a th:href="@{/admin/novels/create}" class="btn-primary-custom">
+                <i class="bi bi-plus-lg"></i>
+                Add New Novel
+            </a>
+        </div>
+    </div>
+
+    <!-- Mobile: Full-width Add button -->
+    <a th:href="@{/admin/novels/create}" class="btn-primary-custom mobile-add-btn">
+        <i class="bi bi-plus-lg"></i>
+        Add New Novel
+    </a>
+
+    <!-- Search & Filters -->
+    <div class="filter-bar">
+        <div class="search-input-wrapper">
+            <i class="bi bi-search"></i>
+            <input type="text" class="search-input" placeholder="Search novels...">
+        </div>
+        <div class="filter-row">
+            <select class="filter-select">
+                <option value="">All Genres</option>
+                <option>Fantasy</option>
+                <option>Xianxia</option>
+                <option>VRMMO</option>
+                <option>Romance</option>
+                <option>Adventure</option>
+            </select>
+            <select class="filter-select">
+                <option value="">All Status</option>
+                <option>Ongoing</option>
+                <option>Completed</option>
+                <option>Hiatus</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Desktop: Table -->
+    <div class="table-card desktop-only">
+        <table class="table-custom">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Genre</th>
+                    <th>Author</th>
+                    <th>Total Chapters</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="novel-title-cell">
+                            <div class="novel-thumb" style="background: linear-gradient(126deg, rgba(236,91,19,0.4), rgba(236,91,19,0.8));"></div>
+                            <div class="novel-title-info">
+                                <span class="novel-title-name">The Shadow Monarch's Return</span>
+                                <span class="novel-title-id">#NV-001</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="genre-pill genre-fantasy">Fantasy</span></td>
+                    <td>Park Soo-jin</td>
+                    <td>342</td>
+                    <td><span class="status-pill status-ongoing">Ongoing</span></td>
+                    <td><button class="btn-action"><i class="bi bi-pencil"></i></button></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="novel-title-cell">
+                            <div class="novel-thumb" style="background: linear-gradient(126deg, rgba(99,102,241,0.4), #3730a3);"></div>
+                            <div class="novel-title-info">
+                                <span class="novel-title-name">Celestial Library</span>
+                                <span class="novel-title-id">#NV-002</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="genre-pill genre-xianxia">Xianxia</span></td>
+                    <td>Chen Wei</td>
+                    <td>567</td>
+                    <td><span class="status-pill status-completed">Completed</span></td>
+                    <td><button class="btn-action"><i class="bi bi-pencil"></i></button></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="novel-title-cell">
+                            <div class="novel-thumb" style="background: linear-gradient(126deg, rgba(251,113,133,0.4), #be123c);"></div>
+                            <div class="novel-title-info">
+                                <span class="novel-title-name">Reincarnation of the Sword God</span>
+                                <span class="novel-title-id">#NV-003</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="genre-pill genre-vrmmo">VRMMO</span></td>
+                    <td>Kim Tae-hyung</td>
+                    <td>189</td>
+                    <td><span class="status-pill status-ongoing">Ongoing</span></td>
+                    <td><button class="btn-action"><i class="bi bi-pencil"></i></button></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="novel-title-cell">
+                            <div class="novel-thumb" style="background: linear-gradient(126deg, rgba(236,91,19,0.4), rgba(236,91,19,0.8));"></div>
+                            <div class="novel-title-info">
+                                <span class="novel-title-name">The Villainess Turns the Hourglass</span>
+                                <span class="novel-title-id">#NV-004</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="genre-pill genre-romance">Romance</span></td>
+                    <td>Lee Min-ah</td>
+                    <td>210</td>
+                    <td><span class="status-pill status-hiatus">Hiatus</span></td>
+                    <td><button class="btn-action"><i class="bi bi-pencil"></i></button></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="novel-title-cell">
+                            <div class="novel-thumb" style="background: linear-gradient(126deg, rgba(16,185,129,0.4), #065f46);"></div>
+                            <div class="novel-title-info">
+                                <span class="novel-title-name">Forest of the Ancients</span>
+                                <span class="novel-title-id">#NV-005</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="genre-pill genre-adventure">Adventure</span></td>
+                    <td>Yamamoto Kenji</td>
+                    <td>98</td>
+                    <td><span class="status-pill status-ongoing">Ongoing</span></td>
+                    <td><button class="btn-action"><i class="bi bi-pencil"></i></button></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="table-footer">
+            <span>Showing 1 to 5 of 128 results</span>
+            <div class="pagination-btns">
+                <button class="btn-page">Previous</button>
+                <button class="btn-page">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile: Card List -->
+    <div class="novel-cards mobile-only">
+        <div class="novel-card">
+            <div class="novel-card-thumb" style="background: linear-gradient(126deg, rgba(236,91,19,0.4), rgba(236,91,19,0.8));">
+                <i class="bi bi-book"></i>
+            </div>
+            <div class="novel-card-body">
+                <div class="novel-card-top">
+                    <div>
+                        <div class="novel-card-title">The Eternal Spire</div>
+                        <div class="novel-card-id">ID: NVL-8293</div>
+                    </div>
+                    <button class="btn-action"><i class="bi bi-pencil"></i></button>
+                </div>
+                <div class="novel-card-pills">
+                    <span class="genre-pill genre-fantasy">Fantasy</span>
+                    <span class="status-pill status-ongoing">Ongoing</span>
+                </div>
+                <div class="novel-card-meta">
+                    <span><i class="bi bi-person"></i> J.R. Thorne</span>
+                    <span><i class="bi bi-journal-text"></i> 142 Ch.</span>
+                </div>
+            </div>
+        </div>
+        <div class="novel-card">
+            <div class="novel-card-thumb" style="background: linear-gradient(126deg, rgba(99,102,241,0.4), #3730a3);">
+                <i class="bi bi-rocket"></i>
+            </div>
+            <div class="novel-card-body">
+                <div class="novel-card-top">
+                    <div>
+                        <div class="novel-card-title">Neon Shadows</div>
+                        <div class="novel-card-id">ID: NVL-4412</div>
+                    </div>
+                    <button class="btn-action"><i class="bi bi-pencil"></i></button>
+                </div>
+                <div class="novel-card-pills">
+                    <span class="genre-pill genre-vrmmo">Sci-Fi</span>
+                    <span class="status-pill status-completed">Completed</span>
+                </div>
+                <div class="novel-card-meta">
+                    <span><i class="bi bi-person"></i> Sarah Miller</span>
+                    <span><i class="bi bi-journal-text"></i> 85 Ch.</span>
+                </div>
+            </div>
+        </div>
+        <div class="novel-card">
+            <div class="novel-card-thumb" style="background: linear-gradient(126deg, rgba(251,113,133,0.4), #be123c);">
+                <i class="bi bi-heart"></i>
+            </div>
+            <div class="novel-card-body">
+                <div class="novel-card-top">
+                    <div>
+                        <div class="novel-card-title">Midnight Whispers</div>
+                        <div class="novel-card-id">ID: NVL-1092</div>
+                    </div>
+                    <button class="btn-action"><i class="bi bi-pencil"></i></button>
+                </div>
+                <div class="novel-card-pills">
+                    <span class="genre-pill genre-romance">Romance</span>
+                    <span class="status-pill status-hiatus">Hiatus</span>
+                </div>
+                <div class="novel-card-meta">
+                    <span><i class="bi bi-person"></i> Elena Vane</span>
+                    <span><i class="bi bi-journal-text"></i> 56 Ch.</span>
+                </div>
+            </div>
+        </div>
+        <div class="novel-card">
+            <div class="novel-card-thumb" style="background: linear-gradient(126deg, rgba(16,185,129,0.4), #065f46);">
+                <i class="bi bi-lightning"></i>
+            </div>
+            <div class="novel-card-body">
+                <div class="novel-card-top">
+                    <div>
+                        <div class="novel-card-title">The Lost Kingdom</div>
+                        <div class="novel-card-id">ID: NVL-5671</div>
+                    </div>
+                    <button class="btn-action"><i class="bi bi-pencil"></i></button>
+                </div>
+                <div class="novel-card-pills">
+                    <span class="genre-pill genre-adventure">Action</span>
+                    <span class="status-pill status-ongoing">Ongoing</span>
+                </div>
+                <div class="novel-card-meta">
+                    <span><i class="bi bi-person"></i> Mark K.</span>
+                    <span><i class="bi bi-journal-text"></i> 210 Ch.</span>
+                </div>
+            </div>
+        </div>
+        <div class="novel-card">
+            <div class="novel-card-thumb" style="background: linear-gradient(126deg, rgba(251,113,133,0.4), #be123c);">
+                <i class="bi bi-heart"></i>
+            </div>
+            <div class="novel-card-body">
+                <div class="novel-card-top">
+                    <div>
+                        <div class="novel-card-title">Midnight Whispers</div>
+                        <div class="novel-card-id">ID: NVL-1092</div>
+                    </div>
+                    <button class="btn-action"><i class="bi bi-pencil"></i></button>
+                </div>
+                <div class="novel-card-pills">
+                    <span class="genre-pill genre-romance">Romance</span>
+                    <span class="status-pill status-hiatus">Hiatus</span>
+                </div>
+                <div class="novel-card-meta">
+                    <span><i class="bi bi-person"></i> Elena Vane</span>
+                    <span><i class="bi bi-journal-text"></i> 56 Ch.</span>
+                </div>
+            </div>
+        </div>
+        <div class="table-footer">
+            <span>Showing 1 to 5 of 128 results</span>
+            <div class="pagination-btns">
+                <button class="btn-page">Previous</button>
+                <button class="btn-page">Next</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

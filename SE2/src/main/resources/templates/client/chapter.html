@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chapter 42: The Whispering Void - Shadows of the Empire</title>
+    <link rel="stylesheet" th:href="@{/css/chapter.css}">
+</head>
+<body>
+<div class="chapter">
+
+    <!-- Progress Bar -->
+    <div class="progress-track">
+        <div class="progress-fill" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" aria-label="Reading progress"></div>
+    </div>
+
+    <!-- Sticky Header -->
+    <header class="chapter-header">
+        <nav class="header-inner" aria-label="Main navigation">
+            <div class="header-left">
+                <a href="#" class="btn-icon" aria-label="Go back">
+                    <img th:src="@{/img/back-arrow.svg}" alt="">
+                </a>
+                <div class="header-title-group">
+                    <span class="header-novel-title">Shadows of the Empire</span>
+                    <span class="header-chapter-title">Chapter 42: The Whispering Void</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn-icon" aria-label="Table of contents" onclick="openSidebar('tocSidebar')">
+                    <img th:src="@{/img/menu.svg}" alt="">
+                </button>
+                <button class="btn-contribute">
+                    <img th:src="@{/img/translate.svg}" alt="">
+                    <span>Contribute</span>
+                </button>
+                <!-- Bookmark button with dropdown -->
+                <div class="chapter-dropdown-wrapper">
+                    <button class="btn-icon" aria-label="Bookmarks" onclick="toggleChapterDropdown('bookmarks')">
+                        <img th:src="@{/img/bookmark.svg}" alt="">
+                    </button>
+                    <div class="chapter-dropdown" id="dropdown-bookmarks">
+                        <div class="chapter-dropdown-header">
+                            <span class="chapter-dropdown-title">Bookmarks</span>
+                        </div>
+                        <div class="chapter-dropdown-body">
+                            <div class="bookmark-item">
+                                <p class="bookmark-text">The silence in the cavern was absolute, a heavy blanket that smothered sound and thought alike...</p>
+                            </div>
+                            <div class="bookmark-divider"></div>
+                            <div class="bookmark-item">
+                                <p class="bookmark-text">Kaelen stepped up beside her, his own weapon drawn, a shimmering blade of starlight glass...</p>
+                            </div>
+                        </div>
+                        <div class="chapter-dropdown-footer">View all bookmarks</div>
+                    </div>
+                </div>
+                <!-- Appearance button with dropdown -->
+                <div class="chapter-dropdown-wrapper">
+                    <button class="btn-icon" aria-label="Appearance settings" onclick="toggleChapterDropdown('appearance')">
+                        <img th:src="@{/img/appearance.png}" alt="" style="width:20px;height:20px;">
+                    </button>
+                    <div class="chapter-dropdown chapter-dropdown-appearance" id="dropdown-appearance">
+                        <div class="appearance-section">
+                            <div class="appearance-label">Theme</div>
+                            <div class="theme-options">
+                                <button class="theme-btn theme-light" data-theme="light"></button>
+                                <button class="theme-btn theme-sepia active" data-theme="sepia">
+                                    <svg width="17" height="13" viewBox="0 0 17 13" fill="none"><path d="M1.5 7L6 11.5L15.5 1.5" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </button>
+                                <button class="theme-btn theme-dark" data-theme="dark"></button>
+                            </div>
+                        </div>
+                        <div class="appearance-section">
+                            <div class="appearance-label">Size</div>
+                            <div class="size-slider-row">
+                                <span class="size-label-small">A-</span>
+                                <input type="range" min="14" max="28" value="20" class="size-slider">
+                                <span class="size-label-large">A+</span>
+                            </div>
+                        </div>
+                        <div class="appearance-section">
+                            <div class="appearance-label">Font Family</div>
+                            <div class="font-toggle">
+                                <button class="font-toggle-btn active" data-font="serif">Serif</button>
+                                <button class="font-toggle-btn" data-font="sans-serif">Sans-Serif</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- TOC Sidebar (left) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebars()"></div>
+    <aside class="chapter-sidebar chapter-sidebar-left" id="tocSidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-title">Table of Contents</span>
+            <button class="sidebar-close" onclick="closeSidebars()">&times;</button>
+        </div>
+        <div class="sidebar-search">
+            <i class="search-icon">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="5" stroke="#6b7280" stroke-width="1.5"/><path d="M10 10L13 13" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </i>
+            <input type="text" placeholder="Search chapters..." class="sidebar-search-input">
+        </div>
+        <div class="toc-list">
+            <div class="toc-volume">
+                <div class="toc-volume-label">Volume 1: The Awakening</div>
+                <a href="#" class="toc-chapter read">Chapter 1: The Beginning <span class="toc-check">&#10003;</span></a>
+                <a href="#" class="toc-chapter read">Chapter 2: Shadow Falls <span class="toc-check">&#10003;</span></a>
+            </div>
+            <div class="toc-volume">
+                <div class="toc-volume-label">Volume 2: The Journey</div>
+                <a href="#" class="toc-chapter read">Chapter 25: Crossroads <span class="toc-check">&#10003;</span></a>
+            </div>
+            <div class="toc-volume">
+                <div class="toc-volume-label">Volume 3: The Void</div>
+                <a href="#" class="toc-chapter read">Chapter 40: Echoes <span class="toc-check">&#10003;</span></a>
+                <a href="#" class="toc-chapter read">Chapter 41: Into the Deep <span class="toc-check">&#10003;</span></a>
+                <a href="#" class="toc-chapter active">Chapter 42: The Whispering Void</a>
+                <a href="#" class="toc-chapter">Chapter 43: The First Light <span class="toc-badge">New</span></a>
+                <a href="#" class="toc-chapter disabled">Chapter 44: Resolution</a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Comments Sidebar (right) -->
+    <aside class="chapter-sidebar chapter-sidebar-right" id="commentsSidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-title">Paragraph Comments</span>
+            <button class="sidebar-close" onclick="closeSidebars()">&times;</button>
+        </div>
+        <div class="comments-body">
+            <div class="comment-quote">
+                <p>"Suddenly, the air pressure dropped. It wasn't a wind, but a vacuum, sucking the warmth from her skin..."</p>
+            </div>
+            <div class="comment-item">
+                <div class="comment-avatar" style="background:#dbeafe;color:#2563eb;">JD</div>
+                <div class="comment-content">
+                    <div class="comment-header">
+                        <span class="comment-name">John Doe</span>
+                        <span class="comment-time">2h ago</span>
+                    </div>
+                    <p class="comment-text">The description here is visceral. I can almost feel the cold vacuum.</p>
+                    <div class="comment-actions">
+                        <span class="comment-like">&#9825; 12</span>
+                        <span class="comment-reply">Reply</span>
+                    </div>
+                </div>
+            </div>
+            <div class="comment-item">
+                <div class="comment-avatar" style="background:#f3e8ff;color:#9333ea;">SA</div>
+                <div class="comment-content">
+                    <div class="comment-header">
+                        <span class="comment-name">Sarah A.</span>
+                        <span class="comment-time">45m ago</span>
+                    </div>
+                    <p class="comment-text">This reminds me of the Void description in Chapter 12. Nice callback!</p>
+                    <div class="comment-actions">
+                        <span class="comment-like">&#9825; 5</span>
+                        <span class="comment-reply">Reply</span>
+                    </div>
+                    <!-- Nested reply -->
+                    <div class="comment-reply-thread">
+                        <div class="comment-item comment-item-nested">
+                            <div class="comment-avatar comment-avatar-sm" style="background:#dcfce7;color:#16a34a;">MK</div>
+                            <div class="comment-content">
+                                <div class="comment-header">
+                                    <span class="comment-name" style="font-size:12px;">Mike K.</span>
+                                    <span class="comment-time">15m ago</span>
+                                </div>
+                                <p class="comment-text" style="font-size:12px;line-height:16.5px;">Exactly! The consistency in world-building is top notch.</p>
+                                <div class="comment-actions"><span class="comment-like">&#9825; 2</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="comment-item">
+                <div class="comment-avatar" style="background:#ffedd5;color:#ea580c;">L</div>
+                <div class="comment-content">
+                    <div class="comment-header">
+                        <span class="comment-name">Luna</span>
+                        <span class="comment-time">Just now</span>
+                    </div>
+                    <p class="comment-text">Can't wait to see what entity appears next.</p>
+                    <div class="comment-actions">
+                        <span class="comment-like">&#9825; 0</span>
+                        <span class="comment-reply">Reply</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="comments-input">
+            <input type="text" placeholder="Add a comment..." class="comment-input-field">
+            <button class="comment-send-btn">
+                <svg width="15" height="13" viewBox="0 0 15 13" fill="none"><path d="M1 6.5L13.5 1L8 6.5M1 6.5L8 6.5M1 6.5L13.5 12L8 6.5" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="chapter-main">
+        <article class="chapter-article">
+
+            <!-- Chapter Info -->
+            <header class="chapter-info">
+                <div class="chapter-volume">Volume 3</div>
+                <h1 class="chapter-title">Chapter 42: The Whispering Void</h1>
+                <div class="chapter-meta">
+                    <span>2,847 words</span>
+                    <span class="dot"></span>
+                    <span>Updated Dec 15, 2024</span>
+                </div>
+            </header>
+
+            <!-- Chapter Text -->
+            <div class="chapter-content">
+                <div class="paragraph-wrapper">
+                    <p class="chapter-paragraph">
+                        The silence in the cavern was absolute, a heavy blanket that smothered sound and thought alike. Elara
+                        held her breath, the crystal in her hand pulsing with a faint, rhythmic blue light that cast long,
+                        dancing shadows against the damp stone walls. She knew they were close. The ancient texts had spoken of
+                        this place, the threshold where the material world began to fray at the edges.
+                    </p>
+                    <div class="paragraph-actions">
+                        <button class="action-btn" aria-label="Add comment" onclick="openSidebar('commentsSidebar')">
+                            <img th:src="@{/img/comment.svg}" alt="">
+                        </button>
+                        <button class="action-btn" aria-label="Bookmark">
+                            <img th:src="@{/img/bookmark.svg}" alt="">
+                        </button>
+                    </div>
+                </div>
+
+                <div class="paragraph-wrapper">
+                    <p class="chapter-paragraph">
+                        "Do not look into the abyss," Kaelen had warned her, his voice trembling for the first time
+                        since she had known him. But how could one avoid the very thing they had journeyed so far to
+                        confront? Her boots scuffed against the gravel, the sound impossibly loud in the stillness.
+                    </p>
+                    <div class="paragraph-actions">
+                        <button class="action-btn" aria-label="Add comment" onclick="openSidebar('commentsSidebar')">
+                            <img th:src="@{/img/comment.svg}" alt="">
+                        </button>
+                        <button class="action-btn" aria-label="Bookmark">
+                            <img th:src="@{/img/bookmark.svg}" alt="">
+                        </button>
+                    </div>
+                </div>
+
+                <div class="paragraph-wrapper">
+                    <p class="chapter-paragraph">
+                        Suddenly, the air pressure dropped. It wasn't a wind, but a vacuum, sucking the warmth from her
+                        skin. The darkness ahead seemed to solidify, coalescing into shapes that defied geometry. She
+                        tightened her grip on the hilt of her blade, the leather warm and familiar against her palm.
+                        This was it. The Whispering Void.
+                    </p>
+                    <div class="paragraph-actions">
+                        <button class="action-btn" aria-label="Add comment" onclick="openSidebar('commentsSidebar')">
+                            <img th:src="@{/img/comment.svg}" alt="">
+                            <span class="comment-count">5</span>
+                        </button>
+                        <button class="action-btn" aria-label="Bookmark">
+                            <img th:src="@{/img/bookmark.svg}" alt="">
+                        </button>
+                    </div>
+                </div>
+
+                <div class="paragraph-wrapper">
+                    <p class="chapter-paragraph">
+                        A voice echoed, not in the air, but directly inside her mind.
+                    </p>
+                    <p class="chapter-paragraph" style="margin-top: 8px;">
+                        <em>"You bring light to a place that has only known hunger."</em>
+                    </p>
+                    <p class="chapter-paragraph" style="margin-top: 8px;">
+                        It wasn't malicious, merely observant, cold and ancient as the stars themselves. Elara steeled
+                        herself. She hadn't come for conversation.
+                    </p>
+                    <div class="paragraph-actions">
+                        <button class="action-btn" aria-label="Add comment" onclick="openSidebar('commentsSidebar')">
+                            <img th:src="@{/img/comment.svg}" alt="">
+                        </button>
+                        <button class="action-btn" aria-label="Bookmark">
+                            <img th:src="@{/img/bookmark.svg}" alt="">
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Section Divider -->
+                <div class="section-divider">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <div class="paragraph-wrapper">
+                    <p class="chapter-paragraph">
+                        Kaelen stepped up beside her, his own weapon drawn, a shimmering blade of starlight glass.
+                        "Remember the formation," he whispered. "Whatever happens, do not break the circle." She
+                        nodded, though fear was a cold knot in her stomach. They were two against infinity.
+                    </p>
+                    <div class="paragraph-actions">
+                        <button class="action-btn" aria-label="Add comment" onclick="openSidebar('commentsSidebar')">
+                            <img th:src="@{/img/comment.svg}" alt="">
+                        </button>
+                        <button class="action-btn" aria-label="Bookmark">
+                            <img th:src="@{/img/bookmark.svg}" alt="">
+                        </button>
+                    </div>
+                </div>
+
+                <div class="paragraph-wrapper">
+                    <p class="chapter-paragraph">
+                        The Void shifted. It didn't attack; it simply... expanded. The ground beneath them trembled,
+                        not with an earthquake's violence, but with the shudder of a waking giant. Elara raised the
+                        crystal high. "By the light of Siglis," she chanted, the words tasting of ash and ozone,
+                        "I command you to yield!"
+                    </p>
+                    <div class="paragraph-actions">
+                        <button class="action-btn" aria-label="Add comment" onclick="openSidebar('commentsSidebar')">
+                            <img th:src="@{/img/comment.svg}" alt="">
+                        </button>
+                        <button class="action-btn" aria-label="Bookmark">
+                            <img th:src="@{/img/bookmark.svg}" alt="">
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </article>
+    </main>
+
+    <!-- Sticky Footer -->
+    <footer class="chapter-footer">
+        <nav class="footer-inner" aria-label="Chapter navigation">
+            <a href="#" class="footer-nav-link">
+                <div class="footer-nav-arrow">
+                    <img th:src="@{/img/prev-chapter.svg}" alt="">
+                </div>
+                <div class="footer-nav-text">
+                    <span class="footer-nav-label">Previous</span>
+                    <span class="footer-nav-title">Chapter 41: Into the Deep</span>
+                </div>
+            </a>
+
+            <div class="footer-current">
+                <img th:src="@{/img/book.svg}" alt="">
+                <span class="footer-current-label">CHAPTER 42</span>
+            </div>
+
+            <a href="#" class="footer-nav-link">
+                <div class="footer-nav-text footer-nav-text-right">
+                    <span class="footer-nav-label">Next</span>
+                    <span class="footer-nav-title">Chapter 43: The First Light</span>
+                </div>
+                <div class="footer-nav-arrow-next">
+                    <img th:src="@{/img/next-chapter.svg}" alt="">
+                </div>
+            </a>
+        </nav>
+    </footer>
+
+</div>
+<script>
+    function openSidebar(id) {
+        closeSidebars();
+        document.getElementById(id).classList.add('open');
+        document.getElementById('sidebarOverlay').classList.add('active');
+    }
+    function closeSidebars() {
+        document.querySelectorAll('.chapter-sidebar').forEach(function(s) { s.classList.remove('open'); });
+        document.getElementById('sidebarOverlay').classList.remove('active');
+    }
+    function toggleChapterDropdown(name) {
+        var allDropdowns = document.querySelectorAll('.chapter-dropdown');
+        var target = document.getElementById('dropdown-' + name);
+        var isOpen = target.classList.contains('active');
+        allDropdowns.forEach(function(d) { d.classList.remove('active'); });
+        if (!isOpen) target.classList.add('active');
+    }
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.chapter-dropdown-wrapper')) {
+            document.querySelectorAll('.chapter-dropdown').forEach(function(d) { d.classList.remove('active'); });
+        }
+    });
+    // Theme buttons
+    document.querySelectorAll('.theme-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.theme-btn').forEach(function(b) { b.classList.remove('active'); b.innerHTML = ''; });
+            btn.classList.add('active');
+            btn.innerHTML = '<svg width="17" height="13" viewBox="0 0 17 13" fill="none"><path d="M1.5 7L6 11.5L15.5 1.5" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        });
+    });
+    // Font family toggle
+    document.querySelectorAll('.font-toggle-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.font-toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+        });
+    });
+</script>
+</body>
+</html>

@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
 public class SecurityConfig {
 
     private static final String[] PUBLIC_WHITELIST = {"/images/**",
+            "/home","/search","/",
             "/css/**",
             "/js/**",
             "/WEB-INF/views/**", "/login", "/register", "/favicon.ico", "/oauth/**", "/forgot-password",

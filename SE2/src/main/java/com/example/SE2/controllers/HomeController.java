@@ -13,19 +13,13 @@ public class HomeController {
 
     private final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String home() {
-
-        var user = SecurityContextHolder.getContext().getAuthentication();
-        return "client/home";
-    }
 
     @RequestMapping(value = "/access-denied", method = RequestMethod.GET)
     public String accessDeniedPage() {
         return "public/accessDenied";
     }
 
-    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    @RequestMapping(value = {"/","/home"}, method = RequestMethod.GET)
     public String homePage() {
         return "client/homePage";
     }

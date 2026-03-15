@@ -39,7 +39,7 @@ menu, ol, ul {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(7, 9, 15, 0.92);
+    background: #0F172A;
     backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }

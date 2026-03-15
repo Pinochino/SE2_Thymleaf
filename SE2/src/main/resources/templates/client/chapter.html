@@ -30,10 +30,10 @@
                 <button class="btn-icon" aria-label="Table of contents" onclick="openSidebar('tocSidebar')">
                     <img th:src="@{/img/menu.svg}" alt="">
                 </button>
-                <button class="btn-contribute">
+                <a th:href="@{/user/translation-submit}" class="btn-contribute" style="text-decoration:none;">
                     <img th:src="@{/img/translate.svg}" alt="">
                     <span>Contribute</span>
-                </button>
+                </a>
                 <!-- Bookmark button with dropdown -->
                 <div class="chapter-dropdown-wrapper">
                     <button class="btn-icon" aria-label="Bookmarks" onclick="toggleChapterDropdown('bookmarks')">

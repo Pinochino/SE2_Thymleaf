@@ -13,5 +13,14 @@ public class NovelController {
         return "client/novel/NovelInformation";
     }
 
+    @GetMapping("/{id}")
+    public String detail2(@PathVariable int id, Model model) {
+        return "client/novel-detail";
+    }
+
+    @GetMapping("/chapter")
+    public String readChapter() {
+        return "client/chapter";
+    }
 
 }

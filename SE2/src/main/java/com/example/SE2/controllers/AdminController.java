@@ -1,7 +1,6 @@
 package com.example.SE2.controllers;
 
-import com.example.SE2.repositories.BookRepository;
-import com.example.SE2.repositories.CategoryRepository;
+import com.example.SE2.repositories.GenreRepository;
 import com.example.SE2.repositories.UserRepository;
 import com.example.SE2.services.file.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,26 +14,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin")
 public class AdminController {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final SessionRegistry sessionRegistry;
-    private final BookRepository bookRepository;
-    private final CategoryRepository categoryRepository;
-    private final FileService fileService;
 
     @Autowired
     public AdminController(UserRepository userRepository,
                            PasswordEncoder passwordEncoder,
                            SessionRegistry sessionRegistry,
-                           BookRepository bookRepository,
-                           CategoryRepository categoryRepository,
+                           GenreRepository genreRepository,
                            FileService fileService) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.sessionRegistry = sessionRegistry;
-        this.bookRepository = bookRepository;
-        this.categoryRepository = categoryRepository;
-        this.fileService = fileService;
+
     }
 
     /**

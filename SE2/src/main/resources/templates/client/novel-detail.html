@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${novel != null ? novel.title : 'Novel Detail'} + ' - NRW'">Novel Detail - NRW</title>
+    <link rel="stylesheet" th:href="@{/css/novel-detail.css}">
+</head>
+<body>
+
+<!-- ==================== DESKTOP / TABLET NAV ==================== -->
+<nav class="nd-nav">
+    <div class="nd-nav-inner">
+        <div class="nd-nav-brand">
+            <svg viewBox="0 0 33 29" fill="none">
+                <rect x="0" y="0" width="8" height="29" rx="2" fill="#c9a46a"/>
+                <rect x="12" y="0" width="8" height="29" rx="2" fill="#c9a46a" opacity="0.7"/>
+                <rect x="24" y="5" width="8" height="19" rx="2" fill="#c9a46a" opacity="0.4"/>
+            </svg>
+            <span class="nd-nav-brand-text">NRW</span>
+        </div>
+
+        <div class="nd-nav-links">
+            <a href="/" class="nd-nav-link active">Home</a>
+            <a href="#" class="nd-nav-link">Favourite</a>
+            <a href="#" class="nd-nav-link">Contribute</a>
+        </div>
+
+        <div class="nd-search">
+            <svg class="nd-search-icon" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <circle cx="8" cy="8" r="6.5" stroke="#6b7280" stroke-width="1.5"/>
+                <line x1="13" y1="13" x2="16.5" y2="16.5" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <input type="text" placeholder="Search novels...">
+            <button class="nd-search-btn">
+                <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                    <rect x="2" y="2" width="4.5" height="4.5" rx="1" stroke="#6b7280" stroke-width="1.2"/>
+                    <rect x="8.5" y="2" width="4.5" height="4.5" rx="1" stroke="#6b7280" stroke-width="1.2"/>
+                    <rect x="2" y="8.5" width="4.5" height="4.5" rx="1" stroke="#6b7280" stroke-width="1.2"/>
+                    <rect x="8.5" y="8.5" width="4.5" height="4.5" rx="1" stroke="#6b7280" stroke-width="1.2"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="nd-nav-actions">
+            <button class="nd-nav-bell">
+                <svg width="16" height="20" viewBox="0 0 16 20" fill="none">
+                    <path d="M8 0C4.68 0 2 2.68 2 6v4.5L0 12.5v1h16v-1l-2-2V6c0-3.32-2.68-6-6-6zm0 20c1.1 0 2-.9 2-2H6c0 1.1.9 2 2 2z" fill="#94a3b8"/>
+                </svg>
+            </button>
+            <div class="nd-nav-avatar">
+                <div style="width:100%;height:100%;background:#4f46e5;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:600;">U</div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- ==================== MOBILE HEADER ==================== -->
+<header class="nd-mobile-header">
+    <div class="nd-mobile-brand">
+        <svg width="22.5" height="15" viewBox="0 0 23 15" fill="none">
+            <rect y="0" width="23" height="2.5" rx="1" fill="#94a3b8"/>
+            <rect y="6" width="23" height="2.5" rx="1" fill="#94a3b8"/>
+            <rect y="12" width="23" height="2.5" rx="1" fill="#94a3b8"/>
+        </svg>
+        <span class="nd-mobile-brand-text">NRW</span>
+    </div>
+    <button class="nd-mobile-search-btn">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <circle cx="8" cy="8" r="6.5" stroke="#94a3b8" stroke-width="1.5"/>
+            <line x1="13" y1="13" x2="16.5" y2="16.5" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+    </button>
+</header>
+
+<!-- ==================== MAIN CONTENT ==================== -->
+<main class="nd-main">
+    <div class="nd-content">
+
+        <!-- === NOVEL INFO CARD === -->
+        <div class="nd-card">
+            <!-- Novel Header: Cover + Info -->
+            <div class="nd-novel-header">
+                <div class="nd-cover">
+                    <img th:src="${novel != null && novel.coverUrl != null ? novel.coverUrl : '/img/default-cover.jpg'}"
+                         alt="Novel Cover"
+                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22192%22 height=%22288%22%3E%3Crect fill=%22%23232730%22 width=%22192%22 height=%22288%22/%3E%3Ctext x=%2296%22 y=%22144%22 fill=%22%2394a3b8%22 text-anchor=%22middle%22 font-size=%2214%22%3ENo Cover%3C/text%3E%3C/svg%3E'">
+                </div>
+                <div class="nd-info">
+                    <div class="nd-info-top">
+                        <h1 class="nd-title" th:text="${novel != null ? novel.title : 'The Alchemist''s Horizon'}">The Alchemist's Horizon</h1>
+
+                        <div class="nd-meta">
+                            <span class="nd-meta-icon">
+                                <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="4.5" r="4" stroke="#94a3b8" stroke-width="1"/></svg>
+                            </span>
+                            <span>By</span>
+                            <span class="nd-meta-value" th:text="${novel != null ? novel.author : 'Elena Vance'}">Elena Vance</span>
+                            <span class="nd-meta-sep">&bull;</span>
+                            <svg width="13" height="12" viewBox="0 0 13 12" fill="none">
+                                <path d="M1 1h8v10H1z" stroke="#94a3b8" stroke-width="1.2"/>
+                                <path d="M4 1V0M4 4h4M4 6.5h4" stroke="#94a3b8" stroke-width="0.8"/>
+                            </svg>
+                            <span>Trans:</span>
+                            <span class="nd-meta-value" th:text="${novel != null ? novel.translator : 'Moonlight Team'}">Moonlight Team</span>
+                        </div>
+
+                        <!-- Rating row -->
+                        <div class="nd-rating">
+                            <div class="nd-stars" th:with="ratingVal=${novel != null ? novel.rating : 0}">
+                                <svg th:each="i : ${#numbers.sequence(1,5)}" viewBox="0 0 20 19" fill="none">
+                                    <path d="M10 0l2.47 7.6h7.99l-6.47 4.7 2.47 7.6L10 15.2l-6.47 4.7 2.47-7.6L-.47 7.6h7.99z"
+                                          th:fill="${i <= ratingVal ? '#c9a46a' : 'none'}"
+                                          th:stroke="${i > ratingVal ? '#94a3b8' : 'none'}"
+                                          stroke-width="1"/>
+                                </svg>
+                            </div>
+                            <span class="nd-rating-score" th:if="${novel != null && novel.rating > 0}" th:text="${novel.rating}">4.8</span>
+                            <span class="nd-rating-count" th:text="${novel != null && novel.ratingCount > 0 ? '(' + novel.ratingCount + ' ratings)' : '0 rating'}">(2.4k ratings)</span>
+                        </div>
+
+                        <!-- Genre Tags -->
+                        <div class="nd-tags">
+                            <span class="nd-tag primary" th:each="genre : ${novel != null ? novel.genres : {'Fantasy'}}"
+                                  th:text="${genre}"
+                                  th:classappend="${genreStat.first ? 'primary' : ''}">Fantasy</span>
+                            <!--/* Default tags for when no model */-->
+                            <th:block th:if="${novel == null}">
+                                <span class="nd-tag primary">Fantasy</span>
+                                <span class="nd-tag">Magic</span>
+                                <span class="nd-tag">Adventure</span>
+                                <span class="nd-tag">System</span>
+                                <span class="nd-tag">Alchemy</span>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="nd-actions">
+                        <button class="nd-btn-read">
+                            <svg width="22" height="16" viewBox="0 0 22 16" fill="none">
+                                <path d="M1 1h8c1 0 2 1 2 2v11S10 13 9 13H1V1zM21 1h-8c-1 0-2 1-2 2v11s1-1 2-1h8V1z" stroke="#0f1115" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Read Now
+                        </button>
+                        <button class="nd-btn-save">
+                            <svg width="20" height="18" viewBox="0 0 20 18" fill="none">
+                                <path d="M10 16.35S1 10 1 5.5C1 2.42 3.42 0 6.5 0 8.24 0 9.91.81 10 2.09 10.09.81 11.76 0 13.5 0 16.58 0 19 2.42 19 5.5c0 4.5-9 10.85-9 10.85z" fill="#f87171"/>
+                            </svg>
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reading Progress (shown when chapters exist) -->
+            <div class="nd-progress" th:if="${hasChapters == null || hasChapters}">
+                <div class="nd-progress-header">
+                    <div>
+                        <div class="nd-progress-label">Reading Progress</div>
+                        <div class="nd-progress-chapter">
+                            Currently at Chapter <span th:text="${currentChapter != null ? currentChapter : 0}">0</span>
+                            <span th:text="'/ ' + (${totalChapters != null ? totalChapters : 1245})">/ 1245</span>
+                        </div>
+                    </div>
+                    <div class="nd-progress-pct" th:text="${progressPct != null ? progressPct + '%' : '0%'}">0%</div>
+                </div>
+                <div class="nd-progress-bar">
+                    <div class="nd-progress-fill" th:style="'width:' + (${progressPct != null ? progressPct : 0}) + '%'"></div>
+                </div>
+                <div class="nd-progress-footer">
+                    <span>Start</span>
+                    <span th:text="'Latest: Ch. ' + (${totalChapters != null ? totalChapters : 1245})">Latest: Ch. 1245</span>
+                </div>
+            </div>
+
+            <!-- Synopsis -->
+            <div class="nd-synopsis">
+                <h3 class="nd-synopsis-title">Synopsis</h3>
+                <div class="nd-synopsis-body">
+                    <div class="nd-synopsis-text" id="synopsisText"
+                         th:text="${novel != null ? novel.synopsis : 'In a world where alchemy dictates the hierarchy of power, young Elian discovers an ancient manuscript that defies the established laws of equivalent exchange. Cast out from the prestigious Royal Academy, he must navigate the treacherous borderlands known as the Horizon.'}">
+                        In a world where alchemy dictates the hierarchy of power, young Elian discovers an ancient manuscript that defies the established laws of equivalent exchange. Cast out from the prestigious Royal Academy, he must navigate the treacherous borderlands known as the Horizon.
+                    </div>
+                    <div class="nd-synopsis-gradient"></div>
+                </div>
+                <button class="nd-read-more" id="readMoreBtn" onclick="toggleSynopsis()">
+                    Read More
+                    <svg viewBox="0 0 8 5" fill="none"><path d="M1 1l3 3 3-3" stroke="#c9a46a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- === TABS === -->
+        <div class="nd-tabs">
+            <div class="nd-tabs-inner">
+                <div class="nd-tab active">
+                    Chapters
+                    <span class="nd-tab-badge" th:text="${totalChapters != null ? totalChapters : (hasChapters == false ? '0' : '452')}">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- === CHAPTER LIST (when chapters exist) === -->
+        <div class="nd-chapter-list" th:if="${hasChapters == null || hasChapters}">
+            <div class="nd-chapter-header">
+                <span class="nd-chapter-header-title">Latest Updates</span>
+                <button class="nd-chapter-sort">
+                    <svg width="18" height="12" viewBox="0 0 18 12" fill="none">
+                        <path d="M0 0h18M0 6h12M0 12h6" stroke="#94a3b8" stroke-width="2"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="nd-chapter-items">
+                <!-- Sample chapters - replace with th:each when model available -->
+                <div class="nd-chapter-item">
+                    <div>
+                        <div class="nd-chapter-item-title">Chapter 452: The Final Ingredient</div>
+                        <div class="nd-chapter-item-vol">Vol 4. The Void War</div>
+                    </div>
+                    <span class="nd-chapter-item-time">2 hours ago</span>
+                </div>
+                <div class="nd-chapter-item">
+                    <div>
+                        <div class="nd-chapter-item-title">Chapter 451: Betrayal at the Gates</div>
+                    </div>
+                    <span class="nd-chapter-item-time">1 day ago</span>
+                </div>
+                <div class="nd-chapter-item">
+                    <div>
+                        <div class="nd-chapter-item-title">Chapter 450: Equivalent Exchange</div>
+                    </div>
+                    <span class="nd-chapter-item-time">3 days ago</span>
+                </div>
+                <div class="nd-chapter-item locked">
+                    <div>
+                        <div class="nd-chapter-item-title">Chapter 449: Locked Memory</div>
+                    </div>
+                    <span class="nd-chapter-item-time">4 days ago</span>
+                </div>
+                <div class="nd-chapter-item">
+                    <div>
+                        <div class="nd-chapter-item-title">Chapter 448: The Silent Forest</div>
+                    </div>
+                    <span class="nd-chapter-item-time">1 week ago</span>
+                </div>
+                <div class="nd-chapter-item">
+                    <div>
+                        <div class="nd-chapter-item-title">Chapter 447: First Steps</div>
+                    </div>
+                    <span class="nd-chapter-item-time">1 week ago</span>
+                </div>
+            </div>
+            <div class="nd-chapter-footer">
+                <a href="#">View All Chapters</a>
+            </div>
+        </div>
+
+        <!-- === EMPTY STATE (when no chapters) === -->
+        <div class="nd-empty" th:if="${hasChapters != null && !hasChapters}">
+            <div class="nd-empty-icon">
+                <svg viewBox="0 0 30 30" fill="none">
+                    <circle cx="15" cy="15" r="13" stroke="#94a3b8" stroke-width="2"/>
+                    <circle cx="10" cy="12" r="1.5" fill="#94a3b8"/>
+                    <circle cx="20" cy="12" r="1.5" fill="#94a3b8"/>
+                    <path d="M10 21c1.5-2 3.5-3 5-3s3.5 1 5 3" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h3 class="nd-empty-title">No Chapters Available Yet</h3>
+            <p class="nd-empty-desc">This novel hasn't been translated yet or no chapters have been uploaded. Stay tuned for updates!</p>
+        </div>
+
+        <!-- === DISCUSSION & RATINGS === -->
+        <div class="nd-discussion">
+            <h3 class="nd-discussion-title">Discussion &amp; Ratings</h3>
+
+            <!-- Rating Box -->
+            <div class="nd-rating-box">
+                <div class="nd-rating-left">
+                    <div class="nd-rating-big" th:text="${novel != null && novel.rating > 0 ? novel.rating : '0'}">4.8</div>
+                    <div class="nd-stars">
+                        <svg th:each="i : ${#numbers.sequence(1,5)}" width="20" height="19" viewBox="0 0 20 19" fill="none">
+                            <path d="M10 0l2.47 7.6h7.99l-6.47 4.7 2.47 7.6L10 15.2l-6.47 4.7 2.47-7.6L-.47 7.6h7.99z"
+                                  th:fill="${novel != null && i <= novel.rating ? '#c9a46a' : 'none'}"
+                                  th:stroke="${novel == null || i > novel.rating ? '#94a3b8' : 'none'}"
+                                  stroke-width="1"/>
+                        </svg>
+                    </div>
+                    <div class="nd-rating-total" th:text="${novel != null && novel.ratingCount > 0 ? novel.ratingCount + ' ratings' : ''}">2.4k ratings</div>
+                </div>
+                <div class="nd-rating-right">
+                    <div class="nd-rating-cta">Rate this novel:</div>
+                    <div class="nd-rate-stars">
+                        <button class="nd-rate-star" th:each="i : ${#numbers.sequence(1,5)}">
+                            <svg viewBox="0 0 20 19" fill="none">
+                                <path d="M10 0l2.47 7.6h7.99l-6.47 4.7 2.47 7.6L10 15.2l-6.47 4.7 2.47-7.6L-.47 7.6h7.99z" stroke="#94a3b8" stroke-width="1"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comment Form -->
+            <div class="nd-comment-form">
+                <div class="nd-comment-avatar">U</div>
+                <div class="nd-comment-form-body">
+                    <textarea class="nd-comment-textarea" placeholder="Share your thoughts about this novel..."></textarea>
+                    <div class="nd-comment-submit">
+                        <button class="nd-btn-post">Post Comment</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments (shown when data exists) -->
+            <div class="nd-comments" th:if="${hasChapters == null || hasChapters}">
+                <!-- Comment 1 -->
+                <div class="nd-comment">
+                    <div class="nd-comment-user-avatar">
+                        <div style="width:100%;height:100%;background:#6366f1;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:600;border-radius:9999px;">D</div>
+                    </div>
+                    <div class="nd-comment-body">
+                        <div class="nd-comment-header">
+                            <div>
+                                <span class="nd-comment-author">DragonReader99</span>
+                                <span class="nd-comment-time">2 hours ago</span>
+                            </div>
+                        </div>
+                        <p class="nd-comment-text">The character development in the last arc has been insane. I never expected Elian to make that choice regarding the Philosopher's Stone.</p>
+                        <span class="nd-comment-reply-link">Reply</span>
+                    </div>
+                </div>
+
+                <!-- Comment 2 with nested reply -->
+                <div class="nd-comment">
+                    <div class="nd-comment-user-avatar">
+                        <div style="width:100%;height:100%;background:#10b981;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:600;border-radius:9999px;">A</div>
+                    </div>
+                    <div class="nd-comment-body">
+                        <div class="nd-comment-header">
+                            <div>
+                                <span class="nd-comment-author">AlchemyMaster</span>
+                                <span class="nd-comment-time">5 hours ago</span>
+                            </div>
+                        </div>
+                        <p class="nd-comment-text">Does anyone know when the next mass release is? I'm dying to know what happens next!</p>
+                        <span class="nd-comment-reply-link">Reply</span>
+
+                        <!-- Nested Reply -->
+                        <div class="nd-comment-replies">
+                            <div class="nd-comment">
+                                <div class="nd-comment-user-avatar">
+                                    <div style="width:100%;height:100%;background:#10b981;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:600;border-radius:9999px;">A</div>
+                                </div>
+                                <div class="nd-comment-body">
+                                    <div class="nd-comment-header">
+                                        <div>
+                                            <span class="nd-comment-author">AlchemyMaster</span>
+                                            <span class="nd-comment-time">5 hours ago</span>
+                                        </div>
+                                    </div>
+                                    <p class="nd-comment-text">Does anyone know when the next mass release is? I'm dying to know what happens next!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Load more button (shown when comments exist) -->
+            <div class="nd-load-more" th:if="${hasChapters == null || hasChapters}">Load more comments</div>
+        </div>
+
+    </div>
+</main>
+
+<!-- ==================== DESKTOP / TABLET FOOTER ==================== -->
+<footer class="nd-footer">
+    <div class="nd-footer-inner">
+        <div class="nd-footer-grid">
+            <div class="nd-footer-col">
+                <div class="nd-footer-brand">
+                    <svg width="28" height="24" viewBox="0 0 28 24" fill="none">
+                        <rect x="0" y="0" width="6" height="24" rx="2" fill="#c9a46a"/>
+                        <rect x="10" y="0" width="6" height="24" rx="2" fill="#c9a46a" opacity="0.7"/>
+                        <rect x="20" y="4" width="6" height="16" rx="2" fill="#c9a46a" opacity="0.4"/>
+                    </svg>
+                    <span class="nd-footer-brand-text">NRW</span>
+                </div>
+                <p class="nd-footer-desc">The next generation of reading.<br>Experience AI-powered translations and<br>personalized discoveries.</p>
+            </div>
+            <div class="nd-footer-col">
+                <h4 class="nd-footer-heading">Platform</h4>
+                <ul class="nd-footer-list">
+                    <li><a href="#">Trending</a></li>
+                    <li><a href="#">Latest Updates</a></li>
+                    <li><a href="#">Completed</a></li>
+                    <li><a href="#">AI Recommendations</a></li>
+                </ul>
+            </div>
+            <div class="nd-footer-col">
+                <h4 class="nd-footer-heading">Community</h4>
+                <ul class="nd-footer-list">
+                    <li><a href="#">Forums</a></li>
+                    <li><a href="#">Discord Server</a></li>
+                    <li><a href="#">Translator Recruitment</a></li>
+                    <li><a href="#">Writer Portal</a></li>
+                </ul>
+            </div>
+            <div class="nd-footer-col">
+                <h4 class="nd-footer-heading">Support</h4>
+                <ul class="nd-footer-list">
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Report Issue</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nd-footer-bottom">
+            <span class="nd-footer-copy">&copy; 2026 NRW. All rights reserved.</span>
+            <div class="nd-footer-socials">
+                <a href="#">Twitter</a>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- ==================== MOBILE FOOTER ==================== -->
+<footer class="nd-mobile-footer">
+    <h2 class="nd-mobile-footer-title">Novel Reading Website</h2>
+    <p class="nd-mobile-footer-desc">The ultimate destination for digital storytelling. Discover thousands of original web novels, light novels, and comics across all genres.</p>
+    <p class="nd-mobile-footer-copy">&copy; 2024 NovelStream Inc. All rights reserved.</p>
+</footer>
+
+<!-- ==================== SCRIPTS ==================== -->
+<script>
+    function toggleSynopsis() {
+        const text = document.getElementById('synopsisText');
+        const btn = document.getElementById('readMoreBtn');
+        text.classList.toggle('expanded');
+        btn.classList.toggle('expanded');
+        btn.childNodes[0].textContent = text.classList.contains('expanded') ? 'Show Less ' : 'Read More ';
+    }
+
+    // Star rating interaction
+    document.querySelectorAll('.nd-rate-star').forEach((star, idx) => {
+        star.addEventListener('mouseenter', () => {
+            document.querySelectorAll('.nd-rate-star').forEach((s, i) => {
+                const path = s.querySelector('path');
+                if (i <= idx) {
+                    path.setAttribute('fill', '#c9a46a');
+                    path.setAttribute('stroke', 'none');
+                } else {
+                    path.setAttribute('fill', 'none');
+                    path.setAttribute('stroke', '#94a3b8');
+                }
+            });
+        });
+    });
+
+    document.querySelector('.nd-rate-stars')?.addEventListener('mouseleave', () => {
+        document.querySelectorAll('.nd-rate-star').forEach(s => {
+            const path = s.querySelector('path');
+            path.setAttribute('fill', 'none');
+            path.setAttribute('stroke', '#94a3b8');
+        });
+    });
+</script>
+
+</body>
+</html>

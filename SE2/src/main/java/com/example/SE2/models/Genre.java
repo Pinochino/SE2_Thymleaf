@@ -7,39 +7,34 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Category {
+public class Genre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String name;
 
-    private String description;
-
     @ManyToMany
     @JoinTable(
-            name = "category_novel",
-            joinColumns = @JoinColumn(name = "category_id"),
+            name = "novel_genre",
+            joinColumns = @JoinColumn(name = "genre_id"),
             inverseJoinColumns = @JoinColumn(name = "novel_id"))
     @JsonManagedReference
     private Set<Novel> novels = new HashSet<>();
 
-    public Category() {
+    public Genre() {
     }
 
-    public Category(long id, String name, String description, Set<Novel> novels) {
-        this.id = id;
+    public Genre(String name) {
         this.name = name;
-        this.description = description;
-        this.novels = novels;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -49,14 +44,6 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Set<Novel> getNovels() {

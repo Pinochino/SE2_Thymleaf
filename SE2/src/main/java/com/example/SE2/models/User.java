@@ -16,6 +16,9 @@ public class User extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    @Column(unique = true)
+    private String username;
+
     private String firstName;
 
     private String lastName;
@@ -27,9 +30,12 @@ public class User extends AbstractEntity {
 
     private String phone;
 
-    private String avatar;
+    @Column(columnDefinition = "TEXT")
+    private String avatarUrl;
 
     private boolean isLoggedIn = Boolean.FALSE;
+
+    private boolean isDeleted = Boolean.FALSE;
 
     @Enumerated(EnumType.STRING)
     private Provider provider;
@@ -47,28 +53,7 @@ public class User extends AbstractEntity {
         super(createdAt, updatedAt);
     }
 
-    public User(LocalDateTime createdAt, LocalDateTime updatedAt,
-                String id, String firstName, String lastName,
-                String email, String password,
-                String phone, String avatar, boolean isLoggedIn,
-                Provider provider, String resetPasswordToken,
-                Set<Role> roles) {
-        super(createdAt, updatedAt);
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.phone = phone;
-        this.avatar = avatar;
-        this.isLoggedIn = isLoggedIn;
-        this.provider = provider;
-        this.resetPasswordToken = resetPasswordToken;
-        this.roles = roles;
-    }
-
     public User() {
-
     }
 
     public String getId() {
@@ -77,6 +62,14 @@ public class User extends AbstractEntity {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstName() {
@@ -119,12 +112,12 @@ public class User extends AbstractEntity {
         this.phone = phone;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     public boolean isLoggedIn() {
@@ -133,6 +126,14 @@ public class User extends AbstractEntity {
 
     public void setLoggedIn(boolean loggedIn) {
         isLoggedIn = loggedIn;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 
     public Provider getProvider() {

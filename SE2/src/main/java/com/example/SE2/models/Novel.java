@@ -1,73 +1,76 @@
 package com.example.SE2.models;
 
+import com.example.SE2.constants.NovelStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Array;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
-public class Novel {
+public class Novel extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+
+    @Column(unique = true, updatable = false)
+    private UUID publicId;
 
     @Column(unique = true)
     private String title;
 
-    private boolean status;
-
-    @Lob()
-    @Column(columnDefinition = "TEXT", name = "description")
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
-
-    @Lob()
-    @Column(columnDefinition = "TEXT", name = "content")
-    private String content;
 
     private String author;
 
-    private String image;
+    @Enumerated(EnumType.STRING)
+    private NovelStatus status;
+
+    private Float averageRating;
+
+    @Column(columnDefinition = "TEXT")
+    private String coverImgUrl;
 
 //    @JdbcTypeCode(SqlTypes.VECTOR)
 //    @Array(length = 1024)
 //    @Column(columnDefinition = "VECTOR(1024)")
-//    private float[] embedding;
+//    private float[] metaVector;
 
     @ManyToMany(mappedBy = "novels")
     @JsonBackReference
-    private Set<Category> categories = new HashSet<>();
+    private Set<Genre> genres = new HashSet<>();
+
+    @OneToMany(mappedBy = "novel", cascade = CascadeType.ALL)
+    private Set<Chapter> chapters = new HashSet<>();
 
     public Novel() {
     }
 
-    public Novel(long id, String title,
-                 boolean status, String description,
-                 String content, String author,
-                 String image,
-//                 float[] embedding,
-                 Set<Category> categories) {
-        this.id = id;
-        this.title = title;
-        this.status = status;
-        this.description = description;
-        this.content = content;
-        this.author = author;
-        this.image = image;
-//        this.embedding = embedding;
-        this.categories = categories;
+    @PrePersist
+    public void prePersist() {
+        if (publicId == null) {
+            publicId = UUID.randomUUID();
+        }
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public UUID getPublicId() {
+        return publicId;
+    }
+
+    public void setPublicId(UUID publicId) {
+        this.publicId = publicId;
     }
 
     public String getTitle() {
@@ -76,14 +79,6 @@ public class Novel {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
     }
 
     public String getDescription() {
@@ -102,35 +97,43 @@ public class Novel {
         this.author = author;
     }
 
-    public Set<Category> getCategories() {
-        return categories;
+    public NovelStatus getStatus() {
+        return status;
     }
 
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
+    public void setStatus(NovelStatus status) {
+        this.status = status;
     }
 
-    public String getImage() {
-        return image;
+    public Float getAverageRating() {
+        return averageRating;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setAverageRating(Float averageRating) {
+        this.averageRating = averageRating;
     }
 
-    public String getContent() {
-        return content;
+    public String getCoverImgUrl() {
+        return coverImgUrl;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setCoverImgUrl(String coverImgUrl) {
+        this.coverImgUrl = coverImgUrl;
     }
 
-//    public float[] getEmbedding() {
-//        return embedding;
-//    }
-//
-//    public void setEmbedding(float[] embedding) {
-//        this.embedding = embedding;
-//    }
+    public Set<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(Set<Genre> genres) {
+        this.genres = genres;
+    }
+
+    public Set<Chapter> getChapters() {
+        return chapters;
+    }
+
+    public void setChapters(Set<Chapter> chapters) {
+        this.chapters = chapters;
+    }
 }

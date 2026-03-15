@@ -25,6 +25,14 @@ public class HomeController {
         return "public/accessDenied";
     }
 
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    public String homePage() {
+        return "client/homePage";
+    }
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public String searchPage() {
+        return "client/searchPage";
+    }
     @RequestMapping(value = "/page-not-found", method = RequestMethod.GET)
     public String pageNotFound() {
         return "public/pageNotFound";

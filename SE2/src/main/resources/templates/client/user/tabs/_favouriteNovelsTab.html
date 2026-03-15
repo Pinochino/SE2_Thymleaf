@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_clientLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="min-h-screen bg-[#060f24] text-slate-200 py-8" x-data="{ activeTab: 'fav' }">
+        <div class="max-w-5xl mx-auto px-6">
+            <!-- Tabs -->
+            <div class="flex gap-8 text-sm mb-6 border-b border-slate-800">
+                <button @click="activeTab='user'" class="pb-3"
+                        :class="activeTab==='user' ? 'text-blue-400 border-b-2 border-blue-500 font-medium' : 'text-slate-400 hover:text-slate-200'">
+                    User Info
+                </button>
+                <button @click="activeTab='fav'" class="pb-3"
+                        :class="activeTab==='fav' ? 'text-blue-400 border-b-2 border-blue-500 font-medium' : 'text-slate-400 hover:text-slate-200'">
+                    Favourited Novels
+                </button>
+                <button @click="activeTab='trans'" class="pb-3"
+                        :class="activeTab==='trans' ? 'text-blue-400 border-b-2 border-blue-500 font-medium' : 'text-slate-400 hover:text-slate-200'">
+                    Translation Contributions
+                </button>
+            </div>
+
+            <!-- User Info Tab -->
+            <div x-show="activeTab==='user'" x-cloak>
+                <div class="flex items-start gap-6 mb-10">
+                    <div class="relative">
+                        <div class="w-20 h-20 rounded-full bg-[#f2cfc1] flex items-center justify-center border-4 border-[#e7bcae]">
+                            <div class="w-10 h-10 rounded-md bg-[#f7e8e1] relative">
+                                <div class="absolute inset-0 m-auto w-5 h-6 rounded-full bg-[#e3b39d]"></div>
+                            </div>
+                        </div>
+                        <button class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-blue-600 text-white text-[10px]">✎</button>
+                    </div>
+                    <div>
+                        <h1 class="text-4xl font-serif font-semibold text-slate-100">Alex_Reader</h1>
+                        <p class="text-slate-400 mt-1">Avid reader and occasional translator</p>
+                        <span class="inline-block mt-2 text-xs bg-blue-900/40 text-blue-300 px-3 py-1 rounded-full border border-blue-700/40">
+                            Member since 2023
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <h2 class="text-2xl font-serif text-slate-100 mb-6 flex items-center gap-2">
+                        <span class="text-blue-400">🔒</span> Account Details
+                    </h2>
+
+                    <form class="space-y-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm text-slate-300 mb-2">Username</label>
+                                <input type="text" value="Alex_Reader"
+                                       class="w-full bg-[#111b33] border border-slate-700 rounded-md px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-slate-300 mb-2">Display Name</label>
+                                <input type="text" value="Alexander Wright"
+                                       class="w-full bg-[#111b33] border border-slate-700 rounded-md px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm text-slate-300 mb-2">Email Address</label>
+                            <input type="email" value="alex.reader@example.com"
+                                   class="w-full bg-[#111b33] border border-slate-700 rounded-md px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <div class="pt-4 border-t border-slate-800 flex justify-end gap-3">
+                            <button type="button"
+                                    class="px-6 py-2.5 rounded-md border border-slate-700 text-slate-300 hover:bg-slate-800 transition">
+                                Cancel
+                            </button>
+                            <button type="submit"
+                                    class="px-6 py-2.5 rounded-md bg-blue-600 text-white hover:bg-blue-500 transition font-medium">
+                                Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Favourited Novels Tab -->
+            <div x-show="activeTab==='fav'" x-cloak>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-6 gap-y-8">
+                    <!-- Card -->
+                    <div>
+                        <div class="h-44 rounded-lg bg-slate-100 p-3">
+                            <div class="h-full rounded bg-[#111b33] shadow-lg"></div>
+                        </div>
+                        <h3 class="mt-2 text-[22px] leading-6 font-serif text-slate-100">Shadow Chronicles</h3>
+                        <p class="text-xs text-slate-400 mt-1">J.K. Aris</p>
+                        <button class="text-[11px] tracking-wide text-red-400 mt-1">REMOVE</button>
+                    </div>
+
+                    <div>
+                        <div class="h-44 rounded-lg bg-[#1b2a47]"></div>
+                        <h3 class="mt-2 text-[22px] leading-6 font-serif text-slate-100">The Last Alchemist</h3>
+                        <p class="text-xs text-slate-400 mt-1">Sarah Thorne</p>
+                        <button class="text-[11px] tracking-wide text-red-400 mt-1">REMOVE</button>
+                    </div>
+
+                    <div>
+                        <div class="h-44 rounded-lg bg-gradient-to-b from-cyan-800 to-slate-900"></div>
+                        <h3 class="mt-2 text-[22px] leading-6 font-serif text-slate-100">Empire of Silence</h3>
+                        <p class="text-xs text-slate-400 mt-1">Christopher Ruocchio</p>
+                        <button class="text-[11px] tracking-wide text-red-400 mt-1">REMOVE</button>
+                    </div>
+
+                    <div>
+                        <div class="h-44 rounded-lg bg-gradient-to-b from-emerald-900 to-slate-900"></div>
+                        <h3 class="mt-2 text-[22px] leading-6 font-serif text-slate-100">Whispering Woods</h3>
+                        <p class="text-xs text-slate-400 mt-1">Elena Vane</p>
+                        <button class="text-[11px] tracking-wide text-red-400 mt-1">REMOVE</button>
+                    </div>
+
+                    <div>
+                        <div class="h-44 rounded-lg bg-[#071523] border border-slate-800"></div>
+                        <h3 class="mt-2 text-[22px] leading-6 font-serif text-slate-100">Void Walker</h3>
+                        <p class="text-xs text-slate-400 mt-1">Marc Miller</p>
+                        <button class="text-[11px] tracking-wide text-red-400 mt-1">REMOVE</button>
+                    </div>
+
+                    <div>
+                        <div class="h-44 rounded-lg bg-[#1b2a47]"></div>
+                        <h3 class="mt-2 text-[22px] leading-6 font-serif text-slate-100">Golden Scepter</h3>
+                        <p class="text-xs text-slate-400 mt-1">Linda Gray</p>
+                        <button class="text-[11px] tracking-wide text-red-400 mt-1">REMOVE</button>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="mt-8 flex justify-center items-center gap-2 text-sm">
+                    <button class="w-7 h-7 rounded bg-[#1a2a46] text-slate-300">‹</button>
+                    <button class="w-7 h-7 rounded bg-blue-600 text-white">1</button>
+                    <button class="w-7 h-7 rounded bg-[#1a2a46] text-slate-300">2</button>
+                    <button class="w-7 h-7 rounded bg-[#1a2a46] text-slate-300">3</button>
+                    <span class="px-1 text-slate-400">...</span>
+                    <button class="w-9 h-7 rounded bg-[#1a2a46] text-slate-300">124</button>
+                    <button class="w-7 h-7 rounded bg-[#1a2a46] text-slate-300">›</button>
+                </div>
+            </div>
+
+            <!-- Translation Contributions Tab -->
+            <div x-show="activeTab==='trans'" x-cloak>
+                <div class="rounded-lg border border-slate-800 bg-[#0d1730] p-6 text-slate-300">
+                    No translation contributions yet.
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

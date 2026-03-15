@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<section th:fragment="sidebar">
+    <div class="sidebar-inner">
+        <div class="sidebar-brand">
+            <div class="brand-icon">
+                <i class="bi bi-book-half"></i>
+            </div>
+            <span class="brand-text">NRW Admin</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-label">CONTENT</div>
+                <a th:href="@{/admin/novels/list}" class="nav-item" th:classappend="${activePage == 'novels' ? 'active' : ''}">
+                    <i class="bi bi-journal-text"></i>
+                    <span>Manage Novels</span>
+                </a>
+                <a th:href="@{/admin/translations/list}" class="nav-item" th:classappend="${activePage == 'translations' ? 'active' : ''}">
+                    <i class="bi bi-translate"></i>
+                    <span>Manage Translations</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-label">SYSTEM</div>
+                <form method="post" th:action="@{/logout}" class="nav-item-form">
+                    <button type="submit" class="nav-item">
+                        <i class="bi bi-box-arrow-left"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="admin-profile">
+                <div class="admin-avatar">A</div>
+                <div class="admin-info">
+                    <div class="admin-name">Admin User</div>
+                    <div class="admin-role">Administrator</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

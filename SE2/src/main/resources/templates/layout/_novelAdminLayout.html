@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NRW Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/admin-novels.css}">
+</head>
+<body>
+<div class="novel-admin-wrapper">
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+    <aside class="novel-admin-sidebar" id="adminSidebar">
+        <section th:replace="~{fragments/admin/novel-admin-sidebar :: sidebar}"></section>
+    </aside>
+    <div class="novel-admin-main">
+        <header class="mobile-header">
+            <div class="mobile-header-left">
+                <button class="hamburger-btn" onclick="toggleMobilePanel('menuNav')" aria-label="Toggle menu">
+                    <i class="bi bi-list"></i>
+                </button>
+                <span class="mobile-brand">NRW Admin</span>
+            </div>
+            <div class="mobile-header-right">
+                <button class="mobile-icon-btn" onclick="toggleMobilePanel('notifications')" aria-label="Notifications">
+                    <i class="bi bi-bell"></i>
+                </button>
+                <button class="mobile-icon-btn" onclick="toggleMobilePanel('account')" aria-label="Profile">
+                    <i class="bi bi-person-circle"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Mobile: Navigation dropdown (hamburger) -->
+        <div class="mobile-panel" id="panel-menuNav">
+            <div class="mobile-nav-links">
+                <a th:href="@{/admin/novels/list}" class="mobile-nav-link"
+                   th:classappend="${activePage == 'novels' ? 'active' : ''}">
+                    <i class="bi bi-journal-text"></i>
+                    <span>Manage Novels</span>
+                </a>
+                <a th:href="@{/admin/translations/list}" class="mobile-nav-link"
+                   th:classappend="${activePage == 'translations' ? 'active' : ''}">
+                    <i class="bi bi-translate"></i>
+                    <span>Manage Translations</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Mobile: Notifications dropdown (bell) -->
+        <div class="mobile-panel" id="panel-notifications">
+            <div class="mobile-notif-header">
+                <span class="mobile-notif-title">Notifications</span>
+                <a href="#" class="mobile-notif-mark">Mark all read</a>
+            </div>
+            <div class="mobile-notif-list">
+                <div class="mobile-notif-item">
+                    <div class="notif-icon notif-icon-blue"><i class="bi bi-translate"></i></div>
+                    <div class="notif-body">
+                        <div class="notif-heading">New Translation Submitted</div>
+                        <div class="notif-desc">User <strong>MoonLight</strong> submitted Ch. 120 for "Reincarnation..."</div>
+                        <div class="notif-time">10 mins ago</div>
+                    </div>
+                </div>
+                <div class="mobile-notif-item notif-highlight">
+                    <div class="notif-icon notif-icon-yellow"><i class="bi bi-exclamation-triangle"></i></div>
+                    <div class="notif-body">
+                        <div class="notif-heading">Reported Comment</div>
+                        <div class="notif-desc">Multiple reports on comment #8821 in "Celestial Library"</div>
+                        <div class="notif-time">1 hour ago</div>
+                    </div>
+                </div>
+                <div class="mobile-notif-item">
+                    <div class="notif-icon notif-icon-green"><i class="bi bi-check-circle"></i></div>
+                    <div class="notif-body">
+                        <div class="notif-heading">System Backup</div>
+                        <div class="notif-desc">Daily database backup completed successfully.</div>
+                        <div class="notif-time">4 hours ago</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mobile-notif-footer">View all notifications</div>
+        </div>
+
+        <!-- Mobile: Account dropdown (avatar) -->
+        <div class="mobile-panel" id="panel-account">
+            <div class="mobile-account-inner">
+                <div class="mobile-nav-profile">
+                    <div class="admin-avatar">A</div>
+                    <div class="admin-info">
+                        <div class="admin-name">Admin User</div>
+                        <div class="admin-role">Super Admin</div>
+                    </div>
+                </div>
+                <form method="post" th:action="@{/logout}" class="mobile-nav-logout">
+                    <button type="submit" class="mobile-logout-btn">
+                        <i class="bi bi-box-arrow-right"></i>
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+        <main id="content" layout:fragment="content" class="novel-admin-content">
+        </main>
+    </div>
+</div>
+<script>
+    function toggleMobilePanel(panelName) {
+        var panels = document.querySelectorAll('.mobile-panel');
+        var target = document.getElementById('panel-' + panelName);
+        var isOpen = target.classList.contains('active');
+        // Close all panels first
+        panels.forEach(function(p) { p.classList.remove('active'); });
+        // Toggle target
+        if (!isOpen) {
+            target.classList.add('active');
+        }
+    }
+</script>
+</body>
+</html>

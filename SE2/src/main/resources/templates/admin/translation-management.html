@@ -1,432 +1,299 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/_adminLayout}">
+      layout:decorate="~{layout/_novelAdminLayout}">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        * {
-            font-family: "DM Sans", sans-serif;
-        }
-
-        .mono {
-            font-family: "DM Mono", monospace;
-        }
-
-        body {
-            background-color: #f1f3f7;
-        }
-
-        /* Sidebar */
-        #sidebar {
-            transition: transform 0.3s ease;
-        }
-
-        #sidebar-overlay {
-            display: none;
-        }
-
-        @media (max-width: 767px) {
-            #sidebar {
-                position: fixed;
-                top: 0;
-                left: 0;
-                height: 100vh;
-                transform: translateX(-100%);
-                z-index: 50;
-            }
-
-            #sidebar.open {
-                transform: translateX(0);
-            }
-
-            #sidebar-overlay.show {
-                display: block;
-            }
-        }
-
-        /* Nav item active */
-        .nav-active {
-            background: #ede9fe;
-            color: #6d28d9;
-            font-weight: 600;
-        }
-
-        /* Genre badges */
-        .badge-fantasy {
-            background: #ede9fe;
-            color: #6d28d9;
-        }
-
-        .badge-xianxia {
-            background: #fce7f3;
-            color: #be185d;
-        }
-
-        .badge-vrmmo {
-            background: #dbeafe;
-            color: #1d4ed8;
-        }
-
-        .badge-romance {
-            background: #fce7f3;
-            color: #db2777;
-        }
-
-        .badge-adventure {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        /* Status badges */
-        .status-ongoing {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .status-completed {
-            background: #dbeafe;
-            color: #1d4ed8;
-        }
-
-        .status-hiatus {
-            background: #fef9c3;
-            color: #854d0e;
-        }
-
-        /* Hover row */
-        .novel-row:hover {
-            background: #f8f7ff;
-        }
-
-        /* Cover gradients */
-        .cover-1 {
-            background: linear-gradient(135deg, #7c3aed, #a855f7);
-        }
-
-        .cover-2 {
-            background: linear-gradient(135deg, #f97316, #fb923c);
-        }
-
-        .cover-3 {
-            background: linear-gradient(135deg, #0ea5e9, #38bdf8);
-        }
-
-        .cover-4 {
-            background: linear-gradient(135deg, #ec4899, #f472b6);
-        }
-
-        .cover-5 {
-            background: linear-gradient(135deg, #10b981, #34d399);
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #c4b5fd;
-            border-radius: 99px;
-        }
-
-        /* Table horizontal scroll on small screens */
-        .table-wrap {
-            overflow-x: auto;
-        }
-
-        /* Notification dot pulse */
-        @keyframes pulse {
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.6;
-            }
-        }
-
-        .notif-pulse {
-            animation: pulse 2s infinite;
-        }
-
-        /* Fade in rows */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .novel-row {
-            animation: fadeUp 0.35s ease both;
-        }
-
-        .novel-row:nth-child(1) {
-            animation-delay: 0.05s;
-        }
-
-        .novel-row:nth-child(2) {
-            animation-delay: 0.1s;
-        }
-
-        .novel-row:nth-child(3) {
-            animation-delay: 0.15s;
-        }
-
-        .novel-row:nth-child(4) {
-            animation-delay: 0.2s;
-        }
-
-        .novel-row:nth-child(5) {
-            animation-delay: 0.25s;
-        }
-
-        select option {
-            background: #fff;
-            color: #1e1b4b;
-        }
-    </style>
+    <title>Translation Management - NRW Admin</title>
 </head>
-<body layout:fragment="content">
-<div>
-    <main class="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div class="max-w-5xl mx-auto">
+<body>
+<div layout:fragment="content">
 
-            <!-- Page Header -->
-            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
-                <div>
-                    <h1 class="text-2xl sm:text-3xl text-gray-900" style="font-weight:700">Translation Management</h1>
-                    <p class="text-sm text-gray-500 mt-1">Review community contributions and manage content quality.</p>
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header-left">
+            <h1>Translation Management</h1>
+            <p>Review community contributions and manage content quality.</p>
+        </div>
+        <div class="page-header-right">
+            <button class="btn-notification">
+                <i class="bi bi-bell"></i>
+                <span class="notification-badge">12</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Pending Review Queue -->
+    <div class="pending-header">
+        <h2 class="pending-title">Pending Review Queue</h2>
+    </div>
+
+    <!-- Desktop: Table view -->
+    <div class="table-card desktop-only">
+        <div class="tr-table-toolbar">
+            <div class="search-input-wrapper">
+                <i class="bi bi-search"></i>
+                <input type="text" class="search-input" placeholder="Search by title, author, or keyword...">
+            </div>
+            <div class="tr-table-filters">
+                <select class="filter-select">
+                    <option>All Genres</option>
+                    <option>Fantasy</option>
+                    <option>Xianxia</option>
+                    <option>Romance</option>
+                </select>
+                <select class="filter-select">
+                    <option>All Statuses</option>
+                    <option>Pending</option>
+                    <option>Approved</option>
+                    <option>Rejected</option>
+                </select>
+            </div>
+        </div>
+        <table class="table-custom">
+            <thead>
+                <tr>
+                    <th style="padding-left:70px;">Title</th>
+                    <th>Chapter</th>
+                    <th>Author</th>
+                    <th>Contributor</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="novel-title-cell">
+                            <div class="novel-thumb" style="background:linear-gradient(127deg,#818cf8,#a855f7);width:36px;height:48px;border-radius:4px;"></div>
+                            <div class="novel-title-info">
+                                <span class="novel-title-name">The Shadow Monarch's Return</span>
+                                <span class="novel-title-id">ID: #NV-2023-001</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>42</td>
+                    <td>Chugong</td>
+                    <td>DragonSlayer99</td>
+                    <td><span class="status-pill status-hiatus">Pending</span></td>
+                    <td><a th:href="@{/admin/translations/review}" class="tr-review-btn">Review</a></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="novel-title-cell">
+                            <div class="novel-thumb" style="background:linear-gradient(127deg,#f87171,#f97316);width:36px;height:48px;border-radius:4px;"></div>
+                            <div class="novel-title-info">
+                                <span class="novel-title-name">The Shadow Monarch's Return</span>
+                                <span class="novel-title-id">ID: #NV-2023-001</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>42</td>
+                    <td>Chugong</td>
+                    <td>DragonSlayer99</td>
+                    <td><span class="status-pill status-hiatus">Pending</span></td>
+                    <td><a th:href="@{/admin/translations/review}" class="tr-review-btn">Review</a></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="novel-title-cell">
+                            <div class="novel-thumb" style="background:linear-gradient(127deg,#60a5fa,#06b6d4);width:36px;height:48px;border-radius:4px;"></div>
+                            <div class="novel-title-info">
+                                <span class="novel-title-name">The Shadow Monarch's Return</span>
+                                <span class="novel-title-id">ID: #NV-2023-001</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>42</td>
+                    <td>Chugong</td>
+                    <td>DragonSlayer99</td>
+                    <td><span class="status-pill status-hiatus">Pending</span></td>
+                    <td><a th:href="@{/admin/translations/review}" class="tr-review-btn">Review</a></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="novel-title-cell">
+                            <div class="novel-thumb" style="background:linear-gradient(127deg,#f472b6,#f43f5e);width:36px;height:48px;border-radius:4px;"></div>
+                            <div class="novel-title-info">
+                                <span class="novel-title-name">The Shadow Monarch's Return</span>
+                                <span class="novel-title-id">ID: #NV-2023-001</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>42</td>
+                    <td>Chugong</td>
+                    <td>DragonSlayer99</td>
+                    <td><span class="status-pill status-hiatus">Pending</span></td>
+                    <td><a th:href="@{/admin/translations/review}" class="tr-review-btn">Review</a></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="novel-title-cell">
+                            <div class="novel-thumb" style="background:linear-gradient(127deg,#34d399,#14b8a6);width:36px;height:48px;border-radius:4px;"></div>
+                            <div class="novel-title-info">
+                                <span class="novel-title-name">The Shadow Monarch's Return</span>
+                                <span class="novel-title-id">ID: #NV-2023-001</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>42</td>
+                    <td>Chugong</td>
+                    <td>DragonSlayer99</td>
+                    <td><span class="status-pill status-hiatus">Pending</span></td>
+                    <td><a th:href="@{/admin/translations/review}" class="tr-review-btn">Review</a></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="table-footer">
+            <span>Showing 1 to 5 of 128 results</span>
+            <div class="pagination-btns">
+                <button class="btn-page">Previous</button>
+                <button class="btn-page">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile: Card view -->
+    <div class="translation-review-list mobile-only">
+
+        <div class="tr-review-card">
+            <div class="tr-review-thumb" style="background: linear-gradient(126deg, rgba(236,91,19,0.4), rgba(236,91,19,0.8));">
+                <i class="bi bi-book"></i>
+            </div>
+            <div class="tr-review-body">
+                <div class="tr-review-top">
+                    <div class="tr-review-title">The Eternal Spire</div>
+                    <div class="tr-review-chapter">Chapter 142</div>
                 </div>
-
-                <!-- Notifications button (desktop) -->
-                <div class="relative hidden lg:block">
-                    <button onclick="toggleNotif(event)"
-                            class="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 text-sm text-gray-700 shadow-sm transition"
-                            style="font-weight:500">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                        </svg>
-                        Notifications
-                        <span class="w-5 h-5 rounded-full bg-red-500 text-white flex items-center justify-center notif-pulse"
-                              style="font-size:10px;font-weight:700">3</span>
-                    </button>
-
-                    <!-- Desktop Notifications Dropdown -->
-                    <div id="notif-dropdown"
-                         class="hidden absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-                        <!-- Header -->
-                        <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
-                            <span class="text-sm text-gray-800" style="font-weight:600">Notifications</span>
-                            <button class="text-xs text-violet-600 hover:text-violet-800 transition"
-                                    style="font-weight:500">Mark all read
-                            </button>
+                <div class="tr-review-author">
+                    <i class="bi bi-person"></i> J.R. Thorne
+                </div>
+                <div class="tr-review-bottom">
+                    <div class="tr-review-contributor">
+                        <div class="tr-review-contrib-label">Contributed by:</div>
+                        <div class="tr-review-contrib-user">
+                            <span class="tr-contrib-avatar">D</span>
+                            <span class="tr-contrib-name">DragonSlayer99</span>
                         </div>
-                        <!-- Items -->
-                        <div class="divide-y divide-gray-50">
-                            <!-- Item 1 -->
-                            <div class="flex gap-3 px-4 py-3.5 hover:bg-gray-50 transition cursor-pointer">
-                                <div class="w-9 h-9 rounded-full bg-violet-100 flex items-center justify-center shrink-0 mt-0.5">
-                                    <svg class="w-4 h-4 text-violet-600" fill="none" stroke="currentColor"
-                                         stroke-width="2"
-                                         viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                              d="M3 5h12M9 3v2m1.048 3.938A9 9 0 0121 12.42M6.344 18.657A9 9 0 003.072 9.193"/>
-                                    </svg>
-                                </div>
-                                <div class="min-w-0">
-                                    <p class="text-sm text-gray-800" style="font-weight:600">New Translation
-                                        Submitted</p>
-                                    <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">User MoonLight submitted Ch.
-                                        120
-                                        for "Reincarnation..."</p>
-                                    <p class="text-xs text-gray-400 mt-1">10 mins ago</p>
-                                </div>
-                            </div>
-                            <!-- Item 2 -->
-                            <div class="flex gap-3 px-4 py-3.5 hover:bg-gray-50 transition cursor-pointer">
-                                <div class="w-9 h-9 rounded-full bg-yellow-100 flex items-center justify-center shrink-0 mt-0.5">
-                                    <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor"
-                                         stroke-width="2"
-                                         viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                                    </svg>
-                                </div>
-                                <div class="min-w-0">
-                                    <p class="text-sm text-gray-800" style="font-weight:600">Reported Comment</p>
-                                    <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">Multiple reports on comment
-                                        #8821 in "Celestial Library"</p>
-                                    <p class="text-xs text-gray-400 mt-1">1 hour ago</p>
-                                </div>
-                            </div>
-                            <!-- Item 3 -->
-                            <div class="flex gap-3 px-4 py-3.5 hover:bg-gray-50 transition cursor-pointer">
-                                <div class="w-9 h-9 rounded-full bg-green-100 flex items-center justify-center shrink-0 mt-0.5">
-                                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor"
-                                         stroke-width="2"
-                                         viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                                    </svg>
-                                </div>
-                                <div class="min-w-0">
-                                    <p class="text-sm text-gray-800" style="font-weight:600">System Backup</p>
-                                    <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">Daily database backup
-                                        completed
-                                        successfully.</p>
-                                    <p class="text-xs text-gray-400 mt-1">2 hours ago</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Footer -->
-                        <div class="px-4 py-3 border-t border-gray-100 text-center">
-                            <a href="#" class="text-sm text-violet-600 hover:text-violet-800 transition"
-                               style="font-weight:500">View all notifications</a>
-                        </div>
+                        <div class="tr-review-time">Submitted: 2 hours ago</div>
                     </div>
+                    <a th:href="@{/admin/translations/review}" class="tr-review-btn">Review</a>
                 </div>
             </div>
+        </div>
 
-            <!-- Pending Review Queue -->
-            <h2 class="text-lg text-gray-800 mb-4" style="font-weight:700">Pending Review Queue</h2>
-
-            <!-- Review Card -->
-            <div class="fade-up bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-
-                <!-- Card Header -->
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-5 py-4 border-b border-gray-100">
-                    <div class="flex flex-wrap items-center gap-3">
-                        <span class="px-3 py-1 rounded-full bg-violet-100 text-violet-700 text-xs"
-                              style="font-weight:600">Chapter 42</span>
-                        <span class="text-sm text-gray-600">Novel: <span class="text-gray-900" style="font-weight:600">The Shadow Monarch's Return</span></span>
-                    </div>
-                    <div class="flex flex-wrap items-center gap-2 text-sm text-gray-500">
-                        <span class="text-xs text-gray-400">Contributed by:</span>
-                        <div class="flex items-center gap-1.5">
-                            <div class="w-6 h-6 rounded-full bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center text-white shrink-0"
-                                 style="font-size:10px;font-weight:700">D
-                            </div>
-                            <span class="text-violet-600" style="font-weight:600;font-size:13px;">DragonSlayer99</span>
-                        </div>
-                        <span class="text-gray-300">•</span>
-                        <span class="text-xs text-gray-400">Submitted: <span class="text-gray-600"
-                                                                             style="font-weight:500">2 hours ago</span></span>
-                    </div>
+        <div class="tr-review-card">
+            <div class="tr-review-thumb" style="background: linear-gradient(126deg, rgba(99,102,241,0.4), #3730a3);">
+                <i class="bi bi-rocket"></i>
+            </div>
+            <div class="tr-review-body">
+                <div class="tr-review-top">
+                    <div class="tr-review-title">Neon Shadows</div>
+                    <div class="tr-review-chapter">Chapter 85</div>
                 </div>
-
-                <!-- Split Text Panel -->
-                <div class="split-panel divide-x divide-gray-100">
-                    <!-- Original Korean -->
-                    <div class="p-5 sm:p-6 min-w-0">
-                        <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-4" style="font-weight:600">
-                            Original
-                            Text (Korean)</p>
-                        <div class="korean text-sm leading-loose text-gray-700 space-y-4">
-                            <p>그림자가 길어지며, 성진우는 천천히 고개를 들었다. 그의 눈동자 속에서 푸른 불꽃이 일렁이고 있었다.</p>
-                            <p>"일어나라."</p>
-                            <p>그의 나직한 목소리가 동굴 안에 울려 퍼지자, 쓰러져 있던 기사들의 그림자가 꿈틀거리기 시작했다. 죽음조차 그를 거역할 수 없었다. 이것이 바로 그림자 군주의
-                                권능이었다.</p>
-                        </div>
-                    </div>
-
-                    <!-- Community Translation -->
-                    <div class="p-5 sm:p-6 min-w-0">
-                        <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-4" style="font-weight:600">
-                            Community Translation</p>
-                        <div class="text-sm leading-loose text-gray-700 space-y-4">
-                            <p>As the shadows lengthened, Sung Jin-Woo slowly raised his head. Within his eyes, blue
-                                flames
-                                flickered with an eerie glow.</p>
-                            <p>"Arise."</p>
-                            <p>As his low voice echoed through the cave, the shadows of the fallen knights began to
-                                wriggle.
-                                Not even death could defy him. This was the authority of the Shadow Monarch.</p>
-                        </div>
-                    </div>
+                <div class="tr-review-author">
+                    <i class="bi bi-person"></i> Sarah Miller
                 </div>
-
-                <!-- Card Actions -->
-                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 px-5 py-4 border-t border-gray-100 bg-gray-50/50">
-                    <div class="flex flex-wrap gap-2">
-                        <button class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-green-500 hover:bg-green-600 text-white text-sm shadow-sm transition"
-                                style="font-weight:500">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5"
-                                 viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Approve
-                        </button>
-                        <button class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 text-sm border border-red-200 transition"
-                                style="font-weight:500">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5"
-                                 viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                            </svg>
-                            Reject
-                        </button>
-                        <button class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-yellow-50 hover:bg-yellow-100 text-yellow-700 text-sm border border-yellow-200 transition"
-                                style="font-weight:500">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                            </svg>
-                            Request Edit
-                        </button>
+                <div class="tr-review-bottom">
+                    <div class="tr-review-contributor">
+                        <div class="tr-review-contrib-label">Contributed by:</div>
+                        <div class="tr-review-contrib-user">
+                            <span class="tr-contrib-avatar">M</span>
+                            <span class="tr-contrib-name">MoonLight</span>
+                        </div>
+                        <div class="tr-review-time">Submitted: 5 hours ago</div>
                     </div>
-                    <span class="text-xs text-gray-400 mono">#TRX-2024-00421</span>
+                    <a th:href="@{/admin/translations/review}" class="tr-review-btn">Review</a>
                 </div>
             </div>
+        </div>
 
-            <!-- View full queue -->
-            <div class="text-center mt-6">
-                <a href="#"
-                   class="text-sm text-violet-600 hover:text-violet-800 transition inline-flex items-center gap-1"
-                   style="font-weight:500">
-                    View full queue
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                    </svg>
-                </a>
+        <div class="tr-review-card">
+            <div class="tr-review-thumb" style="background: linear-gradient(126deg, rgba(251,113,133,0.4), #be123c);">
+                <i class="bi bi-heart"></i>
             </div>
+            <div class="tr-review-body">
+                <div class="tr-review-top">
+                    <div class="tr-review-title">Midnight Whispers</div>
+                    <div class="tr-review-chapter">Chapter 56</div>
+                </div>
+                <div class="tr-review-author">
+                    <i class="bi bi-person"></i> Elena Vane
+                </div>
+                <div class="tr-review-bottom">
+                    <div class="tr-review-contributor">
+                        <div class="tr-review-contrib-label">Contributed by:</div>
+                        <div class="tr-review-contrib-user">
+                            <span class="tr-contrib-avatar">S</span>
+                            <span class="tr-contrib-name">StarReader42</span>
+                        </div>
+                        <div class="tr-review-time">Submitted: 1 day ago</div>
+                    </div>
+                    <a th:href="@{/admin/translations/review}" class="tr-review-btn">Review</a>
+                </div>
+            </div>
+        </div>
 
-        </div><!-- /max-w -->
-    </main>
+        <div class="tr-review-card">
+            <div class="tr-review-thumb" style="background: linear-gradient(126deg, rgba(16,185,129,0.4), #065f46);">
+                <i class="bi bi-lightning"></i>
+            </div>
+            <div class="tr-review-body">
+                <div class="tr-review-top">
+                    <div class="tr-review-title">The Lost Kingdom</div>
+                    <div class="tr-review-chapter">Chapter 210</div>
+                </div>
+                <div class="tr-review-author">
+                    <i class="bi bi-person"></i> Mark K.
+                </div>
+                <div class="tr-review-bottom">
+                    <div class="tr-review-contributor">
+                        <div class="tr-review-contrib-label">Contributed by:</div>
+                        <div class="tr-review-contrib-user">
+                            <span class="tr-contrib-avatar">D</span>
+                            <span class="tr-contrib-name">DragonSlayer99</span>
+                        </div>
+                        <div class="tr-review-time">Submitted: 2 days ago</div>
+                    </div>
+                    <a th:href="@{/admin/translations/review}" class="tr-review-btn">Review</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="tr-review-card">
+            <div class="tr-review-thumb" style="background: linear-gradient(126deg, rgba(251,113,133,0.4), #be123c);">
+                <i class="bi bi-heart"></i>
+            </div>
+            <div class="tr-review-body">
+                <div class="tr-review-top">
+                    <div class="tr-review-title">Midnight Whispers</div>
+                    <div class="tr-review-chapter">Chapter 57</div>
+                </div>
+                <div class="tr-review-author">
+                    <i class="bi bi-person"></i> Elena Vane
+                </div>
+                <div class="tr-review-bottom">
+                    <div class="tr-review-contributor">
+                        <div class="tr-review-contrib-label">Contributed by:</div>
+                        <div class="tr-review-contrib-user">
+                            <span class="tr-contrib-avatar">D</span>
+                            <span class="tr-contrib-name">DragonSlayer99</span>
+                        </div>
+                        <div class="tr-review-time">Submitted: 2 hours ago</div>
+                    </div>
+                    <a th:href="@{/admin/translations/review}" class="tr-review-btn">Review</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-footer">
+            <span>Showing 1 to 5 of 128 results</span>
+            <div class="pagination-btns">
+                <button class="btn-page">Previous</button>
+                <button class="btn-page">Next</button>
+            </div>
+        </div>
+    </div>
+
 </div>
-<!-- Click outside to close notif -->
-<div id="notif-backdrop" class="hidden fixed inset-0 z-30" onclick="closeNotif()"></div>
-
-<script>
-
-    function toggleNotif(e) {
-        e.stopPropagation();
-
-        const dd = document.getElementById('notif-dropdown');
-        const backdrop = document.getElementById('notif-backdrop');
-
-        dd.classList.toggle('hidden');
-        backdrop.classList.toggle('hidden');
-    }
-
-    function closeNotif() {
-        document.getElementById('notif-dropdown').classList.add('hidden');
-        document.getElementById('notif-backdrop').classList.add('hidden');
-    }
-</script>
 </body>
 </html>

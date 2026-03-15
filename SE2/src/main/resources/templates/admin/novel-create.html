@@ -1,520 +1,146 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/_adminLayout}">
+      layout:decorate="~{layout/_novelAdminLayout}">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link
-            href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
-            rel="stylesheet"/>
-    <style>
-        * {
-            font-family: 'DM Sans', sans-serif;
-        }
-
-        .mono {
-            font-family: 'DM Mono', monospace;
-        }
-
-        body {
-            background-color: #f1f3f7;
-        }
-
-        /* Sidebar responsive */
-        #sidebar {
-            transition: transform 0.3s ease;
-        }
-
-        #sidebar-overlay {
-            display: none;
-        }
-
-        @media (max-width: 1023px) {
-            #sidebar {
-                position: fixed;
-                top: 0;
-                left: 0;
-                height: 100vh;
-                transform: translateX(-100%);
-                z-index: 50;
-            }
-
-            #sidebar.open {
-                transform: translateX(0);
-            }
-
-            #sidebar-overlay.show {
-                display: block;
-            }
-        }
-
-        .nav-active {
-            background: #ede9fe;
-            color: #6d28d9;
-            font-weight: 600;
-        }
-
-        /* Toggle switch */
-        .toggle-input {
-            display: none;
-        }
-
-        .toggle-label {
-            display: inline-flex;
-            align-items: center;
-            width: 44px;
-            height: 24px;
-            background: #d1d5db;
-            border-radius: 999px;
-            cursor: pointer;
-            transition: background 0.2s;
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .toggle-label::after {
-            content: '';
-            position: absolute;
-            left: 3px;
-            top: 3px;
-            width: 18px;
-            height: 18px;
-            background: #fff;
-            border-radius: 50%;
-            transition: transform 0.2s;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
-        }
-
-        .toggle-input:checked + .toggle-label {
-            background: #6d28d9;
-        }
-
-        .toggle-input:checked + .toggle-label::after {
-            transform: translateX(20px);
-        }
-
-        /* Cover upload zone */
-        .cover-zone {
-            border: 2px dashed #c4b5fd;
-            border-radius: 12px;
-            background: #faf8ff;
-            cursor: pointer;
-            transition: border-color 0.2s, background 0.2s;
-        }
-
-        .cover-zone:hover {
-            border-color: #7c3aed;
-            background: #f3f0ff;
-        }
-
-        /* Tag chip */
-        .tag-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
-            border-radius: 999px;
-            border: 1px solid #e5e7eb;
-            background: #fff;
-            font-size: 13px;
-            color: #374151;
-        }
-
-        .tag-chip button {
-            color: #9ca3af;
-            line-height: 1;
-        }
-
-        .tag-chip button:hover {
-            color: #ef4444;
-        }
-
-        /* Inputs */
-        .field {
-            width: 100%;
-            padding: 10px 14px;
-            border-radius: 10px;
-            border: 1px solid #e5e7eb;
-            background: #fff;
-            font-size: 14px;
-            color: #1f2937;
-            transition: border-color .2s, box-shadow .2s;
-            outline: none;
-        }
-
-        .field::placeholder {
-            color: #9ca3af;
-        }
-
-        .field:focus {
-            border-color: #7c3aed;
-            box-shadow: 0 0 0 3px rgba(124, 58, 237, .12);
-        }
-
-        select.field {
-            appearance: none;
-            cursor: pointer;
-        }
-
-        textarea.field {
-            resize: vertical;
-            min-height: 160px;
-        }
-
-        /* Fade-in */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(12px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .card {
-            animation: fadeUp .35s ease both;
-        }
-
-        .card:nth-child(1) {
-            animation-delay: .05s;
-        }
-
-        .card:nth-child(2) {
-            animation-delay: .12s;
-        }
-
-        /* Breadcrumb separator */
-        .bc-sep {
-            color: #d1d5db;
-            margin: 0 6px;
-        }
-
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #c4b5fd;
-            border-radius: 99px;
-        }
-    </style>
+    <title>Add New Novel - NRW Admin</title>
 </head>
+<body>
+<div layout:fragment="content">
 
-<body  layout:fragment="content">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb-nav">
+        <a th:href="@{/admin/novels/list}">Manage Novels</a>
+        <span class="separator">/</span>
+        <span class="current">Add New Novel</span>
+    </nav>
 
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header-left">
+            <h1>Add New Novel</h1>
+            <p>Fill in the details to add a new novel to the platform</p>
+        </div>
+        <div class="page-header-right">
+            <a th:href="@{/admin/novels/list}" class="btn-outline">Discard Draft</a>
+            <button class="btn-primary-custom">
+                <i class="bi bi-plus-lg"></i>
+                Create Novel
+            </button>
+        </div>
+    </div>
 
-<!-- ===== MAIN ===== -->
-<div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+    <!-- Two-column form layout -->
+    <div class="form-layout">
 
-    <!-- Mobile/Tablet Top Bar -->
-    <header
-            class="lg:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-gray-100 shadow-sm">
-        <button onclick="openSidebar()" class="p-2 rounded-lg hover:bg-gray-100 transition">
-            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" stroke-width="2"
-                 viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
-            </svg>
-        </button>
-        <span class="text-base text-violet-700" style="font-weight:700">NRW Admin</span>
-        <div class="w-9"></div>
-    </header>
+        <!-- Left column -->
+        <div>
+            <!-- General Information -->
+            <div class="form-card" style="margin-bottom: 24px;">
+                <h2 class="form-card-title">General Information</h2>
 
-    <!-- Content -->
-    <main class="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div class="form-group">
+                    <label class="form-label">Novel Title</label>
+                    <input type="text" class="form-input" placeholder="Enter novel title">
+                </div>
 
-        <div class="max-w-5xl mx-auto">
-            <!-- Breadcrumb -->
-            <nav class="flex items-center text-sm text-gray-400 mb-3 flex-wrap gap-y-1">
-                <a href="#" class="hover:text-violet-600 transition">Admin</a>
-                <span class="bc-sep">›</span>
-                <a href="#" class="hover:text-violet-600 transition">Manage Novels</a>
-                <span class="bc-sep">›</span>
-                <span class="text-gray-700" style="font-weight:500">Add New Novel</span>
-            </nav>
+                <div class="form-group">
+                    <label class="form-label">Author</label>
+                    <input type="text" class="form-input" placeholder="Enter author name">
+                </div>
 
-            <!-- Page header -->
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-                <h1 class="text-2xl sm:text-3xl text-gray-900" style="font-weight:700">Add New Novel</h1>
-                <div class="flex items-center gap-3">
-                    <button
-                            class="px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm text-gray-700 hover:bg-gray-50 shadow-sm transition"
-                            style="font-weight:500">
-                        Discard Draft
-                    </button>
-                    <button
-                            class="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-white text-sm shadow transition"
-                            style="font-weight:600">
-                        Create Novel
-                    </button>
+                <div class="form-group">
+                    <label class="form-label">Total Chapters</label>
+                    <input type="number" class="form-input" placeholder="0" value="0">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Genre</label>
+                    <select class="form-select-input">
+                        <option value="">Select genre</option>
+                        <option>Fantasy</option>
+                        <option>Xianxia</option>
+                        <option>VRMMO</option>
+                        <option>Romance</option>
+                        <option>Adventure</option>
+                        <option>Sci-Fi</option>
+                        <option>Horror</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Publishing Status</label>
+                    <select class="form-select-input">
+                        <option value="">Select status</option>
+                        <option>Ongoing</option>
+                        <option>Completed</option>
+                        <option>Hiatus</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Synopsis</label>
+                    <textarea class="form-textarea" placeholder="Write a brief synopsis of the novel..."></textarea>
+                    <p class="form-hint">Maximum 500 characters</p>
                 </div>
             </div>
-        </div><!-- /max-w header -->
 
-        <!-- Two-column layout -->
-        <div class="max-w-5xl mx-auto flex flex-col xl:flex-row gap-5 items-start">
+            <!-- Tags & Categorization -->
+            <div class="form-card">
+                <h2 class="form-card-title">Tags &amp; Categorization</h2>
+                <div class="tags-container">
+                    <span class="tag-chip">Reincarnation <button class="tag-remove">&times;</button></span>
+                    <span class="tag-chip">Overpowered MC <button class="tag-remove">&times;</button></span>
+                    <span class="tag-chip">Kingdom Building <button class="tag-remove">&times;</button></span>
+                    <span class="tag-chip">Magic System <button class="tag-remove">&times;</button></span>
+                </div>
+                <button class="btn-add-tag">
+                    <i class="bi bi-plus"></i>
+                    Add Tag
+                </button>
+            </div>
+        </div>
 
-            <!-- LEFT column -->
-            <div class="flex-1 min-w-0 space-y-5">
+        <!-- Right column -->
+        <div>
+            <!-- Cover image upload -->
+            <div class="form-card" style="margin-bottom: 24px;">
+                <h2 class="form-card-title">Novel Cover</h2>
+                <div class="upload-area">
+                    <div class="upload-icon"><i class="bi bi-cloud-arrow-up"></i></div>
+                    <p class="upload-text">Click to upload or drag and drop</p>
+                    <p class="upload-hint">PNG, JPG or WEBP (max. 2MB)</p>
+                </div>
+            </div>
 
-                <!-- General Information Card -->
-                <div class="card bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sm:p-6">
-                    <h2 class="flex items-center gap-2 text-base text-gray-800 mb-5" style="font-weight:600">
-                        <svg class="w-5 h-5 text-violet-500 shrink-0" fill="none" stroke="currentColor"
-                             stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                        </svg>
-                        General Information
-                    </h2>
-
-                    <!-- Novel Title -->
-                    <div class="mb-4">
-                        <label class="block text-sm text-gray-700 mb-1.5" style="font-weight:500">Novel
-                            Title</label>
-                        <input type="text" class="field" placeholder="e.g. The Chronicles of Astraea"/>
-                    </div>
-
-                    <!-- Author + Total Chapters -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label class="block text-sm text-gray-700 mb-1.5" style="font-weight:500">Author</label>
-                            <input type="text" class="field" placeholder="Name of the author"/>
-                        </div>
-                        <div>
-                            <label class="block text-sm text-gray-700 mb-1.5" style="font-weight:500">Total
-                                Chapters</label>
-                            <input type="number" class="field" placeholder="0" min="0"/>
-                        </div>
-                    </div>
-
-                    <!-- Genre + Publishing Status -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                        <div class="relative">
-                            <label class="block text-sm text-gray-700 mb-1.5" style="font-weight:500">Genre</label>
-                            <select class="field pr-9">
-                                <option value="" disabled selected>Select primary genre</option>
-                                <option>Fantasy</option>
-                                <option>Xianxia</option>
-                                <option>VRMMO</option>
-                                <option>Romance</option>
-                                <option>Adventure</option>
-                                <option>Sci-Fi</option>
-                                <option>Horror</option>
-                                <option>Mystery</option>
-                            </select>
-                            <svg class="absolute right-3 bottom-3 w-4 h-4 text-gray-400 pointer-events-none"
-                                 fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </div>
-                        <div class="relative">
-                            <label class="block text-sm text-gray-700 mb-1.5" style="font-weight:500">Publishing
-                                Status</label>
-                            <select class="field pr-9">
-                                <option>Ongoing</option>
-                                <option>Completed</option>
-                                <option>Hiatus</option>
-                                <option>Draft</option>
-                            </select>
-                            <svg class="absolute right-3 bottom-3 w-4 h-4 text-gray-400 pointer-events-none"
-                                 fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </div>
-                    </div>
-
-                    <!-- Synopsis -->
+            <!-- Publishing Options -->
+            <div class="form-card">
+                <h2 class="form-card-title">Publishing Options</h2>
+                <div class="toggle-row">
                     <div>
-                        <label class="block text-sm text-gray-700 mb-1.5" style="font-weight:500">Synopsis /
-                            Description</label>
-                        <textarea class="field"
-                                  placeholder="Enter a detailed description of the novel's plot and themes..."></textarea>
+                        <div class="toggle-label-text">Visible to Public</div>
+                        <div class="toggle-desc">Novel will appear in search results</div>
                     </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
                 </div>
-
-                <!-- Tags & Categorization Card -->
-                <div class="card bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sm:p-6">
-                    <h2 class="flex items-center gap-2 text-base text-gray-800 mb-5" style="font-weight:600">
-                        <svg class="w-5 h-5 text-violet-500 shrink-0" fill="none" stroke="currentColor"
-                             stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"/>
-                        </svg>
-                        Tags &amp; Categorization
-                    </h2>
-                    <div id="tags-container" class="flex flex-wrap gap-2 items-center">
-                            <span class="tag-chip">Magic <button onclick="removeTag(this)"
-                                                                 aria-label="Remove">×</button></span>
-                        <span class="tag-chip">Male Lead <button onclick="removeTag(this)"
-                                                                 aria-label="Remove">×</button></span>
-                        <span class="tag-chip">Reincarnation <button onclick="removeTag(this)"
-                                                                     aria-label="Remove">×</button></span>
-                        <!-- Add Tag input -->
-                        <div class="flex items-center gap-2">
-                            <input id="tag-input" type="text" placeholder="+ Add Tag"
-                                   class="px-3 py-1.5 rounded-full border border-dashed border-violet-300 bg-violet-50 text-sm text-violet-600 placeholder-violet-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-200 transition w-28"
-                                   onkeydown="handleTagInput(event)"/>
-                        </div>
+                <div class="toggle-row">
+                    <div>
+                        <div class="toggle-label-text">Featured List</div>
+                        <div class="toggle-desc">Show on homepage featured section</div>
                     </div>
-                    <p class="text-xs text-gray-400 mt-3">Press <kbd
-                            class="px-1.5 py-0.5 rounded bg-gray-100 border border-gray-200 text-gray-500 font-mono text-[11px]">Enter</kbd>
-                        to add a tag</p>
+                    <label class="toggle-switch">
+                        <input type="checkbox">
+                        <span class="toggle-slider"></span>
+                    </label>
                 </div>
+            </div>
+        </div>
 
-            </div><!-- /LEFT -->
+    </div>
 
-            <!-- RIGHT column -->
-            <div class="w-full xl:w-72 xl:shrink-0">
-                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-1 gap-5">
-
-                    <!-- Novel Cover Card -->
-                    <div class="card bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-                        <h3 class="text-xs text-gray-400 uppercase tracking-widest mb-4" style="font-weight:600">
-                            Novel Cover</h3>
-                        <label class="cover-zone flex flex-col items-center justify-center gap-3 p-6 text-center"
-                               id="cover-label">
-                            <input type="file" accept="image/*" class="hidden" id="cover-input"
-                                   onchange="previewCover(event)"/>
-                            <!-- Preview image (hidden by default) -->
-                            <img id="cover-preview" class="hidden w-full rounded-lg object-cover max-h-52"
-                                 alt="Cover preview"/>
-                            <!-- Placeholder -->
-                            <div id="cover-placeholder" class="flex flex-col items-center gap-3">
-                                <div class="w-14 h-14 rounded-full bg-orange-50 flex items-center justify-center">
-                                    <svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor"
-                                         stroke-width="1.5" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                              d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-800" style="font-weight:600">Click to upload cover
-                                    </p>
-                                    <p class="text-xs text-gray-400 mt-0.5 leading-relaxed">Recommended size:
-                                        600×800px<br>JPG, PNG, WebP (Max 5MB)</p>
-                                </div>
-                            </div>
-                        </label>
-                        <!-- Remove button (hidden until image selected) -->
-                        <button id="remove-cover"
-                                class="hidden mt-3 w-full text-xs text-red-500 hover:text-red-700 transition text-center"
-                                onclick="removeCover()">
-                            Remove cover
-                        </button>
-                    </div>
-
-                    <!-- Publishing Options Card -->
-                    <div class="card bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-                        <h3 class="text-xs text-gray-400 uppercase tracking-widest mb-4" style="font-weight:600">
-                            Publishing Options</h3>
-
-                        <!-- Visible to Public -->
-                        <div class="flex items-start justify-between gap-4 mb-4">
-                            <div>
-                                <p class="text-sm text-gray-800" style="font-weight:600">Visible to Public</p>
-                                <p class="text-xs text-gray-400 mt-0.5">Allow users to find this novel</p>
-                            </div>
-                            <div class="shrink-0 mt-0.5">
-                                <input type="checkbox" id="toggle-public" class="toggle-input" checked/>
-                                <label for="toggle-public" class="toggle-label"></label>
-                            </div>
-                        </div>
-
-                        <div class="border-t border-gray-100 pt-4 flex items-start justify-between gap-4">
-                            <div>
-                                <p class="text-sm text-gray-800" style="font-weight:600">Featured List</p>
-                                <p class="text-xs text-gray-400 mt-0.5">Add to home page carousel</p>
-                            </div>
-                            <div class="shrink-0 mt-0.5">
-                                <input type="checkbox" id="toggle-featured" class="toggle-input"/>
-                                <label for="toggle-featured" class="toggle-label"></label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Mobile action buttons -->
-                    <div class="flex gap-3 xl:hidden sm:col-span-2">
-                        <button
-                                class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm text-gray-700 hover:bg-gray-50 shadow-sm transition"
-                                style="font-weight:500">
-                            Discard Draft
-                        </button>
-                        <button
-                                class="flex-1 px-4 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-sm shadow transition"
-                                style="font-weight:600">
-                            Create Novel
-                        </button>
-                    </div>
-
-                </div><!-- /grid -->
-            </div><!-- /RIGHT -->
-        </div><!-- /two-col -->
-    </main>
 </div>
-
-<script>
-    function openSidebar() {
-        document.getElementById('sidebar').classList.add('open');
-        document.getElementById('sidebar-overlay').classList.add('show');
-    }
-
-    function closeSidebar() {
-        document.getElementById('sidebar').classList.remove('open');
-        document.getElementById('sidebar-overlay').classList.remove('show');
-    }
-
-    function removeTag(btn) {
-        btn.closest('.tag-chip').remove();
-    }
-
-    function handleTagInput(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            const input = document.getElementById('tag-input');
-            const val = input.value.trim();
-            if (!val) return;
-            const chip = document.createElement('span');
-            chip.className = 'tag-chip';
-            chip.innerHTML = `${val} <button onclick="removeTag(this)" aria-label="Remove">×</button>`;
-            input.parentElement.insertAdjacentElement('beforebegin', chip);
-            input.value = '';
-        }
-    }
-
-    function previewCover(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = ev => {
-            const preview = document.getElementById('cover-preview');
-            const placeholder = document.getElementById('cover-placeholder');
-            const removeBtn = document.getElementById('remove-cover');
-            preview.src = ev.target.result;
-            preview.classList.remove('hidden');
-            placeholder.classList.add('hidden');
-            removeBtn.classList.remove('hidden');
-        };
-        reader.readAsDataURL(file);
-    }
-
-    function removeCover() {
-        document.getElementById('cover-preview').classList.add('hidden');
-        document.getElementById('cover-preview').src = '';
-        document.getElementById('cover-placeholder').classList.remove('hidden');
-        document.getElementById('remove-cover').classList.add('hidden');
-        document.getElementById('cover-input').value = '';
-    }
-</script>
-
 </body>
 </html>

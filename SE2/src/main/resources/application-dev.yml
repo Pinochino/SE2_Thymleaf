@@ -1,0 +1,59 @@
+spring:
+  thymeleaf:
+    cache: false
+    prefix: file:./src/main/resources/templates/
+  web:
+    resources:
+      static-locations: file:./src/main/resources/static/,classpath:/static/
+      cache:
+        period: 0
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:se2dev;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: none
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: dummy
+            client-secret: dummy
+          github:
+            client-id: dummy
+            client-secret: dummy
+  mail:
+    host: localhost
+    port: 1025
+    username: dummy
+    password: dummy
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema-dev.sql
+  ai:
+    ollama:
+      enabled: false
+ai:
+  ollama:
+    chat:
+      options:
+        model: none

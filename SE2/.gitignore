@@ -39,3 +39,4 @@ build/
 /.env.dev
 /.env
 >>>>>>> development
+/.claude/settings.local.json

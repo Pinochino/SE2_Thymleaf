@@ -10,7 +10,7 @@ public class NovelRequest {
 
     private String content;
 
-    private Long categoryId;
+    private Long genreId;
 
     private MultipartFile imageFile;
 
@@ -21,11 +21,11 @@ public class NovelRequest {
     public NovelRequest() {
     }
 
-    public NovelRequest(String title, String description, String content, Long categoryId, MultipartFile imageFile, String imagePath, String author) {
+    public NovelRequest(String title, String description, String content, Long genreId, MultipartFile imageFile, String imagePath, String author) {
         this.title = title;
         this.description = description;
         this.content = content;
-        this.categoryId = categoryId;
+        this.genreId = genreId;
         this.imageFile = imageFile;
         this.imagePath = imagePath;
         this.author = author;
@@ -47,12 +47,12 @@ public class NovelRequest {
         this.description = description;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public Long getGenreId() {
+        return genreId;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setGenreId(Long genreId) {
+        this.genreId = genreId;
     }
 
     public MultipartFile getImageFile() {

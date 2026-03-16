@@ -23,10 +23,12 @@ public class HomeController {
     public String homePage() {
         return "client/homePage";
     }
+
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String searchPage() {
         return "client/searchPage";
     }
+
     @RequestMapping(value = "/page-not-found", method = RequestMethod.GET)
     public String pageNotFound() {
         return "public/pageNotFound";

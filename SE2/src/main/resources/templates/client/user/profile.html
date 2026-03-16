@@ -15,10 +15,10 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <section class="min-h-screen bg-[#111621] text-[#f1f5f9] py-8" x-data="{ activeTab: 'user' }">
+    <section class="min-h-screen bg-[#111621] text-[#f1f5f9] py-8" x-data="{ activeTab: new URLSearchParams(window.location.search).get('tab') || 'user' }">
 
         <!-- Tab Navigation -->
-        <div class="max-w-[896px] mx-auto px-[192px] max-[1024px]:px-[32px] max-sm:px-[16px]">
+        <div class="max-w-[880px] mx-auto px-8 max-sm:px-4">
             <div class="flex gap-8 max-sm:gap-4 border-b border-[#2d3446] mb-8 max-sm:overflow-x-auto max-sm:scrollbar-none">
                 <button @click="activeTab='user'"
                         class="pb-3 font-['Noto_Sans'] font-bold text-[14px] max-sm:text-[12px] tracking-[0.35px] whitespace-nowrap transition-colors"
@@ -39,7 +39,7 @@
         </div>
 
         <!-- ==================== USER INFO TAB ==================== -->
-        <div x-show="activeTab==='user'" x-cloak class="max-w-[896px] mx-auto px-[192px] max-[1024px]:px-[32px] max-sm:px-[16px]">
+        <div x-show="activeTab==='user'" x-cloak class="max-w-[880px] mx-auto px-8 max-sm:px-4">
 
             <!-- User Identity Card -->
             <div class="flex items-center gap-6 py-10 mb-6 max-sm:flex-col max-sm:text-center max-sm:py-6 max-sm:mb-4">
@@ -131,7 +131,7 @@
         </div>
 
         <!-- ==================== FAVOURITED NOVELS TAB ==================== -->
-        <div x-show="activeTab==='fav'" x-cloak class="mx-auto px-[200px] max-[1024px]:px-[200px] max-sm:px-[12px]">
+        <div x-show="activeTab==='fav'" x-cloak class="max-w-[880px] mx-auto px-8 max-sm:px-3">
 
             <!-- Novel Cards Grid: 4col desktop, 3col tablet, 2col mobile -->
             <div class="grid grid-cols-4 max-[1024px]:grid-cols-3 max-sm:grid-cols-2 gap-[24px] max-sm:gap-[16px]">
@@ -234,7 +234,7 @@
         </div>
 
         <!-- ==================== TRANSLATION CONTRIBUTIONS TAB ==================== -->
-        <div x-show="activeTab==='trans'" x-cloak class="mx-auto px-[200px] max-[1024px]:px-[32px] max-sm:px-[12px]">
+        <div x-show="activeTab==='trans'" x-cloak class="max-w-[880px] mx-auto px-8 max-sm:px-3">
 
             <!-- Mobile: Search bar on top (outside card) -->
             <div class="hidden max-sm:block mb-4">

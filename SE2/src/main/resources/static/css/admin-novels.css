@@ -1333,6 +1333,7 @@ button.nav-item i {
 
 .novel-card {
     margin-bottom: 8px;
+    height: 200px;
     display: flex;
     gap: 16px;
     padding: 12px;

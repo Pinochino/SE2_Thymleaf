@@ -66,19 +66,20 @@
     }
     .btn-apply:hover { background: var(--accent2); }
     .btn-read {
-      background: var(--accent); color: #fff; font-size: 0.8rem; font-weight: 600;
-      padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer;
-      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--accent); color: #fff; font-size: 0.82rem; font-weight: 600;
+      padding: 9px 20px; border-radius: 8px; border: none; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 7px;
       text-decoration: none; transition: background .15s; white-space: nowrap;
     }
     .btn-read:hover { background: var(--accent2); }
     .btn-save {
-      background: transparent; border: 1.5px solid #2a3a5c; color: var(--nor);
-      font-size: 0.8rem; font-weight: 600; padding: 8px 18px; border-radius: 8px;
-      cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+      background: transparent; border: 1.5px solid #2a3a5c; color: var(--noti);
+      font-size: 0.82rem; font-weight: 600; padding: 9px 20px; border-radius: 8px;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
       transition: all .15s; white-space: nowrap;
     }
-    .btn-save:hover { border-color: var(--noti); color: var(--noti); }
+    .btn-save svg { color: var(--noti); }
+    .btn-save:hover { border-color: var(--noti); background: rgba(239,68,68,.07); }
     .btn-save.saved { border-color: var(--noti); color: var(--noti); background: rgba(239,68,68,.07); }
 
     /* ── Sort select ── */
@@ -102,13 +103,14 @@
 
     /* ── Badge ── */
     .card-status-badge {
-      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em;
-      padding: 3px 8px; border-radius: 5px; border: 1.5px solid; white-space: nowrap; display: inline-block;
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em;
+      padding: 4px 12px; border-radius: 6px; border: 1.5px solid; white-space: nowrap; display: inline-block;
+      text-transform: uppercase; flex-shrink:0;
     }
-    .badge-completed { border-color: var(--accent); color: #aac0ff; }
-    .badge-ongoing   { border-color: #22c55e; color: #86efac; }
-    .badge-hiatus    { border-color: #f59e0b; color: #fcd34d; }
-    .badge-new       { border-color: var(--lw); color: var(--muted); }
+    .badge-completed { border-color: #2a3a5c; color: #d1d5db; background: rgba(30,45,74,0.5); }
+    .badge-ongoing   { border-color: #22c55e; color: #86efac; background: rgba(34,197,94,0.08); }
+    .badge-hiatus    { border-color: #f59e0b; color: #fcd34d; background: rgba(245,158,11,0.08); }
+    .badge-new       { border-color: #2a3a5c; color: #d1d5db; background: rgba(30,45,74,0.5); }
 
     /* ── Filter labels ── */
     .filter-title { font-family:var(--font-head); font-size:0.72rem; letter-spacing:0.18em; color:var(--hg); font-weight:700; }
@@ -143,7 +145,6 @@
     #filter-desktop { display: none;  }
 
     #filter-section {
-      background: var(--bg-filter);
       border-bottom: 1px solid #131f35;
       padding: 0.9rem 1rem 1rem;
       flex-shrink: 0;
@@ -158,30 +159,28 @@
     #novel-list { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 
     .novel-card {
-      background:var(--bg-card); border:1px solid #152035; border-radius:12px;
+      background:var(--bg-card); border:1px solid #1a2540; border-radius:14px;
       overflow:hidden; display:flex; flex-direction:column;
       transition:border-color .2s, background .2s;
-
     }
     .novel-card:hover { border-color:#254070; background:var(--bg-hover); }
 
-    /* Fixed height cover on mobile — no aspect-ratio so it stays compact in 2-col grid */
-    .card-cover { width:100%; height:130px; position:relative; overflow:hidden; flex-shrink:0; }    .card-cover-inner { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:4px; }
+    /* Fixed height cover on mobile */
+    .card-cover { width:100%; height:140px; position:relative; overflow:hidden; flex-shrink:0; }
+    .card-cover-inner { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:4px; }
     .card-cover img  { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
 
-    /* Body is flex-col so actions can be pushed to the bottom */
-    .card-body { display:flex; flex-direction:column; padding:7px 7px 8px; gap:4px; flex:1; min-height:0; overflow:hidden;}
+    .card-body { display:flex; flex-direction:column; padding:8px 8px 10px; gap:4px; flex:1; min-height:0; overflow:hidden;}
     .card-head-row { display:flex; flex-direction:column; gap:3px; }
     .card-title {
-  font-family:var(--font-head); font-size:0.72rem; color:#fff;
-  font-weight:700; line-height:1.3; text-decoration:none;
-  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
-}
+      font-family:var(--font-head); font-size:0.75rem; color:#fff;
+      font-weight:700; line-height:1.3; text-decoration:none;
+      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+    }
     .card-meta { display:flex; align-items:center; font-size:0.65rem; color:var(--muted); gap:5px; flex-wrap:wrap; }
     .card-description { display:none; }
     .card-genres      { display:none; }
 
-    /* Always visible at bottom of card */
     .card-actions { display:flex; flex-direction:column; gap:4px; margin-top:auto; padding-top:5px; }
     .card-actions .btn-read { width:100%; justify-content:center; font-size:0.69rem; padding:6px 4px; border-radius:7px; }
     .card-actions .btn-save { width:100%; justify-content:center; font-size:0.69rem; padding:5px 4px; border-radius:7px; }
@@ -194,12 +193,12 @@
     ──────────────────────────────────────────── */
     @media (min-width: 768px) {
       main {
-        padding: 0 3rem;      /* wider margins on desktop */
+        padding: 0 1.5rem;
         align-items: flex-start;
       }
 
       .search-wrap {
-        flex-direction: row;  /* sidebar beside results */
+        flex-direction: row;
         align-items: flex-start;
         gap: 0;
       }
@@ -207,7 +206,6 @@
       #filter-mobile  { display: none  !important; }
       #filter-desktop { display: block !important; }
 
-      /* Compact sidebar */
       #filter-section {
         width: 210px;
         flex-shrink: 0;
@@ -219,7 +217,6 @@
         top: 0;
         max-height: 100vh;
         overflow-y: auto;
-        background: var(--bg-filter);
       }
 
       #results { padding: 1.5rem 1.75rem 2rem; flex: 1; min-width: 0; }
@@ -229,29 +226,58 @@
       /* Vertical list of horizontal cards */
       #novel-list { display:flex; flex-direction:column; gap:1rem; }
 
-      /* Card is a row — height = whatever card-body needs, cover fills that height */
-      .novel-card    { flex-direction:row; border-radius:14px; }
+      /* Card is horizontal row */
+      .novel-card { flex-direction:row; border-radius:14px; min-height:200px; height: 200px }
 
-      /* Cover: fixed width, stretches to full card height via align-self */
-      .card-cover    { width:160px; height:unset; flex-shrink:0; aspect-ratio:unset; }
+      /* Cover: fixed width, full card height */
+      .card-cover {
+        width:200px; height:unset; flex-shrink:0; aspect-ratio:unset;
+        border-radius:14px 0 0 14px;
+      }
+      .card-cover-inner { border-radius:14px 0 0 14px; }
 
-      .card-body     { padding:1rem 1.2rem; gap:8px; flex:1; min-width:0; display:flex; flex-direction:column; }
-      .card-head-row { flex-direction:row; align-items:flex-start; justify-content:space-between; gap:10px; }
-      .card-title    { font-size:clamp(0.95rem,2vw,1.08rem); }
-      .card-meta     { font-size:0.82rem; gap:14px; }
+      .card-body {
+        padding:1.25rem 1.5rem; gap:8px; flex:1; min-width:0;
+        display:flex; flex-direction:column;
+      }
+      .card-head-row {
+        flex-direction:row; align-items:flex-start;
+        justify-content:space-between; gap:10px;
+      }
+      .card-title {
+        font-size:1.15rem; -webkit-line-clamp:1;
+      }
+      .card-meta { font-size:0.85rem; gap:14px; }
 
       .card-description {
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        font-size: 0.84rem; color: var(--muted); line-height: 1.6;
+        font-size: 0.85rem; color: var(--muted); line-height: 1.65;
+        margin-top: 4px;
       }
-      .card-genres { display:flex; flex-wrap:wrap; gap:5px; margin-top:2px; }
+      .card-genres { display:none; }
 
-      .card-actions { flex-direction:row; flex-wrap:wrap; margin-top:auto; gap:10px; padding-top:8px; }
-      .card-actions .btn-read { width:auto; padding:8px 18px; font-size:0.8rem; border-radius:8px; }
-      .card-actions .btn-save { width:auto; padding:8px 18px; font-size:0.8rem; border-radius:8px; }
+      .card-actions {
+        flex-direction:row; flex-wrap:wrap; margin-top:auto;
+        gap:10px; padding-top:10px;
+      }
+      .card-actions .btn-read {
+        width:auto; padding:9px 20px; font-size:0.82rem; border-radius:8px;
+      }
+      .card-actions .btn-save {
+        width:auto; padding:9px 20px; font-size:0.82rem; border-radius:8px;
+      }
+    }
+
+    /* Larger desktops: wider cover */
+    @media (min-width: 1024px) {
+      main { padding: 0 2rem; }
+      .card-cover { width:220px; }
+      .card-title { font-size:1.25rem; }
+      .card-description { -webkit-line-clamp: 3; font-size:0.88rem; }
+      .card-body { padding:1.4rem 1.75rem; }
     }
   </style>
 </head>

@@ -35,12 +35,12 @@ import java.util.stream.Collectors;
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
-    private static final String[] PUBLIC_WHITELIST = {"/images/**",
-            "/home","/search","/",
+    private static final String[] PUBLIC_WHITELIST = {"/images/**", "/img/**", "/uploads/**",
+            "/home", "/search", "/",
             "/css/**",
             "/js/**",
             "/WEB-INF/views/**", "/login", "/register", "/favicon.ico", "/oauth/**", "/forgot-password",
-            "/reset-password"};
+            "/reset-password", "/novels/**", "/chapter/**"};
 
     private final CustomOAuth2UserService oAuth2UserService;
     private final UserService userService;
@@ -62,14 +62,15 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasRole("SUPER_ADMIN")
                         .anyRequest().authenticated())
                 .cors(Customizer.withDefaults())
-                .httpBasic(Customizer.withDefaults())
-//                .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(form ->
                                 form
                                         .loginPage("/login")
+                                        .loginProcessingUrl("/login")
                                         .usernameParameter("email")
                                         .passwordParameter("password")
-//                                .successHandler(successHandler)
+                                        .defaultSuccessUrl("/", true)
+                                        .failureUrl("/login?error")
+                                        .permitAll()
                 )
                 .logout(Customizer.withDefaults())
                 .oauth2Login(login -> login.loginPage("/login")

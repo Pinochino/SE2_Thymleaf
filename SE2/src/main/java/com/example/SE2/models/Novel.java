@@ -136,4 +136,26 @@ public class Novel extends AbstractEntity {
     public void setChapters(Set<Chapter> chapters) {
         this.chapters = chapters;
     }
+
+    public Novel(Long id,
+                 UUID publicId,
+                 String title,
+                 String description,
+                 String author,
+                 NovelStatus status,
+                 Float averageRating,
+                 String coverImgUrl,
+                 Set<Genre> genres,
+                 Set<Chapter> chapters) {
+        this.id = id;
+        this.publicId = publicId;
+        this.title = title;
+        this.description = description;
+        this.author = author;
+        this.status = status;
+        this.averageRating = averageRating;
+        this.coverImgUrl = coverImgUrl;
+        this.genres = genres;
+        this.chapters = chapters;
+    }
 }

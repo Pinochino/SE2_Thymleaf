@@ -1,8 +1,11 @@
 package com.example.SE2.configs;
 
+import com.example.SE2.constants.GenreName;
 import com.example.SE2.constants.RoleName;
+import com.example.SE2.models.Genre;
 import com.example.SE2.models.Role;
 import com.example.SE2.models.User;
+import com.example.SE2.repositories.GenreRepository;
 import com.example.SE2.repositories.RoleRepository;
 import com.example.SE2.repositories.UserRepository;
 
@@ -25,11 +28,16 @@ public class DataSeed implements CommandLineRunner {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final GenreRepository genreRepository;
 
     @Autowired
-    public DataSeed(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public DataSeed(UserRepository userRepository,
+                    RoleRepository roleRepository,
+                    GenreRepository genreRepository,
+                    PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.genreRepository = genreRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -72,5 +80,21 @@ public class DataSeed implements CommandLineRunner {
         }
 
         log.info("Admin created: " + user.getEmail());
+
+        Genre oldGenre = genreRepository.findGenreByName(GenreName.FANTASY);
+        List<Genre> genreList = List.of(
+                new Genre(GenreName.FANTASY),
+                new Genre(GenreName.COMEDY),
+                new Genre(GenreName.CRIME),
+                new Genre(GenreName.HORROR),
+                new Genre(GenreName.HISTORIC),
+                new Genre(GenreName.SCIFI)
+                );
+
+        if (oldGenre == null) {
+            genreRepository.saveAll(genreList);
+        }
+
+
     }
 }

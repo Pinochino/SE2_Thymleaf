@@ -30,8 +30,8 @@ public class Se2Application {
     @Bean
     CommandLineRunner init(FileService fileService) {
         return (args) -> {
-            fileService.deleteAll();
-            fileService.init();
+//            fileService.deleteAll();
+//            fileService.init();
         };
     }
 

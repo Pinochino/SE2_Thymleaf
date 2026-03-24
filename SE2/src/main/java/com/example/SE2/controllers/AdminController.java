@@ -7,6 +7,7 @@ import com.example.SE2.repositories.GenreRepository;
 import com.example.SE2.repositories.NovelRepository;
 import com.example.SE2.repositories.UserRepository;
 import com.example.SE2.services.file.FileService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,8 +51,13 @@ public class AdminController {
      */
     @GetMapping(path = "/novels/list")
     public String listNovels(Model model) {
+
         List<Novel> novels = novelRepository.findAll();
+        List<Genre> genres = genreRepository.findAll();
+        model.addAttribute("novel", new Novel());
         model.addAttribute("novels", novels);
+        model.addAttribute("genres", genres);
+
         return "admin/novel-management";
     }
 
@@ -91,6 +97,23 @@ public class AdminController {
         newNovel.setGenres(genres);
         novelRepository.save(newNovel);
 
+        return "redirect:/admin/novels/list";
+    }
+
+    @GetMapping("/novels/delete/{id}")
+    @Transactional
+    public String deleteNovel(@PathVariable long id, Model model) {
+        Novel novel = novelRepository.getById(id);
+
+        if (novel == null) {
+            model.addAttribute("error", "No such novel");
+            return "redirect:/admin/novels/list";
+        }
+
+        novel.getGenres().forEach(g -> g.getNovels().remove(novel));
+        novel.getGenres().clear();
+
+        novelRepository.delete(novel);
         return "redirect:/admin/novels/list";
     }
 

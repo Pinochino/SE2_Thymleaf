@@ -34,7 +34,7 @@
     </a>
 
     <!-- Search & Filters -->
-    <div class="filter-bar">
+    <div class="filter-bar" >
         <div class="search-input-wrapper">
             <i class="bi bi-search"></i>
             <input type="text" class="search-input" placeholder="Search novels...">
@@ -42,17 +42,16 @@
         <div class="filter-row">
             <select class="filter-select">
                 <option value="">All Genres</option>
-                <option>Fantasy</option>
-                <option>Xianxia</option>
-                <option>VRMMO</option>
-                <option>Romance</option>
-                <option>Adventure</option>
+                <option th:each="genre: ${genres}"
+                        th:value="${genre.id}"
+                        th:text="${genre.name}"
+                ></option>
             </select>
             <select class="filter-select">
                 <option value="">All Status</option>
-                <option>Ongoing</option>
-                <option>Completed</option>
-                <option>Hiatus</option>
+                <option th:each="statusOtp : ${T(com.example.SE2.constants.NovelStatus).values()}"
+                        th:value="${statusOtp}" th:text="${statusOtp}"
+                ></option>
             </select>
         </div>
     </div>
@@ -96,7 +95,7 @@
                 <td><span class="status-pill status-ongoing" th:text="*{novel.status}">Ongoing</span></td>
                 <td>
                     <button class="btn-action bg-orange-600! text-white!"><i class="bi bi-pencil"></i></button>
-                    <button class="btn-action bg-red-600! text-white!"><i class="bi bi-trash"></i></button>
+                    <a class="btn-action bg-red-600! text-white!" th:href="'/admin/novels/delete/' + ${novel.id}"><i class="bi bi-trash"></i></a>
                 </td>
 
             </tr>

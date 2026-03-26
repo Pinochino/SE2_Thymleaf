@@ -6,150 +6,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${pageTitle} ?: 'Home Page'">Home Page</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
-
-    <style>
-        :root {
-            --color-btn:  #6366f1;
-            --color-hg:   #ffffff;
-            --color-nor:  #d1d5db;
-            --color-lw:   #94a3b8;
-            --color-link: #144bb8;
-            --font-head:  "Cinzel", serif;
-            --font-nor:   "Inter", sans-serif;
-        }
-
-        /* ── Only CSS that Tailwind can't express ── */
-
-        /* Hero desktop layers */
-        .hero {
-            background: linear-gradient(135deg, #0d1b2e 0%, #0f2a3d 40%, #091520 100%);
-        }
-        .hero-art {
-            background:
-                radial-gradient(ellipse 60% 100% at 75% 50%, rgba(30,60,100,0.45) 0%, transparent 70%),
-                linear-gradient(to right, #0a0f1a 30%, transparent 70%);
-        }
-        .hero-portrait {
-            background: linear-gradient(135deg, #1a3a5c 0%, #2d6a8a 30%, #1a2a3a 70%, #0d1520 100%);
-            clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
-        }
-        .hero-portrait::after {
-            content: '';
-            position: absolute; inset: 0;
-            background:
-                radial-gradient(ellipse 80% 120% at 60% 40%, rgba(80,140,200,0.3) 0%, transparent 60%),
-                linear-gradient(to bottom, transparent 50%, rgba(10,15,26,0.8) 100%);
-        }
-
-        /* Book card texture */
-        .novel-card-inner {
-            position: absolute; inset: 0;
-            background: linear-gradient(160deg, #e8dcc8 0%, #d4c9b0 25%, #c5b89a 50%, #b8aa8a 75%, #a89878 100%);
-        }
-        .novel-card-inner::before {
-            content: ''; position: absolute; inset: 0;
-            background: repeating-linear-gradient(
-                180deg, transparent 0px, transparent 5px,
-                rgba(120,100,70,0.08) 5px, rgba(120,100,70,0.08) 6px);
-        }
-        .novel-card-inner::after {
-            content: ''; position: absolute;
-            top: 0; left: 0; bottom: 0; width: 18px;
-            background: linear-gradient(to right, rgba(0,0,0,0.35), transparent);
-        }
-
-        /* Cards grid — 5-col desktop/tablet, horizontal scroll mobile */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 16px;
-        }
-        @media (max-width: 640px) {
-            .cards-scroll-wrapper {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: thin;
-                scrollbar-color: #122D66 #111B30;
-            }
-            .cards-scroll-wrapper::-webkit-scrollbar       { height: 6px; }
-            .cards-scroll-wrapper::-webkit-scrollbar-track { background: #111B30; border-radius: 3px; }
-            .cards-scroll-wrapper::-webkit-scrollbar-thumb { background: #122D66; border-radius: 3px; }
-            .cards-scroll-wrapper::-webkit-scrollbar-thumb:hover { background: #1a3d88; }
-            .cards-grid {
-                display: flex; flex-wrap: nowrap;
-                gap: 12px; width: max-content; padding-bottom: 8px;
-            }
-            .cards-grid > * { width: 44vw; max-width: 160px; flex-shrink: 0; }
-        }
-
-        /* Novel card hover */
-        .novel-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.5); }
-
-        /* Add card hover */
-        .add-card:hover { border-color: var(--color-btn); }
-
-        /* Updates table row hover */
-        .updates-table tbody tr:hover { background: rgba(255,255,255,0.03); }
-
-        /* Tablet: hide Time column */
-        @media (min-width: 641px) and (max-width: 768px) {
-            .col-time { display: none; }
-        }
-
-        /* Mobile updates: hide table, show card list */
-        .updates-last-update { display: none; }
-        .updates-cards       { display: none; }
-        .updates-view-all-btn { display: none; }
-        @media (max-width: 640px) {
-            .updates-last-update      { display: block; }
-            .updates-section-viewall  { display: none; }
-            .updates-table-container  { display: none; }
-            .updates-cards            { display: flex; }
-            .updates-view-all-btn     { display: block; }
-        }
-
-        /* Mobile hero card */
-        .hero-mobile-img  { display: none; }
-        .hero-mobile-body { display: contents; }
-        @media (max-width: 640px) {
-            .hero-mobile-img  { display: block; }
-            .hero-mobile-body { display: flex; flex-direction: column; gap: 10px; padding: 16px 18px 20px; }
-            .hero-portrait, .hero-art { display: none; }
-            .hero-mobile-img {
-                width: 100%; height: 180px; position: relative; overflow: hidden;
-                background:
-                    linear-gradient(to bottom, transparent 40%, #111B30 100%),
-                    linear-gradient(135deg, #1a3a5c 0%, #2d6a8a 25%, #3a7aa0 50%, #1a2a3a 75%, #0d1520 100%);
-            }
-            .hero-mobile-img::before {
-                content: ''; position: absolute; inset: 0;
-                background:
-                    radial-gradient(ellipse 70% 80% at 70% 30%, rgba(100,180,255,0.25) 0%, transparent 60%),
-                    radial-gradient(ellipse 40% 60% at 85% 20%, rgba(150,200,255,0.15) 0%, transparent 50%);
-            }
-            /* Badge becomes solid on mobile */
-            .trending-badge {
-                background: var(--color-link) !important;
-                border: none !important;
-                border-radius: 5px !important;
-                color: #fff !important;
-                font-weight: 700 !important;
-                align-self: flex-start;
-            }
-            .hero-title-accent    { color: var(--color-hg) !important; font-style: normal !important; }
-            .hero-meta            { display: none; }
-            .hero-desc            { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-            .read-btn             { width: 100%; justify-content: center; background: var(--color-link); }
-        }
-    </style>
+    <link rel="stylesheet" href="src/main/resources/static/css/homepage.css">
 </head>
 
 <body class="bg-[#0a0f1a] text-[#d1d5db] font-[Inter,sans-serif] min-h-screen">
@@ -213,431 +76,313 @@
     <section class="max-w-[1200px] mx-auto px-6 py-10">
 
         <!-- ── Currently Reading ── -->
-        <div class="mb-14">
-            <div class="mb-5">
-                <h2 class="font-[Cinzel,serif] text-[1.05rem] font-semibold text-white tracking-[0.04em] mb-0.5">Currently Reading</h2>
-                <p class="text-[0.72rem] text-[#94a3b8]">Continue where you left off.</p>
-            </div>
-            <div class="cards-scroll-wrapper">
-                <div class="cards-grid">
+<!--        <div class="mb-14">-->
+<!--            <div class="mb-5">-->
+<!--                <h2 class="font-[Cinzel,serif] text-[1.05rem] font-semibold text-white tracking-[0.04em] mb-0.5">Currently Reading</h2>-->
+<!--                <p class="text-[0.72rem] text-[#94a3b8]">Continue where you left off.</p>-->
+<!--            </div>-->
+<!--            <div class="cards-scroll-wrapper">-->
+<!--                <div class="cards-grid">-->
 
-                    <!-- Novel cards (dynamic) -->
-                    <div class="cursor-pointer" th:each="novel : ${currentlyReading}">
-                        <a th:href="@{/novel/{id}(id=${novel.id})}">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200">
-                                <img th:if="${novel.coverUrl != null}"
-                                     th:src="${novel.coverUrl}"
-                                     th:alt="${novel.title}"
-                                     class="absolute inset-0 w-full h-full object-cover z-[1]"/>
-                                <div class="novel-card-inner" th:unless="${novel.coverUrl != null}"></div>
-                                <span th:if="${novel.rating != null}"
-                                      class="absolute top-2 right-2 z-[2] bg-[rgba(15,20,35,0.85)] border border-[rgba(201,168,76,0.5)] rounded px-1.5 py-px text-[0.65rem] text-[#c9a84c] font-medium"
-                                      th:text="'★ ' + ${novel.rating}">★ 4.8</span>
-                            </div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate" th:text="${novel.title}">Novel Title</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">
-                                <span th:text="${novel.genre}">Genre</span>
-                                <span th:if="${novel.status != null}"> • <span th:text="${novel.status}">Status</span></span>
-                            </p>
-                        </a>
-                    </div>
+<!--                    &lt;!&ndash; Novel cards (dynamic) &ndash;&gt;-->
+<!--                    <div class="cursor-pointer" th:each="novel : ${currentlyReading}">-->
+<!--                        <a th:href="@{/novel/{id}(id=${novel.id})}">-->
+<!--                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200">-->
+<!--                                <img th:if="${novel.coverUrl != null}"-->
+<!--                                     th:src="${novel.coverUrl}"-->
+<!--                                     th:alt="${novel.title}"-->
+<!--                                     class="absolute inset-0 w-full h-full object-cover z-[1]"/>-->
+<!--                                <div class="novel-card-inner" th:unless="${novel.coverUrl != null}"></div>-->
+<!--                                <span th:if="${novel.rating != null}"-->
+<!--                                      class="absolute top-2 right-2 z-[2] bg-[rgba(15,20,35,0.85)] border border-[rgba(201,168,76,0.5)] rounded px-1.5 py-px text-[0.65rem] text-[#c9a84c] font-medium"-->
+<!--                                      th:text="'★ ' + ${novel.rating}">★ 4.8</span>-->
+<!--                            </div>-->
+<!--                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate" th:text="${novel.title}">Novel Title</p>-->
+<!--                            <p class="text-[0.67rem] text-[#94a3b8]">-->
+<!--                                <span th:text="${novel.genre}">Genre</span>-->
+<!--                                <span th:if="${novel.status != null}"> • <span th:text="${novel.status}">Status</span></span>-->
+<!--                            </p>-->
+<!--                        </a>-->
+<!--                    </div>-->
 
-                    <!-- Fallback static cards shown when no data (th:if / th:unless pattern) -->
-                    <th:block th:if="${currentlyReading == null or currentlyReading.isEmpty()}">
-                        <div class="cursor-pointer">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200">
-                                <div class="novel-card-inner"></div>
-                                <span class="absolute top-2 right-2 z-[2] bg-[rgba(15,20,35,0.85)] border border-[rgba(201,168,76,0.5)] rounded px-1.5 py-px text-[0.65rem] text-[#c9a84c] font-medium">★ 4.8</span>
-                            </div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Shadow Realm</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">Fantasy • Completed</p>
-                        </div>
-                        <div class="cursor-pointer">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200">
-                                <div class="novel-card-inner"></div>
-                            </div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Neon Pulse</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">Sci-Fi • Ongoing</p>
-                        </div>
-                        <div class="cursor-pointer">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200">
-                                <div class="novel-card-inner"></div>
-                            </div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Reborn as a Slime</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">Isekai • Ongoing</p>
-                        </div>
-                        <div class="cursor-pointer">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200">
-                                <div class="novel-card-inner"></div>
-                            </div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Blade of Zen</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">Action • Completed</p>
-                        </div>
-                    </th:block>
+<!--                    &lt;!&ndash; Fallback static cards shown when no data (th:if / th:unless pattern) &ndash;&gt;-->
+<!--                    <th:block th:if="${currentlyReading == null or currentlyReading.isEmpty()}">-->
+<!--                        <div class="cursor-pointer">-->
+<!--                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200">-->
+<!--                                <div class="novel-card-inner"></div>-->
+<!--                                <span class="absolute top-2 right-2 z-[2] bg-[rgba(15,20,35,0.85)] border border-[rgba(201,168,76,0.5)] rounded px-1.5 py-px text-[0.65rem] text-[#c9a84c] font-medium">★ 4.8</span>-->
+<!--                            </div>-->
+<!--                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Shadow Realm</p>-->
+<!--                            <p class="text-[0.67rem] text-[#94a3b8]">Fantasy • Completed</p>-->
+<!--                        </div>-->
+<!--                        <div class="cursor-pointer">-->
+<!--                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200">-->
+<!--                                <div class="novel-card-inner"></div>-->
+<!--                            </div>-->
+<!--                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Neon Pulse</p>-->
+<!--                            <p class="text-[0.67rem] text-[#94a3b8]">Sci-Fi • Ongoing</p>-->
+<!--                        </div>-->
+<!--                        <div class="cursor-pointer">-->
+<!--                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200">-->
+<!--                                <div class="novel-card-inner"></div>-->
+<!--                            </div>-->
+<!--                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Reborn as a Slime</p>-->
+<!--                            <p class="text-[0.67rem] text-[#94a3b8]">Isekai • Ongoing</p>-->
+<!--                        </div>-->
+<!--                        <div class="cursor-pointer">-->
+<!--                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200">-->
+<!--                                <div class="novel-card-inner"></div>-->
+<!--                            </div>-->
+<!--                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Blade of Zen</p>-->
+<!--                            <p class="text-[0.67rem] text-[#94a3b8]">Action • Completed</p>-->
+<!--                        </div>-->
+<!--                    </th:block>-->
 
-                    <!-- Add card -->
-                    <div class="cursor-pointer">
-                        <a th:href="@{/library}">
-                            <div class="add-card aspect-[2/3] rounded-lg border border-dashed border-white/[0.12] bg-white/[0.02] flex flex-col items-center justify-center gap-2 p-4 transition-colors duration-200">
-                                <div class="w-9 h-9 rounded-full border border-white/[0.15] flex items-center justify-center text-xl text-slate-600">+</div>
-                                <p class="text-[0.68rem] text-slate-500 leading-snug text-center">Discover more novels to add to your reading list.</p>
-                                <span class="text-[0.68rem] text-[#144bb8] cursor-pointer mt-0.5">Browse Library</span>
-                            </div>
-                        </a>
-                    </div>
+<!--                    &lt;!&ndash; Add card &ndash;&gt;-->
+<!--                    <div class="cursor-pointer">-->
+<!--                        <a th:href="@{/library}">-->
+<!--                            <div class="add-card aspect-[2/3] rounded-lg border border-dashed border-white/[0.12] bg-white/[0.02] flex flex-col items-center justify-center gap-2 p-4 transition-colors duration-200">-->
+<!--                                <div class="w-9 h-9 rounded-full border border-white/[0.15] flex items-center justify-center text-xl text-slate-600">+</div>-->
+<!--                                <p class="text-[0.68rem] text-slate-500 leading-snug text-center">Discover more novels to add to your reading list.</p>-->
+<!--                                <span class="text-[0.68rem] text-[#144bb8] cursor-pointer mt-0.5">Browse Library</span>-->
+<!--                            </div>-->
+<!--                        </a>-->
+<!--                    </div>-->
 
-                </div>
-            </div>
-        </div>
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <!-- ── Favorite Novels ── -->
-        <div class="mb-14">
-            <div class="flex items-end justify-between mb-5">
-                <div>
-                    <h2 class="font-[Cinzel,serif] text-[1.05rem] font-semibold text-white tracking-[0.04em] mb-0.5">Favorite Novels</h2>
-                    <p class="text-[0.72rem] text-[#94a3b8]">Your personal collection.</p>
-                </div>
-                <a th:href="@{/profile/favourite}"
-                   class="inline-flex items-center gap-1.5 bg-white/[0.05] border border-white/[0.1] rounded-md px-3 py-1.5 text-[0.72rem] text-[#94a3b8] cursor-pointer transition-colors hover:bg-white/[0.09] hover:border-white/20">
-                    <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-                    </svg>
-                    Manage
-                </a>
-            </div>
-            <div class="cards-scroll-wrapper">
-                <div class="cards-grid">
+<!--        <div class="mb-14">-->
+<!--            <div class="flex items-end justify-between mb-5">-->
+<!--                <div>-->
+<!--                    <h2 class="font-[Cinzel,serif] text-[1.05rem] font-semibold text-white tracking-[0.04em] mb-0.5">Favorite Novels</h2>-->
+<!--                    <p class="text-[0.72rem] text-[#94a3b8]">Your personal collection.</p>-->
+<!--                </div>-->
+<!--                <a th:href="@{/profile/favourite}"-->
+<!--                   class="inline-flex items-center gap-1.5 bg-white/[0.05] border border-white/[0.1] rounded-md px-3 py-1.5 text-[0.72rem] text-[#94a3b8] cursor-pointer transition-colors hover:bg-white/[0.09] hover:border-white/20">-->
+<!--                    <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">-->
+<!--                        <path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>-->
+<!--                    </svg>-->
+<!--                    Manage-->
+<!--                </a>-->
+<!--            </div>-->
+<!--            <div class="cards-scroll-wrapper">-->
+<!--                <div class="cards-grid">-->
 
-                    <div class="cursor-pointer" th:each="novel : ${favoriteNovels}">
-                        <a th:href="@{/novel/{id}(id=${novel.id})}">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200">
-                                <img th:if="${novel.coverUrl != null}"
-                                     th:src="${novel.coverUrl}"
-                                     th:alt="${novel.title}"
-                                     class="absolute inset-0 w-full h-full object-cover z-[1]"/>
-                                <div class="novel-card-inner" th:unless="${novel.coverUrl != null}"></div>
-                                <span th:if="${novel.rating != null}"
-                                      class="absolute top-2 right-2 z-[2] bg-[rgba(15,20,35,0.85)] border border-[rgba(201,168,76,0.5)] rounded px-1.5 py-px text-[0.65rem] text-[#c9a84c] font-medium"
-                                      th:text="'★ ' + ${novel.rating}">★ 4.8</span>
-                            </div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate" th:text="${novel.title}">Novel Title</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">
-                                <span th:text="${novel.genre}">Genre</span>
-                                <span th:if="${novel.status != null}"> • <span th:text="${novel.status}">Status</span></span>
-                            </p>
-                        </a>
-                    </div>
+<!--                    <div class="cursor-pointer" th:each="novel : ${favoriteNovels}">-->
+<!--                        <a th:href="@{/novel/{id}(id=${novel.id})}">-->
+<!--                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200">-->
+<!--                                <img th:if="${novel.coverUrl != null}"-->
+<!--                                     th:src="${novel.coverUrl}"-->
+<!--                                     th:alt="${novel.title}"-->
+<!--                                     class="absolute inset-0 w-full h-full object-cover z-[1]"/>-->
+<!--                                <div class="novel-card-inner" th:unless="${novel.coverUrl != null}"></div>-->
+<!--                                <span th:if="${novel.rating != null}"-->
+<!--                                      class="absolute top-2 right-2 z-[2] bg-[rgba(15,20,35,0.85)] border border-[rgba(201,168,76,0.5)] rounded px-1.5 py-px text-[0.65rem] text-[#c9a84c] font-medium"-->
+<!--                                      th:text="'★ ' + ${novel.rating}">★ 4.8</span>-->
+<!--                            </div>-->
+<!--                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate" th:text="${novel.title}">Novel Title</p>-->
+<!--                            <p class="text-[0.67rem] text-[#94a3b8]">-->
+<!--                                <span th:text="${novel.genre}">Genre</span>-->
+<!--                                <span th:if="${novel.status != null}"> • <span th:text="${novel.status}">Status</span></span>-->
+<!--                            </p>-->
+<!--                        </a>-->
+<!--                    </div>-->
 
-                    <!-- Fallback static cards -->
-                    <th:block th:if="${favoriteNovels == null or favoriteNovels.isEmpty()}">
-                        <div class="cursor-pointer">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200">
-                                <div class="novel-card-inner"></div>
-                                <span class="absolute top-2 right-2 z-[2] bg-[rgba(15,20,35,0.85)] border border-[rgba(201,168,76,0.5)] rounded px-1.5 py-px text-[0.65rem] text-[#c9a84c] font-medium">★ 4.8</span>
-                            </div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Shadow Realm</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">Fantasy • Completed</p>
-                        </div>
-                        <div class="cursor-pointer">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200"><div class="novel-card-inner"></div></div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Neon Pulse</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">Sci-Fi • Ongoing</p>
-                        </div>
-                        <div class="cursor-pointer">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200"><div class="novel-card-inner"></div></div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Reborn as a Slime</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">Isekai • Ongoing</p>
-                        </div>
-                        <div class="cursor-pointer">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200"><div class="novel-card-inner"></div></div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Blade of Zen</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">Action • Completed</p>
-                        </div>
-                        <div class="cursor-pointer">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200"><div class="novel-card-inner"></div></div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">The Last Kingdom</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">Historical • Ongoing</p>
-                        </div>
-                    </th:block>
+<!--                    &lt;!&ndash; Fallback static cards &ndash;&gt;-->
+<!--                    <th:block th:if="${favoriteNovels == null or favoriteNovels.isEmpty()}">-->
+<!--                        <div class="cursor-pointer">-->
+<!--                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200">-->
+<!--                                <div class="novel-card-inner"></div>-->
+<!--                                <span class="absolute top-2 right-2 z-[2] bg-[rgba(15,20,35,0.85)] border border-[rgba(201,168,76,0.5)] rounded px-1.5 py-px text-[0.65rem] text-[#c9a84c] font-medium">★ 4.8</span>-->
+<!--                            </div>-->
+<!--                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Shadow Realm</p>-->
+<!--                            <p class="text-[0.67rem] text-[#94a3b8]">Fantasy • Completed</p>-->
+<!--                        </div>-->
+<!--                        <div class="cursor-pointer">-->
+<!--                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200"><div class="novel-card-inner"></div></div>-->
+<!--                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Neon Pulse</p>-->
+<!--                            <p class="text-[0.67rem] text-[#94a3b8]">Sci-Fi • Ongoing</p>-->
+<!--                        </div>-->
+<!--                        <div class="cursor-pointer">-->
+<!--                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200"><div class="novel-card-inner"></div></div>-->
+<!--                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Reborn as a Slime</p>-->
+<!--                            <p class="text-[0.67rem] text-[#94a3b8]">Isekai • Ongoing</p>-->
+<!--                        </div>-->
+<!--                        <div class="cursor-pointer">-->
+<!--                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200"><div class="novel-card-inner"></div></div>-->
+<!--                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Blade of Zen</p>-->
+<!--                            <p class="text-[0.67rem] text-[#94a3b8]">Action • Completed</p>-->
+<!--                        </div>-->
+<!--                        <div class="cursor-pointer">-->
+<!--                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200"><div class="novel-card-inner"></div></div>-->
+<!--                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">The Last Kingdom</p>-->
+<!--                            <p class="text-[0.67rem] text-[#94a3b8]">Historical • Ongoing</p>-->
+<!--                        </div>-->
+<!--                    </th:block>-->
 
-                </div>
-            </div>
-        </div>
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <!-- ── Recommended ── -->
-        <div class="mb-14">
-            <div class="mb-5">
-                <h2 class="font-[Cinzel,serif] text-[1.05rem] font-semibold text-white tracking-[0.04em] mb-0.5">Recommended for You</h2>
-                <p class="text-[0.72rem] text-[#94a3b8]"
-                   th:text="${recommendedSubtitle} ?: 'Based on your reading of &quot;Sci-Fi&quot; and &quot;System&quot;.'">
-                    Based on your reading of "Sci-Fi" and "System".
-                </p>
+<!--        <div class="mb-14">-->
+<!--            <div class="mb-5">-->
+<!--                <h2 class="font-[Cinzel,serif] text-[1.05rem] font-semibold text-white tracking-[0.04em] mb-0.5">Recommended for You</h2>-->
+<!--                <p class="text-[0.72rem] text-[#94a3b8]"-->
+<!--                   th:text="${recommendedSubtitle} ?: 'Based on your reading of &quot;Sci-Fi&quot; and &quot;System&quot;.'">-->
+<!--                    Based on your reading of "Sci-Fi" and "System".-->
+<!--                </p>-->
+<!--            </div>-->
+<!--            <div class="cards-scroll-wrapper">-->
+<!--                <div class="cards-grid">-->
+
+<!--                    <div class="cursor-pointer" th:each="novel : ${recommendedNovels}">-->
+<!--                        <a th:href="@{/novel/{id}(id=${novel.id})}">-->
+<!--                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200">-->
+<!--                                <img th:if="${novel.coverUrl != null}"-->
+<!--                                     th:src="${novel.coverUrl}"-->
+<!--                                     th:alt="${novel.title}"-->
+<!--                                     class="absolute inset-0 w-full h-full object-cover z-[1]"/>-->
+<!--                                <div class="novel-card-inner" th:unless="${novel.coverUrl != null}"></div>-->
+<!--                                <span th:if="${novel.rating != null}"-->
+<!--                                      class="absolute top-2 right-2 z-[2] bg-[rgba(15,20,35,0.85)] border border-[rgba(201,168,76,0.5)] rounded px-1.5 py-px text-[0.65rem] text-[#c9a84c] font-medium"-->
+<!--                                      th:text="'★ ' + ${novel.rating}">★ 4.7</span>-->
+<!--                            </div>-->
+<!--                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate" th:text="${novel.title}">Novel Title</p>-->
+<!--                            <p class="text-[0.67rem] text-[#94a3b8]">-->
+<!--                                <span th:text="${novel.genre}">Genre</span>-->
+<!--                                <span th:if="${novel.status != null}"> • <span th:text="${novel.status}">Status</span></span>-->
+<!--                            </p>-->
+<!--                        </a>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; Fallback static cards &ndash;&gt;-->
+<!--                    <th:block th:if="${recommendedNovels == null or recommendedNovels.isEmpty()}">-->
+<!--                        <div class="cursor-pointer">-->
+<!--                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200">-->
+<!--                                <div class="novel-card-inner"></div>-->
+<!--                                <span class="absolute top-2 right-2 z-[2] bg-[rgba(15,20,35,0.85)] border border-[rgba(201,168,76,0.5)] rounded px-1.5 py-px text-[0.65rem] text-[#c9a84c] font-medium">★ 4.7</span>-->
+<!--                            </div>-->
+<!--                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Shadow Realm</p>-->
+<!--                            <p class="text-[0.67rem] text-[#94a3b8]">Fantasy • Completed</p>-->
+<!--                        </div>-->
+<!--                        <div class="cursor-pointer">-->
+<!--                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200"><div class="novel-card-inner"></div></div>-->
+<!--                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Neon Pulse</p>-->
+<!--                            <p class="text-[0.67rem] text-[#94a3b8]">Sci-Fi • Ongoing</p>-->
+<!--                        </div>-->
+<!--                        <div class="cursor-pointer">-->
+<!--                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200"><div class="novel-card-inner"></div></div>-->
+<!--                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Reborn as a Slime</p>-->
+<!--                            <p class="text-[0.67rem] text-[#94a3b8]">Isekai • Ongoing</p>-->
+<!--                        </div>-->
+<!--                        <div class="cursor-pointer">-->
+<!--                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200"><div class="novel-card-inner"></div></div>-->
+<!--                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Blade of Zen</p>-->
+<!--                            <p class="text-[0.67rem] text-[#94a3b8]">Action • Completed</p>-->
+<!--                        </div>-->
+<!--                        <div class="cursor-pointer">-->
+<!--                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200"><div class="novel-card-inner"></div></div>-->
+<!--                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">The Last Kingdom</p>-->
+<!--                            <p class="text-[0.67rem] text-[#94a3b8]">Historical • Ongoing</p>-->
+<!--                        </div>-->
+<!--                    </th:block>-->
+
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <!-- ── Hot Novels Section ── -->
+        <!-- ── Hot Novels Section ── -->
+        <div class="section hot-novels">
+            <div class="section-header">
+                <div class="section-title">
+                    <h2 class="title">Hot Novels</h2>
+                    <p class="subtitle">Most popular stories right now.</p>
+                </div>
+                <a th:href="@{/search?trending=true}" class="view-all-link">View All -></a>
             </div>
+
             <div class="cards-scroll-wrapper">
                 <div class="cards-grid">
 
-                    <div class="cursor-pointer" th:each="novel : ${recommendedNovels}">
+                    <!-- Trending / Hot Novels -->
+                    <div class="novel-card-wrapper" th:each="novel : ${hotNovels}">
                         <a th:href="@{/novel/{id}(id=${novel.id})}">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200">
+                            <div class="novel-card">
                                 <img th:if="${novel.coverUrl != null}"
                                      th:src="${novel.coverUrl}"
-                                     th:alt="${novel.title}"
-                                     class="absolute inset-0 w-full h-full object-cover z-[1]"/>
+                                     th:alt="${novel.title}" />
                                 <div class="novel-card-inner" th:unless="${novel.coverUrl != null}"></div>
-                                <span th:if="${novel.rating != null}"
-                                      class="absolute top-2 right-2 z-[2] bg-[rgba(15,20,35,0.85)] border border-[rgba(201,168,76,0.5)] rounded px-1.5 py-px text-[0.65rem] text-[#c9a84c] font-medium"
-                                      th:text="'★ ' + ${novel.rating}">★ 4.7</span>
+                                <span th:if="${novel.averageRating != null}"
+                                      class="rating-badge"
+                                      th:text="'★ ' + ${novel.averageRating}">★ 4.8</span>
                             </div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate" th:text="${novel.title}">Novel Title</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">
-                                <span th:text="${novel.genre}">Genre</span>
+                            <p class="novel-title" th:text="${novel.title}">Novel Title</p>
+                            <p class="novel-meta">
+                                <span th:text="${novel.genres.?[0].name}">Genre</span>
                                 <span th:if="${novel.status != null}"> • <span th:text="${novel.status}">Status</span></span>
                             </p>
                         </a>
                     </div>
 
-                    <!-- Fallback static cards -->
-                    <th:block th:if="${recommendedNovels == null or recommendedNovels.isEmpty()}">
-                        <div class="cursor-pointer">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200">
-                                <div class="novel-card-inner"></div>
-                                <span class="absolute top-2 right-2 z-[2] bg-[rgba(15,20,35,0.85)] border border-[rgba(201,168,76,0.5)] rounded px-1.5 py-px text-[0.65rem] text-[#c9a84c] font-medium">★ 4.7</span>
-                            </div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Shadow Realm</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">Fantasy • Completed</p>
-                        </div>
-                        <div class="cursor-pointer">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200"><div class="novel-card-inner"></div></div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Neon Pulse</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">Sci-Fi • Ongoing</p>
-                        </div>
-                        <div class="cursor-pointer">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200"><div class="novel-card-inner"></div></div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Reborn as a Slime</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">Isekai • Ongoing</p>
-                        </div>
-                        <div class="cursor-pointer">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200"><div class="novel-card-inner"></div></div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Blade of Zen</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">Action • Completed</p>
-                        </div>
-                        <div class="cursor-pointer">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200"><div class="novel-card-inner"></div></div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">The Last Kingdom</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">Historical • Ongoing</p>
-                        </div>
-                    </th:block>
-
                 </div>
             </div>
         </div>
 
-        <!-- ── Hot Novels ── -->
-        <div class="mb-14">
-            <div class="flex items-end justify-between mb-5">
-                <div>
-                    <h2 class="font-[Cinzel,serif] text-[1.05rem] font-semibold text-white tracking-[0.04em] mb-0.5">Hot Novels</h2>
-                    <p class="text-[0.72rem] text-[#94a3b8]">Most popular stories right now.</p>
+        <!-- ── New Updates Section ── -->
+        <div class="section new-updates">
+            <div class="section-header">
+                <div class="section-title">
+                    <h2 class="title">New Updates</h2>
+                    <p class="subtitle">Fresh chapters just released.</p>
                 </div>
-                <a th:href="@{/search?trending=true}" class="text-[0.72rem] text-[#144bb8] cursor-pointer whitespace-nowrap hover:text-[#6366f1] transition-colors">View All -></a>
-            </div>
-            <div class="cards-scroll-wrapper">
-                <div class="cards-grid">
-
-                    <div class="cursor-pointer" th:each="novel : ${hotNovels}">
-                        <a th:href="@{/novel/{id}(id=${novel.id})}">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200">
-                                <img th:if="${novel.coverUrl != null}"
-                                     th:src="${novel.coverUrl}"
-                                     th:alt="${novel.title}"
-                                     class="absolute inset-0 w-full h-full object-cover z-[1]"/>
-                                <div class="novel-card-inner" th:unless="${novel.coverUrl != null}"></div>
-                                <span th:if="${novel.rating != null}"
-                                      class="absolute top-2 right-2 z-[2] bg-[rgba(15,20,35,0.85)] border border-[rgba(201,168,76,0.5)] rounded px-1.5 py-px text-[0.65rem] text-[#c9a84c] font-medium"
-                                      th:text="'★ ' + ${novel.rating}">★ 4.8</span>
-                            </div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate" th:text="${novel.title}">Novel Title</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">
-                                <span th:text="${novel.genre}">Genre</span>
-                                <span th:if="${novel.status != null}"> • <span th:text="${novel.status}">Status</span></span>
-                            </p>
-                        </a>
-                    </div>
-
-                    <!-- Fallback static cards -->
-                    <th:block th:if="${hotNovels == null or hotNovels.isEmpty()}">
-                        <div class="cursor-pointer">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200">
-                                <div class="novel-card-inner"></div>
-                                <span class="absolute top-2 right-2 z-[2] bg-[rgba(15,20,35,0.85)] border border-[rgba(201,168,76,0.5)] rounded px-1.5 py-px text-[0.65rem] text-[#c9a84c] font-medium">★ 4.8</span>
-                            </div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Shadow Realm</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">Fantasy • Completed</p>
-                        </div>
-                        <div class="cursor-pointer">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200"><div class="novel-card-inner"></div></div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Neon Pulse</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">Sci-Fi • Ongoing</p>
-                        </div>
-                        <div class="cursor-pointer">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200"><div class="novel-card-inner"></div></div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Reborn as a Slime</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">Isekai • Ongoing</p>
-                        </div>
-                        <div class="cursor-pointer">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200"><div class="novel-card-inner"></div></div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">Blade of Zen</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">Action • Completed</p>
-                        </div>
-                        <div class="cursor-pointer">
-                            <div class="novel-card relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1f2e] border border-white/[0.06] transition-transform duration-200"><div class="novel-card-inner"></div></div>
-                            <p class="text-[0.78rem] font-semibold text-white mt-2 mb-0.5 truncate">The Last Kingdom</p>
-                            <p class="text-[0.67rem] text-[#94a3b8]">Historical • Ongoing</p>
-                        </div>
-                    </th:block>
-
-                </div>
-            </div>
-        </div>
-
-        <!-- ── New Updates ── -->
-        <div class="mb-14">
-            <div class="flex items-end justify-between mb-5">
-                <div>
-                    <h2 class="font-[Cinzel,serif] text-[1.05rem] font-semibold text-white tracking-[0.04em] mb-0.5">New Updates</h2>
-                    <p class="text-[0.72rem] text-[#94a3b8]">Fresh chapters just released.</p>
-                </div>
-                <a th:href="@{/search?ongoing=true}" class="updates-section-viewall text-[0.72rem] text-[#144bb8] cursor-pointer whitespace-nowrap hover:text-[#6366f1] transition-colors">View All -></a>
-                <span class="updates-last-update text-[0.72rem] text-slate-500 whitespace-nowrap"
-                      th:text="${lastUpdateTime} ?: 'Last update 5m ago'">Last update 5m ago</span>
+                <a th:href="@{/search?ongoing=true}" class="view-all-link">View All -></a>
+                <span class="last-update" th:text="${lastUpdateTime} ?: 'Last update 5m ago'">Last update 5m ago</span>
             </div>
 
-            <!-- Desktop / Tablet: Table -->
-            <div class="updates-table-container rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
-                <table class="w-full border-collapse">
+            <!-- Desktop / Tablet Table -->
+            <div class="updates-table-container">
+                <table class="updates-table">
                     <thead>
-                    <tr class="border-b border-white/[0.07]">
-                        <th class="text-[0.68rem] font-medium text-slate-600 uppercase tracking-[0.07em] px-4 py-3 text-left pl-5">Novel Name</th>
-                        <th class="text-[0.68rem] font-medium text-slate-600 uppercase tracking-[0.07em] px-4 py-3 text-left">Genre</th>
-                        <th class="text-[0.68rem] font-medium text-slate-600 uppercase tracking-[0.07em] px-4 py-3 text-left">Latest Chapter</th>
-                        <th class="col-time text-[0.68rem] font-medium text-slate-600 uppercase tracking-[0.07em] px-4 py-3 text-right pr-5">Time</th>
+                    <tr>
+                        <th>Novel Name</th>
+                        <th>Genre</th>
+                        <th>Latest Chapter</th>
+                        <th class="time-col">Time</th>
                     </tr>
                     </thead>
                     <tbody>
-
-                    <!-- Dynamic rows -->
-                    <tr class="border-b border-white/[0.04] transition-colors duration-150 updates-table"
-                        th:each="update : ${newUpdates}">
-                        <td class="px-4 py-3 text-[0.8rem] pl-5">
+                    <tr th:each="update : ${newUpdates}">
+                        <td>
                             <a th:href="@{/novel/{id}/chapter/{ch}(id=${update.novelId}, ch=${update.chapterNumber})}"
-                               class="text-[#d1d5db] font-medium cursor-pointer hover:text-[#144bb8] transition-colors"
                                th:text="${update.novelTitle}">Novel Title</a>
                         </td>
-                        <td class="px-4 py-3 text-[0.72rem] text-[#94a3b8]" th:text="${update.genre}">Genre</td>
-                        <td class="px-4 py-3 text-[0.8rem]">
-                            <span class="text-[#d1d5db] whitespace-nowrap" th:text="'Chapter ' + ${update.chapterNumber}">Chapter 89</span>
-                        </td>
-                        <td class="col-time px-4 py-3 text-[0.7rem] text-[#94a3b8] text-right pr-5" th:text="${update.timeAgo}">2 hrs ago</td>
+                        <td th:text="${update.genre}">Genre</td>
+                        <td th:text="'Chapter ' + ${update.chapterNumber}">Chapter 89</td>
+                        <td class="time-col" th:text="${update.timeAgo}">2 hrs ago</td>
                     </tr>
-
-                    <!-- Fallback static rows -->
-                    <th:block th:if="${newUpdates == null or newUpdates.isEmpty()}">
-                        <tr class="border-b border-white/[0.04] transition-colors duration-150">
-                            <td class="px-4 py-3 text-[0.8rem] pl-5"><span class="text-[#d1d5db] font-medium cursor-pointer hover:text-[#144bb8] transition-colors">The Villainess Turns the Hourglass</span></td>
-                            <td class="px-4 py-3 text-[0.72rem] text-[#94a3b8]">Romance</td>
-                            <td class="px-4 py-3 text-[0.8rem]"><span class="text-[#d1d5db] whitespace-nowrap">Chapter 89</span></td>
-                            <td class="col-time px-4 py-3 text-[0.7rem] text-[#94a3b8] text-right pr-5">2 hrs ago</td>
-                        </tr>
-                        <tr class="border-b border-white/[0.04] transition-colors duration-150">
-                            <td class="px-4 py-3 text-[0.8rem] pl-5"><span class="text-[#d1d5db] font-medium cursor-pointer hover:text-[#144bb8] transition-colors">Omniscient Reader's Viewpoint</span></td>
-                            <td class="px-4 py-3 text-[0.72rem] text-[#94a3b8]">Fantasy</td>
-                            <td class="px-4 py-3 text-[0.8rem]"><span class="text-[#d1d5db] whitespace-nowrap">Chapter 317</span></td>
-                            <td class="col-time px-4 py-3 text-[0.7rem] text-[#94a3b8] text-right pr-5">3 hrs ago</td>
-                        </tr>
-                        <tr class="border-b border-white/[0.04] transition-colors duration-150">
-                            <td class="px-4 py-3 text-[0.8rem] pl-5"><span class="text-[#d1d5db] font-medium cursor-pointer hover:text-[#144bb8] transition-colors">Library of Heaven's Path</span></td>
-                            <td class="px-4 py-3 text-[0.72rem] text-[#94a3b8]">Xianxia</td>
-                            <td class="px-4 py-3 text-[0.8rem]"><span class="text-[#d1d5db] whitespace-nowrap">Chapter 1980</span></td>
-                            <td class="col-time px-4 py-3 text-[0.7rem] text-[#94a3b8] text-right pr-5">4 hrs ago</td>
-                        </tr>
-                        <tr class="border-b border-white/[0.04] transition-colors duration-150">
-                            <td class="px-4 py-3 text-[0.8rem] pl-5"><span class="text-[#d1d5db] font-medium cursor-pointer hover:text-[#144bb8] transition-colors">Overgeared</span></td>
-                            <td class="px-4 py-3 text-[0.72rem] text-[#94a3b8]">Action</td>
-                            <td class="px-4 py-3 text-[0.8rem]"><span class="text-[#d1d5db] whitespace-nowrap">Chapter 1450</span></td>
-                            <td class="col-time px-4 py-3 text-[0.7rem] text-[#94a3b8] text-right pr-5">5 hrs ago</td>
-                        </tr>
-                        <tr class="transition-colors duration-150">
-                            <td class="px-4 py-3 text-[0.8rem] pl-5"><span class="text-[#d1d5db] font-medium cursor-pointer hover:text-[#144bb8] transition-colors">Lord of the Mysteries</span></td>
-                            <td class="px-4 py-3 text-[0.72rem] text-[#94a3b8]">Mystery</td>
-                            <td class="px-4 py-3 text-[0.8rem]"><span class="text-[#d1d5db] whitespace-nowrap">Chapter 302</span></td>
-                            <td class="col-time px-4 py-3 text-[0.7rem] text-[#94a3b8] text-right pr-5">6 hrs ago</td>
-                        </tr>
-                    </th:block>
-
                     </tbody>
                 </table>
             </div>
 
-            <!-- Mobile: Card List -->
-            <div class="updates-cards flex-col rounded-xl border border-white/[0.06] overflow-hidden">
-
-                <!-- Dynamic mobile cards -->
+            <!-- Mobile Cards -->
+            <div class="updates-cards">
                 <a th:each="update, iterStat : ${newUpdates}"
                    th:href="@{/novel/{id}/chapter/{ch}(id=${update.novelId}, ch=${update.chapterNumber})}"
-                   th:classappend="${iterStat.last} ? '' : 'border-b border-white/[0.05]'"
-                   class="flex items-center justify-between px-4 py-3.5 bg-white/[0.02] gap-3 cursor-pointer hover:bg-white/[0.05] transition-colors">
-                    <div class="flex flex-col gap-1 flex-1 min-w-0">
-                        <span class="text-[0.82rem] font-semibold text-white truncate" th:text="${update.novelTitle}">Novel Title</span>
-                        <span class="text-[0.72rem] text-[#6366f1] font-medium" th:text="'Chapter ' + ${update.chapterNumber}">Chapter 89</span>
+                   th:classappend="${iterStat.last} ? '' : 'card-border-b'">
+                    <div class="update-card-info">
+                        <span class="update-card-title" th:text="${update.novelTitle}">Novel Title</span>
+                        <span class="update-card-chapter" th:text="'Chapter ' + ${update.chapterNumber}">Chapter 89</span>
                     </div>
-                    <span class="text-[0.7rem] text-slate-500 whitespace-nowrap shrink-0" th:text="${update.timeAgo}">2 hrs ago</span>
+                    <span class="update-card-time" th:text="${update.timeAgo}">2 hrs ago</span>
                 </a>
-
-                <!-- Fallback static mobile cards -->
-                <th:block th:if="${newUpdates == null or newUpdates.isEmpty()}">
-                    <div class="flex items-center justify-between px-4 py-3.5 bg-white/[0.02] border-b border-white/[0.05] gap-3 cursor-pointer hover:bg-white/[0.05] transition-colors">
-                        <div class="flex flex-col gap-1 flex-1 min-w-0">
-                            <span class="text-[0.82rem] font-semibold text-white truncate">The Villainess Turns the Hourglass</span>
-                            <span class="text-[0.72rem] text-[#6366f1] font-medium">Chapter 89</span>
-                        </div>
-                        <span class="text-[0.7rem] text-slate-500 whitespace-nowrap shrink-0">2 hrs ago</span>
-                    </div>
-                    <div class="flex items-center justify-between px-4 py-3.5 bg-white/[0.02] border-b border-white/[0.05] gap-3 cursor-pointer hover:bg-white/[0.05] transition-colors">
-                        <div class="flex flex-col gap-1 flex-1 min-w-0">
-                            <span class="text-[0.82rem] font-semibold text-white truncate">Omniscient Reader's Viewpoint</span>
-                            <span class="text-[0.72rem] text-[#6366f1] font-medium">Chapter 512</span>
-                        </div>
-                        <span class="text-[0.7rem] text-slate-500 whitespace-nowrap shrink-0">3 hrs ago</span>
-                    </div>
-                    <div class="flex items-center justify-between px-4 py-3.5 bg-white/[0.02] border-b border-white/[0.05] gap-3 cursor-pointer hover:bg-white/[0.05] transition-colors">
-                        <div class="flex flex-col gap-1 flex-1 min-w-0">
-                            <span class="text-[0.82rem] font-semibold text-white truncate">Library of Heaven's Path</span>
-                            <span class="text-[0.72rem] text-[#6366f1] font-medium">Chapter 1890</span>
-                        </div>
-                        <span class="text-[0.7rem] text-slate-500 whitespace-nowrap shrink-0">4 hrs ago</span>
-                    </div>
-                    <div class="flex items-center justify-between px-4 py-3.5 bg-white/[0.02] border-b border-white/[0.05] gap-3 cursor-pointer hover:bg-white/[0.05] transition-colors">
-                        <div class="flex flex-col gap-1 flex-1 min-w-0">
-                            <span class="text-[0.82rem] font-semibold text-white truncate">Overgeared</span>
-                            <span class="text-[0.72rem] text-[#6366f1] font-medium">Chapter 1450</span>
-                        </div>
-                        <span class="text-[0.7rem] text-slate-500 whitespace-nowrap shrink-0">5 hrs ago</span>
-                    </div>
-                    <div class="flex items-center justify-between px-4 py-3.5 bg-white/[0.02] gap-3 cursor-pointer hover:bg-white/[0.05] transition-colors">
-                        <div class="flex flex-col gap-1 flex-1 min-w-0">
-                            <span class="text-[0.82rem] font-semibold text-white truncate">Lord of the Mysteries</span>
-                            <span class="text-[0.72rem] text-[#6366f1] font-medium">Chapter 302</span>
-                        </div>
-                        <span class="text-[0.7rem] text-slate-500 whitespace-nowrap shrink-0">6 hrs ago</span>
-                    </div>
-                </th:block>
-
             </div>
 
-            <a th:href="@{/search?ongoing=true}"
-               class="updates-view-all-btn w-full mt-2.5 py-3 bg-transparent border border-white/[0.1] rounded-xl text-[#6366f1] text-[0.82rem] font-semibold cursor-pointer text-center tracking-[0.02em] transition-colors hover:bg-[rgba(99,102,241,0.08)] hover:border-[rgba(99,102,241,0.3)] block sm:hidden">
-                View All ->
-            </a>
+            <a th:href="@{/search?ongoing=true}" class="updates-view-all-btn">View All -></a>
         </div>
 
     </section>

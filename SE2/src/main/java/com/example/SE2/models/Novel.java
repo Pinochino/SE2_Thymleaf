@@ -44,8 +44,8 @@ public class Novel extends AbstractEntity {
     @JsonBackReference
     private Set<Genre> genres = new HashSet<>();
 
-    @OneToMany(mappedBy = "novel", cascade = CascadeType.ALL)
-    private Set<Chapter> chapters = new HashSet<>();
+//    @OneToMany(mappedBy = "novel", cascade = CascadeType.ALL)
+//    private Set<Chapter> chapters = new HashSet<>();
 
     public Novel() {
     }
@@ -129,11 +129,11 @@ public class Novel extends AbstractEntity {
         this.genres = genres;
     }
 
-    public Set<Chapter> getChapters() {
-        return chapters;
-    }
-
-    public void setChapters(Set<Chapter> chapters) {
-        this.chapters = chapters;
-    }
+//    public Set<Chapter> getChapters() {
+//        return chapters;
+//    }
+//
+//    public void setChapters(Set<Chapter> chapters) {
+//        this.chapters = chapters;
+//    }
 }

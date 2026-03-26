@@ -2,6 +2,19 @@
 
 :root {
     --primary: #007bff;
+    --bg-base:   #080d17;
+    --bg-card:   #0e1525;
+    --bg-hover:  #111b30;
+    --bg-filter: #0a1020;
+    --accent:    #3b67e8;
+    --accent2:   #4f7aff;
+    --noti:      #ef4444;
+    --hg:        #ffffff;
+    --nor:       #d1d5db;
+    --lw:        #64748b;
+    --muted:     #94a3b8;
+    --font-head: "Cinzel", serif;
+    --font-nor:  "Inter", sans-serif;
 }
 
 * {

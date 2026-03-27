@@ -5,281 +5,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title th:text="'Search – ' + (${query} != null ? '\'' + ${query} + '\'' : 'Novel Library')">Search – Novel Library</title>
+  <title th:text="'Search – ' + (${keyword} != null ? '\'' + ${keyword} + '\'' : 'Novel Library')">Search – Novel Library</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet"/>
-
-  <style>
-    :root {
-      --bg-base:   #080d17;
-      --bg-card:   #0e1525;
-      --bg-hover:  #111b30;
-      --bg-filter: #0a1020;
-      --accent:    #3b67e8;
-      --accent2:   #4f7aff;
-      --noti:      #ef4444;
-      --hg:        #ffffff;
-      --nor:       #d1d5db;
-      --lw:        #64748b;
-      --muted:     #94a3b8;
-      --font-head: "Cinzel", serif;
-      --font-nor:  "Inter", sans-serif;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg-base); color: var(--nor); font-family: var(--font-nor); min-height: 100vh; }
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: var(--bg-base); }
-    ::-webkit-scrollbar-thumb { background: #1e2d4a; border-radius: 3px; }
-
-    /* ── Checkbox ── */
-    .cb-wrap { display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
-    .cb-wrap input[type="checkbox"] { display: none; }
-    .cb-box {
-      width: 16px; height: 16px; border: 1.5px solid #2a3a5c; border-radius: 4px;
-      background: #0d1628; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-      transition: background .15s, border-color .15s;
-    }
-    .cb-wrap input:checked + .cb-box { background: var(--accent); border-color: var(--accent); }
-    .cb-wrap input:checked + .cb-box::after {
-      content: ''; width: 4px; height: 8px; border: 2px solid #fff;
-      border-top: none; border-left: none; transform: rotate(45deg) translate(-1px,-1px); display: block;
-    }
-    .cb-label { font-size: 0.82rem; color: var(--nor); }
-
-    /* ── Status pills ── */
-    .status-pill {
-      padding: 4px 13px; border-radius: 999px; font-size: 0.74rem; font-weight: 500;
-      cursor: pointer; border: 1.5px solid #2a3a5c; background: transparent;
-      color: var(--muted); transition: all .15s; white-space: nowrap;
-    }
-    .status-pill.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-    .status-pill:not(.active):hover { border-color: var(--accent2); color: var(--hg); }
-
-    /* ── Buttons ── */
-    .btn-reset { background: none; border: none; color: var(--accent2); font-size: 0.78rem; font-weight: 600; cursor: pointer; }
-    .btn-reset:hover { color: #fff; }
-    .btn-apply {
-      background: var(--accent); color: #fff; font-size: 0.8rem; font-weight: 600;
-      padding: 8px 0; border-radius: 8px; border: none; cursor: pointer; width: 100%;
-      transition: background .15s; margin-top: 4px;
-    }
-    .btn-apply:hover { background: var(--accent2); }
-    .btn-read {
-      background: var(--accent); color: #fff; font-size: 0.82rem; font-weight: 600;
-      padding: 9px 20px; border-radius: 8px; border: none; cursor: pointer;
-      display: inline-flex; align-items: center; gap: 7px;
-      text-decoration: none; transition: background .15s; white-space: nowrap;
-    }
-    .btn-read:hover { background: var(--accent2); }
-    .btn-save {
-      background: transparent; border: 1.5px solid #2a3a5c; color: var(--noti);
-      font-size: 0.82rem; font-weight: 600; padding: 9px 20px; border-radius: 8px;
-      cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
-      transition: all .15s; white-space: nowrap;
-    }
-    .btn-save svg { color: var(--noti); }
-    .btn-save:hover { border-color: var(--noti); background: rgba(239,68,68,.07); }
-    .btn-save.saved { border-color: var(--noti); color: var(--noti); background: rgba(239,68,68,.07); }
-
-    /* ── Sort select ── */
-    .sort-select {
-      background: #0e1525; border: 1.5px solid #1e2e4a; color: var(--nor);
-      font-family: var(--font-nor); font-size: 0.82rem; padding: 6px 30px 6px 10px;
-      border-radius: 8px; appearance: none; cursor: pointer;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 9px center;
-    }
-    .sort-select:focus { outline: none; border-color: var(--accent); }
-
-    /* ── Page btn ── */
-    .page-btn {
-      width: 36px; height: 36px; border-radius: 8px; border: 1.5px solid #1e2e4a;
-      background: #0e1525; color: var(--muted); font-size: 0.82rem; font-weight: 500;
-      cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s;
-    }
-    .page-btn:hover { border-color: var(--accent); color: #fff; }
-    .page-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-
-    /* ── Badge ── */
-    .card-status-badge {
-      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em;
-      padding: 4px 12px; border-radius: 6px; border: 1.5px solid; white-space: nowrap; display: inline-block;
-      text-transform: uppercase; flex-shrink:0;
-    }
-    .badge-completed { border-color: #2a3a5c; color: #d1d5db; background: rgba(30,45,74,0.5); }
-    .badge-ongoing   { border-color: #22c55e; color: #86efac; background: rgba(34,197,94,0.08); }
-    .badge-hiatus    { border-color: #f59e0b; color: #fcd34d; background: rgba(245,158,11,0.08); }
-    .badge-new       { border-color: #2a3a5c; color: #d1d5db; background: rgba(30,45,74,0.5); }
-
-    /* ── Filter labels ── */
-    .filter-title { font-family:var(--font-head); font-size:0.72rem; letter-spacing:0.18em; color:var(--hg); font-weight:700; }
-    .filter-group-label { font-size:0.78rem; font-weight:700; color:var(--hg); margin-bottom:8px; }
-    .filter-divider { border:none; border-top:1px solid #1a2540; margin:14px 0; }
-
-    /* ────────────────────────────────────────────
-       PAGE SHELL
-       main is full-width but centres a max-width wrapper
-    ──────────────────────────────────────────── */
-    main {
-      background: var(--bg-base);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      /* horizontal breathing room so content never touches viewport edges */
-      padding: 0 1.25rem;
-    }
-
-    /* The actual content wrapper — capped width, flex column on mobile */
-    .search-wrap {
-      width: 100%;
-      max-width: 1080px;   /* ← shrinks the two sections; increase if needed */
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ────────────────────────────────────────────
-       MOBILE  (< 768 px)  — filter on top, 2-col grid
-    ──────────────────────────────────────────── */
-    #filter-mobile  { display: block; }
-    #filter-desktop { display: none;  }
-
-    #filter-section {
-      border-bottom: 1px solid #131f35;
-      padding: 0.9rem 1rem 1rem;
-      flex-shrink: 0;
-    }
-
-    /* Horizontal scrollable genre row on mobile */
-    .genre-row { display:flex; flex-wrap:nowrap; gap:14px; align-items:center; overflow-x:auto; }
-
-    #results { flex:1; padding:1rem 0 2rem; }
-
-    /* 2-column card grid */
-    #novel-list { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-
-    .novel-card {
-      background:var(--bg-card); border:1px solid #1a2540; border-radius:14px;
-      overflow:hidden; display:flex; flex-direction:column;
-      transition:border-color .2s, background .2s;
-    }
-    .novel-card:hover { border-color:#254070; background:var(--bg-hover); }
-
-    /* Fixed height cover on mobile */
-    .card-cover { width:100%; height:140px; position:relative; overflow:hidden; flex-shrink:0; }
-    .card-cover-inner { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:4px; }
-    .card-cover img  { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-
-    .card-body { display:flex; flex-direction:column; padding:8px 8px 10px; gap:4px; flex:1; min-height:0; overflow:hidden;}
-    .card-head-row { display:flex; flex-direction:column; gap:3px; }
-    .card-title {
-      font-family:var(--font-head); font-size:0.75rem; color:#fff;
-      font-weight:700; line-height:1.3; text-decoration:none;
-      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
-    }
-    .card-meta { display:flex; align-items:center; font-size:0.65rem; color:var(--muted); gap:5px; flex-wrap:wrap; }
-    .card-description { display:none; }
-    .card-genres      { display:none; }
-
-    .card-actions { display:flex; flex-direction:column; gap:4px; margin-top:auto; padding-top:5px; }
-    .card-actions .btn-read { width:100%; justify-content:center; font-size:0.69rem; padding:6px 4px; border-radius:7px; }
-    .card-actions .btn-save { width:100%; justify-content:center; font-size:0.69rem; padding:5px 4px; border-radius:7px; }
-
-    .results-header { display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:1rem; }
-    .results-title  { font-family:var(--font-head); font-size:clamp(1rem,5vw,1.65rem); color:#fff; font-weight:700; line-height:1.25; }
-
-    /* ────────────────────────────────────────────
-       DESKTOP  (≥ 768 px)  — sidebar + horizontal list
-    ──────────────────────────────────────────── */
-    @media (min-width: 768px) {
-      main {
-        padding: 0 1.5rem;
-        align-items: flex-start;
-      }
-
-      .search-wrap {
-        flex-direction: row;
-        align-items: flex-start;
-        gap: 0;
-      }
-
-      #filter-mobile  { display: none  !important; }
-      #filter-desktop { display: block !important; }
-
-      #filter-section {
-        width: 210px;
-        flex-shrink: 0;
-        min-height: 100vh;
-        border-bottom: none;
-        border-right: 1px solid #131f35;
-        padding: 1.6rem 1.2rem;
-        position: sticky;
-        top: 0;
-        max-height: 100vh;
-        overflow-y: auto;
-      }
-
-      #results { padding: 1.5rem 1.75rem 2rem; flex: 1; min-width: 0; }
-
-      .results-title { font-size: clamp(1.1rem,3vw,1.65rem); }
-
-      /* Vertical list of horizontal cards */
-      #novel-list { display:flex; flex-direction:column; gap:1rem; }
-
-      /* Card is horizontal row */
-      .novel-card { flex-direction:row; border-radius:14px; min-height:200px; height: 200px }
-
-      /* Cover: fixed width, full card height */
-      .card-cover {
-        width:200px; height:unset; flex-shrink:0; aspect-ratio:unset;
-        border-radius:14px 0 0 14px;
-      }
-      .card-cover-inner { border-radius:14px 0 0 14px; }
-
-      .card-body {
-        padding:1.25rem 1.5rem; gap:8px; flex:1; min-width:0;
-        display:flex; flex-direction:column;
-      }
-      .card-head-row {
-        flex-direction:row; align-items:flex-start;
-        justify-content:space-between; gap:10px;
-      }
-      .card-title {
-        font-size:1.15rem; -webkit-line-clamp:1;
-      }
-      .card-meta { font-size:0.85rem; gap:14px; }
-
-      .card-description {
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        font-size: 0.85rem; color: var(--muted); line-height: 1.65;
-        margin-top: 4px;
-      }
-      .card-genres { display:none; }
-
-      .card-actions {
-        flex-direction:row; flex-wrap:wrap; margin-top:auto;
-        gap:10px; padding-top:10px;
-      }
-      .card-actions .btn-read {
-        width:auto; padding:9px 20px; font-size:0.82rem; border-radius:8px;
-      }
-      .card-actions .btn-save {
-        width:auto; padding:9px 20px; font-size:0.82rem; border-radius:8px;
-      }
-    }
-
-    /* Larger desktops: wider cover */
-    @media (min-width: 1024px) {
-      main { padding: 0 2rem; }
-      .card-cover { width:220px; }
-      .card-title { font-size:1.25rem; }
-      .card-description { -webkit-line-clamp: 3; font-size:0.88rem; }
-      .card-body { padding:1.4rem 1.75rem; }
-    }
-  </style>
+  <link rel="stylesheet" href="src/main/resources/static/css/search.css"/>
 </head>
 
 <body>
@@ -291,79 +21,121 @@
     ══════════════════════════════ -->
     <section id="filter-section">
       <form id="filter-form" th:action="@{/search}" method="get">
-        <input type="hidden" name="query" th:value="${query}" />
-        <input type="hidden" id="status-input" name="status" th:value="${selectedStatus ?: 'any'}" />
 
-        <!-- ── MOBILE panel ── -->
+        <!-- preserve keyword across filter submits -->
+        <input type="hidden" name="keyword" th:value="${keyword}"/>
+        <input type="hidden" name="page"    value="0"/>
+        <input type="hidden" name="size"    th:value="${size}"/>
+
+        <!-- hidden field updated by JS when a pill is clicked -->
+        <input type="hidden" id="status-input-mobile"  name="statuses" th:value="${selectedStatuses != null and !selectedStatuses.isEmpty() ? selectedStatuses[0].name() : ''}"/>
+
+        <!-- ── MOBILE panel ─────────────────────────────── -->
         <div id="filter-mobile">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
             <span class="filter-title">FILTERS</span>
             <button type="button" class="btn-reset" onclick="resetFilters()">Reset</button>
           </div>
+
+          <!-- Trending -->
           <label class="cb-wrap" style="margin-bottom:10px;">
-            <input type="checkbox" name="trending" value="true" th:checked="${isTrending}">
-            <span class="cb-box"></span><span class="cb-label">Trending</span>
+            <input type="checkbox" name="trending" value="true"
+                   th:checked="${trending != null and trending}">
+            <span class="cb-box"></span>
+            <span class="cb-label">Trending</span>
           </label>
+
+          <!-- Genre -->
           <div style="margin-bottom:10px;">
             <p class="filter-group-label">Genre</p>
             <div class="genre-row">
-              <label class="cb-wrap" th:each="genre : ${genres}">
-                <input type="checkbox" name="genres" th:value="${genre.genre_id}"
-                       th:checked="${selectedGenres != null and selectedGenres.contains(genre.genre_id)}">
+              <label class="cb-wrap" th:each="genre : ${allGenres}">
+                <input type="checkbox" name="genres" th:value="${genre.name}"
+                       th:checked="${selectedGenres != null and selectedGenres.contains(genre.name)}">
                 <span class="cb-box"></span>
                 <span class="cb-label" th:text="${genre.name}">Genre</span>
               </label>
             </div>
           </div>
+
+          <!-- Status pills -->
           <div style="margin-bottom:10px;">
             <p class="filter-group-label">Status</p>
             <div style="display:flex;flex-wrap:wrap;gap:7px;">
-              <button type="button" class="status-pill" th:classappend="${(selectedStatus==null or selectedStatus=='any')}?' active':''" data-value="any"      onclick="selectPill(this)">Any</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='hiatus'}   ?' active':''" data-value="hiatus"    onclick="selectPill(this)">Hiatus</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='completed'}?' active':''" data-value="completed" onclick="selectPill(this)">Completed</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='ongoing'}  ?' active':''" data-value="ongoing"   onclick="selectPill(this)">Ongoing</button>
+              <button type="button" class="status-pill"
+                      th:classappend="${selectedStatuses == null or selectedStatuses.isEmpty()} ? ' active' : ''"
+                      data-value="" onclick="selectPill(this,'mobile')">Any</button>
+              <button type="button" class="status-pill"
+                      th:classappend="${selectedStatuses != null and selectedStatuses.contains(T(com.example.SE2.constants.NovelStatus).ONGOING)} ? ' active' : ''"
+                      data-value="ONGOING" onclick="selectPill(this,'mobile')">Ongoing</button>
+              <button type="button" class="status-pill"
+                      th:classappend="${selectedStatuses != null and selectedStatuses.contains(T(com.example.SE2.constants.NovelStatus).COMPLETED)} ? ' active' : ''"
+                      data-value="COMPLETED" onclick="selectPill(this,'mobile')">Completed</button>
+              <button type="button" class="status-pill"
+                      th:classappend="${selectedStatuses != null and selectedStatuses.contains(T(com.example.SE2.constants.NovelStatus).HIATUS)} ? ' active' : ''"
+                      data-value="HIATUS" onclick="selectPill(this,'mobile')">Hiatus</button>
             </div>
           </div>
+
           <button type="submit" class="btn-apply">Apply Filters</button>
         </div>
 
-        <!-- ── DESKTOP panel ── -->
+        <!-- ── DESKTOP panel ─────────────────────────────── -->
         <div id="filter-desktop">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem;">
             <span class="filter-title">FILTERS</span>
             <button type="button" class="btn-reset" onclick="resetFilters()">Reset</button>
           </div>
+
+          <!-- Trending -->
           <label class="cb-wrap" style="margin-bottom:1rem;">
-            <input type="checkbox" name="trending" value="true" th:checked="${isTrending}">
-            <span class="cb-box"></span><span class="cb-label">Trending</span>
+            <input type="checkbox" name="trending" value="true"
+                   th:checked="${trending != null and trending}">
+            <span class="cb-box"></span>
+            <span class="cb-label">Trending</span>
           </label>
+
           <hr class="filter-divider">
+
+          <!-- Genre -->
           <div style="margin-bottom:1rem;">
             <p class="filter-group-label">Genre</p>
             <div style="display:flex;flex-direction:column;gap:9px;">
-              <label class="cb-wrap" th:each="genre : ${genres}">
-                <input type="checkbox" name="genres" th:value="${genre.genre_id}"
-                       th:checked="${selectedGenres != null and selectedGenres.contains(genre.genre_id)}">
+              <label class="cb-wrap" th:each="genre : ${allGenres}">
+                <input type="checkbox" name="genres" th:value="${genre.name}"
+                       th:checked="${selectedGenres != null and selectedGenres.contains(genre.name)}">
                 <span class="cb-box"></span>
                 <span class="cb-label" th:text="${genre.name}">Genre</span>
               </label>
             </div>
           </div>
+
           <hr class="filter-divider">
+
+          <!-- Status pills -->
           <div style="margin-bottom:1.1rem;">
             <p class="filter-group-label">Status</p>
             <div style="display:flex;flex-wrap:wrap;gap:7px;">
-              <button type="button" class="status-pill" th:classappend="${(selectedStatus==null or selectedStatus=='any')}?' active':''" data-value="any"      onclick="selectPill(this)">Any</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='completed'}?' active':''" data-value="completed" onclick="selectPill(this)">Completed</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='ongoing'}  ?' active':''" data-value="ongoing"   onclick="selectPill(this)">Ongoing</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='hiatus'}   ?' active':''" data-value="hiatus"    onclick="selectPill(this)">Hiatus</button>
+              <button type="button" class="status-pill"
+                      th:classappend="${selectedStatuses == null or selectedStatuses.isEmpty()} ? ' active' : ''"
+                      data-value="" onclick="selectPill(this,'desktop')">Any</button>
+              <button type="button" class="status-pill"
+                      th:classappend="${selectedStatuses != null and selectedStatuses.contains(T(com.example.SE2.constants.NovelStatus).ONGOING)} ? ' active' : ''"
+                      data-value="ONGOING" onclick="selectPill(this,'desktop')">Ongoing</button>
+              <button type="button" class="status-pill"
+                      th:classappend="${selectedStatuses != null and selectedStatuses.contains(T(com.example.SE2.constants.NovelStatus).COMPLETED)} ? ' active' : ''"
+                      data-value="COMPLETED" onclick="selectPill(this,'desktop')">Completed</button>
+              <button type="button" class="status-pill"
+                      th:classappend="${selectedStatuses != null and selectedStatuses.contains(T(com.example.SE2.constants.NovelStatus).HIATUS)} ? ' active' : ''"
+                      data-value="HIATUS" onclick="selectPill(this,'desktop')">Hiatus</button>
             </div>
           </div>
+
           <button type="submit" class="btn-apply">Apply Filters</button>
         </div>
+
       </form>
     </section>
-
 
     <!-- ══════════════════════════════
          RESULTS SECTION
@@ -376,171 +148,168 @@
           <h1 class="results-title">
             Search Results:
             <span style="color:var(--accent2);"
-                  th:text="${query != null and !#strings.isEmpty(query)} ? '\'' + ${query} + '\'' : 'All Novels'">'Epic Fantasy'</span>
+                  th:text="${keyword != null and !#strings.isEmpty(keyword)} ? '\'' + ${keyword} + '\'' : 'All Novels'">
+              'All Novels'
+            </span>
           </h1>
-          <p style="font-size:0.8rem;color:var(--lw);margin-top:5px;">
+          <p class="results-count">
             Found
-            <span th:text="${#numbers.formatInteger(totalResults, 1, 'COMMA')}">1,240</span>
-            result<span th:if="${totalResults != 1}">s</span> for your query in all categories.
+            <span th:text="${totalItems}">0</span>
+            result<span th:if="${totalItems != 1}">s</span>
           </p>
         </div>
-        <form th:action="@{/search}" method="get" style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-top:4px;">
-          <input type="hidden" name="query"    th:value="${query}" />
-          <input type="hidden" name="status"   th:value="${selectedStatus}" />
-          <input type="hidden" name="trending" th:value="${isTrending}" />
-          <th:block th:each="gid : ${selectedGenres}"><input type="hidden" name="genres" th:value="${gid}" /></th:block>
-          <input type="hidden" name="page" value="1" />
-          <span style="font-size:0.68rem;font-weight:700;letter-spacing:.12em;color:var(--lw);">SORT BY:</span>
+
+        <!-- Sort form -->
+        <form th:action="@{/search}" method="get" class="results-sort">
+          <input type="hidden" name="keyword"  th:value="${keyword}"/>
+          <input type="hidden" name="trending" th:value="${trending}"/>
+          <input type="hidden" name="page"     value="0"/>
+          <input type="hidden" name="size"     th:value="${size}"/>
+          <th:block th:each="g : ${selectedGenres}">
+            <input type="hidden" name="genres" th:value="${g}"/>
+          </th:block>
+          <th:block th:each="s : ${selectedStatuses}">
+            <input type="hidden" name="statuses" th:value="${s}"/>
+          </th:block>
+          <span class="results-sort-label">SORT BY:</span>
           <select class="sort-select" name="sort" onchange="this.form.submit()">
-            <option value="asc"  th:selected="${sort=='asc'}">Ascending</option>
-            <option value="desc" th:selected="${sort=='desc'}">Descending</option>
+            <option value="desc" th:selected="${sort == 'desc' or sort == null}">Rating ↓</option>
+            <option value="asc"  th:selected="${sort == 'asc'}">Rating ↑</option>
           </select>
         </form>
       </div>
 
+      <!-- ── Novel list ───────────────────────────────── -->
 
-      <!-- ── Sample cards (fallback / preview when no Thymeleaf data) ── -->
-      <div id="novel-list" th:if="${novels == null or novels.isEmpty()}">
+      <!-- Empty state -->
+      <div class="empty-state" th:if="${novels == null or novels.isEmpty()}">
+        <p class="empty-state-title">No novels found</p>
+        <p class="empty-state-sub">Try adjusting your filters or search with a different keyword.</p>
+      </div>
 
-        <!-- Sample 1 -->
-        <div class="novel-card">
+      <!-- Results grid -->
+      <div id="novel-list" th:if="${novels != null and !novels.isEmpty()}">
+        <div class="novel-card" th:each="novel : ${novels}">
+
+          <!-- Cover image -->
           <div class="card-cover">
-            <div class="card-cover-inner" style="background:linear-gradient(160deg,#1e3a5a 0%,#2a5a7a 50%,#182840 100%);">
-              <span style="font-family:var(--font-head);font-size:0.48rem;color:rgba(255,255,255,.22);text-align:center;padding:0 10px;line-height:1.7;">Shadow of the Dragon Queen</span>
+            <div class="card-cover-inner">
+              <div class="card-cover-placeholder" th:if="${novel.coverImgUrl == null or #strings.isEmpty(novel.coverImgUrl)}">
+                📖
+              </div>
+              <img th:if="${novel.coverImgUrl != null and !#strings.isEmpty(novel.coverImgUrl)}"
+                   th:src="${novel.coverImgUrl}"
+                   th:alt="${novel.title}"
+                   loading="lazy"/>
             </div>
           </div>
+
+          <!-- Body -->
           <div class="card-body">
             <div class="card-head-row">
-              <a href="#" class="card-title">Shadow of the Dragon Queen</a>
-              <span class="card-status-badge badge-completed">Completed</span>
+              <div>
+                <!-- Title -->
+                <a class="card-title"
+                   th:href="@{/novels/{id}(id=${novel.publicId})}"
+                   th:text="${novel.title}">Novel Title</a>
+
+                <!-- Meta: author · rating -->
+                <div class="card-meta">
+                  <span th:text="${novel.author}">Author</span>
+                  <span class="card-meta-dot"></span>
+                  <span th:text="${novel.averageRating != null} ? '★ ' + ${#numbers.formatDecimal(novel.averageRating, 1, 1)} : '★ N/A'">★ 4.5</span>
+                </div>
+              </div>
+
+              <!-- Status badge -->
+              <span class="card-status-badge"
+                    th:classappend="${novel.status?.name() == 'ONGOING'}   ? ' badge-ongoing'   :
+                                    (${novel.status?.name() == 'COMPLETED'} ? ' badge-completed' :
+                                    (${novel.status?.name() == 'HIATUS'}    ? ' badge-hiatus'    : ' badge-completed'))"
+                    th:text="${novel.status}">ONGOING</span>
             </div>
-            <div class="card-meta">
-              <span style="display:flex;align-items:center;gap:5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/></svg>Elara Vance</span>
-              <span style="display:flex;align-items:center;gap:4px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span style="color:#e2e8f0;font-weight:600;">4.8</span></span>
-            </div>
-            <div class="card-genres">
-              <span style="font-size:0.68rem;color:var(--accent2);background:rgba(63,103,232,0.1);border:1px solid rgba(63,103,232,0.25);border-radius:4px;padding:2px 7px;">Fantasy</span>
-              <span style="font-size:0.68rem;color:var(--accent2);background:rgba(63,103,232,0.1);border:1px solid rgba(63,103,232,0.25);border-radius:4px;padding:2px 7px;">Adventure</span>
-            </div>
-            <p class="card-description">A legendary queen rises from the ashes of a fallen empire. With a dragon companion at her side and a kingdom to reclaim, she must navigate a world of treacherous magic and ancient gods. The war for the Crown of Embers has only just begun...</p>
+
+            <!-- Description (desktop only via CSS) -->
+            <p class="card-description" th:text="${novel.description}">Description goes here...</p>
+
+            <!-- Actions -->
             <div class="card-actions">
-              <a href="#" class="btn-read"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Read Now</a>
-              <button class="btn-save" onclick="toggleSave(this)" data-novel-id="1"><svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg><span>Save</span></button>
+              <a class="btn-read"
+                 th:href="@{/novels/{id}(id=${novel.publicId})}">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                </svg>
+                Read
+              </a>
+              <button class="btn-save"
+                      th:data-novel-id="${novel.id}"
+                      onclick="toggleSave(this)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                </svg>
+                <span>Save</span>
+              </button>
             </div>
           </div>
+
         </div>
+      </div>
 
-        <!-- Sample 2 -->
-        <div class="novel-card">
-          <div class="card-cover">
-            <div class="card-cover-inner" style="background:linear-gradient(160deg,#1a2a1e 0%,#2d4a35 50%,#101a12 100%);">
-              <span style="font-family:var(--font-head);font-size:0.48rem;color:rgba(255,255,255,.22);text-align:center;padding:0 10px;line-height:1.7;">The Alchemist's Secret</span>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="card-head-row">
-              <a href="#" class="card-title">The Alchemist's Secret</a>
-              <span class="card-status-badge badge-new">New</span>
-            </div>
-            <div class="card-meta">
-              <span style="display:flex;align-items:center;gap:5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/></svg>Julian Thorne</span>
-              <span style="display:flex;align-items:center;gap:4px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span style="color:#e2e8f0;font-weight:600;">4.5</span></span>
-            </div>
-            <div class="card-genres">
-              <span style="font-size:0.68rem;color:var(--accent2);background:rgba(63,103,232,0.1);border:1px solid rgba(63,103,232,0.25);border-radius:4px;padding:2px 7px;">Fantasy</span>
-              <span style="font-size:0.68rem;color:var(--accent2);background:rgba(63,103,232,0.1);border:1px solid rgba(63,103,232,0.25);border-radius:4px;padding:2px 7px;">Action</span>
-            </div>
-            <p class="card-description">In a city where gold is blood and lead is life, a young apprentice discovers a formula that shouldn't exist. Now hunted by the Alchemist Guild, he must find the source of the forbidden art before the city is consumed by its own greed.</p>
-            <div class="card-actions">
-              <a href="#" class="btn-read"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Read Now</a>
-              <button class="btn-save saved" onclick="toggleSave(this)" data-novel-id="2"><svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="currentColor"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg><span>Saved</span></button>
-            </div>
-          </div>
-        </div>
+      <!-- ── Pagination ──────────────────────────────── -->
+      <div class="pagination-row" th:if="${totalPages != null and totalPages > 1}">
 
-        <!-- Sample 3 -->
-        <div class="novel-card">
-          <div class="card-cover">
-            <div class="card-cover-inner" style="background:linear-gradient(160deg,#1a2a3a 0%,#25404f 50%,#0e1e2a 100%);">
-              <span style="font-family:var(--font-head);font-size:0.72rem;color:rgba(255,255,255,.3);text-align:center;padding:0 12px;letter-spacing:.1em;">NOVEL</span>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="card-head-row">
-              <a href="#" class="card-title">The Last Ember</a>
-              <span class="card-status-badge badge-new">New</span>
-            </div>
-            <div class="card-meta">
-              <span style="display:flex;align-items:center;gap:5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/></svg>S.K. Aris</span>
-              <span style="display:flex;align-items:center;gap:4px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span style="color:#e2e8f0;font-weight:600;">4.9</span></span>
-            </div>
-            <div class="card-genres">
-              <span style="font-size:0.68rem;color:var(--accent2);background:rgba(63,103,232,0.1);border:1px solid rgba(63,103,232,0.25);border-radius:4px;padding:2px 7px;">Fantasy</span>
-              <span style="font-size:0.68rem;color:var(--accent2);background:rgba(63,103,232,0.1);border:1px solid rgba(63,103,232,0.25);border-radius:4px;padding:2px 7px;">Romance</span>
-            </div>
-            <p class="card-description">The world has gone dark. Only the Embers keep the shadows at bay. As the last torchbearer, Kaelen must journey to the Sun Peaks to reignite the Great Fire, but ancient horrors lurk in the permanent night, waiting for the light to flicker.</p>
-            <div class="card-actions">
-              <a href="#" class="btn-read"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Read Now</a>
-              <button class="btn-save" onclick="toggleSave(this)" data-novel-id="3"><svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg><span>Save</span></button>
-            </div>
-          </div>
-        </div>
-
-      </div><!-- /novel-list sample -->
-
-      <!-- ── Pagination ── -->
-      <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:1.75rem;flex-wrap:wrap;padding-bottom:1rem;">
-
+        <!-- hidden form for page navigation -->
         <form id="page-form" th:action="@{/search}" method="get" style="display:none;">
-          <input type="hidden" name="query"    th:value="${query}" />
-          <input type="hidden" name="sort"     th:value="${sort}" />
-          <input type="hidden" name="status"   th:value="${selectedStatus}" />
-          <input type="hidden" name="trending" th:value="${isTrending}" />
-          <th:block th:each="gid : ${selectedGenres}"><input type="hidden" name="genres" th:value="${gid}" /></th:block>
-          <input type="hidden" name="page" id="page-input" value="1" />
+          <input type="hidden" name="keyword"  th:value="${keyword}"/>
+          <input type="hidden" name="sort"     th:value="${sort}"/>
+          <input type="hidden" name="trending" th:value="${trending}"/>
+          <input type="hidden" name="size"     th:value="${size}"/>
+          <th:block th:each="g : ${selectedGenres}">
+            <input type="hidden" name="genres" th:value="${g}"/>
+          </th:block>
+          <th:block th:each="s : ${selectedStatuses}">
+            <input type="hidden" name="statuses" th:value="${s}"/>
+          </th:block>
+          <input type="hidden" name="page" id="page-input" value="0"/>
         </form>
 
         <!-- Prev -->
         <button class="page-btn"
-                th:disabled="${currentPage <= 1}"
-                th:style="${currentPage <= 1} ? 'opacity:0.3;cursor:default;' : ''"
-                th:onclick="${currentPage > 1} ? 'goToPage(' + (currentPage - 1) + ')' : 'return false'"
-                style="opacity:0.3;cursor:default;" onclick="return false">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+                th:disabled="${!hasPrev}"
+                th:style="${!hasPrev} ? 'opacity:0.3;cursor:default;' : ''"
+                th:onclick="${hasPrev} ? 'goToPage(' + (currentPage - 1) + ')' : 'return false'">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
         </button>
 
-        <!-- Thymeleaf pages -->
-        <th:block th:if="${totalPages != null and totalPages > 1}">
-          <button th:if="${paginationStart > 1}" class="page-btn" onclick="goToPage(1)">1</button>
-          <span   th:if="${paginationStart > 2}" class="page-btn" style="pointer-events:none;border-color:transparent;background:transparent;color:var(--lw);">…</span>
-          <th:block th:each="p : ${#numbers.sequence(paginationStart, paginationEnd)}">
-            <button class="page-btn" th:classappend="${p==currentPage}?' active':''" th:text="${p}" th:onclick="'goToPage('+${p}+')'">1</button>
-          </th:block>
-          <span   th:if="${paginationEnd < totalPages-1}" class="page-btn" style="pointer-events:none;border-color:transparent;background:transparent;color:var(--lw);">…</span>
-          <button th:if="${paginationEnd < totalPages}" class="page-btn" th:text="${totalPages}" th:onclick="'goToPage('+${totalPages}+')'">124</button>
-        </th:block>
-
-        <!-- Static sample pagination -->
-        <th:block th:if="${totalPages == null or totalPages <= 1}">
-          <button class="page-btn active">1</button>
-          <button class="page-btn">2</button>
-          <button class="page-btn">3</button>
-          <span   class="page-btn" style="pointer-events:none;border-color:transparent;background:transparent;color:var(--lw);">…</span>
-          <button class="page-btn">124</button>
+        <!-- Page buttons -->
+        <th:block th:each="p : ${#numbers.sequence(0, totalPages - 1)}">
+          <button class="page-btn"
+                  th:classappend="${p == currentPage} ? ' active' : ''"
+                  th:text="${p + 1}"
+                  th:onclick="'goToPage(' + ${p} + ')'">1</button>
         </th:block>
 
         <!-- Next -->
         <button class="page-btn"
-                th:disabled="${currentPage >= totalPages}"
-                th:style="${currentPage >= totalPages} ? 'opacity:0.3;cursor:default;' : ''"
-                th:onclick="${currentPage < totalPages} ? 'goToPage(' + (currentPage + 1) + ')' : 'return false'">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+                th:disabled="${!hasNext}"
+                th:style="${!hasNext} ? 'opacity:0.3;cursor:default;' : ''"
+                th:onclick="${hasNext} ? 'goToPage(' + (currentPage + 1) + ')' : 'return false'">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
         </button>
 
       </div>
 
     </section>
-  </div><!-- /search-wrap -->
+  </div>
 </main>
 
 <script>
@@ -548,18 +317,24 @@
     document.getElementById('page-input').value = n;
     document.getElementById('page-form').submit();
   }
-  function selectPill(el) {
+
+  function selectPill(el, panel) {
+    const inputId = panel === 'mobile' ? 'status-input-mobile' : 'status-input-desktop';
     el.closest('div').querySelectorAll('.status-pill').forEach(p => p.classList.remove('active'));
     el.classList.add('active');
-    document.querySelectorAll('#status-input').forEach(inp => inp.value = el.dataset.value || 'any');
+    const input = document.getElementById(inputId);
+    if (input) input.value = el.dataset.value || '';
   }
+
   function resetFilters() {
     document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
     document.querySelectorAll('.status-pill').forEach((p, i) => p.classList.toggle('active', i === 0));
-    document.querySelectorAll('#status-input').forEach(inp => inp.value = 'any');
+    document.querySelectorAll('#status-input-mobile, #status-input-desktop').forEach(inp => inp.value = '');
   }
+
   const csrfToken  = document.querySelector('meta[name="_csrf"]')?.content;
   const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.content;
+
   async function toggleSave(btn) {
     const novelId = btn.dataset.novelId;
     const isSaved = btn.classList.contains('saved');
@@ -575,7 +350,9 @@
       const nowSaved = btn.classList.contains('saved');
       btn.querySelector('svg').setAttribute('fill', nowSaved ? 'currentColor' : 'none');
       btn.querySelector('span').textContent = nowSaved ? 'Saved' : 'Save';
-    } catch(e) { console.error('toggleSave:', e); }
+    } catch (e) {
+      console.error('toggleSave:', e);
+    }
   }
 </script>
 </body>

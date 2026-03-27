@@ -1,5 +1,6 @@
 package com.example.SE2;
 
+import com.example.SE2.configs.LiquibaseConfiguration;
 import com.example.SE2.configs.StorageProperties;
 import com.example.SE2.services.file.FileService;
 import io.github.cdimascio.dotenv.Dotenv;

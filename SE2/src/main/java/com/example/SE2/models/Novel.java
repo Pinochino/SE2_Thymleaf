@@ -21,7 +21,6 @@ public class Novel extends AbstractEntity {
     @Column(unique = true)
     private String title;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String description;
 

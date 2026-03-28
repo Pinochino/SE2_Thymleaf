@@ -23,7 +23,19 @@
       "mcp__plugin_figma_figma__get_design_context",
       "Bash(find:*)",
       "Bash(cd:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "mcp__chrome-devtools__new_page",
+      "mcp__chrome-devtools__list_pages",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "Bash(cat target/logs/*.log)",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "mcp__plugin_playwright_playwright__browser_fill_form",
+      "mcp__plugin_playwright_playwright__browser_click",
+      "mcp__plugin_playwright_playwright__browser_evaluate",
+      "mcp__plugin_playwright_playwright__browser_resize",
+      "mcp__plugin_playwright_playwright__browser_wait_for",
+      "Bash(ls:*)",
+      "mcp__plugin_playwright_playwright__browser_press_key"
     ]
   }
 }

@@ -17,7 +17,6 @@ public class Chapter extends AbstractEntity {
 
     private String title;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String content;
 

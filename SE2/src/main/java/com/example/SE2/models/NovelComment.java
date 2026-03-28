@@ -1,5 +1,6 @@
 package com.example.SE2.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -18,18 +19,18 @@ public class NovelComment extends AbstractEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "novel_id", nullable = false)
+    @JsonBackReference
     private Novel novel;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String content;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "parent_comment_id")
-//    private NovelComment parentComment;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_comment_id")
+    private NovelComment parentComment;
 
-//    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL)
-//    private List<NovelComment> replies = new ArrayList<>();
+    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL)
+    private List<NovelComment> replies = new ArrayList<>();
 
     public NovelComment() {
     }
@@ -66,19 +67,28 @@ public class NovelComment extends AbstractEntity {
         this.content = content;
     }
 
-//    public NovelComment getParentComment() {
-//        return parentComment;
-//    }
+    public NovelComment getParentComment() {
+        return parentComment;
+    }
 
-//    public void setParentComment(NovelComment parentComment) {
-//        this.parentComment = parentComment;
-//    }
+    public void setParentComment(NovelComment parentComment) {
+        this.parentComment = parentComment;
+    }
 
-//    public List<NovelComment> getReplies() {
-//        return replies;
-//    }
+    public List<NovelComment> getReplies() {
+        return replies;
+    }
 
-//    public void setReplies(List<NovelComment> replies) {
-//        this.replies = replies;
-//    }
+    public void setReplies(List<NovelComment> replies) {
+        this.replies = replies;
+    }
+
+    public NovelComment(Long id, User user, Novel novel, String content, NovelComment parentComment, List<NovelComment> replies) {
+        this.id = id;
+        this.user = user;
+        this.novel = novel;
+        this.content = content;
+        this.parentComment = parentComment;
+        this.replies = replies;
+    }
 }

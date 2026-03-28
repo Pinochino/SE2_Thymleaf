@@ -38,6 +38,19 @@ public class RoyalRoadScraper implements SiteStrategy {
         String author = text(doc, "h4.font-white a, a[href*=/profile/], span[property=name]");
         String desc   = text(doc, "div.description, div.hidden-content");
 
+        // Genres (tags)
+        List<String> genres = new ArrayList<>();
+        for (Element tag : doc.select("span.tags a.fiction-tag, a.tag")) {
+            if (!tag.text().isBlank()) genres.add(tag.text().trim());
+        }
+
+        // Cover image
+        Element imgEl = doc.selectFirst("div.fic-header img[src], img.thumbnail");
+        String coverUrl = imgEl != null ? imgEl.absUrl("src") : null;
+
+        // Status
+        String status = text(doc, "span.label-default, span.fiction-status");
+
         List<ChapterLink> chapters = new ArrayList<>();
         Elements rows = doc.select("table#chapters tbody tr");
         int i = 1;
@@ -54,7 +67,7 @@ public class RoyalRoadScraper implements SiteStrategy {
             }
         }
         log.info("[RoyalRoad] \"" + title + "\" – " + chapters.size() + " chapters");
-        return new NovelInfo(title, author, desc, chapters);
+        return new NovelInfo(title, author, desc, chapters, genres, coverUrl, status);
     }
 
     @Override

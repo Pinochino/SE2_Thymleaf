@@ -38,6 +38,19 @@ public class TruyenFullScraper implements SiteStrategy {
         String author = text(doc, "div.info-holder a[href*=tac-gia]");
         String desc   = text(doc, "div.desc-text");
 
+        // Genres
+        List<String> genres = new ArrayList<>();
+        for (Element a : doc.select("div.info-holder a[href*=the-loai]")) {
+            if (!a.text().isBlank()) genres.add(a.text().trim());
+        }
+
+        // Cover image
+        Element imgEl = doc.selectFirst("div.book img[src]");
+        String coverUrl = imgEl != null ? imgEl.absUrl("src") : null;
+
+        // Status
+        String status = text(doc, "div.info-holder span.text-success, div.info-holder span.text-primary");
+
         List<ChapterLink> chapters = new ArrayList<>();
         Elements items = doc.select("ul.list-chapter li");
         for (int i = 0; i < items.size(); i++) {
@@ -48,7 +61,7 @@ public class TruyenFullScraper implements SiteStrategy {
             chapters.add(new ChapterLink(i + 1, a.text(), a.absUrl("href"), date));
         }
         log.info("[TruyenFull] \"" + title + "\" – " + chapters.size() + " chương (trang 1)");
-        return new NovelInfo(title, author, desc, chapters);
+        return new NovelInfo(title, author, desc, chapters, genres, coverUrl, status);
     }
 
     @Override

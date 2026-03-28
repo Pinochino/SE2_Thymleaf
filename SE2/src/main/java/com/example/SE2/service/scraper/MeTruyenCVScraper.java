@@ -38,6 +38,19 @@ public class MeTruyenCVScraper implements SiteStrategy {
         String author = text(doc, "a[itemprop=author]");
         String desc   = text(doc, "div.content");
 
+        // Genres
+        List<String> genres = new ArrayList<>();
+        for (Element a : doc.select("a[href*=the-loai], a.category")) {
+            if (!a.text().isBlank()) genres.add(a.text().trim());
+        }
+
+        // Cover image
+        Element imgEl = doc.selectFirst("div.media img[src], img.cover-img");
+        String coverUrl = imgEl != null ? imgEl.absUrl("src") : null;
+
+        // Status
+        String status = text(doc, "span.label-success, span.label-primary, span.text-success");
+
         List<ChapterLink> chapters = new ArrayList<>();
         Elements items = doc.select("ul.list-chapter li");
         for (int i = 0; i < items.size(); i++) {
@@ -48,7 +61,7 @@ public class MeTruyenCVScraper implements SiteStrategy {
             chapters.add(new ChapterLink(i + 1, a.text(), a.absUrl("href"), date));
         }
         log.info("[MeTruyenCV] \"" + title + "\" – " + chapters.size() + " chương");
-        return new NovelInfo(title, author, desc, chapters);
+        return new NovelInfo(title, author, desc, chapters, genres, coverUrl, status);
     }
 
     @Override

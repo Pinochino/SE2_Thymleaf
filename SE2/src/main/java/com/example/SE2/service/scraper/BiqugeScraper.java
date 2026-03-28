@@ -42,6 +42,19 @@ public class BiqugeScraper implements SiteStrategy {
         }
         String desc = text(doc, "div#intro, div.bookIntro");
 
+        // Genres
+        List<String> genres = new ArrayList<>();
+        for (Element a : doc.select("div#info a[href*=sort], div#info a[href*=class]")) {
+            if (!a.text().isBlank()) genres.add(a.text().trim());
+        }
+
+        // Cover image
+        Element imgEl = doc.selectFirst("div#fmimg img[src], div.book img[src]");
+        String coverUrl = imgEl != null ? imgEl.absUrl("src") : null;
+
+        // Status
+        String status = text(doc, "div#info p:contains(状态), span.bookstatus");
+
         List<ChapterLink> chapters = new ArrayList<>();
         Elements links = doc.select("div#list dd a, ul.chapter-list li a");
         for (int i = 0; i < links.size(); i++) {
@@ -49,7 +62,7 @@ public class BiqugeScraper implements SiteStrategy {
             chapters.add(new ChapterLink(i + 1, a.text(), a.absUrl("href"), null));
         }
         log.info("[Biquge] \"" + title + "\" – " + chapters.size() + " 章");
-        return new NovelInfo(title, author, desc, chapters);
+        return new NovelInfo(title, author, desc, chapters, genres, coverUrl, status);
     }
 
     @Override

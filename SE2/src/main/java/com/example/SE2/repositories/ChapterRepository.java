@@ -9,4 +9,8 @@ import java.util.List;
 @Repository
 public interface ChapterRepository extends JpaRepository<Chapter, Long> {
     List<Chapter> findByNovelIdOrderByChapterNumberAsc(Long novelId);
+
+    boolean existsByNovelIdAndChapterNumber(Long novelId, Long chapterNumber);
+
+    Chapter findByNovelIdAndChapterNumber(Long novelId, Long chapterNumber);
 }

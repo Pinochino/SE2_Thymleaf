@@ -26,8 +26,16 @@ public class NovelScraperService {
             String title,
             String author,
             String description,
-            List<ChapterLink> chapterList
-    ) {}
+            List<ChapterLink> chapterList,
+            List<String> genres,
+            String coverImgUrl,
+            String status
+    ) {
+        /** Backward-compatible constructor (no genres/cover/status) */
+        public NovelInfo(String title, String author, String description, List<ChapterLink> chapterList) {
+            this(title, author, description, chapterList, List.of(), null, null);
+        }
+    }
 
     public record ChapterLink(
             int       index,

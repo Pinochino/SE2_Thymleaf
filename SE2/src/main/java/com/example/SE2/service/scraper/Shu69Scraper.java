@@ -39,6 +39,19 @@ public class Shu69Scraper implements SiteStrategy {
         String author = text(doc, "div.booknav2 p a, span.author");
         String desc   = text(doc, "div.navtxt p, div.bookIntro");
 
+        // Genres
+        List<String> genres = new ArrayList<>();
+        for (Element a : doc.select("div.booknav2 a[href*=sort], a[href*=class]")) {
+            if (!a.text().isBlank()) genres.add(a.text().trim());
+        }
+
+        // Cover image
+        Element imgEl = doc.selectFirst("div.bookimg2 img[src], img.bookcover");
+        String coverUrl = imgEl != null ? imgEl.absUrl("src") : null;
+
+        // Status
+        String status = text(doc, "div.booknav2 p:contains(状态), span.bookstatus");
+
         String chapterListUrl = novelUrl;
         Element chapterPageLink = doc.selectFirst("a.more-btn, a[href*=txt]");
         if (chapterPageLink != null) {
@@ -54,7 +67,7 @@ public class Shu69Scraper implements SiteStrategy {
             chapters.add(new ChapterLink(i + 1, a.text(), a.absUrl("href"), null));
         }
         log.info("[69Shu] \"" + title + "\" – " + chapters.size() + " 章");
-        return new NovelInfo(title, author, desc, chapters);
+        return new NovelInfo(title, author, desc, chapters, genres, coverUrl, status);
     }
 
     @Override

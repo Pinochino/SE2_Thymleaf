@@ -473,32 +473,15 @@ public class NovelUpdateService {
 
         String[] sites = {"royalroad", "truyenfull", "metruyencv", "biquge", "69shu"};
 
-        // ── Demo 1: Cào ban đầu – 5 truyện, mỗi truyện 1 chapter mới nhất ──
+        // ── Cào 20 truyện, mỗi truyện 2 chapter mới nhất ──
         for (String site : sites) {
-            System.out.println("\n=== [Initial] Cào 5 truyện + content từ " + site + " ===");
+            System.out.println("\n=== [Crawl] 20 truyện + 2 chapter từ " + site + " ===");
             try {
                 List<NovelWithContent> novels = updateSvc.scrapeUpdatesWithContent(
-                        site, TimePeriod.LAST_MONTH, 5, 1);
+                        site, TimePeriod.LAST_MONTH, 20, 2);
                 printNovelsSummary(novels);
                 if (!novels.isEmpty()) {
-                    String path = updateSvc.exportUpdatesWithContentToFile(novels, "initial_" + site);
-                    System.out.println("  >> Đã xuất ra: " + path);
-                }
-                break;
-            } catch (Exception e) {
-                System.out.println("  Lỗi: " + e.getMessage());
-            }
-        }
-
-        // ── Demo 2: Cào cập nhật 1 tháng, 10 truyện, 2 chapter/truyện ───────
-        for (String site : sites) {
-            System.out.println("\n=== [Update 1 tháng] 10 truyện + 2 chapter từ " + site + " ===");
-            try {
-                List<NovelWithContent> novels = updateSvc.scrapeUpdatesWithContent(
-                        site, TimePeriod.LAST_MONTH, 10, 2);
-                printNovelsSummary(novels);
-                if (!novels.isEmpty()) {
-                    String path = updateSvc.exportUpdatesWithContentToFile(novels, "update_1thang_" + site);
+                    String path = updateSvc.exportUpdatesWithContentToFile(novels, "crawl_20_" + site);
                     System.out.println("  >> Đã xuất ra: " + path);
                 }
                 break;

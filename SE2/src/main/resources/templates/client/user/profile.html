@@ -57,7 +57,7 @@
                 </div>
                 <!-- Name / Bio / Badge -->
                 <div class="max-sm:flex max-sm:flex-col max-sm:items-center">
-                    <h1 class="text-[30px] font-serif text-[#f8fafc] font-semibold leading-tight">Alex_Reader</h1>
+                    <h1 class="text-[30px] font-serif text-[#f8fafc] font-semibold leading-tight" th:text="${user.username}"></h1>
                     <p class="text-[16px] text-[#94a3b8] mt-1">Avid reader and occasional translator</p>
                     <span class="inline-block mt-3 text-[12px] bg-[rgba(20,75,184,0.1)] text-[#144bb8] px-4 py-1.5 rounded-full border border-[rgba(20,75,184,0.2)] font-['Noto_Sans'] font-bold">
                         Member since 2023
@@ -79,17 +79,17 @@
                     <div class="hidden max-sm:block space-y-5">
                         <div>
                             <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Display Name</label>
-                            <input type="text" value="Alexander Wright"
+                            <input type="text" th:value="${user.firstName + ' ' + user.lastName}"
                                    class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
                         </div>
                         <div>
                             <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Username</label>
-                            <input type="text" value="Alex_Reader"
+                            <input type="text" th:value="${user.username}"
                                    class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
                         </div>
                         <div>
                             <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Email Address</label>
-                            <input type="email" value="alex.reader@example.com"
+                            <input type="email" th:value="${user.email}"
                                    class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
                         </div>
                     </div>
@@ -99,18 +99,18 @@
                         <div class="grid grid-cols-2 gap-6 mb-6">
                             <div>
                                 <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Username</label>
-                                <input type="text" value="Alex_Reader"
+                                <input type="text" th:value="${user.username}"
                                        class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
                             </div>
                             <div>
                                 <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Display Name</label>
-                                <input type="text" value="Alexander Wright"
+                                <input type="text" th:value="${user.firstName + ' ' + user.lastName}"
                                        class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
                             </div>
                         </div>
                         <div>
                             <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Email Address</label>
-                            <input type="email" value="alex.reader@example.com"
+                            <input type="email" th:value="${user.email}"
                                    class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
                         </div>
                     </div>

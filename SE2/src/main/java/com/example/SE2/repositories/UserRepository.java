@@ -1,11 +1,13 @@
 package com.example.SE2.repositories;
 
 import com.example.SE2.models.User;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -19,4 +21,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     User findUserByEmailOrFirstName(String email, String firstName);
 
     User findUserByResetPasswordToken(String resetToken);
+
+    @NotNull
+    Optional<User> findById(String id);
 }

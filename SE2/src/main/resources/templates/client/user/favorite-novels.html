@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_clientLayout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favourited Novels</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Noto+Serif:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="min-h-screen bg-[#111621] text-[#f1f5f9] py-8">
+
+        <!-- Tab Navigation (Shared layout) -->
+        <div th:replace="~{client/user/fragments/_profileNavbar :: navbar('favorite-novels')}"></div>
+
+        <!-- ==================== FAVOURITED NOVELS TAB (Now main content) ==================== -->
+        <div class="max-w-[880px] mx-auto px-8 max-sm:px-3">
+            <!-- Check if there are no favourite novels -->
+            <div th:if="${favoriteNovels == null or favoriteNovels.empty}" class="text-center py-10">
+                <p class="text-[16px] text-[#94a3b8] font-['Noto_Sans']">You haven't favourited any novels yet.</p>
+            </div>
+
+            <!-- Novel Cards Grid: 4col desktop, 3col tablet, 2col mobile -->
+            <div th:if="${favoriteNovels != null and !favoriteNovels.empty}" class="grid grid-cols-4 max-[1024px]:grid-cols-3 max-sm:grid-cols-2 gap-[24px] max-sm:gap-[16px]">
+
+                <!-- Cards rendered dynamically -->
+                <div th:each="favorite : ${favoriteNovels}" class="group">
+                    <div class="aspect-[3/4] bg-[#1e293b] rounded-[12px] overflow-hidden relative">
+                        <!-- Use novel thumbnail if available, else fallback gradient -->
+                        <img th:if="${favorite.novel.thumbnailUrl != null}" th:src="${favorite.novel.thumbnailUrl}" th:alt="${favorite.novel.title}" class="w-full h-full object-cover">
+                        <div th:unless="${favorite.novel.thumbnailUrl != null}" class="w-full h-full bg-gradient-to-b from-slate-700 to-[#1e293b]"></div>
+                    </div>
+                    <a th:href="@{/novels/{id}(id=${favorite.novel.id})}">
+                        <h3 class="mt-2 text-[16px] font-['Noto_Serif'] font-medium text-[#f1f5f9] leading-tight" th:text="${favorite.novel.title}">Novel Title</h3>
+                    </a>
+                    <p class="text-[12px] font-['Noto_Serif'] text-[#94a3b8] mt-0.5" th:text="${favorite.novel.author}">Author Name</p>
+                    <button class="text-[11px] tracking-[0.55px] text-[rgba(239,68,68,0.8)] mt-1 uppercase font-['Noto_Sans'] font-bold hover:text-red-400 transition"
+                            th:onclick="'removeFavorite(' + ${favorite.novel.id} + ')'">REMOVE</button>
+                </div>
+
+            </div>
+
+            <!-- Pagination -->
+            <div th:if="${totalPages > 1}" class="mt-10 flex justify-center items-center gap-2">
+                <!-- Nút Prev -->
+                <a th:href="@{/user/favorite-novels(page=${currentPage > 0 ? currentPage - 1 : 0})}"
+                   th:classappend="${currentPage == 0} ? 'pointer-events-none opacity-50' : ''"
+                   class="w-[40px] h-[40px] rounded-[8px] bg-[#1e293b] text-[#94a3b8] flex items-center justify-center hover:bg-[#2d3446] transition text-[14px]">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                </a>
+                
+                <!-- Số trang -->
+                <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                    <!-- Chỉ hiển thị trang nếu nó gần currentPage (VD: cách nhau 2 trang), hoặc là trang đầu/cuối (optional logic) -->
+                    <a th:if="${i >= currentPage - 2 and i <= currentPage + 2}"
+                       th:href="@{/user/favorite-novels(page=${i})}"
+                       class="w-[40px] h-[40px] rounded-[8px] flex items-center justify-center text-[14px] font-bold transition"
+                       th:classappend="${i == currentPage} ? 'bg-[#144bb8] text-white' : 'bg-[#1e293b] text-[#94a3b8] hover:bg-[#2d3446]'">
+                        <span th:text="${i + 1}"></span>
+                    </a>
+                </th:block>
+
+                <!-- Nút Next -->
+                <a th:href="@{/user/favorite-novels(page=${currentPage < totalPages - 1 ? currentPage + 1 : totalPages - 1})}"
+                   th:classappend="${currentPage >= totalPages - 1} ? 'pointer-events-none opacity-50' : ''"
+                   class="w-[40px] h-[40px] rounded-[8px] bg-[#1e293b] text-[#94a3b8] flex items-center justify-center hover:bg-[#2d3446] transition text-[14px]">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

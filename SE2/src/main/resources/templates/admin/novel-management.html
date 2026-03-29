@@ -4,6 +4,7 @@
       layout:decorate="~{layout/_novelAdminLayout}">
 <head>
     <title>Manage Novels - NRW Admin</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body>
 <div layout:fragment="content">
@@ -33,7 +34,7 @@
     </a>
 
     <!-- Search & Filters -->
-    <div class="filter-bar">
+    <div class="filter-bar" >
         <div class="search-input-wrapper">
             <i class="bi bi-search"></i>
             <input type="text" class="search-input" placeholder="Search novels...">
@@ -41,17 +42,16 @@
         <div class="filter-row">
             <select class="filter-select">
                 <option value="">All Genres</option>
-                <option>Fantasy</option>
-                <option>Xianxia</option>
-                <option>VRMMO</option>
-                <option>Romance</option>
-                <option>Adventure</option>
+                <option th:each="genre: ${genres}"
+                        th:value="${genre.id}"
+                        th:text="${genre.name}"
+                ></option>
             </select>
             <select class="filter-select">
                 <option value="">All Status</option>
-                <option>Ongoing</option>
-                <option>Completed</option>
-                <option>Hiatus</option>
+                <option th:each="statusOtp : ${T(com.example.SE2.constants.NovelStatus).values()}"
+                        th:value="${statusOtp}" th:text="${statusOtp}"
+                ></option>
             </select>
         </div>
     </div>
@@ -60,96 +60,46 @@
     <div class="table-card desktop-only">
         <table class="table-custom">
             <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Genre</th>
-                    <th>Author</th>
-                    <th>Total Chapters</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
+            <tr>
+                <th>Title</th>
+                <th>Genre</th>
+                <th>Author</th>
+                <th>Total Chapters</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>
-                        <div class="novel-title-cell">
-                            <div class="novel-thumb" style="background: linear-gradient(126deg, rgba(236,91,19,0.4), rgba(236,91,19,0.8));"></div>
-                            <div class="novel-title-info">
-                                <span class="novel-title-name">The Shadow Monarch's Return</span>
-                                <span class="novel-title-id">#NV-001</span>
-                            </div>
+            <tr th:each="novel : ${novels}">
+                <td>
+                    <div class="novel-title-cell">
+                        <div class="novel-thumb"
+                             style="background: linear-gradient(126deg, rgba(236,91,19,0.4), rgba(236,91,19,0.8));">
+                            <img th:src="${'http://localhost:9000' + novel.coverImgUrl}" alt="logo">
                         </div>
-                    </td>
-                    <td><span class="genre-pill genre-fantasy">Fantasy</span></td>
-                    <td>Park Soo-jin</td>
-                    <td>342</td>
-                    <td><span class="status-pill status-ongoing">Ongoing</span></td>
-                    <td><button class="btn-action"><i class="bi bi-pencil"></i></button></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="novel-title-cell">
-                            <div class="novel-thumb" style="background: linear-gradient(126deg, rgba(99,102,241,0.4), #3730a3);"></div>
-                            <div class="novel-title-info">
-                                <span class="novel-title-name">Celestial Library</span>
-                                <span class="novel-title-id">#NV-002</span>
-                            </div>
+                        <div class="novel-title-info">
+                            <span class="novel-title-name" th:text="*{novel.title}"></span>
+                            <span class="novel-title-id" th:text="*{novel.id}"></span>
                         </div>
-                    </td>
-                    <td><span class="genre-pill genre-xianxia">Xianxia</span></td>
-                    <td>Chen Wei</td>
-                    <td>567</td>
-                    <td><span class="status-pill status-completed">Completed</span></td>
-                    <td><button class="btn-action"><i class="bi bi-pencil"></i></button></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="novel-title-cell">
-                            <div class="novel-thumb" style="background: linear-gradient(126deg, rgba(251,113,133,0.4), #be123c);"></div>
-                            <div class="novel-title-info">
-                                <span class="novel-title-name">Reincarnation of the Sword God</span>
-                                <span class="novel-title-id">#NV-003</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td><span class="genre-pill genre-vrmmo">VRMMO</span></td>
-                    <td>Kim Tae-hyung</td>
-                    <td>189</td>
-                    <td><span class="status-pill status-ongoing">Ongoing</span></td>
-                    <td><button class="btn-action"><i class="bi bi-pencil"></i></button></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="novel-title-cell">
-                            <div class="novel-thumb" style="background: linear-gradient(126deg, rgba(236,91,19,0.4), rgba(236,91,19,0.8));"></div>
-                            <div class="novel-title-info">
-                                <span class="novel-title-name">The Villainess Turns the Hourglass</span>
-                                <span class="novel-title-id">#NV-004</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td><span class="genre-pill genre-romance">Romance</span></td>
-                    <td>Lee Min-ah</td>
-                    <td>210</td>
-                    <td><span class="status-pill status-hiatus">Hiatus</span></td>
-                    <td><button class="btn-action"><i class="bi bi-pencil"></i></button></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="novel-title-cell">
-                            <div class="novel-thumb" style="background: linear-gradient(126deg, rgba(16,185,129,0.4), #065f46);"></div>
-                            <div class="novel-title-info">
-                                <span class="novel-title-name">Forest of the Ancients</span>
-                                <span class="novel-title-id">#NV-005</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td><span class="genre-pill genre-adventure">Adventure</span></td>
-                    <td>Yamamoto Kenji</td>
-                    <td>98</td>
-                    <td><span class="status-pill status-ongoing">Ongoing</span></td>
-                    <td><button class="btn-action"><i class="bi bi-pencil"></i></button></td>
-                </tr>
+                    </div>
+                </td>
+                <td>
+                  <span th:each="g, stat : ${novel.genres}"
+                        th:if="${stat.index == 0}"
+                        th:text="${g.name}">
+                  </span>
+                </td>
+
+                <td><span th:text="*{novel.author}"></span></td>
+                <td>342</td>
+                <td><span class="status-pill status-ongoing" th:text="*{novel.status}">Ongoing</span></td>
+                <td>
+                    <button class="btn-action bg-orange-600! text-white!"><i class="bi bi-pencil"></i></button>
+                    <a class="btn-action bg-red-600! text-white!" th:href="'/admin/novels/delete/' + ${novel.id}"><i class="bi bi-trash"></i></a>
+                </td>
+
+            </tr>
+
             </tbody>
         </table>
         <div class="table-footer">
@@ -164,7 +114,8 @@
     <!-- Mobile: Card List -->
     <div class="novel-cards mobile-only">
         <div class="novel-card">
-            <div class="novel-card-thumb" style="background: linear-gradient(126deg, rgba(236,91,19,0.4), rgba(236,91,19,0.8));">
+            <div class="novel-card-thumb"
+                 style="background: linear-gradient(126deg, rgba(236,91,19,0.4), rgba(236,91,19,0.8));">
                 <i class="bi bi-book"></i>
             </div>
             <div class="novel-card-body">

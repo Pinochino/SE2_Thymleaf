@@ -1,5 +1,6 @@
 package com.example.SE2.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -18,9 +19,9 @@ public class NovelComment extends AbstractEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "novel_id", nullable = false)
+    @JsonBackReference
     private Novel novel;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String content;
 
@@ -79,6 +80,15 @@ public class NovelComment extends AbstractEntity {
     }
 
     public void setReplies(List<NovelComment> replies) {
+        this.replies = replies;
+    }
+
+    public NovelComment(Long id, User user, Novel novel, String content, NovelComment parentComment, List<NovelComment> replies) {
+        this.id = id;
+        this.user = user;
+        this.novel = novel;
+        this.content = content;
+        this.parentComment = parentComment;
         this.replies = replies;
     }
 }

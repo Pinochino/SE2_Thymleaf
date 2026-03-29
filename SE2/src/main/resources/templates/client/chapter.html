@@ -3,27 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Chapter 42: The Whispering Void - Shadows of the Empire</title>
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <title th:text="'Chapter ' + ${chapter.chapterNumber} + ': ' + ${chapter.title} + ' - ' + ${novel.title}">Chapter</title>
     <link rel="stylesheet" th:href="@{/css/chapter.css}">
 </head>
-<body>
+<body th:classappend="${(readingSettings != null && readingSettings.theme != null ? 'theme-' + readingSettings.theme.name().toLowerCase() : 'theme-sepia') + (readingSettings != null && readingSettings.fontFamily != null && readingSettings.fontFamily.name() == 'SANS_SERIF' ? ' font-sans-serif' : '')}">
 <div class="chapter">
 
     <!-- Progress Bar -->
     <div class="progress-track">
-        <div class="progress-fill" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" aria-label="Reading progress"></div>
+        <div class="progress-fill" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Reading progress"></div>
     </div>
 
     <!-- Sticky Header -->
     <header class="chapter-header">
         <nav class="header-inner" aria-label="Main navigation">
             <div class="header-left">
-                <a href="/novels/1" class="btn-icon" aria-label="Go back">
+                <a th:href="@{'/novels/' + ${novel.id}}" class="btn-icon" aria-label="Go back">
                     <img th:src="@{/img/back-arrow.svg}" alt="">
                 </a>
                 <div class="header-title-group">
-                    <span class="header-novel-title">Shadows of the Empire</span>
-                    <span class="header-chapter-title">Chapter 42: The Whispering Void</span>
+                    <span class="header-novel-title" th:text="${novel.title}">Novel Title</span>
+                    <span class="header-chapter-title" th:text="'Chapter ' + ${chapter.chapterNumber} + ': ' + ${chapter.title}">Chapter Title</span>
                 </div>
             </div>
             <div class="header-right">
@@ -35,7 +37,7 @@
                     <span>Contribute</span>
                 </a>
                 <!-- Bookmark button with dropdown -->
-                <div class="chapter-dropdown-wrapper">
+                <div class="chapter-dropdown-wrapper" th:if="${isLoggedIn}">
                     <button class="btn-icon" aria-label="Bookmarks" onclick="toggleChapterDropdown('bookmarks')">
                         <img th:src="@{/img/bookmark.svg}" alt="">
                     </button>
@@ -43,16 +45,18 @@
                         <div class="chapter-dropdown-header">
                             <span class="chapter-dropdown-title">Bookmarks</span>
                         </div>
-                        <div class="chapter-dropdown-body">
-                            <div class="bookmark-item">
-                                <p class="bookmark-text">The silence in the cavern was absolute, a heavy blanket that smothered sound and thought alike...</p>
-                            </div>
-                            <div class="bookmark-divider"></div>
-                            <div class="bookmark-item">
-                                <p class="bookmark-text">Kaelen stepped up beside her, his own weapon drawn, a shimmering blade of starlight glass...</p>
-                            </div>
+                        <div class="chapter-dropdown-body" id="bookmarksList">
+                            <th:block th:if="${#lists.isEmpty(bookmarks)}">
+                                <p class="bookmark-empty-msg" style="padding: 12px; color: #9ca3af; font-size: 13px;">No bookmarks yet. Click the bookmark icon on any paragraph to save it.</p>
+                            </th:block>
+                            <th:block th:each="bookmark, stat : ${bookmarks}">
+                                <div class="bookmark-item" th:attr="data-paragraph-index=${bookmark.paragraphIndex}">
+                                    <p class="bookmark-text" th:if="${bookmark.paragraphIndex < #lists.size(paragraphs)}"
+                                       th:text="${#strings.abbreviate(paragraphs[bookmark.paragraphIndex], 120)}">Bookmark text</p>
+                                </div>
+                                <div class="bookmark-divider" th:if="${!stat.last}"></div>
+                            </th:block>
                         </div>
-                        <div class="chapter-dropdown-footer">View all bookmarks</div>
                     </div>
                 </div>
                 <!-- Appearance button with dropdown -->
@@ -64,26 +68,36 @@
                         <div class="appearance-section">
                             <div class="appearance-label">Theme</div>
                             <div class="theme-options">
-                                <button class="theme-btn theme-light" data-theme="light"></button>
-                                <button class="theme-btn theme-sepia active" data-theme="sepia">
-                                    <svg width="17" height="13" viewBox="0 0 17 13" fill="none"><path d="M1.5 7L6 11.5L15.5 1.5" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                <button class="theme-btn theme-light" data-theme="light"
+                                        th:classappend="${readingSettings == null || readingSettings.theme == null || readingSettings.theme.name() == 'LIGHT' ? 'active' : ''}">
+                                    <svg th:if="${readingSettings == null || readingSettings.theme == null || readingSettings.theme.name() == 'LIGHT'}" width="17" height="13" viewBox="0 0 17 13" fill="none"><path d="M1.5 7L6 11.5L15.5 1.5" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                 </button>
-                                <button class="theme-btn theme-dark" data-theme="dark"></button>
+                                <button class="theme-btn theme-sepia" data-theme="sepia"
+                                        th:classappend="${readingSettings != null && readingSettings.theme != null && readingSettings.theme.name() == 'SEPIA' ? 'active' : ''}">
+                                    <svg th:if="${readingSettings != null && readingSettings.theme != null && readingSettings.theme.name() == 'SEPIA'}" width="17" height="13" viewBox="0 0 17 13" fill="none"><path d="M1.5 7L6 11.5L15.5 1.5" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </button>
+                                <button class="theme-btn theme-dark" data-theme="dark"
+                                        th:classappend="${readingSettings != null && readingSettings.theme != null && readingSettings.theme.name() == 'DARK' ? 'active' : ''}">
+                                    <svg th:if="${readingSettings != null && readingSettings.theme != null && readingSettings.theme.name() == 'DARK'}" width="17" height="13" viewBox="0 0 17 13" fill="none"><path d="M1.5 7L6 11.5L15.5 1.5" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </button>
                             </div>
                         </div>
                         <div class="appearance-section">
                             <div class="appearance-label">Size</div>
                             <div class="size-slider-row">
                                 <span class="size-label-small">A-</span>
-                                <input type="range" min="14" max="28" value="20" class="size-slider">
+                                <input type="range" min="14" max="28" value="20" class="size-slider"
+                                       th:value="${readingSettings != null && readingSettings.fontSize != null ? readingSettings.fontSize.name().replace('PX_','') : '20'}">
                                 <span class="size-label-large">A+</span>
                             </div>
                         </div>
                         <div class="appearance-section">
                             <div class="appearance-label">Font Family</div>
                             <div class="font-toggle">
-                                <button class="font-toggle-btn active" data-font="serif">Serif</button>
-                                <button class="font-toggle-btn" data-font="sans-serif">Sans-Serif</button>
+                                <button class="font-toggle-btn" data-font="serif"
+                                        th:classappend="${readingSettings == null || readingSettings.fontFamily == null || readingSettings.fontFamily.name() == 'SERIF' ? 'active' : ''}">Serif</button>
+                                <button class="font-toggle-btn" data-font="sans-serif"
+                                        th:classappend="${readingSettings != null && readingSettings.fontFamily != null && readingSettings.fontFamily.name() == 'SANS_SERIF' ? 'active' : ''}">Sans-Serif</button>
                             </div>
                         </div>
                     </div>
@@ -103,25 +117,18 @@
             <i class="search-icon">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="5" stroke="#6b7280" stroke-width="1.5"/><path d="M10 10L13 13" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round"/></svg>
             </i>
-            <input type="text" placeholder="Search chapters..." class="sidebar-search-input">
+            <input type="text" placeholder="Search chapters..." class="sidebar-search-input" id="tocSearchInput">
         </div>
         <div class="toc-list">
             <div class="toc-volume">
-                <div class="toc-volume-label">Volume 1: The Awakening</div>
-                <a href="#" class="toc-chapter read">Chapter 1: The Beginning <span class="toc-check">&#10003;</span></a>
-                <a href="#" class="toc-chapter read">Chapter 2: Shadow Falls <span class="toc-check">&#10003;</span></a>
-            </div>
-            <div class="toc-volume">
-                <div class="toc-volume-label">Volume 2: The Journey</div>
-                <a href="#" class="toc-chapter read">Chapter 25: Crossroads <span class="toc-check">&#10003;</span></a>
-            </div>
-            <div class="toc-volume">
-                <div class="toc-volume-label">Volume 3: The Void</div>
-                <a href="#" class="toc-chapter read">Chapter 40: Echoes <span class="toc-check">&#10003;</span></a>
-                <a href="#" class="toc-chapter read">Chapter 41: Into the Deep <span class="toc-check">&#10003;</span></a>
-                <a href="#" class="toc-chapter active">Chapter 42: The Whispering Void</a>
-                <a href="#" class="toc-chapter">Chapter 43: The First Light <span class="toc-badge">New</span></a>
-                <a href="#" class="toc-chapter disabled">Chapter 44: Resolution</a>
+                <div class="toc-volume-label" th:text="${novel.title}">Novel Title</div>
+                <a th:each="ch : ${allChapters}"
+                   th:href="@{'/novels/chapter/' + ${ch.id}}"
+                   class="toc-chapter"
+                   th:classappend="${ch.id == chapter.id ? 'active' : (readChapterIds.contains(ch.id) ? 'read' : '')}">
+                    <span th:text="'Chapter ' + ${ch.chapterNumber} + ': ' + ${ch.title}">Chapter Title</span>
+                    <span class="toc-check" th:if="${readChapterIds.contains(ch.id)}">&#10003;</span>
+                </a>
             </div>
         </div>
     </aside>
@@ -132,72 +139,25 @@
             <span class="sidebar-title">Paragraph Comments</span>
             <button class="sidebar-close" onclick="closeSidebars()">&times;</button>
         </div>
-        <div class="comments-body">
-            <div class="comment-quote">
-                <p>"Suddenly, the air pressure dropped. It wasn't a wind, but a vacuum, sucking the warmth from her skin..."</p>
-            </div>
-            <div class="comment-item">
-                <div class="comment-avatar" style="background:#dbeafe;color:#2563eb;">JD</div>
-                <div class="comment-content">
-                    <div class="comment-header">
-                        <span class="comment-name">John Doe</span>
-                        <span class="comment-time">2h ago</span>
-                    </div>
-                    <p class="comment-text">The description here is visceral. I can almost feel the cold vacuum.</p>
-                    <div class="comment-actions">
-                        <span class="comment-like">&#9825; 12</span>
-                        <span class="comment-reply">Reply</span>
-                    </div>
-                </div>
-            </div>
-            <div class="comment-item">
-                <div class="comment-avatar" style="background:#f3e8ff;color:#9333ea;">SA</div>
-                <div class="comment-content">
-                    <div class="comment-header">
-                        <span class="comment-name">Sarah A.</span>
-                        <span class="comment-time">45m ago</span>
-                    </div>
-                    <p class="comment-text">This reminds me of the Void description in Chapter 12. Nice callback!</p>
-                    <div class="comment-actions">
-                        <span class="comment-like">&#9825; 5</span>
-                        <span class="comment-reply">Reply</span>
-                    </div>
-                    <!-- Nested reply -->
-                    <div class="comment-reply-thread">
-                        <div class="comment-item comment-item-nested">
-                            <div class="comment-avatar comment-avatar-sm" style="background:#dcfce7;color:#16a34a;">MK</div>
-                            <div class="comment-content">
-                                <div class="comment-header">
-                                    <span class="comment-name" style="font-size:12px;">Mike K.</span>
-                                    <span class="comment-time">15m ago</span>
-                                </div>
-                                <p class="comment-text" style="font-size:12px;line-height:16.5px;">Exactly! The consistency in world-building is top notch.</p>
-                                <div class="comment-actions"><span class="comment-like">&#9825; 2</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="comment-item">
-                <div class="comment-avatar" style="background:#ffedd5;color:#ea580c;">L</div>
-                <div class="comment-content">
-                    <div class="comment-header">
-                        <span class="comment-name">Luna</span>
-                        <span class="comment-time">Just now</span>
-                    </div>
-                    <p class="comment-text">Can't wait to see what entity appears next.</p>
-                    <div class="comment-actions">
-                        <span class="comment-like">&#9825; 0</span>
-                        <span class="comment-reply">Reply</span>
-                    </div>
-                </div>
-            </div>
+        <div class="comment-quote" id="commentQuote" style="display:none;">
+            <p id="commentQuoteText"></p>
         </div>
-        <div class="comments-input">
-            <input type="text" placeholder="Add a comment..." class="comment-input-field">
-            <button class="comment-send-btn">
-                <svg width="15" height="13" viewBox="0 0 15 13" fill="none"><path d="M1 6.5L13.5 1L8 6.5M1 6.5L8 6.5M1 6.5L13.5 12L8 6.5" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
+        <div class="comments-body" id="commentsBody">
+            <p class="comments-empty-msg" style="padding: 20px; color: #9ca3af; text-align: center;">Click a comment icon on a paragraph to view its comments.</p>
+        </div>
+        <div class="comments-input" th:if="${isLoggedIn}">
+            <div class="reply-indicator" id="replyIndicator" style="display:none;">
+                <div class="reply-indicator-text">
+                    Replying to <span class="reply-indicator-name" id="replyToName"></span>: <span id="replyToPreview"></span>
+                </div>
+                <button class="reply-indicator-close" id="replyCancelBtn">&times;</button>
+            </div>
+            <div style="position:relative;">
+                <input type="text" placeholder="Add a comment..." class="comment-input-field" id="commentInput">
+                <button class="comment-send-btn" id="commentSendBtn">
+                    <svg width="15" height="13" viewBox="0 0 15 13" fill="none"><path d="M1 6.5L13.5 1L8 6.5M1 6.5L8 6.5M1 6.5L13.5 12L8 6.5" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+            </div>
         </div>
     </aside>
 
@@ -207,124 +167,29 @@
 
             <!-- Chapter Info -->
             <header class="chapter-info">
-                <div class="chapter-volume">Volume 3</div>
-                <h1 class="chapter-title">Chapter 42: The Whispering Void</h1>
+                <h1 class="chapter-title" th:text="'Chapter ' + ${chapter.chapterNumber} + ': ' + ${chapter.title}">Chapter Title</h1>
                 <div class="chapter-meta">
-                    <span>2,847 words</span>
+                    <span th:text="${wordCount} + ' words'">0 words</span>
                     <span class="dot"></span>
-                    <span>Updated Dec 15, 2024</span>
+                    <span th:if="${chapter.updatedAt != null}" th:text="'Updated ' + ${#temporals.format(chapter.updatedAt, 'MMM dd, yyyy')}">Updated date</span>
                 </div>
             </header>
 
             <!-- Chapter Text -->
-            <div class="chapter-content">
-                <div class="paragraph-wrapper">
-                    <p class="chapter-paragraph">
-                        The silence in the cavern was absolute, a heavy blanket that smothered sound and thought alike. Elara
-                        held her breath, the crystal in her hand pulsing with a faint, rhythmic blue light that cast long,
-                        dancing shadows against the damp stone walls. She knew they were close. The ancient texts had spoken of
-                        this place, the threshold where the material world began to fray at the edges.
-                    </p>
+            <div class="chapter-content" id="chapterContent">
+                <div class="paragraph-wrapper" th:each="paragraph, stat : ${paragraphs}">
+                    <p class="chapter-paragraph" th:text="${paragraph}">Paragraph text</p>
                     <div class="paragraph-actions">
-                        <button class="action-btn" aria-label="Add comment" onclick="openSidebar('commentsSidebar')">
+                        <button class="action-btn comment-action-btn" aria-label="Add comment"
+                                th:attr="data-paragraph-index=${stat.index}">
                             <img th:src="@{/img/comment.svg}" alt="">
+                            <span class="comment-count"
+                                  th:if="${commentCounts.containsKey(stat.index)}"
+                                  th:text="${commentCounts.get(stat.index)}">0</span>
                         </button>
-                        <button class="action-btn" aria-label="Bookmark">
-                            <img th:src="@{/img/bookmark.svg}" alt="">
-                        </button>
-                    </div>
-                </div>
-
-                <div class="paragraph-wrapper">
-                    <p class="chapter-paragraph">
-                        "Do not look into the abyss," Kaelen had warned her, his voice trembling for the first time
-                        since she had known him. But how could one avoid the very thing they had journeyed so far to
-                        confront? Her boots scuffed against the gravel, the sound impossibly loud in the stillness.
-                    </p>
-                    <div class="paragraph-actions">
-                        <button class="action-btn" aria-label="Add comment" onclick="openSidebar('commentsSidebar')">
-                            <img th:src="@{/img/comment.svg}" alt="">
-                        </button>
-                        <button class="action-btn" aria-label="Bookmark">
-                            <img th:src="@{/img/bookmark.svg}" alt="">
-                        </button>
-                    </div>
-                </div>
-
-                <div class="paragraph-wrapper">
-                    <p class="chapter-paragraph">
-                        Suddenly, the air pressure dropped. It wasn't a wind, but a vacuum, sucking the warmth from her
-                        skin. The darkness ahead seemed to solidify, coalescing into shapes that defied geometry. She
-                        tightened her grip on the hilt of her blade, the leather warm and familiar against her palm.
-                        This was it. The Whispering Void.
-                    </p>
-                    <div class="paragraph-actions">
-                        <button class="action-btn" aria-label="Add comment" onclick="openSidebar('commentsSidebar')">
-                            <img th:src="@{/img/comment.svg}" alt="">
-                            <span class="comment-count">5</span>
-                        </button>
-                        <button class="action-btn" aria-label="Bookmark">
-                            <img th:src="@{/img/bookmark.svg}" alt="">
-                        </button>
-                    </div>
-                </div>
-
-                <div class="paragraph-wrapper">
-                    <p class="chapter-paragraph">
-                        A voice echoed, not in the air, but directly inside her mind.
-                    </p>
-                    <p class="chapter-paragraph" style="margin-top: 8px;">
-                        <em>"You bring light to a place that has only known hunger."</em>
-                    </p>
-                    <p class="chapter-paragraph" style="margin-top: 8px;">
-                        It wasn't malicious, merely observant, cold and ancient as the stars themselves. Elara steeled
-                        herself. She hadn't come for conversation.
-                    </p>
-                    <div class="paragraph-actions">
-                        <button class="action-btn" aria-label="Add comment" onclick="openSidebar('commentsSidebar')">
-                            <img th:src="@{/img/comment.svg}" alt="">
-                        </button>
-                        <button class="action-btn" aria-label="Bookmark">
-                            <img th:src="@{/img/bookmark.svg}" alt="">
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Section Divider -->
-                <div class="section-divider">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-
-                <div class="paragraph-wrapper">
-                    <p class="chapter-paragraph">
-                        Kaelen stepped up beside her, his own weapon drawn, a shimmering blade of starlight glass.
-                        "Remember the formation," he whispered. "Whatever happens, do not break the circle." She
-                        nodded, though fear was a cold knot in her stomach. They were two against infinity.
-                    </p>
-                    <div class="paragraph-actions">
-                        <button class="action-btn" aria-label="Add comment" onclick="openSidebar('commentsSidebar')">
-                            <img th:src="@{/img/comment.svg}" alt="">
-                        </button>
-                        <button class="action-btn" aria-label="Bookmark">
-                            <img th:src="@{/img/bookmark.svg}" alt="">
-                        </button>
-                    </div>
-                </div>
-
-                <div class="paragraph-wrapper">
-                    <p class="chapter-paragraph">
-                        The Void shifted. It didn't attack; it simply... expanded. The ground beneath them trembled,
-                        not with an earthquake's violence, but with the shudder of a waking giant. Elara raised the
-                        crystal high. "By the light of Siglis," she chanted, the words tasting of ash and ozone,
-                        "I command you to yield!"
-                    </p>
-                    <div class="paragraph-actions">
-                        <button class="action-btn" aria-label="Add comment" onclick="openSidebar('commentsSidebar')">
-                            <img th:src="@{/img/comment.svg}" alt="">
-                        </button>
-                        <button class="action-btn" aria-label="Bookmark">
+                        <button class="action-btn bookmark-action-btn" aria-label="Bookmark"
+                                th:classappend="${bookmarkedParagraphs.contains(stat.index) ? 'bookmarked' : ''}"
+                                th:attr="data-paragraph-index=${stat.index}">
                             <img th:src="@{/img/bookmark.svg}" alt="">
                         </button>
                     </div>
@@ -334,38 +199,116 @@
         </article>
     </main>
 
+    <!-- Swipe Indicator (mobile/tablet) -->
+    <div class="swipe-indicator" id="swipeIndicator">
+        <span class="swipe-label" id="swipeLabel"></span>
+    </div>
+
     <!-- Sticky Footer -->
     <footer class="chapter-footer">
         <nav class="footer-inner" aria-label="Chapter navigation">
-            <a href="#" class="footer-nav-link">
-                <div class="footer-nav-arrow">
-                    <img th:src="@{/img/prev-chapter.svg}" alt="">
-                </div>
-                <div class="footer-nav-text">
-                    <span class="footer-nav-label">Previous</span>
-                    <span class="footer-nav-title">Chapter 41: Into the Deep</span>
-                </div>
-            </a>
+            <div class="footer-nav-slot footer-nav-slot-left">
+                <a th:if="${prevChapter != null}" th:href="@{'/novels/chapter/' + ${prevChapter.id}}" class="footer-nav-link">
+                    <div class="footer-nav-arrow">
+                        <img th:src="@{/img/prev-chapter.svg}" alt="">
+                    </div>
+                    <div class="footer-nav-text">
+                        <span class="footer-nav-label">Previous</span>
+                        <span class="footer-nav-title" th:text="'Chapter ' + ${prevChapter.chapterNumber} + ': ' + ${prevChapter.title}">Previous Chapter</span>
+                    </div>
+                </a>
+            </div>
 
             <div class="footer-current">
                 <img th:src="@{/img/book.svg}" alt="">
-                <span class="footer-current-label">CHAPTER 42</span>
+                <span class="footer-current-label" th:text="'CHAPTER ' + ${chapter.chapterNumber}">CHAPTER</span>
             </div>
 
-            <a href="#" class="footer-nav-link">
-                <div class="footer-nav-text footer-nav-text-right">
-                    <span class="footer-nav-label">Next</span>
-                    <span class="footer-nav-title">Chapter 43: The First Light</span>
-                </div>
-                <div class="footer-nav-arrow-next">
-                    <img th:src="@{/img/next-chapter.svg}" alt="">
-                </div>
-            </a>
+            <div class="footer-nav-slot footer-nav-slot-right">
+                <a th:if="${nextChapter != null}" th:href="@{'/novels/chapter/' + ${nextChapter.id}}" class="footer-nav-link">
+                    <div class="footer-nav-text footer-nav-text-right">
+                        <span class="footer-nav-label">Next</span>
+                        <span class="footer-nav-title" th:text="'Chapter ' + ${nextChapter.chapterNumber} + ': ' + ${nextChapter.title}">Next Chapter</span>
+                    </div>
+                    <div class="footer-nav-arrow-next">
+                        <img th:src="@{/img/next-chapter.svg}" alt="">
+                    </div>
+                </a>
+            </div>
         </nav>
     </footer>
 
 </div>
-<script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const chapterId = /*[[${chapter.id}]]*/ 0;
+    const isLoggedIn = /*[[${isLoggedIn}]]*/ false;
+    const paragraphTexts = /*[[${paragraphs}]]*/ [];
+    const savedFontSize = /*[[${readingSettings != null && readingSettings.fontSize != null ? readingSettings.fontSize.name() : 'MEDIUM'}]]*/ 'MEDIUM';
+    const prevChapterUrl = /*[[${prevChapter != null ? '/novels/chapter/' + prevChapter.id : null}]]*/ null;
+    const nextChapterUrl = /*[[${nextChapter != null ? '/novels/chapter/' + nextChapter.id : null}]]*/ null;
+    /*]]>*/
+
+    // === LocalStorage settings (applied instantly on page load) ===
+    (function() {
+        var sizeMap = { 'SMALL': 16, 'MEDIUM': 20, 'LARGE': 24, 'EXTRA_LARGE': 28 };
+
+        // Theme: localStorage overrides server setting
+        var lsTheme = localStorage.getItem('reader-theme');
+        if (lsTheme) {
+            document.body.classList.remove('theme-light', 'theme-sepia', 'theme-dark');
+            document.body.classList.add('theme-' + lsTheme);
+            // Update active button
+            document.querySelectorAll('.theme-btn').forEach(function(b) { b.classList.remove('active'); b.innerHTML = ''; });
+            var activeBtn = document.querySelector('.theme-btn[data-theme="' + lsTheme + '"]');
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.innerHTML = '<svg width="17" height="13" viewBox="0 0 17 13" fill="none"><path d="M1.5 7L6 11.5L15.5 1.5" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+            }
+        }
+
+        // Font family: localStorage overrides server setting
+        var lsFont = localStorage.getItem('reader-font');
+        if (lsFont) {
+            if (lsFont === 'sans-serif') {
+                document.body.classList.add('font-sans-serif');
+            } else {
+                document.body.classList.remove('font-sans-serif');
+            }
+            document.querySelectorAll('.font-toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+            var activeFont = document.querySelector('.font-toggle-btn[data-font="' + lsFont + '"]');
+            if (activeFont) activeFont.classList.add('active');
+        }
+
+        // Font size: localStorage overrides server setting
+        var lsSize = localStorage.getItem('reader-size');
+        var px = lsSize ? parseInt(lsSize) : (sizeMap[savedFontSize] || 20);
+        var content = document.getElementById('chapterContent');
+        if (content) content.style.fontSize = px + 'px';
+        var slider = document.querySelector('.size-slider');
+        if (slider) slider.value = px;
+    })();
+
+    // === CSRF helper ===
+    var csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+    var csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
+
+    function apiPost(url, data) {
+        var headers = { 'Content-Type': 'application/json' };
+        if (csrfHeader && csrfToken) {
+            headers[csrfHeader] = csrfToken;
+        }
+        return fetch(url, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(data),
+            credentials: 'same-origin'
+        }).then(function(r) { return r.json(); });
+    }
+
+    // === Sidebar functions ===
+    var activeParagraphIndex = null;
+
     function openSidebar(id) {
         closeSidebars();
         document.getElementById(id).classList.add('open');
@@ -375,34 +318,460 @@
         document.querySelectorAll('.chapter-sidebar').forEach(function(s) { s.classList.remove('open'); });
         document.getElementById('sidebarOverlay').classList.remove('active');
     }
+
+    // === Dropdown functions ===
     function toggleChapterDropdown(name) {
         var allDropdowns = document.querySelectorAll('.chapter-dropdown');
         var target = document.getElementById('dropdown-' + name);
+        if (!target) {
+            allDropdowns.forEach(function(d) { d.classList.remove('active'); });
+            return;
+        }
         var isOpen = target.classList.contains('active');
         allDropdowns.forEach(function(d) { d.classList.remove('active'); });
         if (!isOpen) target.classList.add('active');
     }
-    // Close dropdowns when clicking outside
     document.addEventListener('click', function(e) {
         if (!e.target.closest('.chapter-dropdown-wrapper')) {
             document.querySelectorAll('.chapter-dropdown').forEach(function(d) { d.classList.remove('active'); });
         }
     });
-    // Theme buttons
+
+    // === Reply state ===
+    var replyToCommentId = null;
+    var replyIndicator = document.getElementById('replyIndicator');
+    var replyToName = document.getElementById('replyToName');
+    var replyToPreview = document.getElementById('replyToPreview');
+    var replyCancelBtn = document.getElementById('replyCancelBtn');
+
+    function setReplyTo(commentId, userName, commentText) {
+        if (!replyIndicator) return;
+        replyToCommentId = commentId;
+        var preview = commentText.length > 60 ? commentText.substring(0, 57) + '...' : commentText;
+        replyToName.textContent = userName;
+        replyToPreview.textContent = preview;
+        replyIndicator.style.display = '';
+        var input = document.getElementById('commentInput');
+        if (input) {
+            input.placeholder = 'Reply to ' + userName + '...';
+            input.focus();
+        }
+    }
+
+    function clearReply() {
+        replyToCommentId = null;
+        if (replyIndicator) replyIndicator.style.display = 'none';
+        if (replyToName) replyToName.textContent = '';
+        if (replyToPreview) replyToPreview.textContent = '';
+        var input = document.getElementById('commentInput');
+        if (input) input.placeholder = 'Add a comment...';
+    }
+
+    if (replyCancelBtn) {
+        replyCancelBtn.addEventListener('click', clearReply);
+    }
+
+    // === Comment action buttons (open sidebar for specific paragraph) ===
+    document.querySelectorAll('.comment-action-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            activeParagraphIndex = parseInt(this.getAttribute('data-paragraph-index'));
+            clearReply();
+            loadParagraphComments(activeParagraphIndex);
+            openSidebar('commentsSidebar');
+        });
+    });
+
+    // === Build comment HTML with reply button ===
+    function buildCommentHtml(c, isNested) {
+        var sizeClass = isNested ? ' comment-avatar-sm' : '';
+        var nameStyle = isNested ? ' style="font-size:12px;"' : '';
+        var textStyle = isNested ? ' style="font-size:12px;line-height:16.5px;"' : '';
+        var replyBtn = '';
+        if (isLoggedIn && !isNested) {
+            replyBtn = '<button class="comment-reply-btn" data-comment-id="' + c.id +
+                '" data-user-name="' + escapeHtml(c.userName) +
+                '" data-comment-text="' + escapeHtml(c.content).replace(/"/g, '&quot;') + '">Reply</button>';
+        }
+        return '<div class="comment-item' + (isNested ? ' comment-item-nested' : '') + '">' +
+            replyBtn +
+            '<div class="comment-avatar' + sizeClass + '">' + escapeHtml(c.userInitial) + '</div>' +
+            '<div class="comment-content">' +
+                '<div class="comment-header">' +
+                    '<span class="comment-name"' + nameStyle + '>' + escapeHtml(c.userName) + '</span>' +
+                '</div>' +
+                '<p class="comment-text"' + textStyle + '>' + escapeHtml(c.content) + '</p>' +
+            '</div>' +
+        '</div>';
+    }
+
+    // === Load comments for a specific paragraph ===
+    function loadParagraphComments(pIndex) {
+        var commentsBody = document.getElementById('commentsBody');
+        var quoteEl = document.getElementById('commentQuote');
+        var quoteText = document.getElementById('commentQuoteText');
+
+        if (pIndex < paragraphTexts.length) {
+            var text = paragraphTexts[pIndex];
+            if (text.length > 200) text = text.substring(0, 197) + '...';
+            quoteText.textContent = '"' + text + '"';
+            quoteEl.style.display = '';
+        } else {
+            quoteEl.style.display = 'none';
+        }
+
+        commentsBody.innerHTML = '<p style="padding: 20px; color: #9ca3af; text-align: center;">Loading comments...</p>';
+
+        fetch('/api/chapter/' + chapterId + '/comments?paragraphIndex=' + pIndex, {
+            credentials: 'same-origin'
+        }).then(function(r) { return r.json(); })
+        .then(function(comments) {
+            commentsBody.innerHTML = '';
+            if (comments.length === 0) {
+                commentsBody.innerHTML = '<p class="comments-empty-msg" style="padding: 20px; color: #9ca3af; text-align: center;">No comments on this paragraph yet. Be the first!</p>';
+                return;
+            }
+            comments.forEach(function(c) {
+                commentsBody.insertAdjacentHTML('beforeend', buildCommentHtml(c, false));
+                if (c.replies && c.replies.length > 0) {
+                    c.replies.forEach(function(r) {
+                        commentsBody.insertAdjacentHTML('beforeend',
+                            '<div class="comment-reply-thread">' + buildCommentHtml(r, true) + '</div>');
+                    });
+                }
+            });
+            // Attach reply button listeners
+            commentsBody.querySelectorAll('.comment-reply-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    setReplyTo(
+                        parseInt(this.getAttribute('data-comment-id')),
+                        this.getAttribute('data-user-name'),
+                        this.getAttribute('data-comment-text')
+                    );
+                });
+            });
+        }).catch(function(err) {
+            commentsBody.innerHTML = '<p style="padding: 20px; color: #e74c3c; text-align: center;">Failed to load comments.</p>';
+            console.error('Failed to load comments:', err);
+        });
+    }
+
+    // === Post comment ===
+    var commentInput = document.getElementById('commentInput');
+    var commentSendBtn = document.getElementById('commentSendBtn');
+
+    if (commentSendBtn && commentInput) {
+        commentSendBtn.addEventListener('click', submitComment);
+        commentInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                submitComment();
+            }
+        });
+    }
+
+    function submitComment() {
+        var content = commentInput.value.trim();
+        if (!content || activeParagraphIndex === null) return;
+
+        commentInput.disabled = true;
+        commentSendBtn.disabled = true;
+
+        var payload = {
+            paragraphIndex: activeParagraphIndex,
+            content: content
+        };
+        if (replyToCommentId !== null) {
+            payload.parentCommentId = replyToCommentId;
+        }
+
+        apiPost('/api/chapter/' + chapterId + '/comments', payload).then(function(data) {
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+            loadParagraphComments(activeParagraphIndex);
+
+            // Update comment count badge (only for top-level comments)
+            if (!replyToCommentId) {
+                var countSpan = document.querySelector('.comment-action-btn[data-paragraph-index="' + activeParagraphIndex + '"] .comment-count');
+                if (countSpan) {
+                    countSpan.textContent = parseInt(countSpan.textContent) + 1;
+                } else {
+                    var btn = document.querySelector('.comment-action-btn[data-paragraph-index="' + activeParagraphIndex + '"]');
+                    if (btn) {
+                        var span = document.createElement('span');
+                        span.className = 'comment-count';
+                        span.textContent = '1';
+                        btn.appendChild(span);
+                    }
+                }
+            }
+
+            commentInput.value = '';
+            clearReply();
+        }).catch(function(err) {
+            console.error('Failed to post comment:', err);
+        }).finally(function() {
+            commentInput.disabled = false;
+            commentSendBtn.disabled = false;
+            commentInput.focus();
+        });
+    }
+
+    // === Toggle bookmark ===
+    document.querySelectorAll('.bookmark-action-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            if (!isLoggedIn) return;
+            var pIndex = parseInt(this.getAttribute('data-paragraph-index'));
+            var btnRef = this;
+
+            apiPost('/api/chapter/' + chapterId + '/bookmarks', {
+                paragraphIndex: pIndex
+            }).then(function(data) {
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+                if (data.bookmarked) {
+                    btnRef.classList.add('bookmarked');
+                    addBookmarkToDropdown(pIndex);
+                } else {
+                    btnRef.classList.remove('bookmarked');
+                    removeBookmarkFromDropdown(pIndex);
+                }
+            }).catch(function(err) {
+                console.error('Failed to toggle bookmark:', err);
+            });
+        });
+    });
+
+    function addBookmarkToDropdown(pIndex) {
+        var list = document.getElementById('bookmarksList');
+        if (!list) return;
+        var emptyMsg = list.querySelector('.bookmark-empty-msg');
+        if (emptyMsg) emptyMsg.remove();
+
+        var text = pIndex < paragraphTexts.length ? paragraphTexts[pIndex] : '';
+        if (text.length > 120) text = text.substring(0, 117) + '...';
+
+        var div = document.createElement('div');
+        div.className = 'bookmark-item';
+        div.setAttribute('data-paragraph-index', pIndex);
+        div.style.cursor = 'pointer';
+        div.innerHTML = '<p class="bookmark-text">' + escapeHtml(text) + '</p>';
+        div.addEventListener('click', function() {
+            var paragraphs = document.querySelectorAll('.paragraph-wrapper');
+            if (paragraphs[pIndex]) {
+                paragraphs[pIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                toggleChapterDropdown('__close__');
+            }
+        });
+        list.appendChild(div);
+    }
+
+    function removeBookmarkFromDropdown(pIndex) {
+        var list = document.getElementById('bookmarksList');
+        if (!list) return;
+        var item = list.querySelector('.bookmark-item[data-paragraph-index="' + pIndex + '"]');
+        if (item) {
+            var divider = item.nextElementSibling;
+            if (divider && divider.classList.contains('bookmark-divider')) divider.remove();
+            item.remove();
+        }
+        if (!list.querySelector('.bookmark-item')) {
+            list.innerHTML = '<p class="bookmark-empty-msg" style="padding: 12px; color: #9ca3af; font-size: 13px;">No bookmarks yet. Click the bookmark icon on any paragraph to save it.</p>';
+        }
+    }
+
+    // === Theme buttons (with persist) ===
     document.querySelectorAll('.theme-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.theme-btn').forEach(function(b) { b.classList.remove('active'); b.innerHTML = ''; });
             btn.classList.add('active');
             btn.innerHTML = '<svg width="17" height="13" viewBox="0 0 17 13" fill="none"><path d="M1.5 7L6 11.5L15.5 1.5" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+            var theme = btn.getAttribute('data-theme');
+            document.body.classList.remove('theme-light', 'theme-sepia', 'theme-dark');
+            document.body.classList.add('theme-' + theme);
+            localStorage.setItem('reader-theme', theme);
+            if (isLoggedIn) {
+                apiPost('/api/chapter/settings', { theme: theme });
+            }
         });
     });
-    // Font family toggle
+
+    // === Font family toggle (with persist) ===
     document.querySelectorAll('.font-toggle-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.font-toggle-btn').forEach(function(b) { b.classList.remove('active'); });
             btn.classList.add('active');
+            var font = btn.getAttribute('data-font');
+            if (font === 'sans-serif') {
+                document.body.classList.add('font-sans-serif');
+            } else {
+                document.body.classList.remove('font-sans-serif');
+            }
+            localStorage.setItem('reader-font', font);
+            if (isLoggedIn) {
+                var fontFamily = font === 'sans-serif' ? 'SANS_SERIF' : 'SERIF';
+                apiPost('/api/chapter/settings', { fontFamily: fontFamily });
+            }
         });
     });
+
+    // === Font size slider (with debounced persist) ===
+    var sizeSlider = document.querySelector('.size-slider');
+    var sizeDebounce = null;
+    if (sizeSlider) {
+        sizeSlider.addEventListener('input', function() {
+            var val = this.value;
+            document.getElementById('chapterContent').style.fontSize = val + 'px';
+            localStorage.setItem('reader-size', val);
+            if (isLoggedIn) {
+                clearTimeout(sizeDebounce);
+                sizeDebounce = setTimeout(function() {
+                    var sizeEnum;
+                    if (val <= 16) sizeEnum = 'SMALL';
+                    else if (val <= 20) sizeEnum = 'MEDIUM';
+                    else if (val <= 24) sizeEnum = 'LARGE';
+                    else sizeEnum = 'EXTRA_LARGE';
+                    apiPost('/api/chapter/settings', { fontSize: sizeEnum });
+                }, 500);
+            }
+        });
+    }
+
+    // === Reading progress bar ===
+    function updateProgressBar() {
+        var scrollTop = window.scrollY;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        var fill = document.querySelector('.progress-fill');
+        if (fill) {
+            fill.style.width = progress + '%';
+            fill.setAttribute('aria-valuenow', Math.round(progress));
+        }
+    }
+    window.addEventListener('scroll', updateProgressBar);
+    updateProgressBar();
+
+    // === Save reading progress (debounced on scroll) ===
+    var progressDebounce = null;
+    window.addEventListener('scroll', function() {
+        if (!isLoggedIn) return;
+        clearTimeout(progressDebounce);
+        progressDebounce = setTimeout(function() {
+            var scrollPercent = Math.round((window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight)) * 100);
+            apiPost('/api/chapter/' + chapterId + '/progress', {
+                position: scrollPercent
+            });
+        }, 2000);
+    });
+
+    // === TOC search filter ===
+    var tocSearch = document.getElementById('tocSearchInput');
+    if (tocSearch) {
+        tocSearch.addEventListener('input', function() {
+            var query = this.value.toLowerCase();
+            document.querySelectorAll('.toc-chapter').forEach(function(ch) {
+                ch.style.display = ch.textContent.toLowerCase().includes(query) ? '' : 'none';
+            });
+        });
+    }
+
+    // === Bookmark click: scroll to paragraph ===
+    document.querySelectorAll('.bookmark-item[data-paragraph-index]').forEach(function(item) {
+        item.style.cursor = 'pointer';
+        item.addEventListener('click', function() {
+            var idx = parseInt(this.getAttribute('data-paragraph-index'));
+            var paragraphs = document.querySelectorAll('.paragraph-wrapper');
+            if (paragraphs[idx]) {
+                paragraphs[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                toggleChapterDropdown('__close__');
+            }
+        });
+    });
+
+    // === Chapter navigation: swipe (mobile/tablet) + arrow keys (desktop) ===
+    function navigateChapter(url) {
+        if (url) window.location.href = url;
+    }
+
+    // Arrow keys (desktop)
+    document.addEventListener('keydown', function(e) {
+        // Don't trigger when typing in inputs
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            navigateChapter(prevChapterUrl);
+        } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            navigateChapter(nextChapterUrl);
+        }
+    });
+
+    // Swipe detection (mobile/tablet)
+    (function() {
+        var touchStartX = 0;
+        var touchStartY = 0;
+        var touchEndX = 0;
+        var touchEndY = 0;
+        var swiping = false;
+        var swipeIndicator = document.getElementById('swipeIndicator');
+        var swipeLabel = document.getElementById('swipeLabel');
+        var minSwipe = 80;
+
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+            swiping = false;
+        }, { passive: true });
+
+        document.addEventListener('touchmove', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
+            var dx = touchEndX - touchStartX;
+            var dy = Math.abs(touchEndY - touchStartY);
+
+            // Only trigger horizontal swipe (dx must be bigger than dy)
+            if (Math.abs(dx) > 40 && Math.abs(dx) > dy * 1.5) {
+                swiping = true;
+                if (swipeIndicator) {
+                    if (dx > 0 && prevChapterUrl) {
+                        swipeIndicator.className = 'swipe-indicator swipe-indicator-left active';
+                        swipeLabel.textContent = Math.abs(dx) > minSwipe ? 'Release for previous chapter' : 'Swipe for previous chapter';
+                    } else if (dx < 0 && nextChapterUrl) {
+                        swipeIndicator.className = 'swipe-indicator swipe-indicator-right active';
+                        swipeLabel.textContent = Math.abs(dx) > minSwipe ? 'Release for next chapter' : 'Swipe for next chapter';
+                    } else {
+                        swipeIndicator.className = 'swipe-indicator';
+                    }
+                }
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchend', function(e) {
+            if (swipeIndicator) {
+                swipeIndicator.className = 'swipe-indicator';
+            }
+            if (!swiping) return;
+            var dx = touchEndX - touchStartX;
+            var dy = Math.abs(touchEndY - touchStartY);
+            if (Math.abs(dx) > minSwipe && Math.abs(dx) > dy * 1.5) {
+                if (dx > 0) {
+                    navigateChapter(prevChapterUrl);
+                } else {
+                    navigateChapter(nextChapterUrl);
+                }
+            }
+        }, { passive: true });
+    })();
+
+    // === Utility ===
+    function escapeHtml(str) {
+        var div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
 </script>
 </body>
 </html>

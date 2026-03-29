@@ -1,5 +1,6 @@
 package com.example.SE2.dtos.request;
 
+import com.example.SE2.constants.NovelStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 public class NovelRequest {
@@ -18,10 +19,19 @@ public class NovelRequest {
 
     private String author;
 
+    private NovelStatus status;
+
     public NovelRequest() {
     }
 
-    public NovelRequest(String title, String description, String content, Long genreId, MultipartFile imageFile, String imagePath, String author) {
+    public NovelRequest(String title,
+                        String description,
+                        String content,
+                        Long genreId,
+                        MultipartFile imageFile,
+                        String imagePath,
+                        String author,
+                        NovelStatus status) {
         this.title = title;
         this.description = description;
         this.content = content;
@@ -29,6 +39,7 @@ public class NovelRequest {
         this.imageFile = imageFile;
         this.imagePath = imagePath;
         this.author = author;
+        this.status = status;
     }
 
     public String getTitle() {
@@ -85,5 +96,13 @@ public class NovelRequest {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public NovelStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(NovelStatus status) {
+        this.status = status;
     }
 }

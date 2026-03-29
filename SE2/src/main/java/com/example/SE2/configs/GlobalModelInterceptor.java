@@ -12,8 +12,10 @@ import org.springframework.web.servlet.ModelAndView;
 public class GlobalModelInterceptor implements HandlerInterceptor {
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response,
-                           Object handler, ModelAndView modelAndView) {
+    public void postHandle(HttpServletRequest request,
+                           HttpServletResponse response,
+                           Object handler,
+                           ModelAndView modelAndView) {
         if (modelAndView != null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             boolean isLoggedIn = auth != null

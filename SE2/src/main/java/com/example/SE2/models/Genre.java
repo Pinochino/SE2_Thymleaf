@@ -1,5 +1,6 @@
 package com.example.SE2.models;
 
+import com.example.SE2.constants.GenreName;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -13,7 +14,8 @@ public class Genre {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private GenreName name;
 
     @ManyToMany
     @JoinTable(
@@ -26,7 +28,7 @@ public class Genre {
     public Genre() {
     }
 
-    public Genre(String name) {
+    public Genre(GenreName name) {
         this.name = name;
     }
 
@@ -38,11 +40,11 @@ public class Genre {
         this.id = id;
     }
 
-    public String getName() {
+    public GenreName getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(GenreName name) {
         this.name = name;
     }
 
@@ -53,4 +55,6 @@ public class Genre {
     public void setNovels(Set<Novel> novels) {
         this.novels = novels;
     }
+
+
 }

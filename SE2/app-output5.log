@@ -1,0 +1,2678 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------------< com.example:demo >--------------------------
+[INFO] Building demo 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:4.0.1:run (default-cli) > test-compile @ demo >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ demo ---
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] Copying 54 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ demo ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ demo ---
+[INFO] skip non existing resourceDirectory C:\Users\duong\Desktop\SE2\SE2_Thymleaf\SE2\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ demo ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] <<< spring-boot:4.0.1:run (default-cli) < test-compile @ demo <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:4.0.1:run (default-cli) @ demo ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-03-28T22:19:01.579+07:00  INFO 22660 --- [SE2] [  restartedMain] com.example.SE2.Se2Application           : Starting Se2Application using Java 21.0.8 with PID 22660 (C:\Users\duong\Desktop\SE2\SE2_Thymleaf\SE2\target\classes started by duong in C:\Users\duong\Desktop\SE2\SE2_Thymleaf\SE2)
+2026-03-28T22:19:01.582+07:00  INFO 22660 --- [SE2] [  restartedMain] com.example.SE2.Se2Application           : No active profile set, falling back to 1 default profile: "default"
+2026-03-28T22:19:01.803+07:00  INFO 22660 --- [SE2] [  restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\duong\.m2\repository\io\github\cdimascio\java-dotenv\5.2.2\java-dotenv-5.2.2.jar referenced one or more files that do not exist: file:/C:/Users/duong/.m2/repository/io/github/cdimascio/java-dotenv/5.2.2/kotlin-stdlib-1.4.0.jar,file:/C:/Users/duong/.m2/repository/io/github/cdimascio/java-dotenv/5.2.2/kotlin-stdlib-common-1.4.0.jar,file:/C:/Users/duong/.m2/repository/io/github/cdimascio/java-dotenv/5.2.2/annotations-13.0.jar
+2026-03-28T22:19:01.803+07:00  INFO 22660 --- [SE2] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-03-28T22:19:01.803+07:00  INFO 22660 --- [SE2] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-03-28T22:19:02.526+07:00  INFO 22660 --- [SE2] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-28T22:19:02.685+07:00  INFO 22660 --- [SE2] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 151 ms. Found 16 JPA repository interfaces.
+2026-03-28T22:19:03.289+07:00  INFO 22660 --- [SE2] [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 9000 (http)
+2026-03-28T22:19:03.299+07:00  INFO 22660 --- [SE2] [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-28T22:19:03.300+07:00  INFO 22660 --- [SE2] [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-03-28T22:19:03.344+07:00  INFO 22660 --- [SE2] [  restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1541 ms
+2026-03-28T22:19:03.495+07:00  INFO 22660 --- [SE2] [  restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-03-28T22:19:03.541+07:00  INFO 22660 --- [SE2] [  restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-03-28T22:19:03.792+07:00  INFO 22660 --- [SE2] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-28T22:19:03.890+07:00  INFO 22660 --- [SE2] [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@6f7964c9
+2026-03-28T22:19:03.892+07:00  INFO 22660 --- [SE2] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-28T22:19:03.953+07:00  INFO 22660 --- [SE2] [  restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/se2-new]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.3
+	Default catalog/schema: se2-new/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-28T22:19:04.131+07:00  INFO 22660 --- [SE2] [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-28T22:19:05.153+07:00  INFO 22660 --- [SE2] [  restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-28T22:19:05.230+07:00  INFO 22660 --- [SE2] [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-28T22:19:05.314+07:00  INFO 22660 --- [SE2] [  restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-28T22:19:06.367+07:00  WARN 22660 --- [SE2] [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-28T22:19:06.446+07:00  INFO 22660 --- [SE2] [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetailServiceImpl
+2026-03-28T22:19:07.300+07:00  INFO 22660 --- [SE2] [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 9000 (http) with context path '/'
+2026-03-28T22:19:07.306+07:00  INFO 22660 --- [SE2] [  restartedMain] com.example.SE2.Se2Application           : Started Se2Application in 6.101 seconds (process running for 6.584)
+Hibernate: 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+Hibernate: 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2026-03-28T22:19:07.451+07:00  INFO 22660 --- [SE2] [  restartedMain] com.example.SE2.configs.DataSeed         : Admin created: admin@gmail.com
+Hibernate: 
+    select
+        count(*) 
+    from
+        novel n1_0
+2026-03-28T22:19:27.187+07:00  INFO 22660 --- [SE2] [nio-9000-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-28T22:19:27.188+07:00  INFO 22660 --- [SE2] [nio-9000-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-03-28T22:19:27.189+07:00  INFO 22660 --- [SE2] [nio-9000-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-03-28T22:19:27.200+07:00  WARN 22660 --- [SE2] [nio-9000-exec-1] o.s.w.s.h.HandlerMappingIntrospector     : Cache miss for REQUEST dispatch to '/novels/chapter/5' (previous null). Performing CorsConfiguration lookup. This is logged once only at WARN level, and every time at TRACE.
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.chapter_number,
+        c1_0.content,
+        c1_0.created_at,
+        c1_0.novel_id,
+        c1_0.paragraphs,
+        c1_0.title,
+        c1_0.updated_at 
+    from
+        chapter c1_0 
+    where
+        c1_0.id=?
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.chapter_number,
+        c1_0.content,
+        c1_0.created_at,
+        c1_0.novel_id,
+        c1_0.paragraphs,
+        c1_0.title,
+        c1_0.updated_at 
+    from
+        chapter c1_0 
+    where
+        c1_0.novel_id=? 
+    order by
+        c1_0.chapter_number
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.chapter_number,
+        c1_0.content,
+        c1_0.created_at,
+        c1_0.novel_id,
+        c1_0.paragraphs,
+        c1_0.title,
+        c1_0.updated_at 
+    from
+        chapter c1_0 
+    where
+        c1_0.novel_id=? 
+        and c1_0.chapter_number>? 
+    order by
+        c1_0.chapter_number 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.chapter_number,
+        c1_0.content,
+        c1_0.created_at,
+        c1_0.novel_id,
+        c1_0.paragraphs,
+        c1_0.title,
+        c1_0.updated_at 
+    from
+        chapter c1_0 
+    where
+        c1_0.novel_id=? 
+        and c1_0.chapter_number<? 
+    order by
+        c1_0.chapter_number desc 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        n1_0.id,
+        n1_0.author,
+        n1_0.average_rating,
+        n1_0.cover_img_url,
+        n1_0.created_at,
+        n1_0.description,
+        n1_0.public_id,
+        n1_0.status,
+        n1_0.title,
+        n1_0.updated_at 
+    from
+        novel n1_0 
+    where
+        n1_0.id=?
+2026-03-28T22:19:36.155+07:00  WARN 22660 --- [SE2] [nio-9000-exec-4] c.e.SE2.controllers.AuthController       : Login request received: null
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.chapter_number,
+        c1_0.content,
+        c1_0.created_at,
+        c1_0.novel_id,
+        c1_0.paragraphs,
+        c1_0.title,
+        c1_0.updated_at 
+    from
+        chapter c1_0 
+    where
+        c1_0.id=?
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.chapter_number,
+        c1_0.content,
+        c1_0.created_at,
+        c1_0.novel_id,
+        c1_0.paragraphs,
+        c1_0.title,
+        c1_0.updated_at 
+    from
+        chapter c1_0 
+    where
+        c1_0.novel_id=? 
+    order by
+        c1_0.chapter_number
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.chapter_number,
+        c1_0.content,
+        c1_0.created_at,
+        c1_0.novel_id,
+        c1_0.paragraphs,
+        c1_0.title,
+        c1_0.updated_at 
+    from
+        chapter c1_0 
+    where
+        c1_0.novel_id=? 
+        and c1_0.chapter_number>? 
+    order by
+        c1_0.chapter_number 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.chapter_number,
+        c1_0.content,
+        c1_0.created_at,
+        c1_0.novel_id,
+        c1_0.paragraphs,
+        c1_0.title,
+        c1_0.updated_at 
+    from
+        chapter c1_0 
+    where
+        c1_0.novel_id=? 
+        and c1_0.chapter_number<? 
+    order by
+        c1_0.chapter_number desc 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        b1_0.id,
+        b1_0.chapter_id,
+        b1_0.created_at,
+        b1_0.paragraph_index,
+        b1_0.updated_at,
+        b1_0.user_id 
+    from
+        bookmark b1_0 
+    where
+        b1_0.user_id=? 
+        and b1_0.chapter_id=?
+Hibernate: 
+    select
+        rs1_0.id,
+        rs1_0.created_at,
+        rs1_0.font_family,
+        rs1_0.font_size,
+        rs1_0.line_spacing,
+        rs1_0.theme,
+        rs1_0.updated_at,
+        rs1_0.user_id 
+    from
+        reading_setting rs1_0 
+    where
+        rs1_0.user_id=?
+Hibernate: 
+    select
+        rp1_0.id,
+        rp1_0.chapter_id,
+        rp1_0.created_at,
+        rp1_0.last_position,
+        rp1_0.updated_at,
+        rp1_0.user_id 
+    from
+        reading_progress rp1_0 
+    left join
+        chapter c1_0 
+            on c1_0.id=rp1_0.chapter_id 
+    left join
+        novel n1_0 
+            on n1_0.id=c1_0.novel_id 
+    where
+        rp1_0.user_id=? 
+        and n1_0.id=?
+Hibernate: 
+    select
+        n1_0.id,
+        n1_0.author,
+        n1_0.average_rating,
+        n1_0.cover_img_url,
+        n1_0.created_at,
+        n1_0.description,
+        n1_0.public_id,
+        n1_0.status,
+        n1_0.title,
+        n1_0.updated_at 
+    from
+        novel n1_0 
+    where
+        n1_0.id=?
+Hibernate: 
+    select
+        pc1_0.id,
+        pc1_0.chapter_id,
+        pc1_0.content,
+        pc1_0.created_at,
+        pc1_0.paragraph_index,
+        pc1_0.parent_comment_id,
+        pc1_0.updated_at,
+        pc1_0.user_id 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=? 
+        and pc1_0.parent_comment_id is null 
+    order by
+        pc1_0.created_at desc
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    left join
+        user_role r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+Hibernate: 
+    select
+        r1_0.parent_comment_id,
+        r1_0.id,
+        r1_0.chapter_id,
+        r1_0.content,
+        r1_0.created_at,
+        r1_0.paragraph_index,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        paragraph_comment r1_0 
+    where
+        r1_0.parent_comment_id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    left join
+        user_role r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+Hibernate: 
+    select
+        r1_0.parent_comment_id,
+        r1_0.id,
+        r1_0.chapter_id,
+        r1_0.content,
+        r1_0.created_at,
+        r1_0.paragraph_index,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        paragraph_comment r1_0 
+    where
+        r1_0.parent_comment_id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    left join
+        user_role r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+Hibernate: 
+    select
+        r1_0.parent_comment_id,
+        r1_0.id,
+        r1_0.chapter_id,
+        r1_0.content,
+        r1_0.created_at,
+        r1_0.paragraph_index,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        paragraph_comment r1_0 
+    where
+        r1_0.parent_comment_id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.chapter_number,
+        c1_0.content,
+        c1_0.created_at,
+        c1_0.novel_id,
+        c1_0.paragraphs,
+        c1_0.title,
+        c1_0.updated_at 
+    from
+        chapter c1_0 
+    where
+        c1_0.id=?
+Hibernate: 
+    select
+        pc1_0.id,
+        pc1_0.chapter_id,
+        pc1_0.content,
+        pc1_0.created_at,
+        pc1_0.paragraph_index,
+        pc1_0.parent_comment_id,
+        pc1_0.updated_at,
+        pc1_0.user_id 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.id=?
+Hibernate: 
+    insert 
+    into
+        paragraph_comment
+        (chapter_id, content, created_at, paragraph_index, parent_comment_id, updated_at, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        pc1_0.id,
+        pc1_0.chapter_id,
+        pc1_0.content,
+        pc1_0.created_at,
+        pc1_0.paragraph_index,
+        pc1_0.parent_comment_id,
+        pc1_0.updated_at,
+        pc1_0.user_id 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=? 
+        and pc1_0.parent_comment_id is null 
+    order by
+        pc1_0.created_at desc
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    left join
+        user_role r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+Hibernate: 
+    select
+        r1_0.parent_comment_id,
+        r1_0.id,
+        r1_0.chapter_id,
+        r1_0.content,
+        r1_0.created_at,
+        r1_0.paragraph_index,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        paragraph_comment r1_0 
+    where
+        r1_0.parent_comment_id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    left join
+        user_role r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+Hibernate: 
+    select
+        r1_0.parent_comment_id,
+        r1_0.id,
+        r1_0.chapter_id,
+        r1_0.content,
+        r1_0.created_at,
+        r1_0.paragraph_index,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        paragraph_comment r1_0 
+    where
+        r1_0.parent_comment_id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    left join
+        user_role r1_0 
+            on u1_0.id=r1_0.user_id 
+    left join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        u1_0.id=?
+Hibernate: 
+    select
+        r1_0.parent_comment_id,
+        r1_0.id,
+        r1_0.chapter_id,
+        r1_0.content,
+        r1_0.created_at,
+        r1_0.paragraph_index,
+        r1_0.updated_at,
+        r1_0.user_id 
+    from
+        paragraph_comment r1_0 
+    where
+        r1_0.parent_comment_id=?
+2026-03-28T22:20:53.367+07:00  WARN 22660 --- [SE2] [nio-9000-exec-9] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource .well-known/appspecific/com.chrome.devtools.json for request '/.well-known/appspecific/com.chrome.devtools.json'.]
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rp1_0.id,
+        rp1_0.chapter_id,
+        rp1_0.created_at,
+        rp1_0.last_position,
+        rp1_0.updated_at,
+        rp1_0.user_id 
+    from
+        reading_progress rp1_0 
+    where
+        rp1_0.user_id=? 
+        and rp1_0.chapter_id=?
+Hibernate: 
+    update
+        reading_progress 
+    set
+        chapter_id=?,
+        created_at=?,
+        last_position=?,
+        updated_at=?,
+        user_id=? 
+    where
+        id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rp1_0.id,
+        rp1_0.chapter_id,
+        rp1_0.created_at,
+        rp1_0.last_position,
+        rp1_0.updated_at,
+        rp1_0.user_id 
+    from
+        reading_progress rp1_0 
+    where
+        rp1_0.user_id=? 
+        and rp1_0.chapter_id=?
+Hibernate: 
+    update
+        reading_progress 
+    set
+        chapter_id=?,
+        created_at=?,
+        last_position=?,
+        updated_at=?,
+        user_id=? 
+    where
+        id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rp1_0.id,
+        rp1_0.chapter_id,
+        rp1_0.created_at,
+        rp1_0.last_position,
+        rp1_0.updated_at,
+        rp1_0.user_id 
+    from
+        reading_progress rp1_0 
+    where
+        rp1_0.user_id=? 
+        and rp1_0.chapter_id=?
+Hibernate: 
+    update
+        reading_progress 
+    set
+        chapter_id=?,
+        created_at=?,
+        last_position=?,
+        updated_at=?,
+        user_id=? 
+    where
+        id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rp1_0.id,
+        rp1_0.chapter_id,
+        rp1_0.created_at,
+        rp1_0.last_position,
+        rp1_0.updated_at,
+        rp1_0.user_id 
+    from
+        reading_progress rp1_0 
+    where
+        rp1_0.user_id=? 
+        and rp1_0.chapter_id=?
+Hibernate: 
+    update
+        reading_progress 
+    set
+        chapter_id=?,
+        created_at=?,
+        last_position=?,
+        updated_at=?,
+        user_id=? 
+    where
+        id=?
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.chapter_number,
+        c1_0.content,
+        c1_0.created_at,
+        c1_0.novel_id,
+        c1_0.paragraphs,
+        c1_0.title,
+        c1_0.updated_at 
+    from
+        chapter c1_0 
+    where
+        c1_0.id=?
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.chapter_number,
+        c1_0.content,
+        c1_0.created_at,
+        c1_0.novel_id,
+        c1_0.paragraphs,
+        c1_0.title,
+        c1_0.updated_at 
+    from
+        chapter c1_0 
+    where
+        c1_0.novel_id=? 
+    order by
+        c1_0.chapter_number
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.chapter_number,
+        c1_0.content,
+        c1_0.created_at,
+        c1_0.novel_id,
+        c1_0.paragraphs,
+        c1_0.title,
+        c1_0.updated_at 
+    from
+        chapter c1_0 
+    where
+        c1_0.novel_id=? 
+        and c1_0.chapter_number>? 
+    order by
+        c1_0.chapter_number 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.chapter_number,
+        c1_0.content,
+        c1_0.created_at,
+        c1_0.novel_id,
+        c1_0.paragraphs,
+        c1_0.title,
+        c1_0.updated_at 
+    from
+        chapter c1_0 
+    where
+        c1_0.novel_id=? 
+        and c1_0.chapter_number<? 
+    order by
+        c1_0.chapter_number desc 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        b1_0.id,
+        b1_0.chapter_id,
+        b1_0.created_at,
+        b1_0.paragraph_index,
+        b1_0.updated_at,
+        b1_0.user_id 
+    from
+        bookmark b1_0 
+    where
+        b1_0.user_id=? 
+        and b1_0.chapter_id=?
+Hibernate: 
+    select
+        rs1_0.id,
+        rs1_0.created_at,
+        rs1_0.font_family,
+        rs1_0.font_size,
+        rs1_0.line_spacing,
+        rs1_0.theme,
+        rs1_0.updated_at,
+        rs1_0.user_id 
+    from
+        reading_setting rs1_0 
+    where
+        rs1_0.user_id=?
+Hibernate: 
+    select
+        rp1_0.id,
+        rp1_0.chapter_id,
+        rp1_0.created_at,
+        rp1_0.last_position,
+        rp1_0.updated_at,
+        rp1_0.user_id 
+    from
+        reading_progress rp1_0 
+    left join
+        chapter c1_0 
+            on c1_0.id=rp1_0.chapter_id 
+    left join
+        novel n1_0 
+            on n1_0.id=c1_0.novel_id 
+    where
+        rp1_0.user_id=? 
+        and n1_0.id=?
+Hibernate: 
+    select
+        n1_0.id,
+        n1_0.author,
+        n1_0.average_rating,
+        n1_0.cover_img_url,
+        n1_0.created_at,
+        n1_0.description,
+        n1_0.public_id,
+        n1_0.status,
+        n1_0.title,
+        n1_0.updated_at 
+    from
+        novel n1_0 
+    where
+        n1_0.id=?
+2026-03-28T22:21:33.917+07:00  WARN 22660 --- [SE2] [io-9000-exec-10] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource .well-known/appspecific/com.chrome.devtools.json for request '/.well-known/appspecific/com.chrome.devtools.json'.]
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rs1_0.id,
+        rs1_0.created_at,
+        rs1_0.font_family,
+        rs1_0.font_size,
+        rs1_0.line_spacing,
+        rs1_0.theme,
+        rs1_0.updated_at,
+        rs1_0.user_id 
+    from
+        reading_setting rs1_0 
+    where
+        rs1_0.user_id=?
+Hibernate: 
+    update
+        reading_setting 
+    set
+        created_at=?,
+        font_family=?,
+        font_size=?,
+        line_spacing=?,
+        theme=?,
+        updated_at=?,
+        user_id=? 
+    where
+        id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rs1_0.id,
+        rs1_0.created_at,
+        rs1_0.font_family,
+        rs1_0.font_size,
+        rs1_0.line_spacing,
+        rs1_0.theme,
+        rs1_0.updated_at,
+        rs1_0.user_id 
+    from
+        reading_setting rs1_0 
+    where
+        rs1_0.user_id=?
+Hibernate: 
+    update
+        reading_setting 
+    set
+        created_at=?,
+        font_family=?,
+        font_size=?,
+        line_spacing=?,
+        theme=?,
+        updated_at=?,
+        user_id=? 
+    where
+        id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rs1_0.id,
+        rs1_0.created_at,
+        rs1_0.font_family,
+        rs1_0.font_size,
+        rs1_0.line_spacing,
+        rs1_0.theme,
+        rs1_0.updated_at,
+        rs1_0.user_id 
+    from
+        reading_setting rs1_0 
+    where
+        rs1_0.user_id=?
+Hibernate: 
+    update
+        reading_setting 
+    set
+        created_at=?,
+        font_family=?,
+        font_size=?,
+        line_spacing=?,
+        theme=?,
+        updated_at=?,
+        user_id=? 
+    where
+        id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rs1_0.id,
+        rs1_0.created_at,
+        rs1_0.font_family,
+        rs1_0.font_size,
+        rs1_0.line_spacing,
+        rs1_0.theme,
+        rs1_0.updated_at,
+        rs1_0.user_id 
+    from
+        reading_setting rs1_0 
+    where
+        rs1_0.user_id=?
+Hibernate: 
+    update
+        reading_setting 
+    set
+        created_at=?,
+        font_family=?,
+        font_size=?,
+        line_spacing=?,
+        theme=?,
+        updated_at=?,
+        user_id=? 
+    where
+        id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rs1_0.id,
+        rs1_0.created_at,
+        rs1_0.font_family,
+        rs1_0.font_size,
+        rs1_0.line_spacing,
+        rs1_0.theme,
+        rs1_0.updated_at,
+        rs1_0.user_id 
+    from
+        reading_setting rs1_0 
+    where
+        rs1_0.user_id=?
+Hibernate: 
+    update
+        reading_setting 
+    set
+        created_at=?,
+        font_family=?,
+        font_size=?,
+        line_spacing=?,
+        theme=?,
+        updated_at=?,
+        user_id=? 
+    where
+        id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rs1_0.id,
+        rs1_0.created_at,
+        rs1_0.font_family,
+        rs1_0.font_size,
+        rs1_0.line_spacing,
+        rs1_0.theme,
+        rs1_0.updated_at,
+        rs1_0.user_id 
+    from
+        reading_setting rs1_0 
+    where
+        rs1_0.user_id=?
+Hibernate: 
+    update
+        reading_setting 
+    set
+        created_at=?,
+        font_family=?,
+        font_size=?,
+        line_spacing=?,
+        theme=?,
+        updated_at=?,
+        user_id=? 
+    where
+        id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rs1_0.id,
+        rs1_0.created_at,
+        rs1_0.font_family,
+        rs1_0.font_size,
+        rs1_0.line_spacing,
+        rs1_0.theme,
+        rs1_0.updated_at,
+        rs1_0.user_id 
+    from
+        reading_setting rs1_0 
+    where
+        rs1_0.user_id=?
+Hibernate: 
+    update
+        reading_setting 
+    set
+        created_at=?,
+        font_family=?,
+        font_size=?,
+        line_spacing=?,
+        theme=?,
+        updated_at=?,
+        user_id=? 
+    where
+        id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rs1_0.id,
+        rs1_0.created_at,
+        rs1_0.font_family,
+        rs1_0.font_size,
+        rs1_0.line_spacing,
+        rs1_0.theme,
+        rs1_0.updated_at,
+        rs1_0.user_id 
+    from
+        reading_setting rs1_0 
+    where
+        rs1_0.user_id=?
+Hibernate: 
+    update
+        reading_setting 
+    set
+        created_at=?,
+        font_family=?,
+        font_size=?,
+        line_spacing=?,
+        theme=?,
+        updated_at=?,
+        user_id=? 
+    where
+        id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rs1_0.id,
+        rs1_0.created_at,
+        rs1_0.font_family,
+        rs1_0.font_size,
+        rs1_0.line_spacing,
+        rs1_0.theme,
+        rs1_0.updated_at,
+        rs1_0.user_id 
+    from
+        reading_setting rs1_0 
+    where
+        rs1_0.user_id=?
+Hibernate: 
+    update
+        reading_setting 
+    set
+        created_at=?,
+        font_family=?,
+        font_size=?,
+        line_spacing=?,
+        theme=?,
+        updated_at=?,
+        user_id=? 
+    where
+        id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rs1_0.id,
+        rs1_0.created_at,
+        rs1_0.font_family,
+        rs1_0.font_size,
+        rs1_0.line_spacing,
+        rs1_0.theme,
+        rs1_0.updated_at,
+        rs1_0.user_id 
+    from
+        reading_setting rs1_0 
+    where
+        rs1_0.user_id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rs1_0.id,
+        rs1_0.created_at,
+        rs1_0.font_family,
+        rs1_0.font_size,
+        rs1_0.line_spacing,
+        rs1_0.theme,
+        rs1_0.updated_at,
+        rs1_0.user_id 
+    from
+        reading_setting rs1_0 
+    where
+        rs1_0.user_id=?
+Hibernate: 
+    update
+        reading_setting 
+    set
+        created_at=?,
+        font_family=?,
+        font_size=?,
+        line_spacing=?,
+        theme=?,
+        updated_at=?,
+        user_id=? 
+    where
+        id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rs1_0.id,
+        rs1_0.created_at,
+        rs1_0.font_family,
+        rs1_0.font_size,
+        rs1_0.line_spacing,
+        rs1_0.theme,
+        rs1_0.updated_at,
+        rs1_0.user_id 
+    from
+        reading_setting rs1_0 
+    where
+        rs1_0.user_id=?
+Hibernate: 
+    update
+        reading_setting 
+    set
+        created_at=?,
+        font_family=?,
+        font_size=?,
+        line_spacing=?,
+        theme=?,
+        updated_at=?,
+        user_id=? 
+    where
+        id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rs1_0.id,
+        rs1_0.created_at,
+        rs1_0.font_family,
+        rs1_0.font_size,
+        rs1_0.line_spacing,
+        rs1_0.theme,
+        rs1_0.updated_at,
+        rs1_0.user_id 
+    from
+        reading_setting rs1_0 
+    where
+        rs1_0.user_id=?
+Hibernate: 
+    update
+        reading_setting 
+    set
+        created_at=?,
+        font_family=?,
+        font_size=?,
+        line_spacing=?,
+        theme=?,
+        updated_at=?,
+        user_id=? 
+    where
+        id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rs1_0.id,
+        rs1_0.created_at,
+        rs1_0.font_family,
+        rs1_0.font_size,
+        rs1_0.line_spacing,
+        rs1_0.theme,
+        rs1_0.updated_at,
+        rs1_0.user_id 
+    from
+        reading_setting rs1_0 
+    where
+        rs1_0.user_id=?
+Hibernate: 
+    update
+        reading_setting 
+    set
+        created_at=?,
+        font_family=?,
+        font_size=?,
+        line_spacing=?,
+        theme=?,
+        updated_at=?,
+        user_id=? 
+    where
+        id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rs1_0.id,
+        rs1_0.created_at,
+        rs1_0.font_family,
+        rs1_0.font_size,
+        rs1_0.line_spacing,
+        rs1_0.theme,
+        rs1_0.updated_at,
+        rs1_0.user_id 
+    from
+        reading_setting rs1_0 
+    where
+        rs1_0.user_id=?
+Hibernate: 
+    update
+        reading_setting 
+    set
+        created_at=?,
+        font_family=?,
+        font_size=?,
+        line_spacing=?,
+        theme=?,
+        updated_at=?,
+        user_id=? 
+    where
+        id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rs1_0.id,
+        rs1_0.created_at,
+        rs1_0.font_family,
+        rs1_0.font_size,
+        rs1_0.line_spacing,
+        rs1_0.theme,
+        rs1_0.updated_at,
+        rs1_0.user_id 
+    from
+        reading_setting rs1_0 
+    where
+        rs1_0.user_id=?
+Hibernate: 
+    update
+        reading_setting 
+    set
+        created_at=?,
+        font_family=?,
+        font_size=?,
+        line_spacing=?,
+        theme=?,
+        updated_at=?,
+        user_id=? 
+    where
+        id=?
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.chapter_number,
+        c1_0.content,
+        c1_0.created_at,
+        c1_0.novel_id,
+        c1_0.paragraphs,
+        c1_0.title,
+        c1_0.updated_at 
+    from
+        chapter c1_0 
+    where
+        c1_0.id=?
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.chapter_number,
+        c1_0.content,
+        c1_0.created_at,
+        c1_0.novel_id,
+        c1_0.paragraphs,
+        c1_0.title,
+        c1_0.updated_at 
+    from
+        chapter c1_0 
+    where
+        c1_0.novel_id=? 
+    order by
+        c1_0.chapter_number
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.chapter_number,
+        c1_0.content,
+        c1_0.created_at,
+        c1_0.novel_id,
+        c1_0.paragraphs,
+        c1_0.title,
+        c1_0.updated_at 
+    from
+        chapter c1_0 
+    where
+        c1_0.novel_id=? 
+        and c1_0.chapter_number>? 
+    order by
+        c1_0.chapter_number 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.chapter_number,
+        c1_0.content,
+        c1_0.created_at,
+        c1_0.novel_id,
+        c1_0.paragraphs,
+        c1_0.title,
+        c1_0.updated_at 
+    from
+        chapter c1_0 
+    where
+        c1_0.novel_id=? 
+        and c1_0.chapter_number<? 
+    order by
+        c1_0.chapter_number desc 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        count(pc1_0.id) 
+    from
+        paragraph_comment pc1_0 
+    where
+        pc1_0.chapter_id=? 
+        and pc1_0.paragraph_index=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        b1_0.id,
+        b1_0.chapter_id,
+        b1_0.created_at,
+        b1_0.paragraph_index,
+        b1_0.updated_at,
+        b1_0.user_id 
+    from
+        bookmark b1_0 
+    where
+        b1_0.user_id=? 
+        and b1_0.chapter_id=?
+Hibernate: 
+    select
+        rs1_0.id,
+        rs1_0.created_at,
+        rs1_0.font_family,
+        rs1_0.font_size,
+        rs1_0.line_spacing,
+        rs1_0.theme,
+        rs1_0.updated_at,
+        rs1_0.user_id 
+    from
+        reading_setting rs1_0 
+    where
+        rs1_0.user_id=?
+Hibernate: 
+    select
+        rp1_0.id,
+        rp1_0.chapter_id,
+        rp1_0.created_at,
+        rp1_0.last_position,
+        rp1_0.updated_at,
+        rp1_0.user_id 
+    from
+        reading_progress rp1_0 
+    left join
+        chapter c1_0 
+            on c1_0.id=rp1_0.chapter_id 
+    left join
+        novel n1_0 
+            on n1_0.id=c1_0.novel_id 
+    where
+        rp1_0.user_id=? 
+        and n1_0.id=?
+Hibernate: 
+    select
+        n1_0.id,
+        n1_0.author,
+        n1_0.average_rating,
+        n1_0.cover_img_url,
+        n1_0.created_at,
+        n1_0.description,
+        n1_0.public_id,
+        n1_0.status,
+        n1_0.title,
+        n1_0.updated_at 
+    from
+        novel n1_0 
+    where
+        n1_0.id=?
+2026-03-28T22:24:45.183+07:00  WARN 22660 --- [SE2] [nio-9000-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource .well-known/appspecific/com.chrome.devtools.json for request '/.well-known/appspecific/com.chrome.devtools.json'.]
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.avatar_url,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.is_deleted,
+        u1_0.is_logged_in,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.provider,
+        u1_0.reset_password_token,
+        u1_0.updated_at,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.created_at,
+        r1_1.name,
+        r1_1.updated_at 
+    from
+        user_role r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        rs1_0.id,
+        rs1_0.created_at,
+        rs1_0.font_family,
+        rs1_0.font_size,
+        rs1_0.line_spacing,
+        rs1_0.theme,
+        rs1_0.updated_at,
+        rs1_0.user_id 
+    from
+        reading_setting rs1_0 
+    where
+        rs1_0.user_id=?
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  06:51 min
+[INFO] Finished at: 2026-03-28T22:25:49+07:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:4.0.1:run (default-cli) on project demo: Process terminated with exit code: 1 -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException

@@ -36,11 +36,11 @@ import java.util.stream.Collectors;
 public class SecurityConfig {
 
     private static final String[] PUBLIC_WHITELIST = {"/images/**", "/img/**", "/uploads/**",
-            "/home", "/search", "/",
+            "/home", "/search", "/", "/novels/**", "/comments/**",
             "/css/**",
             "/js/**",
             "/WEB-INF/views/**", "/login", "/register", "/favicon.ico", "/oauth/**", "/forgot-password",
-            "/reset-password", "/novels/**", "/chapter/**"};
+            "/reset-password", "/novels/**", "/chapter/**", "/api/chapter/*/comments"};
 
     private final CustomOAuth2UserService oAuth2UserService;
     private final UserService userService;
@@ -63,14 +63,14 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .cors(Customizer.withDefaults())
                 .formLogin(form ->
-                                form
-                                        .loginPage("/login")
-                                        .loginProcessingUrl("/login")
-                                        .usernameParameter("email")
-                                        .passwordParameter("password")
-                                        .defaultSuccessUrl("/", true)
-                                        .failureUrl("/login?error")
-                                        .permitAll()
+                        form
+                                .loginPage("/login")
+                                .loginProcessingUrl("/login")
+                                .usernameParameter("email")
+                                .passwordParameter("password")
+                                .defaultSuccessUrl("/", true)
+                                .failureUrl("/login?error")
+                                .permitAll()
                 )
                 .logout(Customizer.withDefaults())
                 .oauth2Login(login -> login.loginPage("/login")

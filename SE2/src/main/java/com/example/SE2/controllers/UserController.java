@@ -73,11 +73,17 @@ public class UserController {
     }
 
     @GetMapping(value = "/user/translations")
-    public String userTranslations(@AuthenticationPrincipal UserDetailImpl userDetails, Model model) {
+    public String userTranslations(@AuthenticationPrincipal UserDetailImpl userDetails, Model model,
+                                   @RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "12") int size) {
         User user = userDetails.getUser();
         String userId = user.getId();
-        List<Translation> translations = translationRepository.findByAssignedBy_Id(userId);
-        model.addAttribute("translations", translations);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Translation> translationPage = translationRepository.findByAssignedBy_Id(userId, pageable);
+        
+        model.addAttribute("translations", translationPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", translationPage.getTotalPages());
         return "client/user/translations";
     }
 

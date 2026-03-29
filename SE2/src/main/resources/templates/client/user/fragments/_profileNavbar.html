@@ -12,9 +12,9 @@
            th:classappend="${activeTab == 'favorite-novels'} ? 'text-[#144bb8] border-b-2 border-[#144bb8]' : 'text-[#94a3b8] hover:text-[#f1f5f9]'">
             Favourited Novels
         </a>
-        <a th:href="@{/user/submit-translation}"
+        <a th:href="@{/user/translations}"
            class="pb-3 font-['Noto_Sans'] font-bold text-[14px] max-sm:text-[12px] tracking-[0.35px] whitespace-nowrap transition-colors"
-           th:classappend="${activeTab == 'submit-translation'} ? 'text-[#144bb8] border-b-2 border-[#144bb8]' : 'text-[#94a3b8] hover:text-[#f1f5f9]'">
+           th:classappend="${activeTab == 'translations'} ? 'text-[#144bb8] border-b-2 border-[#144bb8]' : 'text-[#94a3b8] hover:text-[#f1f5f9]'">
             Translation Contributions
         </a>
     </div>

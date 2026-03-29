@@ -18,4 +18,6 @@ public interface TranslationRepository extends JpaRepository<Translation, Long> 
 //    public List<Translation> findTranslationsContributedByUser(String userId);
 
     public List<Translation> findByAssignedBy_Id(String userId);
+
+    public org.springframework.data.domain.Page<Translation> findByAssignedBy_Id(String userId, org.springframework.data.domain.Pageable pageable);
 }

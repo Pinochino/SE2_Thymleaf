@@ -10,12 +10,16 @@ import com.example.SE2.repositories.TranslationRepository;
 import com.example.SE2.repositories.UserRepository;
 import com.example.SE2.security.UserDetailImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -51,11 +55,20 @@ public class UserController {
     }
 
     @GetMapping(value = "/user/favorite-novels")
-    public String favoriteNovels(@AuthenticationPrincipal UserDetailImpl userDetails, Model model) {
+    public String favoriteNovels(
+            @AuthenticationPrincipal UserDetailImpl userDetails,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size,
+            Model model) {
         User user = userDetails.getUser();
         String userId = user.getId();
-        List<Favorite> favoriteNovels = favoriteRepository.findFavoritesWithNovel(userId);
-        model.addAttribute("favoriteNovels", favoriteNovels);
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Favorite> favoritePage = favoriteRepository.findFavoritesWithNovel(userId, pageable);
+
+        model.addAttribute("favoriteNovels", favoritePage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", favoritePage.getTotalPages());
         return "client/user/favorite-novels";
     }
 
@@ -68,7 +81,7 @@ public class UserController {
         return "client/user/translations";
     }
 
-    @GetMapping(value = "/user/translation-submit")
+    @GetMapping(value = "/user/submit-translation")
     public String translationSubmit() {
         return "client/user/translation-submit";
     }

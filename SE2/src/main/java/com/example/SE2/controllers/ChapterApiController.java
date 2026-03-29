@@ -7,8 +7,10 @@ import com.example.SE2.constants.Theme;
 import com.example.SE2.models.ParagraphComment;
 import com.example.SE2.models.ReadingSetting;
 import com.example.SE2.models.User;
+import com.example.SE2.repositories.ParagraphCommentRepository;
 import com.example.SE2.repositories.UserRepository;
 import com.example.SE2.services.chapter.ChapterService;
+import com.example.SE2.services.notification.NotificationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -26,10 +28,14 @@ public class ChapterApiController {
 
     private final ChapterService chapterService;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
+    private final ParagraphCommentRepository paragraphCommentRepository;
 
-    public ChapterApiController(ChapterService chapterService, UserRepository userRepository) {
+    public ChapterApiController(ChapterService chapterService, UserRepository userRepository, NotificationService notificationService, ParagraphCommentRepository paragraphCommentRepository) {
         this.chapterService = chapterService;
         this.userRepository = userRepository;
+        this.notificationService = notificationService;
+        this.paragraphCommentRepository = paragraphCommentRepository;
     }
 
     @GetMapping("/{chapterId}/comments")
@@ -78,6 +84,17 @@ public class ChapterApiController {
                 ? ((Number) body.get("parentCommentId")).longValue() : null;
 
         ParagraphComment comment = chapterService.addComment(user, chapterId, paragraphIndex, content.trim(), parentCommentId);
+
+        // Notify parent comment author if this is a reply
+        if (parentCommentId != null) {
+            ParagraphComment parent = paragraphCommentRepository.findById(parentCommentId).orElse(null);
+            if (parent != null) {
+                notificationService.notifyParagraphCommentReply(comment, parent);
+            }
+        }
+
+        // Notify users who bookmarked this paragraph
+        notificationService.notifyBookmarkHolders(comment);
 
         return ResponseEntity.ok(Map.of(
                 "id", comment.getId(),

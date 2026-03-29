@@ -18,7 +18,7 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
            countQuery = "SELECT count(f) FROM Favorite f WHERE f.user.id = :userId")
     Page<Favorite> findFavoritesWithNovel(String userId, Pageable pageable);
 
-    boolean existsByUser_IdAndNovel_Id(String userId, String novelId);
+    boolean existsByUser_IdAndNovel_Id(String userId, Long novelId);
 
-    void deleteByUser_IdAndNovel_Id(String userId, String novelId);
+    void deleteByUser_IdAndNovel_Id(String userId, Long novelId);
 }

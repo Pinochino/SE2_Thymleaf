@@ -1,14 +1,10 @@
 package com.example.SE2.controllers;
 
-import com.example.SE2.models.Favorite;
-import com.example.SE2.models.Novel;
-import com.example.SE2.models.Translation;
-import com.example.SE2.models.User;
-import com.example.SE2.repositories.FavoriteRepository;
-import com.example.SE2.repositories.NovelRepository;
-import com.example.SE2.repositories.TranslationRepository;
-import com.example.SE2.repositories.UserRepository;
+import com.example.SE2.constants.TranslationStatus;
+import com.example.SE2.models.*;
+import com.example.SE2.repositories.*;
 import com.example.SE2.security.UserDetailImpl;
+import com.example.SE2.services.chapter.ChapterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +29,10 @@ public class UserController {
     FavoriteRepository favoriteRepository;
     @Autowired
     TranslationRepository translationRepository;
+    @Autowired
+    ChapterService chapterService;
+    @Autowired
+    ChapterRepository chapterRepository;
 
     @GetMapping(value = {"/user/profile"})
     public String userProfile(@AuthenticationPrincipal UserDetailImpl userDetails, Model model) {
@@ -88,7 +88,48 @@ public class UserController {
     }
 
     @GetMapping(value = "/user/submit-translation")
-    public String translationSubmit(@AuthenticationPrincipal UserDetailImpl userDetails, Translation translation) {
+    public String translationSubmit(@AuthenticationPrincipal UserDetailImpl userDetails,
+                                    @RequestParam(required = false) Long novelId,
+                                    @RequestParam(required = false) Long chapterId,
+                                    Model model) {
+        // Load all novels for the dropdown
+        List<Novel> novels = novelRepository.findAll();
+        model.addAttribute("novels", novels);
+
+        // If novelId is provided, load its chapters
+        if (novelId != null) {
+            Novel novel = novelRepository.findById(novelId).orElse(null);
+            model.addAttribute("selectedNovel", novel);
+            if (novel != null) {
+                List<Chapter> chapters = chapterService.getChaptersByNovelId(novelId);
+                model.addAttribute("chapters", chapters);
+            }
+        }
+
+        if (chapterId != null) {
+            model.addAttribute("selectedChapterId", chapterId);
+        }
+
         return "client/user/translation-submit";
+    }
+
+    @PostMapping(value = "/user/submit-translation")
+    public String submitTranslation(@AuthenticationPrincipal UserDetailImpl userDetails,
+                                    @RequestParam Long chapterId,
+                                    @RequestParam String content) {
+        User user = userDetails.getUser();
+        Chapter chapter = chapterRepository.findById(chapterId).orElse(null);
+        if (chapter == null || content == null || content.trim().isEmpty()) {
+            return "redirect:/user/submit-translation";
+        }
+
+        Translation translation = new Translation();
+        translation.setChapter(chapter);
+        translation.setAssignedBy(user);
+        translation.setContent(content.trim());
+        translation.setStatus(TranslationStatus.PENDING);
+        translationRepository.save(translation);
+
+        return "redirect:/user/translations";
     }
 }

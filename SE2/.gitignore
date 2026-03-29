@@ -44,3 +44,5 @@ build/
 /.claude/settings.local.json
 
 application.properties
+
+.claude

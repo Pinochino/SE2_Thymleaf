@@ -7,6 +7,7 @@ import com.example.SE2.repositories.NovelCommentRepository;
 import com.example.SE2.repositories.NovelRepository;
 import com.example.SE2.repositories.UserRepository;
 import com.example.SE2.security.UserDetailImpl;
+import com.example.SE2.services.notification.NotificationService;
 import com.example.SE2.utils.TimeUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,14 @@ public class NovelCommentController {
     private final NovelRepository novelRepository;
     private final NovelCommentRepository novelCommentRepository;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
     @Autowired
-    public NovelCommentController(NovelRepository novelRepository, NovelCommentRepository novelCommentRepository, UserRepository userRepository) {
+    public NovelCommentController(NovelRepository novelRepository, NovelCommentRepository novelCommentRepository, UserRepository userRepository, NotificationService notificationService) {
         this.novelRepository = novelRepository;
         this.novelCommentRepository = novelCommentRepository;
         this.userRepository = userRepository;
+        this.notificationService = notificationService;
     }
 
 
@@ -59,9 +62,11 @@ public class NovelCommentController {
         if (parentId != null) {
             NovelComment oldNovelComment = novelCommentRepository.getById(parentId);
             newNovelComment.setParentComment(oldNovelComment);
+            novelCommentRepository.save(newNovelComment);
+            notificationService.notifyNovelCommentReply(newNovelComment, oldNovelComment);
+        } else {
+            novelCommentRepository.save(newNovelComment);
         }
-
-        novelCommentRepository.save(newNovelComment);
 
         return "redirect:/novels/information/{publicId}";
     }

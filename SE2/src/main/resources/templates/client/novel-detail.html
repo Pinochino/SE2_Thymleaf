@@ -6,6 +6,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <title>Novel Detail - NRW</title>
     <link rel="stylesheet" th:href="@{/css/novel-detail.css}">
 </head>
@@ -63,17 +65,10 @@
                         </div>
 
                         <!-- Genre Tags -->
-                        <div class="nd-tags">
-                            <span class="nd-tag primary" th:each="genre : ${novel != null ? novel.genres : 'Fantasy'}"
-                                  th:text="${novel.genres}">
-                             </span>
-                            <div>
-                                <span class=" nd-tag primary">Fantasy</span>
-                                <span class="nd-tag">Magic</span>
-                                <span class="nd-tag">Adventure</span>
-                                <span class="nd-tag">System</span>
-                                <span class="nd-tag">Alchemy</span>
-                            </div>
+                        <div class="nd-tags" th:if="${novel != null}">
+                            <span class="nd-tag primary" th:each="genre : ${novel.genres}"
+                                  th:text="${genre.name}">Genre
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -81,7 +76,7 @@
 
             <!-- Action Buttons -->
             <div class="nd-actions">
-                <a href="/novels/chapter">
+                <a th:if="${hasChapters and !chapters.isEmpty()}" th:href="@{/novels/chapter/{id}(id=${chapters[0].id})}">
                     <button class="nd-btn-read">
                         <svg width="22" height="16" viewBox="0 0 22 16" fill="none">
                             <path d="M1 1h8c1 0 2 1 2 2v11S10 13 9 13H1V1zM21 1h-8c-1 0-2 1-2 2v11s1-1 2-1h8V1z"
@@ -91,12 +86,13 @@
                         Read Now
                     </button>
                 </a>
-                <button class="nd-btn-save">
+                <button class="nd-btn-save" id="favoriteBtn"
+                        th:data-novel-id="${novel.id}">
                     <svg width="20" height="18" viewBox="0 0 20 18" fill="none">
-                        <path d="M10 16.35S1 10 1 5.5C1 2.42 3.42 0 6.5 0 8.24 0 9.91.81 10 2.09 10.09.81 11.76 0 13.5 0 16.58 0 19 2.42 19 5.5c0 4.5-9 10.85-9 10.85z"
-                              fill="#f87171"/>
+                        <path id="favoriteIcon" d="M10 16.35S1 10 1 5.5C1 2.42 3.42 0 6.5 0 8.24 0 9.91.81 10 2.09 10.09.81 11.76 0 13.5 0 16.58 0 19 2.42 19 5.5c0 4.5-9 10.85-9 10.85z"
+                              fill="none" stroke="#f87171" stroke-width="1.5"/>
                     </svg>
-                    Save
+                    <span id="favoriteBtnText">Save</span>
                 </button>
             </div>
         </div>
@@ -113,7 +109,7 @@
             </div>
             <div class="nd-progress-pct" th:text="${progressPct != null ? progressPct + '%' : '0%'}">0%</div>
         </div>
-        <div class="nd-progress-bar">-->
+        <div class="nd-progress-bar">
             <div class="nd-progress-fill"
                  th:style="'width:' + (${progressPct != null ? progressPct : 0}) + '%'">
             </div>
@@ -128,11 +124,9 @@
     <div class="nd-synopsis">
         <h3 class="nd-synopsis-title">Synopsis</h3>
         <div class="nd-synopsis-body">
-            <div class="nd-synopsis-text" id="synopsisText">
-                <!--                         th:text="${novel != null ? novel.synopsis : 'In a world where alchemy dictates the hierarchy of power, young Elian discovers an ancient manuscript that defies the established laws of equivalent exchange. Cast out from the prestigious Royal Academy, he must navigate the treacherous borderlands known as the Horizon.'}"-->
-                In a world where alchemy dictates the hierarchy of power, young Elian discovers an ancient
-                manuscript that defies the established laws of equivalent exchange. Cast out from the
-                prestigious Royal Academy, he must navigate the treacherous borderlands known as the Horizon.
+            <div class="nd-synopsis-text" id="synopsisText"
+                 th:text="${novel != null && novel.description != null ? novel.description : 'No description available.'}">
+                No description available.
             </div>
             <div class="nd-synopsis-gradient"></div>
         </div>
@@ -167,44 +161,17 @@
             </button>
         </div>
         <div class="nd-chapter-items">
-            <!-- Sample chapters - replace with th:each when model available -->
-            <div class="nd-chapter-item">
+            <a th:each="chapter : ${chapters}" th:href="@{/novels/chapter/{id}(id=${chapter.id})}"
+               class="nd-chapter-item" style="text-decoration:none;color:inherit;">
                 <div>
-                    <div class="nd-chapter-item-title">Chapter 452: The Final Ingredient</div>
-                    <div class="nd-chapter-item-vol">Vol 4. The Void War</div>
+                    <div class="nd-chapter-item-title"
+                         th:text="'Chapter ' + ${chapter.chapterNumber} + (${chapter.title != null ? ': ' + chapter.title : ''})">
+                        Chapter 1: Title
+                    </div>
                 </div>
-                <span class="nd-chapter-item-time">2 hours ago</span>
-            </div>
-            <div class="nd-chapter-item">
-                <div>
-                    <div class="nd-chapter-item-title">Chapter 451: Betrayal at the Gates</div>
-                </div>
-                <span class="nd-chapter-item-time">1 day ago</span>
-            </div>
-            <div class="nd-chapter-item">
-                <div>
-                    <div class="nd-chapter-item-title">Chapter 450: Equivalent Exchange</div>
-                </div>
-                <span class="nd-chapter-item-time">3 days ago</span>
-            </div>
-            <div class="nd-chapter-item locked">
-                <div>
-                    <div class="nd-chapter-item-title">Chapter 449: Locked Memory</div>
-                </div>
-                <span class="nd-chapter-item-time">4 days ago</span>
-            </div>
-            <div class="nd-chapter-item">
-                <div>
-                    <div class="nd-chapter-item-title">Chapter 448: The Silent Forest</div>
-                </div>
-                <span class="nd-chapter-item-time">1 week ago</span>
-            </div>
-            <div class="nd-chapter-item">
-                <div>
-                    <div class="nd-chapter-item-title">Chapter 447: First Steps</div>
-                </div>
-                <span class="nd-chapter-item-time">1 week ago</span>
-            </div>
+                <span class="nd-chapter-item-time"
+                      th:text="${chapter.createdAt != null ? timeUtils.timeAgo(chapter.createdAt) : ''}"></span>
+            </a>
         </div>
         <div class="nd-chapter-footer">
             <a href="#">View All Chapters</a>
@@ -254,8 +221,8 @@
             </div>
             <div class="nd-rating-right">
                 <div class="nd-rating-cta">Rate this novel:</div>
-                <div class="nd-rate-stars">
-                    <button class="nd-rate-star" th:each="i : ${#numbers.sequence(1,5)}">
+                <div class="nd-rate-stars" th:data-novel-id="${novel.id}">
+                    <button class="nd-rate-star" th:each="i : ${#numbers.sequence(1,5)}" th:data-score="${i}">
                         <svg viewBox="0 0 20 19" fill="none">
                             <path d="M10 0l2.47 7.6h7.99l-6.47 4.7 2.47 7.6L10 15.2l-6.47 4.7 2.47-7.6L-.47 7.6h7.99z"
                                   stroke="#94a3b8" stroke-width="1"/>
@@ -410,29 +377,88 @@
             btn.childNodes[0].textContent = text.classList.contains('expanded') ? 'Show Less ' : 'Read More ';
         }
 
-        // Star rating interaction
+        // CSRF helpers
+        var csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+        var csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
+
+        function apiPost(url, data) {
+            var headers = {'Content-Type': 'application/json'};
+            if (csrfHeader && csrfToken) { headers[csrfHeader] = csrfToken; }
+            return fetch(url, { method: 'POST', headers: headers, body: JSON.stringify(data), credentials: 'same-origin' }).then(r => r.json());
+        }
+
+        function apiGet(url) {
+            return fetch(url, { credentials: 'same-origin' }).then(r => r.json());
+        }
+
+        // ── Star Rating ──
+        var userRating = 0;
+        var rateStarsContainer = document.querySelector('.nd-rate-stars');
+        var novelIdForRating = rateStarsContainer?.getAttribute('data-novel-id');
+
+        function renderRateStars(score) {
+            document.querySelectorAll('.nd-rate-star').forEach((s, i) => {
+                const path = s.querySelector('path');
+                if (i < score) {
+                    path.setAttribute('fill', '#c9a46a');
+                    path.setAttribute('stroke', 'none');
+                } else {
+                    path.setAttribute('fill', 'none');
+                    path.setAttribute('stroke', '#94a3b8');
+                }
+            });
+        }
+
+        // Load user's existing rating
+        if (novelIdForRating) {
+            apiGet('/api/novels/' + novelIdForRating + '/rating/user').then(data => {
+                userRating = data.score || 0;
+                renderRateStars(userRating);
+            });
+        }
+
         document.querySelectorAll('.nd-rate-star').forEach((star, idx) => {
-            star.addEventListener('mouseenter', () => {
-                document.querySelectorAll('.nd-rate-star').forEach((s, i) => {
-                    const path = s.querySelector('path');
-                    if (i <= idx) {
-                        path.setAttribute('fill', '#c9a46a');
-                        path.setAttribute('stroke', 'none');
-                    } else {
-                        path.setAttribute('fill', 'none');
-                        path.setAttribute('stroke', '#94a3b8');
-                    }
+            star.addEventListener('mouseenter', () => renderRateStars(idx + 1));
+            star.addEventListener('click', () => {
+                var score = parseInt(star.getAttribute('data-score'));
+                apiPost('/api/novels/' + novelIdForRating + '/rate', { score: score }).then(data => {
+                    userRating = data.score;
+                    renderRateStars(userRating);
+                    // Update displayed average
+                    var avgEl = document.querySelector('.nd-rating-big');
+                    if (avgEl) avgEl.textContent = data.averageRating;
+                    var totalEl = document.querySelector('.nd-rating-total');
+                    if (totalEl && data.averageRating > 0) totalEl.textContent = data.averageRating + ' ratings';
                 });
             });
         });
 
-        document.querySelector('.nd-rate-stars')?.addEventListener('mouseleave', () => {
-            document.querySelectorAll('.nd-rate-star').forEach(s => {
-                const path = s.querySelector('path');
-                path.setAttribute('fill', 'none');
-                path.setAttribute('stroke', '#94a3b8');
+        rateStarsContainer?.addEventListener('mouseleave', () => renderRateStars(userRating));
+
+        // ── Favorite Toggle ──
+        var favoriteBtn = document.getElementById('favoriteBtn');
+        var favoriteIcon = document.getElementById('favoriteIcon');
+        var favoriteBtnText = document.getElementById('favoriteBtnText');
+
+        function setFavoriteUI(isFavorited) {
+            if (isFavorited) {
+                favoriteIcon?.setAttribute('fill', '#f87171');
+                if (favoriteBtnText) favoriteBtnText.textContent = 'Saved';
+            } else {
+                favoriteIcon?.setAttribute('fill', 'none');
+                if (favoriteBtnText) favoriteBtnText.textContent = 'Save';
+            }
+        }
+
+        if (favoriteBtn) {
+            var novelIdForFav = favoriteBtn.getAttribute('data-novel-id');
+            // Load current status
+            apiGet('/api/novels/' + novelIdForFav + '/favorite/status').then(data => setFavoriteUI(data.favorited));
+            // Toggle on click
+            favoriteBtn.addEventListener('click', () => {
+                apiPost('/api/novels/' + novelIdForFav + '/favorite', {}).then(data => setFavoriteUI(data.favorited));
             });
-        });
+        }
 
         document.addEventListener("DOMContentLoaded", () => {
 

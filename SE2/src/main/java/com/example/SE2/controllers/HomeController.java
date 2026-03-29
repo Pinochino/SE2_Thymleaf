@@ -1,13 +1,13 @@
 package com.example.SE2.controllers;
 
 import com.example.SE2.models.Novel;
-import com.example.SE2.repositories.NovelRepository;
+import com.example.SE2.models.User;
+import com.example.SE2.security.UserDetailImpl;
+import com.example.SE2.services.novels.NovelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.example.SE2.models.User;
-import com.example.SE2.repositories.UserRepository;
-import com.example.SE2.security.UserDetailImpl;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,35 +20,35 @@ import java.util.List;
 @Controller
 public class HomeController {
 
-    @Autowired
-    UserRepository userRepository;
-
     private final Logger logger = LoggerFactory.getLogger(HomeController.class);
-    private final NovelRepository novelRepository;
 
     @Autowired
-    public HomeController(NovelRepository novelRepository) {
-        this.novelRepository = novelRepository;
-    }
-
-
+    private NovelService novelService;
 
     @RequestMapping(value = "/access-denied", method = RequestMethod.GET)
     public String accessDeniedPage() {
         return "public/accessDenied";
     }
 
-    @RequestMapping(value = {"/"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
     public String homePage(@AuthenticationPrincipal UserDetailImpl userDetails, Model model) {
         User user = userDetails.getUser();
         model.addAttribute("user", user);
-        System.out.println("User details from SecurityContextHolder: " + user.getId());
-        System.out.println(user.getEmail());
-        System.out.println(user.getFirstName());
-        List<Novel> novels = novelRepository.findAll();
 
-        List<Novel> subList = novels.subList(1, Math.min(5, novels.size()));
-        model.addAttribute("novels", subList);
+        Page<Novel> trending = novelService.getTrendingNovels(0, 6);
+        Page<Novel> recentUpdates = novelService.getRecentNovels(0, 6);
+        List<Novel> favorites = novelService.getFavoriteNovels(user.getId());
+        List<Novel> currentlyReading = novelService.getCurrentlyReadingNovels(user.getId());
+
+        model.addAttribute("trendingNovels", trending.getContent());
+        model.addAttribute("recentUpdateNovels", recentUpdates.getContent());
+        model.addAttribute("favoriteNovels", favorites);
+        model.addAttribute("currentlyReading", currentlyReading);
+
+        // Hero novel = top trending novel
+        if (!trending.isEmpty()) {
+            model.addAttribute("heroNovel", trending.getContent().get(0));
+        }
 
         return "client/homePage";
     }

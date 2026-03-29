@@ -28,9 +28,9 @@
         <!-- Desktop Nav Links -->
         <nav class="hidden md:flex items-center gap-0 ml-10">
             <a th:href="@{/}" class="px-3 py-2 rounded-md text-[14px] font-['Inter'] font-medium text-white">Home</a>
-            <a th:href="@{/profile(tab='fav')}"
+            <a th:href="@{/user/favorite-novels}"
                class="px-3 py-2 rounded-md text-[14px] font-['Inter'] font-medium text-[#94a3b8] hover:text-white transition-colors ml-8">Favourite</a>
-            <a th:href="@{/profile(tab='trans')}"
+            <a th:href="@{/user/translations}"
                class="px-3 py-2 rounded-md text-[14px] font-['Inter'] font-medium text-[#94a3b8] hover:text-white transition-colors ml-8">Contribute</a>
         </nav>
 
@@ -62,15 +62,29 @@
         <div class="flex items-center gap-4">
 
             <!-- ===== LOGGED IN: bell + avatar ===== -->
-            <div th:if="${isLoggedIn}">
-                <!-- Bell icon -->
-                <button class="hidden md:flex items-center justify-center p-2 text-[#94a3b8] hover:text-white transition-colors">
-                    <svg class="w-[16px] h-[20px]" fill="none" stroke="currentColor" stroke-width="2"
-                         viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
-                    </svg>
-                </button>
+            <div th:if="${isLoggedIn}" class="flex items-center gap-2">
+                <!-- Bell icon + Notification Dropdown -->
+                <div class="relative hidden md:block" id="notification-wrapper">
+                    <button onclick="toggleNotifications()" class="flex items-center justify-center p-2 text-[#94a3b8] hover:text-white transition-colors relative">
+                        <svg class="w-[16px] h-[20px]" fill="none" stroke="currentColor" stroke-width="2"
+                             viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
+                        </svg>
+                        <span id="notif-badge" class="hidden absolute -top-0.5 -right-0.5 w-[18px] h-[18px] bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">0</span>
+                    </button>
+                    <!-- Dropdown -->
+                    <div id="notifDropdown" class="hidden absolute right-0 top-[calc(100%+10px)] w-[320px] bg-[#0d1117] border border-[rgba(255,255,255,0.08)] rounded-xl shadow-[0_16px_40px_rgba(0,0,0,0.6)] z-50 overflow-hidden">
+                        <div class="absolute -top-[6px] right-[10px] w-[10px] h-[10px] bg-[#0d1117] border-l border-t border-[rgba(255,255,255,0.08)] rotate-45"></div>
+                        <div class="flex items-center justify-between px-4 py-3 border-b border-[rgba(255,255,255,0.06)]">
+                            <span class="text-[13px] font-semibold text-[#e2e8f0]">Notifications</span>
+                            <button onclick="markAllRead()" class="text-[11px] text-[#6366f1] hover:text-[#818cf8] transition-colors cursor-pointer">Mark all read</button>
+                        </div>
+                        <div id="notif-list" class="max-h-[300px] overflow-y-auto">
+                            <div class="px-4 py-6 text-center text-[13px] text-[#64748b]">No notifications</div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- User Avatar + Dropdown -->
                 <div class="relative hidden sm:block" id="avatar-wrapper">
@@ -171,15 +185,15 @@
     <div id="mobile-menu" class="hidden md:hidden border-t border-[#1f2937] px-4 py-3 space-y-1 bg-[#0f172a]">
         <a th:href="@{/}"
            class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-white hover:bg-white/5 transition-colors">Home</a>
-        <a th:href="@{/profile(tab='fav')}"
+        <a th:href="@{/user/favorite-novels}"
            class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Favourite</a>
-        <a th:href="@{/profile(tab='trans')}"
+        <a th:href="@{/user/translations}"
            class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Contribute</a>
         <div class="h-px bg-[#1f2937] my-2"></div>
 
         <!-- Mobile: logged in -->
         <div th:if="${isLoggedIn}">
-            <a th:href="@{/profile}"
+            <a th:href="@{/user/profile}"
                class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Profile</a>
             <form action="/logout" method="post" class="block">
                 <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}"
@@ -204,13 +218,123 @@
         function toggleUserMenu() {
             var menu = document.getElementById("userMenu");
             if (menu) menu.classList.toggle("hidden");
+            // Close notification dropdown if open
+            var notifDrop = document.getElementById("notifDropdown");
+            if (notifDrop) notifDrop.classList.add("hidden");
         }
 
-        document.addEventListener("click", function (event) {
-            var wrapper = document.getElementById("avatar-wrapper");
+        // ── Notifications ──
+        function toggleNotifications() {
+            var dropdown = document.getElementById("notifDropdown");
+            if (dropdown) dropdown.classList.toggle("hidden");
+            // Close user menu if open
             var menu = document.getElementById("userMenu");
-            if (wrapper && menu && !wrapper.contains(event.target)) {
+            if (menu) menu.classList.add("hidden");
+            // Load notifications when opening
+            if (dropdown && !dropdown.classList.contains("hidden")) {
+                loadNotifications();
+            }
+        }
+
+        function loadNotifications() {
+            fetch('/api/notifications', { credentials: 'same-origin' })
+                .then(r => r.json())
+                .then(data => {
+                    var badge = document.getElementById("notif-badge");
+                    var list = document.getElementById("notif-list");
+                    if (!list) return;
+
+                    // Update badge
+                    if (badge) {
+                        if (data.unreadCount > 0) {
+                            badge.textContent = data.unreadCount > 9 ? '9+' : data.unreadCount;
+                            badge.classList.remove("hidden");
+                            badge.classList.add("flex");
+                        } else {
+                            badge.classList.add("hidden");
+                            badge.classList.remove("flex");
+                        }
+                    }
+
+                    // Render list
+                    if (!data.notifications || data.notifications.length === 0) {
+                        list.innerHTML = '<div class="px-4 py-6 text-center text-[13px] text-[#64748b]">No notifications yet</div>';
+                        return;
+                    }
+
+                    list.innerHTML = data.notifications.map(function(n) {
+                        var bgClass = n.isRead ? '' : 'bg-[rgba(99,102,241,0.05)]';
+                        var dotHtml = n.isRead ? '' : '<div class="w-2 h-2 rounded-full bg-[#6366f1] shrink-0"></div>';
+                        return '<div class="flex items-start gap-2.5 px-4 py-3 border-b border-[rgba(255,255,255,0.04)] ' + bgClass + ' cursor-pointer hover:bg-[rgba(255,255,255,0.03)] transition-colors" onclick="markRead(' + n.id + ', this)">'
+                            + dotHtml
+                            + '<div class="flex-1 min-w-0">'
+                            + '<p class="text-[13px] text-[#e2e8f0] leading-snug">' + escapeNotifHtml(n.content) + '</p>'
+                            + '<span class="text-[11px] text-[#64748b] mt-1 block">' + formatTimeAgo(n.createdAt) + '</span>'
+                            + '</div></div>';
+                    }).join('');
+                })
+                .catch(function() {});
+        }
+
+        function markRead(id, el) {
+            var csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+            var csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
+            var headers = {};
+            if (csrfHeader && csrfToken) headers[csrfHeader] = csrfToken;
+            fetch('/api/notifications/' + id + '/read', { method: 'POST', headers: headers, credentials: 'same-origin' })
+                .then(function() {
+                    if (el) {
+                        el.classList.remove('bg-[rgba(99,102,241,0.05)]');
+                        var dot = el.querySelector('.bg-\\[\\#6366f1\\]');
+                        if (dot) dot.remove();
+                    }
+                    // Refresh badge count
+                    loadNotifications();
+                });
+        }
+
+        function markAllRead() {
+            var csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+            var csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
+            var headers = {};
+            if (csrfHeader && csrfToken) headers[csrfHeader] = csrfToken;
+            fetch('/api/notifications/read-all', { method: 'POST', headers: headers, credentials: 'same-origin' })
+                .then(function() { loadNotifications(); });
+        }
+
+        function escapeNotifHtml(str) {
+            var div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function formatTimeAgo(dateStr) {
+            if (!dateStr) return '';
+            var date = new Date(dateStr);
+            var now = new Date();
+            var diff = Math.floor((now - date) / 1000);
+            if (diff < 60) return 'just now';
+            if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+            if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+            return Math.floor(diff / 86400) + 'd ago';
+        }
+
+        // Load notification count on page load
+        document.addEventListener("DOMContentLoaded", function() {
+            if (document.getElementById("notif-badge")) loadNotifications();
+        });
+
+        // ── Click outside handlers ──
+        document.addEventListener("click", function (event) {
+            var avatarWrapper = document.getElementById("avatar-wrapper");
+            var menu = document.getElementById("userMenu");
+            if (avatarWrapper && menu && !avatarWrapper.contains(event.target)) {
                 menu.classList.add("hidden");
+            }
+            var notifWrapper = document.getElementById("notification-wrapper");
+            var notifDrop = document.getElementById("notifDropdown");
+            if (notifWrapper && notifDrop && !notifWrapper.contains(event.target)) {
+                notifDrop.classList.add("hidden");
             }
         });
     </script>

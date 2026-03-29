@@ -43,21 +43,26 @@
                     Account Details
                 </h2>
 
-                <form class="space-y-6">
+                <form th:action="@{/user/profile/save}" method="post" class="space-y-6">
                     <div class="flex flex-col sm:grid sm:grid-cols-2 gap-5 sm:gap-6 mb-5 sm:mb-6">
                         <div class="order-2 sm:order-1">
                             <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Username</label>
-                            <input type="text" th:value="${user.username}"
+                            <input type="text" name="username" th:value="${user.username}"
                                    class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
                         </div>
                         <div class="order-1 sm:order-2">
-                            <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Display Name</label>
-                            <input type="text" th:value="${user.firstName + ' ' + user.lastName}"
+                            <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">First Name</label>
+                            <input type="text" name="firstName" th:value="${user.firstName}"
                                    class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
                         </div>
-                        <div class="order-3 sm:col-span-2">
+                        <div class="order-3">
+                            <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Last Name</label>
+                            <input type="text" name="lastName" th:value="${user.lastName}"
+                                   class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
+                        </div>
+                        <div class="order-4 sm:col-span-2">
                             <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Email Address</label>
-                            <input type="email" th:value="${user.email}"
+                            <input type="email" name="email" th:value="${user.email}"
                                    class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
                         </div>
                     </div>

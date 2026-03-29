@@ -59,11 +59,17 @@ public class NovelController {
         List<NovelComment> novelComments = novelCommentRepository
                 .findByNovelAndParentCommentIsNullOrderByCreatedAtDesc(novel);
 
+        // Load chapters for the novel
+        List<Chapter> chapters = chapterService.getChaptersByNovelId(novel.getId());
+
         model.addAttribute("novel", novel);
         model.addAttribute("novelComment", new NovelComment());
         model.addAttribute("userLogin", user);
         model.addAttribute("novelComments", novelComments);
-        model.addAttribute("timeUtils", new TimeUtils()); // Chuyển ra ngoài loop
+        model.addAttribute("timeUtils", new TimeUtils());
+        model.addAttribute("chapters", chapters);
+        model.addAttribute("totalChapters", chapters.size());
+        model.addAttribute("hasChapters", !chapters.isEmpty());
 
         return "client/novel-detail";
     }

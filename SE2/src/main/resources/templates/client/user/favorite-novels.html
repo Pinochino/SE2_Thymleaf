@@ -30,10 +30,10 @@
                 <div th:each="favorite : ${favoriteNovels}" class="group">
                     <div class="aspect-[3/4] bg-[#1e293b] rounded-[12px] overflow-hidden relative">
                         <!-- Use novel thumbnail if available, else fallback gradient -->
-                        <img th:if="${favorite.novel.thumbnailUrl != null}" th:src="${favorite.novel.thumbnailUrl}" th:alt="${favorite.novel.title}" class="w-full h-full object-cover">
-                        <div th:unless="${favorite.novel.thumbnailUrl != null}" class="w-full h-full bg-gradient-to-b from-slate-700 to-[#1e293b]"></div>
+                        <img th:if="${favorite.novel.coverImgUrl != null}" th:src="${favorite.novel.coverImgUrl}" th:alt="${favorite.novel.title}" class="w-full h-full object-cover">
+                        <div th:unless="${favorite.novel.coverImgUrl != null}" class="w-full h-full bg-gradient-to-b from-slate-700 to-[#1e293b]"></div>
                     </div>
-                    <a th:href="@{/novels/{id}(id=${favorite.novel.id})}">
+                    <a th:href="@{/novels/information/{publicId}(publicId=${favorite.novel.publicId})}">
                         <h3 class="mt-2 text-[16px] font-['Noto_Serif'] font-medium text-[#f1f5f9] leading-tight" th:text="${favorite.novel.title}">Novel Title</h3>
                     </a>
                     <p class="text-[12px] font-['Noto_Serif'] text-[#94a3b8] mt-0.5" th:text="${favorite.novel.author}">Author Name</p>

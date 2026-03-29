@@ -20,7 +20,7 @@
     <header class="chapter-header">
         <nav class="header-inner" aria-label="Main navigation">
             <div class="header-left">
-                <a th:href="@{'/novels/' + ${novel.id}}" class="btn-icon" aria-label="Go back">
+                <a th:href="@{/novels/information/{publicId}(publicId=${novel.publicId})}" class="btn-icon" aria-label="Go back">
                     <img th:src="@{/img/back-arrow.svg}" alt="">
                 </a>
                 <div class="header-title-group">
@@ -32,7 +32,7 @@
                 <button class="btn-icon" aria-label="Table of contents" onclick="openSidebar('tocSidebar')">
                     <img th:src="@{/img/menu.svg}" alt="">
                 </button>
-                <a th:href="@{/user/translation-submit}" class="btn-contribute" style="text-decoration:none;">
+                <a th:href="@{/user/submit-translation(novelId=${novel.id}, chapterId=${chapter.id})}" class="btn-contribute" style="text-decoration:none;">
                     <img th:src="@{/img/translate.svg}" alt="">
                     <span>Contribute</span>
                 </a>

@@ -88,7 +88,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/user/submit-translation")
-    public String translationSubmit() {
+    public String translationSubmit(@AuthenticationPrincipal UserDetailImpl userDetails, Translation translation) {
         return "client/user/translation-submit";
     }
 }

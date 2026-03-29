@@ -5,7 +5,10 @@ import com.example.SE2.repositories.NovelRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.example.SE2.models.User;
+import com.example.SE2.repositories.UserRepository;
+import com.example.SE2.security.UserDetailImpl;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +20,9 @@ import java.util.List;
 @Controller
 public class HomeController {
 
+    @Autowired
+    UserRepository userRepository;
+
     private final Logger logger = LoggerFactory.getLogger(HomeController.class);
     private final NovelRepository novelRepository;
 
@@ -25,20 +31,26 @@ public class HomeController {
         this.novelRepository = novelRepository;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String homePage(Model model) {
 
+
+    @RequestMapping(value = "/access-denied", method = RequestMethod.GET)
+    public String accessDeniedPage() {
+        return "public/accessDenied";
+    }
+
+    @RequestMapping(value = {"/"}, method = RequestMethod.GET)
+    public String homePage(@AuthenticationPrincipal UserDetailImpl userDetails, Model model) {
+        User user = userDetails.getUser();
+        model.addAttribute("user", user);
+        System.out.println("User details from SecurityContextHolder: " + user.getId());
+        System.out.println(user.getEmail());
+        System.out.println(user.getFirstName());
         List<Novel> novels = novelRepository.findAll();
 
         List<Novel> subList = novels.subList(1, Math.min(5, novels.size()));
         model.addAttribute("novels", subList);
 
         return "client/homePage";
-    }
-
-    @RequestMapping(value = "/access-denied", method = RequestMethod.GET)
-    public String accessDeniedPage() {
-        return "public/accessDenied";
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)

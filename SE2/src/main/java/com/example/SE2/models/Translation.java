@@ -19,7 +19,6 @@ public class Translation extends AbstractEntity {
     @JoinColumn(name = "assigned_by", nullable = false)
     private User assignedBy;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String content;
 

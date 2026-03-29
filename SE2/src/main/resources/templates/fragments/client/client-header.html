@@ -62,7 +62,7 @@
         <div class="flex items-center gap-4">
 
             <!-- ===== LOGGED IN: bell + avatar ===== -->
-            <th:block th:if="${isLoggedIn}">
+            <div th:if="${isLoggedIn}">
                 <!-- Bell icon -->
                 <button class="hidden md:flex items-center justify-center p-2 text-[#94a3b8] hover:text-white transition-colors">
                     <svg class="w-[16px] h-[20px]" fill="none" stroke="currentColor" stroke-width="2"
@@ -94,13 +94,8 @@
                                 </div>
                             </div>
                         </div>
-                        <a th:href="@{/profile}"
-                           class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-[#94a3b8] hover:bg-[rgba(255,255,255,0.05)] hover:text-[#e2e8f0] transition-colors">
-                            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" stroke-width="2"
-                                 viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
-                            </svg>
+                        <a th:href="@{/user/profile}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-[#94a3b8] hover:bg-[rgba(255,255,255,0.05)] hover:text-[#e2e8f0] transition-colors">
+                            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
                             Profile
                         </a>
                         <a th:href="@{/search}"
@@ -128,10 +123,10 @@
                         </form>
                     </div>
                 </div>
-            </th:block>
+            </div>
 
             <!-- ===== GUEST: Login button ===== -->
-            <th:block th:if="${!isLoggedIn}">
+            <div th:if="${!isLoggedIn}">
                 <a th:href="@{/login}"
                    class="hidden sm:inline-flex items-center gap-2 bg-[#1f2937] border border-[#1e293b] text-[#94a3b8] hover:text-white rounded-full px-5 py-2 text-[14px] font-['Inter'] transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -140,7 +135,7 @@
                     </svg>
                     Login
                 </a>
-            </th:block>
+            </div>
 
             <!-- Mobile: search + hamburger -->
             <button class="md:hidden p-2 text-[#94a3b8] hover:text-white transition-colors"
@@ -183,7 +178,7 @@
         <div class="h-px bg-[#1f2937] my-2"></div>
 
         <!-- Mobile: logged in -->
-        <th:block th:if="${isLoggedIn}">
+        <div th:if="${isLoggedIn}">
             <a th:href="@{/profile}"
                class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Profile</a>
             <form action="/logout" method="post" class="block">
@@ -194,15 +189,15 @@
                     Logout
                 </button>
             </form>
-        </th:block>
+        </div>
 
         <!-- Mobile: guest -->
-        <th:block th:if="${!isLoggedIn}">
+        <div th:if="${!isLoggedIn}">
             <a th:href="@{/login}"
                class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Login</a>
             <a th:href="@{/register}"
                class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Register</a>
-        </th:block>
+        </div>
     </div>
 
     <script>

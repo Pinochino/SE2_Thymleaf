@@ -42,3 +42,5 @@ build/
 /.env
 >>>>>>> development
 /.claude/settings.local.json
+
+application.properties

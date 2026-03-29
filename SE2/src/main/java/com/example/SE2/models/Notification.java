@@ -13,7 +13,6 @@ public class Notification extends AbstractEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String content;
 

@@ -17,11 +17,9 @@ public class TranslationHistory extends AbstractEntity {
     @JoinColumn(name = "chapter_id", nullable = false)
     private Chapter chapter;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String previousContent;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String newContent;
 

@@ -14,6 +14,9 @@ import java.util.UUID;
 public interface NovelRepository extends JpaRepository<Novel, Long> {
     Novel findBookByTitle(String title);
 
+    Novel findByTitle(String title);
+
+    boolean existsByTitle(String title);
     Novel findNovelByPublicId(UUID publicId);
 
     @Query("SELECT n FROM Novel n ORDER BY n.averageRating DESC NULLS LAST")

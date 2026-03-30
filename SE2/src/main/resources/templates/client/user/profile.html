@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Page</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Noto+Serif:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Noto+Serif:wght@400;500;700&display=swap"
+          rel="stylesheet">
 </head>
 <body>
 <div layout:fragment="content">
@@ -21,13 +22,16 @@
                              onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-16 h-16 rounded-md bg-[#f7e8e1] relative\'><div class=\'absolute inset-0 m-auto w-8 h-10 rounded-full bg-[#e3b39d]\'></div></div>';">
                     </div>
                     <button class="absolute bottom-1 right-1 w-7 h-7 rounded-full bg-[#144bb8] text-white text-[12px] flex items-center justify-center hover:bg-[#1a5ce0] transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
                         </svg>
                     </button>
                 </div>
                 <div class="max-sm:flex max-sm:flex-col max-sm:items-center">
-                    <h1 class="text-[30px] font-serif text-[#f8fafc] font-semibold leading-tight" th:text="${user.username}"></h1>
+                    <h1 class="text-[30px] font-serif text-[#f8fafc] font-semibold leading-tight"
+                        th:text="${user.username}"></h1>
                     <p class="text-[16px] text-[#94a3b8] mt-1">Avid reader and occasional translator</p>
                     <span class="inline-block mt-3 text-[12px] bg-[rgba(20,75,184,0.1)] text-[#144bb8] px-4 py-1.5 rounded-full border border-[rgba(20,75,184,0.2)] font-['Noto_Sans'] font-bold">
                         Member since 2023
@@ -37,8 +41,10 @@
 
             <div>
                 <h2 class="text-[20px] font-serif text-[#f1f5f9] mb-6 pb-3 border-b border-[#2d3446] flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-5 text-[#94a3b8]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-5 text-[#94a3b8]" fill="none"
+                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                     </svg>
                     Account Details
                 </h2>
@@ -51,17 +57,20 @@
                                    class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
                         </div>
                         <div class="order-1 sm:order-2">
-                            <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">First Name</label>
+                            <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">First
+                                Name</label>
                             <input type="text" name="firstName" th:value="${user.firstName}"
                                    class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
                         </div>
                         <div class="order-3">
-                            <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Last Name</label>
+                            <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Last
+                                Name</label>
                             <input type="text" name="lastName" th:value="${user.lastName}"
                                    class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
                         </div>
                         <div class="order-4 sm:col-span-2">
-                            <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Email Address</label>
+                            <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Email
+                                Address</label>
                             <input type="email" name="email" th:value="${user.email}"
                                    class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
                         </div>
@@ -76,6 +85,7 @@
                                 class="px-6 py-2.5 rounded-[8px] bg-[#144bb8] text-white hover:bg-[#1a5ce0] transition font-bold text-[14px] font-['Noto_Sans']">
                             Save Changes
                         </button>
+
                     </div>
                 </form>
             </div>

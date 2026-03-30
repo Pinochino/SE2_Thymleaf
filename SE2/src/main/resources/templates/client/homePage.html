@@ -84,8 +84,19 @@
 
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(5, minmax(0, 1fr));
             gap: 16px;
+        }
+
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .cards-grid {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+        }
+        @media (max-width: 768px) and (min-width: 641px) {
+            .cards-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
         }
 
         @media (max-width: 640px) {

@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import java.util.*;
 
 @Entity
+
 public class Novel extends AbstractEntity {
 
     @Id
@@ -33,10 +34,8 @@ public class Novel extends AbstractEntity {
     @Column(columnDefinition = "TEXT")
     private String coverImgUrl;
 
-//    @JdbcTypeCode(SqlTypes.VECTOR)
-//    @Array(length = 1024)
-//    @Column(columnDefinition = "VECTOR(1024)")
-//    private float[] metaVector;
+    @Column(name = "meta_vector", columnDefinition = "vector(1024)")
+    private String metaVector;
 
     @ManyToMany(mappedBy = "novels")
     @JsonBackReference
@@ -148,6 +147,13 @@ public class Novel extends AbstractEntity {
         this.comments = comments;
     }
 
+    public String getMetaVector() {
+        return metaVector;
+    }
+
+    public void setMetaVector(String metaVector) {
+        this.metaVector = metaVector;
+    }
 
     public Novel(Long id, UUID publicId, String title, String description, String author, NovelStatus status, Float averageRating, String coverImgUrl, Set<Genre> genres, Set<Chapter> chapters, List<NovelComment> comments) {
         this.id = id;

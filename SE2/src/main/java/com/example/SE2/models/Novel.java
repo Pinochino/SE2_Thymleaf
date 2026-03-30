@@ -2,11 +2,10 @@ package com.example.SE2.models;
 
 import com.example.SE2.constants.NovelStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 public class Novel extends AbstractEntity {
@@ -21,7 +20,6 @@ public class Novel extends AbstractEntity {
     @Column(unique = true)
     private String title;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String description;
 
@@ -46,6 +44,11 @@ public class Novel extends AbstractEntity {
 
     @OneToMany(mappedBy = "novel", cascade = CascadeType.ALL)
     private Set<Chapter> chapters = new HashSet<>();
+
+    @OneToMany(mappedBy = "novel", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<NovelComment> comments = new ArrayList<>();
+
 
     public Novel() {
     }
@@ -135,5 +138,28 @@ public class Novel extends AbstractEntity {
 
     public void setChapters(Set<Chapter> chapters) {
         this.chapters = chapters;
+    }
+
+    public List<NovelComment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<NovelComment> comments) {
+        this.comments = comments;
+    }
+
+
+    public Novel(Long id, UUID publicId, String title, String description, String author, NovelStatus status, Float averageRating, String coverImgUrl, Set<Genre> genres, Set<Chapter> chapters, List<NovelComment> comments) {
+        this.id = id;
+        this.publicId = publicId;
+        this.title = title;
+        this.description = description;
+        this.author = author;
+        this.status = status;
+        this.averageRating = averageRating;
+        this.coverImgUrl = coverImgUrl;
+        this.genres = genres;
+        this.chapters = chapters;
+        this.comments = comments;
     }
 }

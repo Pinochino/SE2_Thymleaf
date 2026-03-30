@@ -7,57 +7,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Page</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Noto+Serif:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        [x-cloak] { display: none !important; }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Noto+Serif:wght@400;500;700&display=swap"
+          rel="stylesheet">
 </head>
 <body>
 <div layout:fragment="content">
-    <section class="min-h-screen bg-[#111621] text-[#f1f5f9] py-8" x-data="{ activeTab: new URLSearchParams(window.location.search).get('tab') || 'user' }">
-
-        <!-- Tab Navigation -->
+    <section class="min-h-screen bg-[#111621] text-[#f1f5f9] py-8">
+        <div th:replace="~{client/user/fragments/_profileNavbar :: navbar('profile')}"></div>
         <div class="max-w-[880px] mx-auto px-8 max-sm:px-4">
-            <div class="flex gap-8 max-sm:gap-4 border-b border-[#2d3446] mb-8 max-sm:overflow-x-auto max-sm:scrollbar-none">
-                <button @click="activeTab='user'"
-                        class="pb-3 font-['Noto_Sans'] font-bold text-[14px] max-sm:text-[12px] tracking-[0.35px] whitespace-nowrap transition-colors"
-                        :class="activeTab==='user' ? 'text-[#144bb8] border-b-2 border-[#144bb8]' : 'text-[#94a3b8] hover:text-[#f1f5f9]'">
-                    User Info
-                </button>
-                <button @click="activeTab='fav'"
-                        class="pb-3 font-['Noto_Sans'] font-bold text-[14px] max-sm:text-[12px] tracking-[0.35px] whitespace-nowrap transition-colors"
-                        :class="activeTab==='fav' ? 'text-[#144bb8] border-b-2 border-[#144bb8]' : 'text-[#94a3b8] hover:text-[#f1f5f9]'">
-                    Favourited Novels
-                </button>
-                <button @click="activeTab='trans'"
-                        class="pb-3 font-['Noto_Sans'] font-bold text-[14px] max-sm:text-[12px] tracking-[0.35px] whitespace-nowrap transition-colors"
-                        :class="activeTab==='trans' ? 'text-[#144bb8] border-b-2 border-[#144bb8]' : 'text-[#94a3b8] hover:text-[#f1f5f9]'">
-                    Translation Contributions
-                </button>
-            </div>
-        </div>
-
-        <!-- ==================== USER INFO TAB ==================== -->
-        <div x-show="activeTab==='user'" x-cloak class="max-w-[880px] mx-auto px-8 max-sm:px-4">
-
-            <!-- User Identity Card -->
             <div class="flex items-center gap-6 py-10 mb-6 max-sm:flex-col max-sm:text-center max-sm:py-6 max-sm:mb-4">
-                <!-- Avatar -->
                 <div class="relative flex-shrink-0">
                     <div class="w-[128px] h-[128px] rounded-full bg-[#f2cfc1] flex items-center justify-center border-4 border-[rgba(20,75,184,0.2)] overflow-hidden">
                         <img th:src="@{/images/default-avatar.png}" alt="Avatar" class="w-full h-full object-cover"
                              onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-16 h-16 rounded-md bg-[#f7e8e1] relative\'><div class=\'absolute inset-0 m-auto w-8 h-10 rounded-full bg-[#e3b39d]\'></div></div>';">
                     </div>
                     <button class="absolute bottom-1 right-1 w-7 h-7 rounded-full bg-[#144bb8] text-white text-[12px] flex items-center justify-center hover:bg-[#1a5ce0] transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
                         </svg>
                     </button>
                 </div>
-                <!-- Name / Bio / Badge -->
                 <div class="max-sm:flex max-sm:flex-col max-sm:items-center">
-                    <h1 class="text-[30px] font-serif text-[#f8fafc] font-semibold leading-tight">Alex_Reader</h1>
+                    <h1 class="text-[30px] font-serif text-[#f8fafc] font-semibold leading-tight"
+                        th:text="${user.username}"></h1>
                     <p class="text-[16px] text-[#94a3b8] mt-1">Avid reader and occasional translator</p>
                     <span class="inline-block mt-3 text-[12px] bg-[rgba(20,75,184,0.1)] text-[#144bb8] px-4 py-1.5 rounded-full border border-[rgba(20,75,184,0.2)] font-['Noto_Sans'] font-bold">
                         Member since 2023
@@ -65,57 +39,43 @@
                 </div>
             </div>
 
-            <!-- Account Details Section -->
             <div>
                 <h2 class="text-[20px] font-serif text-[#f1f5f9] mb-6 pb-3 border-b border-[#2d3446] flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-5 text-[#94a3b8]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-5 text-[#94a3b8]" fill="none"
+                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                     </svg>
                     Account Details
                 </h2>
 
-                <form class="space-y-6">
-                    <!-- Desktop/Tablet: 2 columns | Mobile: single column, Display Name first -->
-                    <div class="hidden max-sm:block space-y-5">
-                        <div>
-                            <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Display Name</label>
-                            <input type="text" value="Alexander Wright"
-                                   class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
-                        </div>
-                        <div>
+                <form th:action="@{/user/profile/save}" method="post" class="space-y-6">
+                    <div class="flex flex-col sm:grid sm:grid-cols-2 gap-5 sm:gap-6 mb-5 sm:mb-6">
+                        <div class="order-2 sm:order-1">
                             <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Username</label>
-                            <input type="text" value="Alex_Reader"
+                            <input type="text" name="username" th:value="${user.username}"
                                    class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
                         </div>
-                        <div>
-                            <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Email Address</label>
-                            <input type="email" value="alex.reader@example.com"
+                        <div class="order-1 sm:order-2">
+                            <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">First
+                                Name</label>
+                            <input type="text" name="firstName" th:value="${user.firstName}"
                                    class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
                         </div>
-                    </div>
-
-                    <!-- Desktop/Tablet layout -->
-                    <div class="max-sm:hidden">
-                        <div class="grid grid-cols-2 gap-6 mb-6">
-                            <div>
-                                <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Username</label>
-                                <input type="text" value="Alex_Reader"
-                                       class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
-                            </div>
-                            <div>
-                                <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Display Name</label>
-                                <input type="text" value="Alexander Wright"
-                                       class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
-                            </div>
+                        <div class="order-3">
+                            <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Last
+                                Name</label>
+                            <input type="text" name="lastName" th:value="${user.lastName}"
+                                   class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
                         </div>
-                        <div>
-                            <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Email Address</label>
-                            <input type="email" value="alex.reader@example.com"
+                        <div class="order-4 sm:col-span-2">
+                            <label class="block text-[14px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Email
+                                Address</label>
+                            <input type="email" name="email" th:value="${user.email}"
                                    class="w-full bg-[#1a1f2e] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[16px]">
                         </div>
                     </div>
 
-                    <!-- Action Buttons -->
                     <div class="pt-6 border-t border-[#2d3446] flex justify-end max-sm:justify-center gap-3">
                         <button type="button"
                                 class="px-6 py-2.5 rounded-[8px] border border-[#2d3446] text-[#94a3b8] hover:bg-[#1a1f2e] transition text-[14px] font-['Noto_Sans']">
@@ -125,358 +85,9 @@
                                 class="px-6 py-2.5 rounded-[8px] bg-[#144bb8] text-white hover:bg-[#1a5ce0] transition font-bold text-[14px] font-['Noto_Sans']">
                             Save Changes
                         </button>
+
                     </div>
                 </form>
-            </div>
-        </div>
-
-        <!-- ==================== FAVOURITED NOVELS TAB ==================== -->
-        <div x-show="activeTab==='fav'" x-cloak class="max-w-[880px] mx-auto px-8 max-sm:px-3">
-
-            <!-- Novel Cards Grid: 4col desktop, 3col tablet, 2col mobile -->
-            <div class="grid grid-cols-4 max-[1024px]:grid-cols-3 max-sm:grid-cols-2 gap-[24px] max-sm:gap-[16px]">
-
-                <!-- Card 1 -->
-                <div class="group">
-                    <div class="aspect-[3/4] bg-[#1e293b] rounded-[12px] overflow-hidden relative">
-                        <div class="w-full h-full bg-gradient-to-b from-slate-700 to-[#1e293b]"></div>
-                    </div>
-                    <h3 class="mt-2 text-[16px] font-['Noto_Serif'] font-medium text-[#f1f5f9] leading-tight">Shadow Chronicles</h3>
-                    <p class="text-[12px] font-['Noto_Serif'] text-[#94a3b8] mt-0.5">J.K. Aris</p>
-                    <button class="text-[11px] tracking-[0.55px] text-[rgba(239,68,68,0.8)] mt-1 uppercase font-['Noto_Sans'] font-bold hover:text-red-400 transition">REMOVE</button>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="group">
-                    <div class="aspect-[3/4] bg-[#1e293b] rounded-[12px] overflow-hidden relative">
-                        <div class="w-full h-full bg-[#1b2a47]"></div>
-                    </div>
-                    <h3 class="mt-2 text-[16px] font-['Noto_Serif'] font-medium text-[#f1f5f9] leading-tight">The Last Alchemist</h3>
-                    <p class="text-[12px] font-['Noto_Serif'] text-[#94a3b8] mt-0.5">Sarah Thorne</p>
-                    <button class="text-[11px] tracking-[0.55px] text-[rgba(239,68,68,0.8)] mt-1 uppercase font-['Noto_Sans'] font-bold hover:text-red-400 transition">REMOVE</button>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="group">
-                    <div class="aspect-[3/4] bg-[#1e293b] rounded-[12px] overflow-hidden relative">
-                        <div class="w-full h-full bg-gradient-to-b from-cyan-800 to-[#1e293b]"></div>
-                    </div>
-                    <h3 class="mt-2 text-[16px] font-['Noto_Serif'] font-medium text-[#f1f5f9] leading-tight">Empire of Silence</h3>
-                    <p class="text-[12px] font-['Noto_Serif'] text-[#94a3b8] mt-0.5">Christopher Ruocchio</p>
-                    <button class="text-[11px] tracking-[0.55px] text-[rgba(239,68,68,0.8)] mt-1 uppercase font-['Noto_Sans'] font-bold hover:text-red-400 transition">REMOVE</button>
-                </div>
-
-                <!-- Card 4 -->
-                <div class="group">
-                    <div class="aspect-[3/4] bg-[#1e293b] rounded-[12px] overflow-hidden relative">
-                        <div class="w-full h-full bg-gradient-to-b from-emerald-900 to-[#1e293b]"></div>
-                    </div>
-                    <h3 class="mt-2 text-[16px] font-['Noto_Serif'] font-medium text-[#f1f5f9] leading-tight">Whispering Woods</h3>
-                    <p class="text-[12px] font-['Noto_Serif'] text-[#94a3b8] mt-0.5">Elena Vane</p>
-                    <button class="text-[11px] tracking-[0.55px] text-[rgba(239,68,68,0.8)] mt-1 uppercase font-['Noto_Sans'] font-bold hover:text-red-400 transition">REMOVE</button>
-                </div>
-
-                <!-- Card 5 -->
-                <div class="group">
-                    <div class="aspect-[3/4] bg-[#1e293b] rounded-[12px] overflow-hidden relative">
-                        <div class="w-full h-full bg-[#071523] border border-[#2d3446]"></div>
-                    </div>
-                    <h3 class="mt-2 text-[16px] font-['Noto_Serif'] font-medium text-[#f1f5f9] leading-tight">Void Walker</h3>
-                    <p class="text-[12px] font-['Noto_Serif'] text-[#94a3b8] mt-0.5">Marc Miller</p>
-                    <button class="text-[11px] tracking-[0.55px] text-[rgba(239,68,68,0.8)] mt-1 uppercase font-['Noto_Sans'] font-bold hover:text-red-400 transition">REMOVE</button>
-                </div>
-
-                <!-- Card 6 -->
-                <div class="group">
-                    <div class="aspect-[3/4] bg-[#1e293b] rounded-[12px] overflow-hidden relative">
-                        <div class="w-full h-full bg-[#1b2a47]"></div>
-                    </div>
-                    <h3 class="mt-2 text-[16px] font-['Noto_Serif'] font-medium text-[#f1f5f9] leading-tight">Golden Scepter</h3>
-                    <p class="text-[12px] font-['Noto_Serif'] text-[#94a3b8] mt-0.5">Linda Gray</p>
-                    <button class="text-[11px] tracking-[0.55px] text-[rgba(239,68,68,0.8)] mt-1 uppercase font-['Noto_Sans'] font-bold hover:text-red-400 transition">REMOVE</button>
-                </div>
-
-                <!-- Card 7 -->
-                <div class="group">
-                    <div class="aspect-[3/4] bg-[#1e293b] rounded-[12px] overflow-hidden relative">
-                        <div class="w-full h-full bg-gradient-to-b from-rose-900 to-[#1e293b]"></div>
-                    </div>
-                    <h3 class="mt-2 text-[16px] font-['Noto_Serif'] font-medium text-[#f1f5f9] leading-tight">Crimson Oath</h3>
-                    <p class="text-[12px] font-['Noto_Serif'] text-[#94a3b8] mt-0.5">Nora Vale</p>
-                    <button class="text-[11px] tracking-[0.55px] text-[rgba(239,68,68,0.8)] mt-1 uppercase font-['Noto_Sans'] font-bold hover:text-red-400 transition">REMOVE</button>
-                </div>
-
-                <!-- Card 8 -->
-                <div class="group">
-                    <div class="aspect-[3/4] bg-[#1e293b] rounded-[12px] overflow-hidden relative">
-                        <div class="w-full h-full bg-gradient-to-b from-violet-900 to-[#1e293b]"></div>
-                    </div>
-                    <h3 class="mt-2 text-[16px] font-['Noto_Serif'] font-medium text-[#f1f5f9] leading-tight">Moonlit Requiem</h3>
-                    <p class="text-[12px] font-['Noto_Serif'] text-[#94a3b8] mt-0.5">Kai Lennon</p>
-                    <button class="text-[11px] tracking-[0.55px] text-[rgba(239,68,68,0.8)] mt-1 uppercase font-['Noto_Sans'] font-bold hover:text-red-400 transition">REMOVE</button>
-                </div>
-            </div>
-
-            <!-- Pagination -->
-            <div class="mt-10 flex justify-center items-center gap-2">
-                <button class="w-[40px] h-[40px] rounded-[8px] bg-[#1e293b] text-[#94a3b8] flex items-center justify-center hover:bg-[#2d3446] transition text-[14px]">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-                </button>
-                <button class="w-[40px] h-[40px] rounded-[8px] bg-[#144bb8] text-white flex items-center justify-center text-[14px] font-bold">1</button>
-                <button class="w-[40px] h-[40px] rounded-[8px] bg-[#1e293b] text-[#94a3b8] flex items-center justify-center hover:bg-[#2d3446] transition text-[14px]">2</button>
-                <button class="w-[40px] h-[40px] rounded-[8px] bg-[#1e293b] text-[#94a3b8] flex items-center justify-center hover:bg-[#2d3446] transition text-[14px]">3</button>
-                <span class="px-2 text-[#94a3b8] text-[14px]">...</span>
-                <button class="w-[40px] h-[40px] rounded-[8px] bg-[#1e293b] text-[#94a3b8] flex items-center justify-center hover:bg-[#2d3446] transition text-[14px]">12</button>
-                <button class="w-[40px] h-[40px] rounded-[8px] bg-[#1e293b] text-[#94a3b8] flex items-center justify-center hover:bg-[#2d3446] transition text-[14px]">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                </button>
-            </div>
-        </div>
-
-        <!-- ==================== TRANSLATION CONTRIBUTIONS TAB ==================== -->
-        <div x-show="activeTab==='trans'" x-cloak class="max-w-[880px] mx-auto px-8 max-sm:px-3">
-
-            <!-- Mobile: Search bar on top (outside card) -->
-            <div class="hidden max-sm:block mb-4">
-                <div class="relative">
-                    <input type="text" placeholder="Search by title, author, or keyword..."
-                           class="w-full bg-[#1a2130] border border-[#2d3648] rounded-[8px] pl-10 pr-4 py-3 text-[14px] text-[#f1f5f9] placeholder-[#6b7280] focus:outline-none focus:ring-1 focus:ring-[#144bb8]">
-                    <div class="absolute left-3 inset-y-0 flex items-center pointer-events-none">
-                        <svg class="w-4 h-4 text-[#6b7280]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Active Translation Projects Card -->
-            <div class="bg-[#1a2130] border border-[#2d3648] rounded-[12px] overflow-hidden max-sm:bg-transparent max-sm:border-0 max-sm:rounded-none">
-
-                <!-- Header (hidden on mobile - search is outside) -->
-                <div class="flex items-center justify-between p-6 pb-4 max-sm:hidden">
-                    <h2 class="text-[18px] font-['Noto_Serif'] font-bold text-[#f1f5f9]">Active Translation Projects</h2>
-                    <div class="relative">
-                        <input type="text" placeholder="Search projects..."
-                               class="bg-[#111621] border border-[#2d3446] rounded-[8px] px-4 py-2 text-[13px] text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-1 focus:ring-[#144bb8] w-[240px]">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#475569] absolute right-3 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                        </svg>
-                    </div>
-                </div>
-
-                <!-- Desktop/Tablet Table -->
-                <div class="max-sm:hidden">
-                    <table class="w-full">
-                        <thead>
-                            <tr class="border-t border-[#2d3446]">
-                                <th class="text-left px-6 py-3 text-[12px] font-['Noto_Sans'] font-bold text-[#94a3b8] uppercase tracking-wider">Novel Title</th>
-                                <th class="text-left px-6 py-3 text-[12px] font-['Noto_Sans'] font-bold text-[#94a3b8] uppercase tracking-wider">Last Updated</th>
-                                <th class="text-left px-6 py-3 text-[12px] font-['Noto_Sans'] font-bold text-[#94a3b8] uppercase tracking-wider">Status</th>
-                                <th class="text-right px-6 py-3 text-[12px] font-['Noto_Sans'] font-bold text-[#94a3b8] uppercase tracking-wider">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Row 1 -->
-                            <tr class="border-t border-[#2d3446] hover:bg-[#1e2738] transition">
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-10 h-14 rounded bg-gradient-to-b from-cyan-800 to-[#1e293b] flex-shrink-0"></div>
-                                        <div>
-                                            <p class="text-[14px] font-['Noto_Serif'] font-medium text-[#f1f5f9]">Shadow Chronicles</p>
-                                            <p class="text-[12px] text-[#94a3b8]">Chapter 45 - The Awakening</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 text-[13px] text-[#94a3b8]">2 hours ago</td>
-                                <td class="px-6 py-4">
-                                    <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] uppercase font-bold tracking-wider">Ongoing</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center justify-end gap-2">
-                                        <button class="w-8 h-8 rounded-[6px] bg-[#111621] border border-[#2d3446] flex items-center justify-center text-[#94a3b8] hover:text-[#f1f5f9] hover:border-[#144bb8] transition">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                        </button>
-                                        <a th:href="@{/user/translation-submit}" class="w-8 h-8 rounded-[6px] bg-[#111621] border border-[#2d3446] flex items-center justify-center text-[#94a3b8] hover:text-[#f1f5f9] hover:border-[#144bb8] transition">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                        </a>
-                                        <button class="w-8 h-8 rounded-[6px] bg-[#111621] border border-[#2d3446] flex items-center justify-center text-[#94a3b8] hover:text-red-400 hover:border-red-400/50 transition">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <!-- Row 2 -->
-                            <tr class="border-t border-[#2d3446] hover:bg-[#1e2738] transition">
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-10 h-14 rounded bg-gradient-to-b from-violet-800 to-[#1e293b] flex-shrink-0"></div>
-                                        <div>
-                                            <p class="text-[14px] font-['Noto_Serif'] font-medium text-[#f1f5f9]">The Last Alchemist</p>
-                                            <p class="text-[12px] text-[#94a3b8]">Chapter 12 - Golden Dawn</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 text-[13px] text-[#94a3b8]">1 day ago</td>
-                                <td class="px-6 py-4">
-                                    <span class="inline-block px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-[10px] uppercase font-bold tracking-wider">Completed</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center justify-end gap-2">
-                                        <button class="w-8 h-8 rounded-[6px] bg-[#111621] border border-[#2d3446] flex items-center justify-center text-[#94a3b8] hover:text-[#f1f5f9] hover:border-[#144bb8] transition">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                        </button>
-                                        <a th:href="@{/user/translation-submit}" class="w-8 h-8 rounded-[6px] bg-[#111621] border border-[#2d3446] flex items-center justify-center text-[#94a3b8] hover:text-[#f1f5f9] hover:border-[#144bb8] transition">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                        </a>
-                                        <button class="w-8 h-8 rounded-[6px] bg-[#111621] border border-[#2d3446] flex items-center justify-center text-[#94a3b8] hover:text-red-400 hover:border-red-400/50 transition">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <!-- Row 3 -->
-                            <tr class="border-t border-[#2d3446] hover:bg-[#1e2738] transition">
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-10 h-14 rounded bg-gradient-to-b from-amber-800 to-[#1e293b] flex-shrink-0"></div>
-                                        <div>
-                                            <p class="text-[14px] font-['Noto_Serif'] font-medium text-[#f1f5f9]">Empire of Silence</p>
-                                            <p class="text-[12px] text-[#94a3b8]">Chapter 78 - Broken Chains</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 text-[13px] text-[#94a3b8]">3 days ago</td>
-                                <td class="px-6 py-4">
-                                    <span class="inline-block px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-[10px] uppercase font-bold tracking-wider">On Hold</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center justify-end gap-2">
-                                        <button class="w-8 h-8 rounded-[6px] bg-[#111621] border border-[#2d3446] flex items-center justify-center text-[#94a3b8] hover:text-[#f1f5f9] hover:border-[#144bb8] transition">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                        </button>
-                                        <a th:href="@{/user/translation-submit}" class="w-8 h-8 rounded-[6px] bg-[#111621] border border-[#2d3446] flex items-center justify-center text-[#94a3b8] hover:text-[#f1f5f9] hover:border-[#144bb8] transition">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                        </a>
-                                        <button class="w-8 h-8 rounded-[6px] bg-[#111621] border border-[#2d3446] flex items-center justify-center text-[#94a3b8] hover:text-red-400 hover:border-red-400/50 transition">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <!-- Row 4 -->
-                            <tr class="border-t border-[#2d3446] hover:bg-[#1e2738] transition">
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-10 h-14 rounded bg-gradient-to-b from-emerald-800 to-[#1e293b] flex-shrink-0"></div>
-                                        <div>
-                                            <p class="text-[14px] font-['Noto_Serif'] font-medium text-[#f1f5f9]">Whispering Woods</p>
-                                            <p class="text-[12px] text-[#94a3b8]">Chapter 23 - Forest Heart</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 text-[13px] text-[#94a3b8]">5 days ago</td>
-                                <td class="px-6 py-4">
-                                    <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] uppercase font-bold tracking-wider">Ongoing</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center justify-end gap-2">
-                                        <button class="w-8 h-8 rounded-[6px] bg-[#111621] border border-[#2d3446] flex items-center justify-center text-[#94a3b8] hover:text-[#f1f5f9] hover:border-[#144bb8] transition">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                        </button>
-                                        <a th:href="@{/user/translation-submit}" class="w-8 h-8 rounded-[6px] bg-[#111621] border border-[#2d3446] flex items-center justify-center text-[#94a3b8] hover:text-[#f1f5f9] hover:border-[#144bb8] transition">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                        </a>
-                                        <button class="w-8 h-8 rounded-[6px] bg-[#111621] border border-[#2d3446] flex items-center justify-center text-[#94a3b8] hover:text-red-400 hover:border-red-400/50 transition">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Mobile Card Layout (matching Figma 1:7052) -->
-                <div class="hidden max-sm:block space-y-0 divide-y divide-[#2d3446]">
-
-                    <!-- Mobile Card 1 -->
-                    <div class="px-4 py-4">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-10 h-14 rounded bg-gradient-to-b from-cyan-800 to-[#1e293b] flex-shrink-0"></div>
-                            <div>
-                                <p class="text-[14px] font-['Noto_Serif'] font-bold text-[#f1f5f9]">Shadow of the Eternal Throne</p>
-                                <p class="text-[12px] text-[#64748b]">Ch. 45 / 200</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between mb-3">
-                            <p class="text-[13px] text-[#94a3b8]">Last update: <span class="text-[#f1f5f9]">2 hours ago</span></p>
-                            <p class="text-[11px] text-[#94a3b8] uppercase tracking-wider">Status: <span class="font-bold text-white">ONGOING</span></p>
-                        </div>
-                        <div class="flex gap-2">
-                            <button class="p-2 text-[#94a3b8] hover:text-white transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
-                            <a th:href="@{/user/translation-submit}" class="p-2 text-[#94a3b8] hover:text-white transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></a>
-                            <button class="p-2 text-[#94a3b8] hover:text-red-400 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
-                        </div>
-                    </div>
-
-                    <!-- Mobile Card 2 -->
-                    <div class="px-4 py-4">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-10 h-14 rounded bg-gradient-to-b from-violet-800 to-[#1e293b] flex-shrink-0"></div>
-                            <div>
-                                <p class="text-[14px] font-['Noto_Serif'] font-bold text-[#f1f5f9]">Neon Protocol: Rebirth</p>
-                                <p class="text-[12px] text-[#64748b]">Ch. 12 / 12</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between mb-3">
-                            <p class="text-[13px] text-[#94a3b8]">Last update: <span class="text-[#f1f5f9]">2 hours ago</span></p>
-                            <p class="text-[11px] text-[#94a3b8] uppercase tracking-wider">Status: <span class="font-bold text-white">ONGOING</span></p>
-                        </div>
-                        <div class="flex gap-2">
-                            <button class="p-2 text-[#94a3b8] hover:text-white transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
-                            <a th:href="@{/user/translation-submit}" class="p-2 text-[#94a3b8] hover:text-white transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></a>
-                            <button class="p-2 text-[#94a3b8] hover:text-red-400 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
-                        </div>
-                    </div>
-
-                    <!-- Mobile Card 3 -->
-                    <div class="px-4 py-4">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-10 h-14 rounded bg-gradient-to-b from-emerald-800 to-[#1e293b] flex-shrink-0"></div>
-                            <div>
-                                <p class="text-[14px] font-['Noto_Serif'] font-bold text-[#f1f5f9]">Frostbound Cultivator</p>
-                                <p class="text-[12px] text-[#64748b]">Ch. 45 / 200</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between mb-3">
-                            <p class="text-[13px] text-[#94a3b8]">Last update: <span class="text-[#f1f5f9]">2 hours ago</span></p>
-                            <p class="text-[11px] text-[#94a3b8] uppercase tracking-wider">Status: <span class="font-bold text-white">ONGOING</span></p>
-                        </div>
-                        <div class="flex gap-2">
-                            <button class="p-2 text-[#94a3b8] hover:text-white transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
-                            <a th:href="@{/user/translation-submit}" class="p-2 text-[#94a3b8] hover:text-white transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></a>
-                            <button class="p-2 text-[#94a3b8] hover:text-red-400 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pagination -->
-            <div class="mt-10 flex justify-center items-center gap-2">
-                <button class="w-[40px] h-[40px] rounded-[8px] bg-[#1e293b] text-[#94a3b8] flex items-center justify-center hover:bg-[#2d3446] transition text-[14px]">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-                </button>
-                <button class="w-[40px] h-[40px] rounded-[8px] bg-[#144bb8] text-white flex items-center justify-center text-[14px] font-bold">1</button>
-                <button class="w-[40px] h-[40px] rounded-[8px] bg-[#1e293b] text-[#94a3b8] flex items-center justify-center hover:bg-[#2d3446] transition text-[14px]">2</button>
-                <button class="w-[40px] h-[40px] rounded-[8px] bg-[#1e293b] text-[#94a3b8] flex items-center justify-center hover:bg-[#2d3446] transition text-[14px]">3</button>
-                <span class="px-2 text-[#94a3b8] text-[14px]">...</span>
-                <button class="w-[40px] h-[40px] rounded-[8px] bg-[#1e293b] text-[#94a3b8] flex items-center justify-center hover:bg-[#2d3446] transition text-[14px]">12</button>
-                <button class="w-[40px] h-[40px] rounded-[8px] bg-[#1e293b] text-[#94a3b8] flex items-center justify-center hover:bg-[#2d3446] transition text-[14px]">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                </button>
             </div>
         </div>
 

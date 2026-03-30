@@ -212,6 +212,7 @@ a { text-decoration: none; color: inherit; }
     flex-direction: column;
     gap: 32px;
     padding-bottom: 16px;
+    font-size: 20px;
 }
 
 .paragraph-wrapper {
@@ -222,7 +223,7 @@ a { text-decoration: none; color: inherit; }
 .chapter-paragraph {
     font-family: 'Merriweather', serif;
     font-weight: 400;
-    font-size: 20px;
+    font-size: inherit;
     line-height: 1.8;
     color: #433422;
 }
@@ -329,6 +330,21 @@ a { text-decoration: none; color: inherit; }
     align-items: center;
     justify-content: space-between;
     padding: 0 16px;
+}
+
+.footer-nav-slot {
+    flex: 1;
+    min-width: 0;
+}
+
+.footer-nav-slot-left {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.footer-nav-slot-right {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .footer-nav-link {
@@ -741,6 +757,80 @@ a { text-decoration: none; color: inherit; }
     justify-content: center;
 }
 
+/* Reply button on hover */
+.comment-item {
+    position: relative;
+}
+
+.comment-reply-btn {
+    position: absolute;
+    top: 4px;
+    right: 0;
+    background: rgba(139, 92, 246, 0.1);
+    border: none;
+    color: #8b5cf6;
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.comment-item:hover > .comment-reply-btn {
+    opacity: 1;
+}
+
+.comment-reply-btn:hover {
+    background: rgba(139, 92, 246, 0.2);
+}
+
+/* Reply indicator above input */
+.reply-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    background: rgba(139, 92, 246, 0.06);
+    border-left: 3px solid #8b5cf6;
+    border-radius: 0 8px 8px 0;
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    color: #6b7280;
+    line-height: 1.4;
+}
+
+.reply-indicator-text {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.reply-indicator-name {
+    color: #8b5cf6;
+    font-weight: 600;
+}
+
+.reply-indicator-close {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    padding: 0 2px;
+}
+
+.reply-indicator-close:hover {
+    color: #6b7280;
+}
+
 /* ===== Chapter Dropdowns (Bookmark & Appearance) ===== */
 .chapter-dropdown-wrapper {
     position: relative;
@@ -787,21 +877,47 @@ a { text-decoration: none; color: inherit; }
 }
 
 .bookmark-item {
-    padding: 0;
+    padding: 12px 0;
+    border-bottom: 1px solid #e5e7eb;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.bookmark-item:last-child {
+    border-bottom: none;
+}
+
+.bookmark-item:hover {
+    background: rgba(139, 92, 246, 0.04);
+    margin: 0 -8px;
+    padding: 12px 8px;
+    border-radius: 6px;
+    border-bottom-color: transparent;
 }
 
 .bookmark-text {
     font-family: 'Merriweather', serif;
-    font-size: 14px;
-    line-height: 20px;
+    font-size: 13px;
+    line-height: 19px;
     color: #433422;
     margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .bookmark-divider {
-    height: 1px;
-    background: #e5e7eb;
-    margin: 20px 0;
+    display: none;
+}
+
+/* Bookmarked state: filled purple icon */
+.bookmark-action-btn.bookmarked img {
+    content: url('/img/bookmark-filled.svg');
+}
+
+.bookmark-action-btn.bookmarked {
+    background-color: rgba(139, 92, 246, 0.1);
 }
 
 .chapter-dropdown-footer {
@@ -949,22 +1065,525 @@ a { text-decoration: none; color: inherit; }
     box-shadow: 0px 1px 2px rgba(0,0,0,0.05);
 }
 
-/* ===== Responsive ===== */
+/* ===== Dark Theme ===== */
+body.theme-dark .chapter {
+    background-color: #1a1a2e;
+}
+
+body.theme-dark .chapter-header {
+    background-color: #1a1a2ed9;
+    border-bottom-color: rgba(255,255,255,0.06);
+}
+
+body.theme-dark .header-novel-title,
+body.theme-dark .header-chapter-title,
+body.theme-dark .btn-icon,
+body.theme-dark .chapter-title,
+body.theme-dark .chapter-paragraph,
+body.theme-dark .footer-nav-label,
+body.theme-dark .footer-nav-title,
+body.theme-dark .footer-current-label,
+body.theme-dark .toc-volume-label,
+body.theme-dark .toc-chapter,
+body.theme-dark .comment-name,
+body.theme-dark .comment-text,
+body.theme-dark .comment-quote p,
+body.theme-dark .bookmark-text,
+body.theme-dark .sidebar-title,
+body.theme-dark .sidebar-close,
+body.theme-dark .size-label-small,
+body.theme-dark .size-label-large {
+    color: #e0e0e0;
+}
+
+body.theme-dark .chapter-meta,
+body.theme-dark .chapter-meta .dot,
+body.theme-dark .comment-time,
+body.theme-dark .comment-actions {
+    color: #9ca3af;
+}
+
+body.theme-dark .btn-icon:hover,
+body.theme-dark .paragraph-wrapper:hover {
+    border-right-color: rgba(139, 92, 246, 0.5);
+}
+
+body.theme-dark .btn-icon:hover {
+    background-color: rgba(255,255,255,0.08);
+}
+
+body.theme-dark .btn-contribute {
+    color: #e0e0e0;
+    border-color: #e0e0e0;
+}
+
+body.theme-dark .btn-contribute:hover {
+    background-color: rgba(255,255,255,0.08);
+}
+
+body.theme-dark .chapter-footer {
+    background-color: #1a1a2ee6;
+    border-top-color: rgba(255,255,255,0.06);
+}
+
+body.theme-dark .footer-nav-arrow {
+    border-color: #e0e0e0;
+}
+
+body.theme-dark .chapter-sidebar {
+    background: #16213e;
+    border-color: rgba(255,255,255,0.06);
+}
+
+body.theme-dark .chapter-sidebar-left {
+    background: #1a1a2e;
+}
+
+body.theme-dark .sidebar-header {
+    border-bottom-color: rgba(255,255,255,0.06);
+}
+
+body.theme-dark .sidebar-search-input {
+    background: rgba(255,255,255,0.08);
+    color: #e0e0e0;
+}
+
+body.theme-dark .sidebar-search-input::placeholder {
+    color: #6b7280;
+}
+
+body.theme-dark .toc-chapter:hover {
+    background: rgba(255,255,255,0.05);
+}
+
+body.theme-dark .toc-chapter.active {
+    background: #8b5cf6;
+    color: #fff;
+}
+
+body.theme-dark .comment-quote {
+    background: rgba(255,255,255,0.05);
+}
+
+body.theme-dark .comment-reply-thread {
+    border-left-color: rgba(255,255,255,0.1);
+}
+
+body.theme-dark .comments-input {
+    background: #1a1a2e;
+    border-top-color: rgba(255,255,255,0.06);
+}
+
+body.theme-dark .comment-input-field {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.1);
+    color: #e0e0e0;
+}
+
+body.theme-dark .comment-input-field::placeholder {
+    color: #6b7280;
+}
+
+body.theme-dark .progress-track {
+    background-color: rgba(255,255,255,0.08);
+}
+
+body.theme-dark .action-btn {
+    background-color: rgba(255,255,255,0.08);
+}
+
+body.theme-dark .action-btn:hover {
+    background-color: rgba(255,255,255,0.15);
+}
+
+body.theme-dark .section-divider span {
+    background-color: #e0e0e0;
+}
+
+body.theme-dark .reply-indicator {
+    background: rgba(139, 92, 246, 0.12);
+}
+
+/* Bookmark list in dark theme */
+body.theme-dark .bookmark-item {
+    border-bottom-color: rgba(255,255,255,0.08);
+}
+
+body.theme-dark .bookmark-item:hover {
+    background: rgba(139, 92, 246, 0.1);
+}
+
+body.theme-dark .bookmark-action-btn.bookmarked {
+    background-color: rgba(139, 92, 246, 0.2);
+}
+
+/* Icons: invert to bright in dark theme */
+body.theme-dark .btn-icon img,
+body.theme-dark .btn-contribute img,
+body.theme-dark .action-btn:not(.bookmarked) img,
+body.theme-dark .footer-nav-arrow img,
+body.theme-dark .footer-current img,
+body.theme-dark .sidebar-search .search-icon svg circle,
+body.theme-dark .sidebar-search .search-icon svg path {
+    filter: brightness(0) invert(1);
+}
+
+body.theme-dark .sidebar-search .search-icon svg circle {
+    stroke: #e0e0e0;
+}
+
+body.theme-dark .sidebar-search .search-icon svg path {
+    stroke: #e0e0e0;
+}
+
+/* Dark theme: Dropdowns (Bookmark & Appearance) */
+body.theme-dark .chapter-dropdown {
+    background: #1e293b;
+    border-color: rgba(255,255,255,0.1);
+    box-shadow: 0px 10px 25px -5px rgba(0,0,0,0.4), 0px 4px 10px -4px rgba(0,0,0,0.3);
+}
+
+body.theme-dark .chapter-dropdown-header {
+    background: #162032;
+    border-bottom-color: rgba(255,255,255,0.08);
+}
+
+body.theme-dark .chapter-dropdown-title {
+    color: #e0e0e0;
+}
+
+body.theme-dark .chapter-dropdown-body {
+    background: #1e293b;
+}
+
+body.theme-dark .chapter-dropdown-footer {
+    background: #162032;
+    border-top-color: rgba(255,255,255,0.08);
+    color: #9ca3af;
+}
+
+body.theme-dark .chapter-dropdown-appearance {
+    background: #1e293b;
+    border-color: rgba(255,255,255,0.1);
+}
+
+body.theme-dark .appearance-label {
+    color: #9ca3af;
+}
+
+body.theme-dark .font-toggle {
+    background: rgba(255,255,255,0.08);
+}
+
+body.theme-dark .font-toggle-btn {
+    color: #9ca3af;
+}
+
+body.theme-dark .font-toggle-btn.active {
+    background: rgba(255,255,255,0.15);
+    color: #e0e0e0;
+    box-shadow: none;
+}
+
+body.theme-dark .size-slider {
+    background: rgba(255,255,255,0.15);
+}
+
+body.theme-dark .theme-btn {
+    border-color: rgba(255,255,255,0.1);
+}
+
+body.theme-dark .theme-btn.active {
+    box-shadow: 0px 0px 0px 2px #1e293b, 0px 0px 0px 4px #8b5cf6;
+}
+
+/* ===== Sepia Theme ===== */
+/* Sepia is the default, so most styles already apply. Just ensure body class works. */
+body.theme-sepia .chapter {
+    background-color: #f4ecd8;
+}
+
+/* ===== Light Theme ===== */
+body.theme-light .chapter {
+    background-color: #ffffff;
+}
+
+body.theme-light .chapter-header {
+    background-color: rgba(255,255,255,0.9);
+}
+
+body.theme-light .chapter-footer {
+    background-color: rgba(255,255,255,0.9);
+}
+
+body.theme-light .chapter-sidebar {
+    background: #fafafa;
+}
+
+body.theme-light .chapter-sidebar-left {
+    background: #f9fafb;
+}
+
+body.theme-light .comments-input {
+    background: #f9fafb;
+}
+
+/* ===== Font family override via CSS class ===== */
+body.font-sans-serif .chapter-paragraph {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ===== Swipe Indicator (mobile/tablet) ===== */
+.swipe-indicator {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 300;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+}
+
+.swipe-indicator-left {
+    left: 0;
+    background: linear-gradient(to right, rgba(139, 92, 246, 0.15), transparent);
+}
+
+.swipe-indicator-right {
+    right: 0;
+    left: auto;
+    background: linear-gradient(to left, rgba(139, 92, 246, 0.15), transparent);
+}
+
+.swipe-indicator.active {
+    opacity: 1;
+}
+
+.swipe-label {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+/* Hide swipe indicator on desktop */
+@media (min-width: 1025px) {
+    .swipe-indicator {
+        display: none;
+    }
+}
+
+/* ===== Tablet (max 1024px) ===== */
+@media (max-width: 1024px) {
+    .paragraph-actions {
+        right: -48px;
+    }
+
+    .chapter-article {
+        padding: 60px 0;
+    }
+}
+
+/* ===== Tablet portrait & large phones (max 768px) ===== */
 @media (max-width: 768px) {
+    /* Header */
+    .header-novel-title {
+        display: none;
+    }
+
+    .btn-contribute span {
+        display: none;
+    }
+
+    .btn-contribute {
+        padding: 6px 8px;
+    }
+
+    .header-chapter-title {
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 180px;
+    }
+
+    .header-inner {
+        padding: 0 12px;
+        height: 56px;
+    }
+
+    /* Title */
     .chapter-title {
         font-size: 28px;
     }
 
-    .chapter-paragraph {
-        font-size: 18px;
+    .chapter-info {
+        padding: 0 4px;
+    }
+
+    /* Content area */
+    .chapter-main {
+        padding: 0 16px;
+    }
+
+    .chapter-article {
+        padding: 40px 0;
+        gap: 32px;
+    }
+
+    .chapter-content {
+        gap: 24px;
+    }
+
+    /* Sidebars: full width on mobile */
+    .chapter-sidebar-left {
+        width: 85vw;
+        max-width: 320px;
+    }
+
+    .chapter-sidebar-right {
+        width: 100vw;
+        max-width: 100vw;
+    }
+
+    /* Dropdowns: fit screen */
+    .chapter-dropdown {
+        right: -16px;
+        width: calc(100vw - 32px);
+        max-width: 320px;
+    }
+
+    .chapter-dropdown-appearance {
+        right: -8px;
+        width: calc(100vw - 32px);
+        max-width: 320px;
+    }
+
+    /* Footer */
+    .chapter-footer {
+        padding: 12px 16px;
+    }
+
+    .footer-inner {
+        padding: 0 4px;
+    }
+
+    .footer-nav-title {
+        font-size: 12px;
+        max-width: 120px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .footer-nav-label {
+        font-size: 9px;
+    }
+
+    .footer-current-label {
+        font-size: 9px;
+    }
+}
+
+/* ===== Phones (max 640px) — inline paragraph actions ===== */
+@media (max-width: 640px) {
+    .paragraph-wrapper {
+        border-right: none;
+    }
+
+    .paragraph-wrapper:hover {
+        border-right-color: transparent;
     }
 
     .paragraph-actions {
+        margin-top: -5px;
+        position: static;
+        transform: none;
+        flex-direction: row;
+        opacity: 1;
+        gap: 4px;
+        justify-content: flex-end;
+    }
+
+    .action-btn {
+        width: 32px;
+        height: 32px;
+    }
+
+    .action-btn img {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* ===== Small phones (max 480px) ===== */
+@media (max-width: 480px) {
+    .header-chapter-title {
+        font-size: 13px;
+        max-width: 140px;
+    }
+
+    .header-left {
+        gap: 8px;
+    }
+
+    .header-right {
+        gap: 0;
+    }
+
+    .btn-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .btn-icon img {
+        width: 22px;
+        height: 22px;
+    }
+
+    .chapter-main {
+        padding: 0 12px;
+    }
+
+    .chapter-title {
+        font-size: 24px;
+    }
+
+    .chapter-article {
+        padding: 32px 0;
+        gap: 24px;
+    }
+
+    .chapter-content {
+        gap: 20px;
+    }
+
+    /* Footer: simplify */
+    .footer-nav-text {
         display: none;
     }
 
-    .header-novel-title,
-    .btn-contribute span {
-        display: none;
+    .footer-nav-arrow,
+    .footer-nav-arrow-next {
+        width: 36px;
+        height: 36px;
+    }
+
+    .footer-nav-arrow img,
+    .footer-nav-arrow-next img {
+        width: 18px;
+        height: 18px;
     }
 }

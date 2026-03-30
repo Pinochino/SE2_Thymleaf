@@ -22,7 +22,6 @@ public class ParagraphComment extends AbstractEntity {
 
     private Integer paragraphIndex;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String content;
 

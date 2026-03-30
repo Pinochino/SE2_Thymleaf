@@ -4,6 +4,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+/node_modules
+
 ### STS ###
 .apt_generated
 .classpath
@@ -40,3 +42,7 @@ build/
 /.env
 >>>>>>> development
 /.claude/settings.local.json
+
+application.properties
+
+.claude

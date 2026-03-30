@@ -1,5 +1,6 @@
 package com.example.SE2.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import org.springframework.data.annotation.CreatedDate;
@@ -12,9 +13,11 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractEntity {
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @LastModifiedDate
     private LocalDateTime updatedAt;
 

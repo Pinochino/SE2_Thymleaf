@@ -8,9 +8,6 @@
     <title>Submit Translation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Noto+Serif:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        [x-cloak] { display: none !important; }
-    </style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -18,20 +15,7 @@
 
         <!-- Tab Navigation -->
         <div class="max-w-[1024px] mx-auto px-[128px] max-[1024px]:px-[32px] max-sm:px-[16px]">
-            <div class="flex gap-8 max-sm:gap-2 border-b border-[#2d3446] mb-6 max-sm:overflow-x-auto max-sm:scrollbar-none">
-                <a th:href="@{/profile}"
-                   class="pb-3 font-['Noto_Sans'] font-bold text-[14px] max-sm:text-[12px] tracking-[0.35px] whitespace-nowrap text-[#94a3b8] hover:text-[#f1f5f9] transition-colors">
-                    User Info
-                </a>
-                <a th:href="@{/profile}"
-                   class="pb-3 font-['Noto_Sans'] font-bold text-[14px] max-sm:text-[12px] tracking-[0.35px] whitespace-nowrap text-[#94a3b8] hover:text-[#f1f5f9] transition-colors">
-                    Favourited Novels
-                </a>
-                <a th:href="@{/profile}"
-                   class="pb-3 font-['Noto_Sans'] font-bold text-[14px] max-sm:text-[12px] tracking-[0.35px] whitespace-nowrap text-[#144bb8] border-b-2 border-[#144bb8] transition-colors">
-                    Translation Contributions
-                </a>
-            </div>
+            <div th:replace="~{client/user/fragments/_profileNavbar :: navbar('submit-translation')}"></div>
         </div>
 
         <!-- Page Title -->
@@ -48,56 +32,63 @@
                 <!-- Left Sidebar -->
                 <div class="w-[310px] max-[1024px]:w-[220px] max-sm:w-full flex-shrink-0 space-y-6">
 
-                    <!-- Novel Info Card -->
-                    <div class="bg-[#161b26] rounded-[12px] overflow-hidden border border-[#111621] shadow-sm">
-                        <!-- Desktop/Tablet: stacked cover + info -->
+                    <!-- Novel Info Card (shown when a novel is selected) -->
+                    <div th:if="${selectedNovel != null}" class="bg-[#161b26] rounded-[12px] overflow-hidden border border-[#111621] shadow-sm">
                         <div class="max-sm:hidden">
                             <div class="w-full h-[192px] bg-gradient-to-b from-[#8a9a6c] via-[#6b7a50] to-[#161b26] relative rounded-t-[12px] overflow-hidden">
+                                <img th:if="${selectedNovel.coverImgUrl != null}" th:src="${selectedNovel.coverImgUrl}"
+                                     class="w-full h-full object-cover" alt=""/>
                                 <div class="absolute inset-0 bg-gradient-to-t from-[rgba(11,14,20,0.8)] to-transparent"></div>
                             </div>
                             <div class="p-6 pt-4 space-y-1">
-                                <h3 class="text-[20px] font-['Noto_Serif'] font-bold text-[#f1f5f9] leading-[28px]">Shadow of the Eternal Throne</h3>
-                                <div class="flex gap-2 pb-3">
-                                    <span class="px-2 py-0.5 rounded bg-[rgba(20,75,184,0.2)] text-[#144bb8] text-[10px] font-semibold uppercase">Fantasy</span>
-                                    <span class="px-2 py-0.5 rounded bg-[rgba(20,75,184,0.2)] text-[#144bb8] text-[10px] font-semibold uppercase">Cultivation</span>
+                                <h3 class="text-[20px] font-['Noto_Serif'] font-bold text-[#f1f5f9] leading-[28px]"
+                                    th:text="${selectedNovel.title}">Novel Title</h3>
+                                <div class="flex flex-wrap gap-2 pb-3">
+                                    <span th:each="genre : ${selectedNovel.genres}"
+                                          class="px-2 py-0.5 rounded bg-[rgba(20,75,184,0.2)] text-[#144bb8] text-[10px] font-semibold uppercase"
+                                          th:text="${genre.name}">Genre</span>
                                 </div>
                                 <div class="border-t border-[#111621] pt-3 space-y-3 text-[14px]">
                                     <div class="flex items-center justify-between">
                                         <span class="text-[#64748b]">Author</span>
-                                        <span class="text-[#f1f5f9] font-medium">Li Wei Chen</span>
+                                        <span class="text-[#f1f5f9] font-medium" th:text="${selectedNovel.author ?: 'Unknown'}">Author</span>
                                     </div>
                                     <div class="flex items-center justify-between">
                                         <span class="text-[#64748b]">Status</span>
-                                        <span class="text-white font-medium">Ongoing</span>
+                                        <span class="text-white font-medium" th:text="${selectedNovel.status}">Status</span>
+                                    </div>
+                                    <div th:if="${selectedNovel.averageRating != null}" class="flex items-center justify-between">
+                                        <span class="text-[#64748b]">Rating</span>
+                                        <span class="text-[#c9a46a] font-medium" th:text="'&#9733; ' + ${selectedNovel.averageRating}">Rating</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Mobile: horizontal cover + info -->
+                        <!-- Mobile: horizontal -->
                         <div class="hidden max-sm:flex gap-4 p-4">
-                            <div class="w-24 h-32 flex-shrink-0 rounded-lg overflow-hidden bg-gradient-to-b from-[#8a9a6c] via-[#6b7a50] to-[#161b26]"></div>
+                            <div class="w-24 h-32 flex-shrink-0 rounded-lg overflow-hidden bg-gradient-to-b from-[#8a9a6c] via-[#6b7a50] to-[#161b26]">
+                                <img th:if="${selectedNovel.coverImgUrl != null}" th:src="${selectedNovel.coverImgUrl}"
+                                     class="w-full h-full object-cover" alt=""/>
+                            </div>
                             <div class="flex-1 min-w-0">
-                                <h3 class="text-[18px] font-['Noto_Serif'] font-bold text-[#f1f5f9] leading-[24px] mb-1">Shadow of the Eternal Throne</h3>
-                                <div class="flex gap-2 mb-2">
-                                    <span class="px-2 py-0.5 rounded bg-[rgba(20,75,184,0.2)] text-[#144bb8] text-[10px] font-semibold uppercase">Fantasy</span>
-                                    <span class="px-2 py-0.5 rounded bg-[rgba(20,75,184,0.2)] text-[#144bb8] text-[10px] font-semibold uppercase">Cultivation</span>
-                                </div>
+                                <h3 class="text-[18px] font-['Noto_Serif'] font-bold text-[#f1f5f9] leading-[24px] mb-1"
+                                    th:text="${selectedNovel.title}">Novel Title</h3>
                                 <div class="space-y-1.5 text-[14px]">
                                     <div class="flex items-center justify-between">
                                         <span class="text-[#64748b]">Author</span>
-                                        <span class="text-[#f1f5f9] font-medium">Li Wei Chen</span>
+                                        <span class="text-[#f1f5f9] font-medium" th:text="${selectedNovel.author ?: 'Unknown'}">Author</span>
                                     </div>
                                     <div class="flex items-center justify-between">
                                         <span class="text-[#64748b]">Status</span>
-                                        <span class="text-white font-medium">Ongoing</span>
+                                        <span class="text-white font-medium" th:text="${selectedNovel.status}">Status</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Translation Guidelines Card (hidden on mobile) -->
+                    <!-- Translation Guidelines Card -->
                     <div class="max-sm:hidden bg-[rgba(20,75,184,0.05)] border border-[rgba(20,75,184,0.2)] rounded-[12px] p-5">
                         <h4 class="text-[14px] font-semibold text-[#f1f5f9] mb-3 flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-[#144bb8]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -117,19 +108,44 @@
                 <!-- Right: Translation Form -->
                 <div class="flex-1 min-w-0">
                     <div class="bg-[#161b26] border border-[#111621] rounded-[12px] p-8 max-sm:p-5 shadow-xl max-sm:bg-transparent max-sm:border-0 max-sm:shadow-none max-sm:rounded-none max-sm:p-0">
-                        <form class="space-y-6">
+                        <form th:action="@{/user/submit-translation}" method="post" class="space-y-6">
+
+                            <!-- Select Novel -->
+                            <div>
+                                <label class="block text-[14px] font-semibold text-[#cbd5e1] mb-2">Select Novel</label>
+                                <div class="relative">
+                                    <select id="novelSelect" name="novelId" onchange="onNovelChange(this)"
+                                            class="w-full appearance-none bg-[#111621] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] text-[16px] focus:outline-none focus:ring-2 focus:ring-[#144bb8] cursor-pointer">
+                                        <option value="" disabled th:selected="${selectedNovel == null}">Select a novel...</option>
+                                        <option th:each="novel : ${novels}"
+                                                th:value="${novel.id}"
+                                                th:text="${novel.title}"
+                                                th:selected="${selectedNovel != null and selectedNovel.id == novel.id}">Novel</option>
+                                    </select>
+                                    <div class="absolute right-3 inset-y-0 flex items-center pointer-events-none">
+                                        <svg class="w-5 h-5 text-[#94a3b8]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
 
                             <!-- Select Chapter -->
                             <div>
                                 <label class="block text-[14px] font-semibold text-[#cbd5e1] mb-2">Select Chapter</label>
                                 <div class="relative">
-                                    <select class="w-full appearance-none bg-[#111621] border border-[#111621] rounded-[8px] p-[13px] text-[#f1f5f9] text-[16px] focus:outline-none focus:ring-2 focus:ring-[#144bb8] cursor-pointer">
-                                        <option value="" disabled selected>Select a chapter...</option>
-                                        <option value="45">Chapter 45 - The Awakening</option>
-                                        <option value="46">Chapter 46 - Rising Storm</option>
-                                        <option value="47">Chapter 47 - The Convergence</option>
-                                        <option value="48">Chapter 48 - Shadow's Edge</option>
-                                        <option value="49">Chapter 49 - Breaking Point</option>
+                                    <select id="chapterSelect" name="chapterId" required
+                                            class="w-full appearance-none bg-[#111621] border border-[#2d3446] rounded-[8px] p-[13px] text-[#f1f5f9] text-[16px] focus:outline-none focus:ring-2 focus:ring-[#144bb8] cursor-pointer">
+                                        <option value="" disabled th:selected="${selectedChapterId == null}">
+                                            <span th:if="${chapters != null}">Select a chapter...</span>
+                                            <span th:unless="${chapters != null}">Select a novel first</span>
+                                        </option>
+                                        <th:block th:if="${chapters != null}">
+                                            <option th:each="ch : ${chapters}"
+                                                    th:value="${ch.id}"
+                                                    th:text="'Chapter ' + ${ch.chapterNumber} + (${ch.title != null ? ' - ' + ch.title : ''})"
+                                                    th:selected="${selectedChapterId != null and selectedChapterId == ch.id}">Chapter</option>
+                                        </th:block>
                                     </select>
                                     <div class="absolute right-3 inset-y-0 flex items-center pointer-events-none">
                                         <svg class="w-5 h-5 text-[#94a3b8]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -142,15 +158,15 @@
                             <!-- Translation Content -->
                             <div>
                                 <label class="block text-[14px] font-semibold text-[#cbd5e1] mb-2">Translation Content</label>
-                                <textarea rows="16" max-sm:rows="8"
-                                          placeholder="Start typing your translation here. Use Markdown for formatting if needed..."
-                                          class="w-full bg-[#111621] border border-[#111621] rounded-[8px] p-6 max-sm:p-4 text-[#f1f5f9] text-[16px] placeholder-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#144bb8] resize-y leading-[26px]"></textarea>
+                                <textarea name="content" rows="16" required
+                                          placeholder="Start typing your translation here..."
+                                          class="w-full bg-[#111621] border border-[#2d3446] rounded-[8px] p-6 max-sm:p-4 text-[#f1f5f9] text-[16px] placeholder-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#144bb8] resize-y leading-[26px]"></textarea>
                             </div>
 
                             <!-- Action Buttons -->
-                            <div class="pt-4 border-t border-[#111621] flex justify-end max-sm:justify-center gap-3">
-                                <a th:href="@{/profile}"
-                                   class="px-6 py-3 rounded-[8px] border border-[#111621] text-[#f1f5f9] hover:bg-[#1a1f2e] transition text-[14px] font-semibold inline-flex items-center">
+                            <div class="pt-4 border-t border-[#2d3446] flex justify-end max-sm:justify-center gap-3">
+                                <a th:href="@{/user/translations}"
+                                   class="px-6 py-3 rounded-[8px] border border-[#2d3446] text-[#f1f5f9] hover:bg-[#1a1f2e] transition text-[14px] font-semibold inline-flex items-center">
                                     Cancel
                                 </a>
                                 <button type="submit"
@@ -165,6 +181,15 @@
         </div>
 
     </section>
+
+    <script>
+        function onNovelChange(select) {
+            var novelId = select.value;
+            if (novelId) {
+                window.location.href = '/user/submit-translation?novelId=' + novelId;
+            }
+        }
+    </script>
 </div>
 </body>
 </html>

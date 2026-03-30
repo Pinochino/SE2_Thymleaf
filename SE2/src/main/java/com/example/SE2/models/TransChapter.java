@@ -14,7 +14,6 @@ public class TransChapter extends AbstractEntity {
     @JoinColumn(name = "novel_id", nullable = false)
     private Novel novel;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String content;
 

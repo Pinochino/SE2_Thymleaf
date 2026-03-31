@@ -49,7 +49,7 @@
                         </div>
 
                         <!-- Rating row -->
-                        <div class="nd-rating">
+                        <div class="nd-rating ">
                                                         <div class="nd-stars" th:with="ratingVal=${novel != null ? novel.averageRating : 0}">
                                                             <svg th:each="i : ${#numbers.sequence(1,5)}" viewBox="0 0 20 19" fill="none">
                                                                 <path d="M10 0l2.47 7.6h7.99l-6.47 4.7 2.47 7.6L10 15.2l-6.47 4.7 2.47-7.6L-.47 7.6h7.99z"

@@ -772,6 +772,100 @@
         div.textContent = str;
         return div.innerHTML;
     }
+
+    // ── Auto-save Reading Progress by Paragraph Index ──
+    (function () {
+        // Thymeleaf inject giá trị vào JS
+        const chapterId   = /*[[${chapter.id}]]*/ null;
+        const isLoggedIn  = /*[[${isLoggedIn}]]*/ false;
+        if (!isLoggedIn || !chapterId) return;
+
+        const csrfToken  = document.querySelector('meta[name="_csrf"]')?.content;
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.content;
+
+        // Lấy tất cả các paragraph element trong chapter
+        const paragraphs = Array.from(document.querySelectorAll('.chapter-paragraph'));
+        if (paragraphs.length === 0) return;
+
+        let saveTimer = null;
+        let lastSavedIndex = -1;
+
+        function getVisibleParagraphIndex() {
+            // Tìm paragraph đầu tiên đang nằm trong viewport
+            const viewportMid = window.scrollY + window.innerHeight / 2;
+            let closestIndex = 0;
+            let closestDist = Infinity;
+
+            paragraphs.forEach((p, idx) => {
+                const rect = p.getBoundingClientRect();
+                const absTop = rect.top + window.scrollY;
+                const dist = Math.abs(absTop - viewportMid);
+                if (dist < closestDist) {
+                    closestDist = dist;
+                    closestIndex = idx;
+                }
+            });
+            return closestIndex;
+        }
+
+        function saveProgress(paragraphIndex) {
+            if (paragraphIndex === lastSavedIndex) return;
+            lastSavedIndex = paragraphIndex;
+
+            const headers = { 'Content-Type': 'application/json' };
+            if (csrfHeader && csrfToken) headers[csrfHeader] = csrfToken;
+
+            navigator.sendBeacon
+                // sendBeacon khi beforeunload (không bị cancel bởi browser)
+                ? null
+                : null; // chỉ dùng fetch ở đây
+
+            fetch(`/api/chapter/${chapterId}/progress`, {  // ← thêm /api
+                method: 'POST',
+                headers,
+                body: JSON.stringify({ paragraphIndex }),
+                credentials: 'same-origin',
+                keepalive: true
+            }).catch(() => {});
+        }
+
+        // Debounce scroll → save sau 1.5s dừng scroll
+        window.addEventListener('scroll', () => {
+            clearTimeout(saveTimer);
+            saveTimer = setTimeout(() => {
+                const idx = getVisibleParagraphIndex();
+                saveProgress(idx);
+            }, 1500);
+        });
+
+        // Dùng sendBeacon khi rời trang — đảm bảo request không bị huỷ
+        window.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden') {
+                const idx = getVisibleParagraphIndex();
+                if (idx !== lastSavedIndex) {
+                    const headers = { 'Content-Type': 'application/json' };
+                    if (csrfHeader && csrfToken) headers[csrfHeader] = csrfToken;
+                    // sendBeacon không set custom header được → fallback fetch sync
+                    fetch(`/novels/chapter/${chapterId}/progress`, {
+                        method: 'POST',
+                        headers,
+                        body: JSON.stringify({ paragraphIndex: idx }),
+                        credentials: 'same-origin',
+                        keepalive: true  // ← đảm bảo request hoàn thành dù page unload
+                    }).catch(() => {});
+                }
+            }
+        });
+
+        // Restore scroll position nếu user quay lại chapter đang đọc dở
+        const savedParagraphIndex = /*[[${lastParagraphIndex != null ? lastParagraphIndex : 0}]]*/ 0;
+        if (savedParagraphIndex > 0 && paragraphs[savedParagraphIndex]) {
+            // Delay nhỏ để chờ layout ổn định
+            setTimeout(() => {
+                paragraphs[savedParagraphIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        }
+    })();
 </script>
 </body>
 </html>

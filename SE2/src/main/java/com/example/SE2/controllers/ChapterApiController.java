@@ -119,6 +119,20 @@ public class ChapterApiController {
         return ResponseEntity.ok(Map.of("bookmarked", added));
     }
 
+//    @PostMapping("/{chapterId}/progress")
+//    public ResponseEntity<?> saveProgress(@PathVariable Long chapterId,
+//                                          @RequestBody Map<String, Object> body) {
+//        User user = getCurrentUser();
+//        if (user == null) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Login required"));
+//        }
+//
+//        Long position = ((Number) body.get("position")).longValue();
+//        chapterService.saveReadingProgress(user, chapterId, position);
+//
+//        return ResponseEntity.ok(Map.of("saved", true));
+//    }
+
     @PostMapping("/{chapterId}/progress")
     public ResponseEntity<?> saveProgress(@PathVariable Long chapterId,
                                           @RequestBody Map<String, Object> body) {
@@ -127,9 +141,15 @@ public class ChapterApiController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Login required"));
         }
 
-        Long position = ((Number) body.get("position")).longValue();
-        chapterService.saveReadingProgress(user, chapterId, position);
+        // Hỗ trợ cả "position" (scroll%) lẫn "paragraphIndex"
+        Long position;
+        if (body.containsKey("paragraphIndex")) {
+            position = ((Number) body.get("paragraphIndex")).longValue();
+        } else {
+            position = ((Number) body.get("position")).longValue();
+        }
 
+        chapterService.saveReadingProgress(user, chapterId, position);
         return ResponseEntity.ok(Map.of("saved", true));
     }
 

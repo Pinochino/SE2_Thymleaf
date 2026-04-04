@@ -12,10 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -79,6 +76,15 @@ public class UserController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", favoritePage.getTotalPages());
         return "client/user/favorite-novels";
+    }
+
+    @PostMapping(value = "/user/favorite-novels/remove/{id}")
+    public String removeFavoriteNovels(
+            @PathVariable(value = "id") String id) {
+
+        favoriteRepository.deleteById(Long.parseLong(id));
+
+        return "redirect:/user/favorite-novels";
     }
 
     @GetMapping(value = "/user/translations")

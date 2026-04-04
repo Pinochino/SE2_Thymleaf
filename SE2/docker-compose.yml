@@ -3,7 +3,7 @@ services:
     image: ankane/pgvector:latest
     container_name: pgvector
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123456
@@ -13,5 +13,18 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: unless-stopped
 
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    entrypoint: ["/bin/sh", "-c", "ollama serve & sleep 5 && ollama pull nomic-embed-text && wait"]
+
+
+
 volumes:
   pgdata:
+  ollama_data:

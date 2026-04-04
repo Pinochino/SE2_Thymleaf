@@ -28,7 +28,7 @@
         <!-- Desktop Nav Links -->
         <nav class="hidden md:flex items-center gap-0 ml-10">
             <a th:href="@{/}" class="px-3 py-2 rounded-md text-[14px] font-['Inter'] font-medium text-white">Home</a>
-            <a th:href="@{/user/favorite-novels}"
+            <a th:if="${isLoggedIn}" th:href="@{/user/favorite-novels}"
                class="px-3 py-2 rounded-md text-[14px] font-['Inter'] font-medium text-[#94a3b8] hover:text-white transition-colors ml-8">Favourite</a>
             <a th:href="@{/user/translations}"
                class="px-3 py-2 rounded-md text-[14px] font-['Inter'] font-medium text-[#94a3b8] hover:text-white transition-colors ml-8">Contribute</a>
@@ -185,7 +185,7 @@
     <div id="mobile-menu" class="hidden md:hidden border-t border-[#1f2937] px-4 py-3 space-y-1 bg-[#0f172a]">
         <a th:href="@{/}"
            class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-white hover:bg-white/5 transition-colors">Home</a>
-        <a th:href="@{/user/favorite-novels}"
+        <a th:if="${isLoggedIn}" th:href="@{/user/favorite-novels}"
            class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Favourite</a>
         <a th:href="@{/user/translations}"
            class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Contribute</a>

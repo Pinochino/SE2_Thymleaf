@@ -34,8 +34,6 @@ public class NovelController {
     private NovelCommentRepository novelCommentRepository;
     private final ChapterService chapterService;
     private final UserRepository userRepository;
-    private final Logger logger = LoggerFactory.getLogger(NovelController.class);
-
 
     @Autowired
     public NovelController(NovelRepository novelRepository,

@@ -14,8 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.List;
-
 
 @Controller
 public class HomeController {
@@ -32,20 +30,19 @@ public class HomeController {
 
     @RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
     public String homePage(@AuthenticationPrincipal UserDetailImpl userDetails, Model model) {
-        User user = userDetails.getUser();
-        model.addAttribute("user", user);
-
         Page<Novel> trending = novelService.getTrendingNovels(0, 6);
         Page<Novel> recentUpdates = novelService.getRecentNovels(0, 6);
-        List<Novel> favorites = novelService.getFavoriteNovels(user.getId());
-        List<Novel> currentlyReading = novelService.getCurrentlyReadingNovels(user.getId());
 
         model.addAttribute("trendingNovels", trending.getContent());
         model.addAttribute("recentUpdateNovels", recentUpdates.getContent());
-        model.addAttribute("favoriteNovels", favorites);
-        model.addAttribute("currentlyReading", currentlyReading);
 
-        // Hero novel = top trending novel
+        if (userDetails != null) {
+            User user = userDetails.getUser();
+            model.addAttribute("user", user);
+            model.addAttribute("favoriteNovels", novelService.getFavoriteNovels(user.getId()));
+            model.addAttribute("currentlyReading", novelService.getCurrentlyReadingNovels(user.getId()));
+        }
+
         if (!trending.isEmpty()) {
             model.addAttribute("heroNovel", trending.getContent().get(0));
         }

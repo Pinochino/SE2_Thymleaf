@@ -187,7 +187,7 @@
                                   th:if="${commentCounts.containsKey(stat.index)}"
                                   th:text="${commentCounts.get(stat.index)}">0</span>
                         </button>
-                        <button class="action-btn bookmark-action-btn" aria-label="Bookmark"
+                        <button th:if="${isLoggedIn}" class="action-btn bookmark-action-btn" aria-label="Bookmark"
                                 th:classappend="${bookmarkedParagraphs.contains(stat.index) ? 'bookmarked' : ''}"
                                 th:attr="data-paragraph-index=${stat.index}">
                             <img th:src="@{/img/bookmark.svg}" alt="">

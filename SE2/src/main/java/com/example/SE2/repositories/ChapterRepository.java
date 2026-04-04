@@ -11,6 +11,9 @@ import java.util.Optional;
 public interface ChapterRepository extends JpaRepository<Chapter, Long> {
     List<Chapter> findByNovelIdOrderByChapterNumberAsc(Long novelId);
 
+    boolean existsByNovelIdAndChapterNumber(Long novelId, Long chapterNumber);
+
+    Chapter findByNovelIdAndChapterNumber(Long novelId, Long chapterNumber);
     Optional<Chapter> findFirstByNovelIdAndChapterNumberGreaterThanOrderByChapterNumberAsc(Long novelId, Long chapterNumber);
 
     Optional<Chapter> findFirstByNovelIdAndChapterNumberLessThanOrderByChapterNumberDesc(Long novelId, Long chapterNumber);

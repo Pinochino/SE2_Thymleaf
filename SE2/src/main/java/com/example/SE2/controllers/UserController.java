@@ -41,6 +41,15 @@ public class UserController {
         return "client/user/profile";
     }
 
+    @PostMapping(value = "/user/profile/update-avatar")
+    public String updateAvatar(@AuthenticationPrincipal UserDetailImpl userDetails,
+                               @RequestParam String avatarUrl) {
+        User user = userDetails.getUser();
+        user.setAvatarUrl(avatarUrl);
+        userRepository.save(user);
+        return "redirect:/user/profile";
+    }
+
     @PostMapping("/user/profile/save")
     public String saveUserProfile(@AuthenticationPrincipal UserDetailImpl userDetails,
                                   @ModelAttribute User userForm) {
@@ -92,11 +101,8 @@ public class UserController {
                                     @RequestParam(required = false) Long novelId,
                                     @RequestParam(required = false) Long chapterId,
                                     Model model) {
-        // Load all novels for the dropdown
         List<Novel> novels = novelRepository.findAll();
         model.addAttribute("novels", novels);
-
-        // If novelId is provided, load its chapters
         if (novelId != null) {
             Novel novel = novelRepository.findById(novelId).orElse(null);
             model.addAttribute("selectedNovel", novel);

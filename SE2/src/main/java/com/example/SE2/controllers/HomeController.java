@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-
 @Controller
 public class HomeController {
 
@@ -30,33 +29,36 @@ public class HomeController {
         return "public/accessDenied";
     }
 
-    @RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
+    @RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
     public String homePage(@AuthenticationPrincipal UserDetailImpl userDetails, Model model) {
-        User user = userDetails.getUser();
-        model.addAttribute("user", user);
+
+        User user = (userDetails != null) ? userDetails.getUser() : null;
 
         Page<Novel> trending = novelService.getTrendingNovels(0, 6);
         Page<Novel> recentUpdates = novelService.getRecentNovels(0, 6);
-        List<Novel> favorites = novelService.getFavoriteNovels(user.getId());
-        List<Novel> currentlyReading = novelService.getCurrentlyReadingNovels(user.getId());
 
+        model.addAttribute("user", user);
         model.addAttribute("trendingNovels", trending.getContent());
         model.addAttribute("recentUpdateNovels", recentUpdates.getContent());
-        model.addAttribute("favoriteNovels", favorites);
-        model.addAttribute("currentlyReading", currentlyReading);
 
-        // Hero novel = top trending novel
         if (!trending.isEmpty()) {
             model.addAttribute("heroNovel", trending.getContent().get(0));
+        }
+
+        // Chỉ load dữ liệu cần login khi đã đăng nhập
+        if (user != null) {
+            List<Novel> favorites = novelService.getFavoriteNovels(user.getId());
+            List<Novel> currentlyReading = novelService.getCurrentlyReadingNovels(user.getId());
+            model.addAttribute("favoriteNovels", favorites);
+            model.addAttribute("currentlyReading", currentlyReading);
+        } else {
+            model.addAttribute("favoriteNovels", List.of());
+            model.addAttribute("currentlyReading", List.of());
         }
 
         return "client/homePage";
     }
 
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public String searchPage() {
-        return "client/searchPage";
-    }
 
     @RequestMapping(value = "/page-not-found", method = RequestMethod.GET)
     public String pageNotFound() {

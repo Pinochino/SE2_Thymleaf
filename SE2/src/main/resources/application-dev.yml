@@ -51,9 +51,7 @@ spring:
       schema-locations: classpath:schema-dev.sql
   ai:
     ollama:
-      enabled: false
-ai:
-  ollama:
-    chat:
-      options:
-        model: none
+      embedding:
+        enabled: false
+      chat:
+        enabled: false

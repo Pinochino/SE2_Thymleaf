@@ -127,17 +127,22 @@ public class AuthController {
 
         userRepository.save(user);
 
-        Map<String, Object> objectMap = new HashMap<>();
-        objectMap.put("name", user.getEmail());
-        objectMap.put("content", "<p>This is a <strong>complex</strong> email with HTML content and CSS styling.</p>");
+        try {
+            Map<String, Object> objectMap = new HashMap<>();
+            objectMap.put("name", user.getEmail());
+            objectMap.put("content", "<p>This is a <strong>complex</strong> email with HTML content and CSS styling.</p>");
 
-        MailRequest mailRequest = new MailRequest();
-        mailRequest.setTo(request.getEmail());
-        mailRequest.setSubject("Registration Confirmation");
-        mailRequest.setTemplateName("email-template");
-        mailRequest.setModel(objectMap);
+            MailRequest mailRequest = new MailRequest();
+            mailRequest.setTo(request.getEmail());
+            mailRequest.setSubject("Registration Confirmation");
+            mailRequest.setTemplateName("email-template");
+            mailRequest.setModel(objectMap);
 
-        mailService.sendMail(mailRequest);
+            mailService.sendMail(mailRequest);
+        } catch (Exception e) {
+            // Log lỗi nhưng không block user — họ vẫn đăng ký được
+            log.warn("Failed to send registration email to {}: {}", user.getEmail(), e.getMessage());
+        }
 
         return "redirect:/login";
     }

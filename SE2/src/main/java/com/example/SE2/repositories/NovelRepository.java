@@ -1,10 +1,12 @@
 package com.example.SE2.repositories;
 
+import com.example.SE2.constants.NovelStatus;
 import com.example.SE2.models.Novel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -30,4 +32,36 @@ public interface NovelRepository extends JpaRepository<Novel, Long> {
 
     @Query("SELECT f.novel FROM Favorite f WHERE f.user.id = :userId")
     List<Novel> findFavoritesByUserId(String userId);
+
+    @Query(value = """
+        SELECT * FROM novel
+        ORDER BY meta_vector <=> CAST(:queryVector AS vector)
+        LIMIT :limit OFFSET :offset
+        """, nativeQuery = true)
+    List<Novel> searchVector(
+            @Param("queryVector") String queryVector,
+            @Param("limit")       int limit,
+            @Param("offset")      int offset
+    );
+
+    @Query(value = "SELECT COUNT(*) FROM novel ORDER BY meta_vector <=> CAST(:queryVector AS vector)", nativeQuery = true)
+    long countVectorSearch(@Param("queryVector") String queryVector);
+
+    @Query("""
+    SELECT DISTINCT n FROM Novel n
+    LEFT JOIN n.genres g
+    WHERE
+        (:trending IS NULL OR (:trending = true AND n.averageRating > :threshold))
+        AND (:#{#genres == null || #genres.isEmpty()} = true OR g.name IN :genres)
+        AND (:status IS NULL OR n.status = :status)
+    ORDER BY n.averageRating DESC NULLS LAST
+    """)
+    Page<Novel> searchFilter(
+            @Param("trending") Boolean trending,
+            @Param("threshold") Double threshold,
+            @Param("genres") List<String> genres,
+            @Param("status") NovelStatus status,
+            Pageable pageable
+    );
+
 }

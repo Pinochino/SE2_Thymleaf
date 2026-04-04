@@ -132,155 +132,58 @@
       </div>
 
 
-      <!-- ── Sample cards (fallback / preview when no Thymeleaf data) ── -->
-      <div id="novel-list" th:if="${novels == null or novels.isEmpty()}">
-
-        <!-- Sample 1 -->
-        <div class="novel-card">
+      <!-- ── Novel cards from data ── -->
+      <div id="novel-list" th:if="${novels != null and !novels.isEmpty()}">
+        <div class="novel-card" th:each="novel : ${novels}">
           <div class="card-cover">
-            <div class="card-cover-inner" style="background:linear-gradient(160deg,#1e3a5a 0%,#2a5a7a 50%,#182840 100%);">
-              <span style="font-family:var(--font-head);font-size:0.48rem;color:rgba(255,255,255,.22);text-align:center;padding:0 10px;line-height:1.7;">Shadow of the Dragon Queen</span>
+            <div class="card-cover-inner" th:if="${novel.coverImgUrl != null}" th:style="'background-image:url(' + ${novel.coverImgUrl} + ');background-size:cover;background-position:center;'"></div>
+            <div class="card-cover-inner" th:if="${novel.coverImgUrl == null}" style="background:linear-gradient(160deg,#1e3a5a 0%,#2a5a7a 50%,#182840 100%);">
+              <span style="font-family:var(--font-head);font-size:0.48rem;color:rgba(255,255,255,.22);text-align:center;padding:0 10px;line-height:1.7;" th:text="${novel.title}"></span>
             </div>
           </div>
           <div class="card-body">
             <div class="card-head-row">
-              <a href="#" class="card-title">Shadow of the Dragon Queen</a>
-              <span class="card-status-badge badge-completed">Completed</span>
+              <a th:href="@{/novels/information/{publicId}(publicId=${novel.publicId})}" class="card-title" th:text="${novel.title}">Title</a>
+              <span class="card-status-badge" th:text="${novel.status}" th:classappend="${novel.status == 'Completed' ? ' badge-completed' : ' badge-new'}">Status</span>
             </div>
             <div class="card-meta">
-              <span style="display:flex;align-items:center;gap:5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/></svg>Elara Vance</span>
-              <span style="display:flex;align-items:center;gap:4px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span style="color:#e2e8f0;font-weight:600;">4.8</span></span>
+              <span style="display:flex;align-items:center;gap:5px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/></svg>
+                <span th:text="${novel.author ?: 'Unknown'}">Author</span>
+              </span>
+              <span th:if="${novel.averageRating != null and novel.averageRating > 0}" style="display:flex;align-items:center;gap:4px;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <span style="color:#e2e8f0;font-weight:600;" th:text="${novel.averageRating}">4.8</span>
+              </span>
             </div>
-            <div class="card-genres">
-              <span style="font-size:0.68rem;color:var(--accent2);background:rgba(63,103,232,0.1);border:1px solid rgba(63,103,232,0.25);border-radius:4px;padding:2px 7px;">Fantasy</span>
-              <span style="font-size:0.68rem;color:var(--accent2);background:rgba(63,103,232,0.1);border:1px solid rgba(63,103,232,0.25);border-radius:4px;padding:2px 7px;">Adventure</span>
+            <div class="card-genres" th:if="${novel.genres != null and !novel.genres.isEmpty()}">
+              <span th:each="g : ${novel.genres}" th:text="${g.name}" style="font-size:0.68rem;color:var(--accent2);background:rgba(63,103,232,0.1);border:1px solid rgba(63,103,232,0.25);border-radius:4px;padding:2px 7px;"></span>
             </div>
-            <p class="card-description">A legendary queen rises from the ashes of a fallen empire. With a dragon companion at her side and a kingdom to reclaim, she must navigate a world of treacherous magic and ancient gods. The war for the Crown of Embers has only just begun...</p>
+            <p class="card-description" th:if="${novel.description != null}" th:text="${novel.description.length() > 200 ? novel.description.substring(0, 200) + '...' : novel.description}">Description</p>
             <div class="card-actions">
-              <a href="#" class="btn-read"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Read Now</a>
-              <button class="btn-save" onclick="toggleSave(this)" data-novel-id="1"><svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg><span>Save</span></button>
+              <a th:href="@{/novels/information/{publicId}(publicId=${novel.publicId})}" class="btn-read">
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                Read Now
+              </a>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Sample 2 -->
-        <div class="novel-card">
-          <div class="card-cover">
-            <div class="card-cover-inner" style="background:linear-gradient(160deg,#1a2a1e 0%,#2d4a35 50%,#101a12 100%);">
-              <span style="font-family:var(--font-head);font-size:0.48rem;color:rgba(255,255,255,.22);text-align:center;padding:0 10px;line-height:1.7;">The Alchemist's Secret</span>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="card-head-row">
-              <a href="#" class="card-title">The Alchemist's Secret</a>
-              <span class="card-status-badge badge-new">New</span>
-            </div>
-            <div class="card-meta">
-              <span style="display:flex;align-items:center;gap:5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/></svg>Julian Thorne</span>
-              <span style="display:flex;align-items:center;gap:4px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span style="color:#e2e8f0;font-weight:600;">4.5</span></span>
-            </div>
-            <div class="card-genres">
-              <span style="font-size:0.68rem;color:var(--accent2);background:rgba(63,103,232,0.1);border:1px solid rgba(63,103,232,0.25);border-radius:4px;padding:2px 7px;">Fantasy</span>
-              <span style="font-size:0.68rem;color:var(--accent2);background:rgba(63,103,232,0.1);border:1px solid rgba(63,103,232,0.25);border-radius:4px;padding:2px 7px;">Action</span>
-            </div>
-            <p class="card-description">In a city where gold is blood and lead is life, a young apprentice discovers a formula that shouldn't exist. Now hunted by the Alchemist Guild, he must find the source of the forbidden art before the city is consumed by its own greed.</p>
-            <div class="card-actions">
-              <a href="#" class="btn-read"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Read Now</a>
-              <button class="btn-save saved" onclick="toggleSave(this)" data-novel-id="2"><svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="currentColor"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg><span>Saved</span></button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Sample 3 -->
-        <div class="novel-card">
-          <div class="card-cover">
-            <div class="card-cover-inner" style="background:linear-gradient(160deg,#1a2a3a 0%,#25404f 50%,#0e1e2a 100%);">
-              <span style="font-family:var(--font-head);font-size:0.72rem;color:rgba(255,255,255,.3);text-align:center;padding:0 12px;letter-spacing:.1em;">NOVEL</span>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="card-head-row">
-              <a href="#" class="card-title">The Last Ember</a>
-              <span class="card-status-badge badge-new">New</span>
-            </div>
-            <div class="card-meta">
-              <span style="display:flex;align-items:center;gap:5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/></svg>S.K. Aris</span>
-              <span style="display:flex;align-items:center;gap:4px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span style="color:#e2e8f0;font-weight:600;">4.9</span></span>
-            </div>
-            <div class="card-genres">
-              <span style="font-size:0.68rem;color:var(--accent2);background:rgba(63,103,232,0.1);border:1px solid rgba(63,103,232,0.25);border-radius:4px;padding:2px 7px;">Fantasy</span>
-              <span style="font-size:0.68rem;color:var(--accent2);background:rgba(63,103,232,0.1);border:1px solid rgba(63,103,232,0.25);border-radius:4px;padding:2px 7px;">Romance</span>
-            </div>
-            <p class="card-description">The world has gone dark. Only the Embers keep the shadows at bay. As the last torchbearer, Kaelen must journey to the Sun Peaks to reignite the Great Fire, but ancient horrors lurk in the permanent night, waiting for the light to flicker.</p>
-            <div class="card-actions">
-              <a href="#" class="btn-read"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Read Now</a>
-              <button class="btn-save" onclick="toggleSave(this)" data-novel-id="3"><svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg><span>Save</span></button>
-            </div>
-          </div>
-        </div>
-
-      </div><!-- /novel-list sample -->
+      <!-- ── No results message ── -->
+      <div th:if="${novels != null and novels.isEmpty()}" style="text-align:center;padding:3rem 1rem;">
+        <p style="font-size:1.1rem;color:var(--lw);">No novels found<span th:if="${selectedGenre != null}"> for genre <strong th:text="${selectedGenre}" style="color:var(--accent2);"></strong></span>.</p>
+        <a th:href="@{/search}" style="color:var(--accent2);font-size:0.85rem;margin-top:0.5rem;display:inline-block;">View all novels</a>
+      </div>
 
       <!-- ── Pagination ── -->
-      <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:1.75rem;flex-wrap:wrap;padding-bottom:1rem;">
-
-        <form id="page-form" th:action="@{/search}" method="get" style="display:none;">
-          <input type="hidden" name="query"    th:value="${query}" />
-          <input type="hidden" name="sort"     th:value="${sort}" />
-          <input type="hidden" name="status"   th:value="${selectedStatus}" />
-          <input type="hidden" name="trending" th:value="${isTrending}" />
-          <th:block th:each="gid : ${selectedGenres}"><input type="hidden" name="genres" th:value="${gid}" /></th:block>
-          <input type="hidden" name="page" id="page-input" value="1" />
-        </form>
-
-        <!-- Prev -->
-        <button class="page-btn"
-                th:disabled="${currentPage <= 1}"
-                th:style="${currentPage <= 1} ? 'opacity:0.3;cursor:default;' : ''"
-                th:onclick="${currentPage > 1} ? 'goToPage(' + (currentPage - 1) + ')' : 'return false'"
-                style="opacity:0.3;cursor:default;" onclick="return false">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-
-        <!-- Thymeleaf pages -->
-        <th:block th:if="${totalPages != null and totalPages > 1}">
-          <button th:if="${paginationStart > 1}" class="page-btn" onclick="goToPage(1)">1</button>
-          <span   th:if="${paginationStart > 2}" class="page-btn" style="pointer-events:none;border-color:transparent;background:transparent;color:var(--lw);">…</span>
-          <th:block th:each="p : ${#numbers.sequence(paginationStart, paginationEnd)}">
-            <button class="page-btn" th:classappend="${p==currentPage}?' active':''" th:text="${p}" th:onclick="'goToPage('+${p}+')'">1</button>
-          </th:block>
-          <span   th:if="${paginationEnd < totalPages-1}" class="page-btn" style="pointer-events:none;border-color:transparent;background:transparent;color:var(--lw);">…</span>
-          <button th:if="${paginationEnd < totalPages}" class="page-btn" th:text="${totalPages}" th:onclick="'goToPage('+${totalPages}+')'">124</button>
-        </th:block>
-
-        <!-- Static sample pagination -->
-        <th:block th:if="${totalPages == null or totalPages <= 1}">
-          <button class="page-btn active">1</button>
-          <button class="page-btn">2</button>
-          <button class="page-btn">3</button>
-          <span   class="page-btn" style="pointer-events:none;border-color:transparent;background:transparent;color:var(--lw);">…</span>
-          <button class="page-btn">124</button>
-        </th:block>
-
-        <!-- Next -->
-        <button class="page-btn"
-                th:disabled="${currentPage >= totalPages}"
-                th:style="${currentPage >= totalPages} ? 'opacity:0.3;cursor:default;' : ''"
-                th:onclick="${currentPage < totalPages} ? 'goToPage(' + (currentPage + 1) + ')' : 'return false'">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-
-      </div>
+      <div th:replace="~{fragments/client/pagination :: pagination}"></div>
 
     </section>
   </div><!-- /search-wrap -->
 </main>
 
 <script>
-  function goToPage(n) {
-    document.getElementById('page-input').value = n;
-    document.getElementById('page-form').submit();
-  }
   function selectPill(el) {
     el.closest('div').querySelectorAll('.status-pill').forEach(p => p.classList.remove('active'));
     el.classList.add('active');

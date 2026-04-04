@@ -4,7 +4,6 @@ import com.example.SE2.dtos.request.NovelFilterRequest;
 import com.example.SE2.models.Novel;
 import com.example.SE2.repositories.NovelRepository;
 import com.example.SE2.services.embedding.EmbeddingService;
-import com.example.SE2.services.embedding.EmbeddingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,10 +18,10 @@ import java.util.List;
 public class SearchServiceImpl implements SearchService{
 
     @Autowired
-    private EmbeddingService embeddingService;
+    private NovelRepository novelRepository;
 
     @Autowired
-    private NovelRepository novelRepository;
+    private EmbeddingService embeddingService;
 
     @Override
     public Page<Novel> searchByVector(String query, int page, int size) {
@@ -31,25 +30,16 @@ public class SearchServiceImpl implements SearchService{
         int offset       = page * size;
 
         List<Novel> results = novelRepository.searchVector(formatted, size, offset);
-        long total          = novelRepository.countAllNovels();
+        long total          = novelRepository.countVectorSearch(formatted);
 
         return new PageImpl<>(results, PageRequest.of(page, size), total);
     }
 
     @Override
     public Page<Novel> searchByFilter(NovelFilterRequest request, Pageable pageable) {
-        boolean hasFilter = (request.getTrending() != null && request.getTrending())
-                || (request.getGenres() != null && !request.getGenres().isEmpty())
-                || request.getStatus() != null;
-
-        if (!hasFilter) {
-            throw new IllegalArgumentException(
-                    "At least one filter must be provided."
-            );
-        }
-
         return novelRepository.searchFilter(
                 request.getTrending(),
+                4.0,
                 request.getGenres(),
                 request.getStatus(),
                 pageable

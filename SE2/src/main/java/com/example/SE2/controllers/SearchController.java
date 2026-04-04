@@ -9,12 +9,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.example.SE2.constants.NovelStatus;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -62,10 +60,7 @@ public class SearchController {
             @RequestParam(defaultValue = "10") int size,
             Model model
     ) {
-        NovelFilterRequest req = new NovelFilterRequest(trending,genres,status);
-        req.setTrending(trending);
-        req.setGenres(genres);
-        req.setStatus(status);
+        NovelFilterRequest req = new NovelFilterRequest(trending, genres, status);
 
         boolean hasFilter = (trending != null && trending)
                 || (genres != null && !genres.isEmpty())

@@ -41,23 +41,24 @@ public interface NovelRepository extends JpaRepository<Novel, Long> {
             @Param("offset")      int offset
     );
 
+    @Query(value = "SELECT COUNT(*) FROM novel ORDER BY meta_vector <=> CAST(:queryVector AS vector)", nativeQuery = true)
+    long countVectorSearch(@Param("queryVector") String queryVector);
+
     @Query("""
     SELECT DISTINCT n FROM Novel n
     LEFT JOIN n.genres g
     WHERE
-        (:trending IS NULL OR (:trending = true AND n.averageRating > 4.0))
+        (:trending IS NULL OR (:trending = true AND n.averageRating > :threshold))
         AND (:#{#genres == null || #genres.isEmpty()} = true OR g.name IN :genres)
         AND (:status IS NULL OR n.status = :status)
     ORDER BY n.averageRating DESC NULLS LAST
     """)
     Page<Novel> searchFilter(
             @Param("trending") Boolean trending,
+            @Param("threshold") Double threshold,
             @Param("genres") List<String> genres,
             @Param("status") NovelStatus status,
             Pageable pageable
     );
-
-    @Query(value = "SELECT COUNT(*) FROM novel", nativeQuery = true)
-    long countAllNovels();
 
 }

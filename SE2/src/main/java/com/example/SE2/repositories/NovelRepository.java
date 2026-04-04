@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,4 +28,13 @@ public interface NovelRepository extends JpaRepository<Novel, Long> {
 
     @Query("SELECT f.novel FROM Favorite f WHERE f.user.id = :userId")
     List<Novel> findFavoritesByUserId(String userId);
+
+    @Query(value = """
+            SELECT * FROM novel
+            ORDER BY meta_vector <=> CAST(:queryVector AS vector)
+            LIMIT :limit
+            """, nativeQuery = true)
+    List<Novel> searchVector(@Param("queryVector") String queryVector, @Param("limit") int limit);
+
+
 }

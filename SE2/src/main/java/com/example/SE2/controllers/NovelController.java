@@ -50,103 +50,7 @@ public class NovelController {
         this.readingProgressRepository = readingProgressRepository;
     }
 
-//     @RequestMapping(value = "/information/{publicId}", method =
-//     RequestMethod.GET)
-//     public String novelDetail(@PathVariable String publicId,
-//     Model model,
-//     @AuthenticationPrincipal UserDetailImpl user) {
-//
-//     Novel novel = novelRepository.findNovelByPublicId(UUID.fromString(publicId));
-//
-//     // Chỉ lấy comment gốc (không có parent)
-//     List<NovelComment> novelComments = novelCommentRepository
-//     .findByNovelAndParentCommentIsNullOrderByCreatedAtDesc(novel);
-//
-//     // Load chapters for the novel
-//     List<Chapter> chapters = chapterService.getChaptersByNovelId(novel.getId());
-//
-//     model.addAttribute("novel", novel);
-//     model.addAttribute("novelComment", new NovelComment());
-//     model.addAttribute("userLogin", user);
-//     model.addAttribute("novelComments", novelComments);
-//     model.addAttribute("timeUtils", new TimeUtils());
-//     model.addAttribute("chapters", chapters);
-//     model.addAttribute("totalChapters", chapters.size());
-//     model.addAttribute("hasChapters", !chapters.isEmpty());
-//
-//     return "client/novel-detail";
-//     }
 
-     @GetMapping("/chapter/{id}")
-     public String readChapter(@PathVariable Long id, Model model) {
-     // Load the chapter
-     Chapter chapter = chapterService.getChapterById(id);
-     Novel novel = chapter.getNovel();
-
-     // Split content into paragraphs
-     List<String> paragraphs =
-     chapterService.splitContentIntoParagraphs(chapter.getContent());
-
-     // Load all chapters for TOC sidebar
-     List<Chapter> allChapters =
-     chapterService.getChaptersByNovelId(novel.getId());
-
-     // Load next/previous chapter for navigation
-     Chapter nextChapter = chapterService.getNextChapter(chapter).orElse(null);
-     Chapter prevChapter =
-     chapterService.getPreviousChapter(chapter).orElse(null);
-
-     // Comment counts per paragraph
-     Map<Integer, Long> commentCounts =
-     chapterService.getCommentCountsByChapter(id, paragraphs.size());
-
-     // Word count
-     int wordCount = paragraphs.stream()
-     .mapToInt(p -> p.split("\\s+").length)
-     .sum();
-
-     // Model attributes
-     model.addAttribute("chapter", chapter);
-     model.addAttribute("novel", novel);
-     model.addAttribute("paragraphs", paragraphs);
-     model.addAttribute("allChapters", allChapters);
-     model.addAttribute("nextChapter", nextChapter);
-     model.addAttribute("prevChapter", prevChapter);
-     model.addAttribute("commentCounts", commentCounts);
-     model.addAttribute("wordCount", wordCount);
-
-     // User-specific data (if logged in)
-     User currentUser = getCurrentUser();
-     if (currentUser != null) {
-     String userId = currentUser.getId();
-
-     List<Bookmark> bookmarks = chapterService.getUserBookmarksForChapter(userId,
-     id);
-     model.addAttribute("bookmarks", bookmarks);
-
-     Set<Integer> bookmarkedParagraphs = bookmarks.stream()
-     .map(Bookmark::getParagraphIndex)
-     .collect(Collectors.toSet());
-     model.addAttribute("bookmarkedParagraphs", bookmarkedParagraphs);
-
-     ReadingSetting settings = chapterService.getUserReadingSetting(userId);
-     model.addAttribute("readingSettings", settings);
-
-     List<Long> readChapterIds = chapterService.getReadChapterIds(userId,
-     novel.getId());
-     model.addAttribute("readChapterIds", readChapterIds);
-
-     model.addAttribute("isLoggedIn", true);
-     } else {
-     model.addAttribute("bookmarks", List.of());
-     model.addAttribute("bookmarkedParagraphs", Set.of());
-     model.addAttribute("readingSettings", null);
-     model.addAttribute("readChapterIds", List.of());
-     model.addAttribute("isLoggedIn", false);
-     }
-
-     return "client/chapter";
-     }
 
      private User getCurrentUser() {
      Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -180,62 +84,136 @@ public class NovelController {
      readingProgressRepository.save(progress);
      }
 
- @RequestMapping(value = "/information/{publicId}", method = RequestMethod.GET)
- public String novelDetail(@PathVariable String publicId,
-                           Model model,
-                           @AuthenticationPrincipal UserDetailImpl userDetail) {
 
-  Novel novel = novelRepository.findNovelByPublicId(UUID.fromString(publicId));
-  List<NovelComment> novelComments = novelCommentRepository
-          .findByNovelAndParentCommentIsNullOrderByCreatedAtDesc(novel);
-  List<Chapter> chapters = chapterService.getChaptersByNovelId(novel.getId());
-  int totalChapters = chapters.size();
 
-  model.addAttribute("novel", novel);
-  model.addAttribute("novelComment", new NovelComment());
-  model.addAttribute("userLogin", userDetail);
-  model.addAttribute("novelComments", novelComments);
-  model.addAttribute("timeUtils", new TimeUtils());
-  model.addAttribute("chapters", chapters);
-  model.addAttribute("totalChapters", totalChapters);
-  model.addAttribute("hasChapters", !chapters.isEmpty());
+    @RequestMapping(value = "/information/{publicId}", method = RequestMethod.GET)
+    public String novelDetail(@PathVariable String publicId,
+                              Model model,
+                              @AuthenticationPrincipal UserDetailImpl userDetail) {
 
-  // ✅ Tính reading progress
-  int currentChapter = 0;
-  int progressPct = 0;
+        Novel novel = novelRepository.findNovelByPublicId(UUID.fromString(publicId));
+        List<NovelComment> novelComments = novelCommentRepository
+                .findByNovelAndParentCommentIsNullOrderByCreatedAtDesc(novel);
+        List<Chapter> chapters = chapterService.getChaptersByNovelId(novel.getId());
+        int totalChapters = chapters.size();
 
-  if (userDetail != null) {
-   User user = userRepository.findUserByEmail(userDetail.getUsername());
-   if (user != null) {
-    // Lấy progress mới nhất của user cho novel này
-    readingProgressRepository
-            .findTopByUserAndChapter_NovelOrderByUpdatedAtDesc(user, novel)
-            .ifPresent(progress -> {
-             // không dùng được vì effectively final — xử lý bên dưới
-            });
+        model.addAttribute("novel", novel);
+        model.addAttribute("novelComment", new NovelComment());
+        model.addAttribute("userLogin", userDetail);
+        model.addAttribute("novelComments", novelComments);
+        model.addAttribute("timeUtils", new TimeUtils());
+        model.addAttribute("chapters", chapters);
+        model.addAttribute("totalChapters", totalChapters);
+        model.addAttribute("hasChapters", !chapters.isEmpty());
 
-    // Dùng cách này thay thế
-    Optional<ReadingProgress> latestProgress = readingProgressRepository
-            .findTopByUserAndChapter_NovelOrderByUpdatedAtDesc(user, novel);
+        // Tính reading progress bar
+        if (userDetail != null) {
+            User user = userRepository.findUserByEmail(userDetail.getUsername());
+            if (user != null) {
+                Optional<ReadingProgress> latestProgress = readingProgressRepository
+                        .findTopByUserAndChapter_NovelOrderByUpdatedAtDesc(user, novel);
 
-    if (latestProgress.isPresent()) {
-     long chapterNumber = latestProgress.get().getChapter().getChapterNumber();
-     model.addAttribute("currentChapter", chapterNumber);
-     model.addAttribute("progressPct", totalChapters > 0
-             ? (int) Math.round((chapterNumber * 100.0) / totalChapters)
-             : 0);
-    } else {
-     model.addAttribute("currentChapter", 0);
-     model.addAttribute("progressPct", 0);
+                if (latestProgress.isPresent()) {
+                    long chapterNumber = latestProgress.get().getChapter().getChapterNumber();
+                    model.addAttribute("currentChapter", chapterNumber);
+                    model.addAttribute("progressPct", totalChapters > 0
+                            ? (int) Math.round((chapterNumber * 100.0) / totalChapters)
+                            : 0);
+
+                    // ✅ KEY FIX: truyền readingProgress để hiện nút "Continue Reading"
+                    // lastPosition chính là paragraphIndex đã lưu
+                    model.addAttribute("readingProgress", latestProgress.get());
+                } else {
+                    model.addAttribute("currentChapter", 0);
+                    model.addAttribute("progressPct", 0);
+                    model.addAttribute("readingProgress", null);
+                }
+            } else {
+                model.addAttribute("currentChapter", 0);
+                model.addAttribute("progressPct", 0);
+                model.addAttribute("readingProgress", null);
+            }
+        } else {
+            model.addAttribute("currentChapter", 0);
+            model.addAttribute("progressPct", 0);
+            model.addAttribute("readingProgress", null);
+        }
+
+        return "client/novel-detail";
     }
-   }
-  } else {
-   model.addAttribute("currentChapter", 0);
-   model.addAttribute("progressPct", 0);
-  }
 
-  return "client/novel-detail";
- }
+    @GetMapping("/chapter/{id}")
+    public String readChapter(@PathVariable Long id,
+                              @RequestParam(name = "pi", required = false) Integer piParam,
+                              Model model) {
+        Chapter chapter = chapterService.getChapterById(id);
+        Novel novel = chapter.getNovel();
+
+        List<String> paragraphs =
+                chapterService.splitContentIntoParagraphs(chapter.getContent());
+        List<Chapter> allChapters =
+                chapterService.getChaptersByNovelId(novel.getId());
+        Chapter nextChapter = chapterService.getNextChapter(chapter).orElse(null);
+        Chapter prevChapter = chapterService.getPreviousChapter(chapter).orElse(null);
+        Map<Integer, Long> commentCounts =
+                chapterService.getCommentCountsByChapter(id, paragraphs.size());
+        int wordCount = paragraphs.stream()
+                .mapToInt(p -> p.split("\\s+").length).sum();
+
+        model.addAttribute("chapter", chapter);
+        model.addAttribute("novel", novel);
+        model.addAttribute("paragraphs", paragraphs);
+        model.addAttribute("allChapters", allChapters);
+        model.addAttribute("nextChapter", nextChapter);
+        model.addAttribute("prevChapter", prevChapter);
+        model.addAttribute("commentCounts", commentCounts);
+        model.addAttribute("wordCount", wordCount);
+
+        User currentUser = getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getId();
+
+            List<Bookmark> bookmarks =
+                    chapterService.getUserBookmarksForChapter(userId, id);
+            model.addAttribute("bookmarks", bookmarks);
+
+            Set<Integer> bookmarkedParagraphs = bookmarks.stream()
+                    .map(Bookmark::getParagraphIndex)
+                    .collect(Collectors.toSet());
+            model.addAttribute("bookmarkedParagraphs", bookmarkedParagraphs);
+
+            ReadingSetting settings = chapterService.getUserReadingSetting(userId);
+            model.addAttribute("readingSettings", settings);
+
+            List<Long> readChapterIds =
+                    chapterService.getReadChapterIds(userId, novel.getId());
+            model.addAttribute("readChapterIds", readChapterIds);
+
+            // ✅ Ưu tiên query param ?pi= (từ nút Continue Reading)
+            // Fallback: lấy từ DB (khi user tự navigate đến chapter)
+            if (piParam != null && piParam >= 0) {
+                model.addAttribute("lastParagraphIndex", piParam);
+            } else {
+                int savedIndex = readingProgressRepository
+                        .findFirstByUserAndChapterOrderByIdDesc(currentUser, chapter)
+                        .map(rp -> rp.getLastPosition() != null
+                                ? rp.getLastPosition().intValue() : 0)
+                        .orElse(0);
+                model.addAttribute("lastParagraphIndex", savedIndex);
+            }
+
+            model.addAttribute("isLoggedIn", true);
+        } else {
+            model.addAttribute("bookmarks", List.of());
+            model.addAttribute("bookmarkedParagraphs", Set.of());
+            model.addAttribute("readingSettings", null);
+            model.addAttribute("readChapterIds", List.of());
+            model.addAttribute("lastParagraphIndex", 0);
+            model.addAttribute("isLoggedIn", false);
+        }
+
+        return "client/chapter";
+    }
 
 
 }

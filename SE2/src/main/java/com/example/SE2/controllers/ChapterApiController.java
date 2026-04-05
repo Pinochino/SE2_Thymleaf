@@ -4,23 +4,24 @@ import com.example.SE2.constants.FontFamily;
 import com.example.SE2.constants.FontSize;
 import com.example.SE2.constants.LineSpacing;
 import com.example.SE2.constants.Theme;
-import com.example.SE2.models.ParagraphComment;
-import com.example.SE2.models.ReadingSetting;
-import com.example.SE2.models.User;
+import com.example.SE2.dtos.request.ProgressRequest;
+import com.example.SE2.models.*;
+import com.example.SE2.repositories.ChapterRepository;
 import com.example.SE2.repositories.ParagraphCommentRepository;
+import com.example.SE2.repositories.ReadingProgressRepository;
 import com.example.SE2.repositories.UserRepository;
 import com.example.SE2.services.chapter.ChapterService;
 import com.example.SE2.services.notification.NotificationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/chapter")
@@ -30,12 +31,21 @@ public class ChapterApiController {
     private final UserRepository userRepository;
     private final NotificationService notificationService;
     private final ParagraphCommentRepository paragraphCommentRepository;
+    private final ReadingProgressRepository readingProgressRepository;
+    private final ChapterRepository chapterRepository;
 
-    public ChapterApiController(ChapterService chapterService, UserRepository userRepository, NotificationService notificationService, ParagraphCommentRepository paragraphCommentRepository) {
+    public ChapterApiController(ChapterService chapterService,
+                                ReadingProgressRepository readingProgressRepository,
+                                UserRepository userRepository,
+                                NotificationService notificationService,
+                                ParagraphCommentRepository paragraphCommentRepository,
+                                ChapterRepository chapterRepository) {
         this.chapterService = chapterService;
         this.userRepository = userRepository;
         this.notificationService = notificationService;
         this.paragraphCommentRepository = paragraphCommentRepository;
+        this.readingProgressRepository = readingProgressRepository;
+        this.chapterRepository = chapterRepository;
     }
 
     @GetMapping("/{chapterId}/comments")
@@ -119,38 +129,51 @@ public class ChapterApiController {
         return ResponseEntity.ok(Map.of("bookmarked", added));
     }
 
-//    @PostMapping("/{chapterId}/progress")
-//    public ResponseEntity<?> saveProgress(@PathVariable Long chapterId,
-//                                          @RequestBody Map<String, Object> body) {
-//        User user = getCurrentUser();
-//        if (user == null) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Login required"));
-//        }
-//
-//        Long position = ((Number) body.get("position")).longValue();
-//        chapterService.saveReadingProgress(user, chapterId, position);
-//
-//        return ResponseEntity.ok(Map.of("saved", true));
-//    }
+
 
     @PostMapping("/{chapterId}/progress")
-    public ResponseEntity<?> saveProgress(@PathVariable Long chapterId,
-                                          @RequestBody Map<String, Object> body) {
-        User user = getCurrentUser();
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Login required"));
-        }
+    public ResponseEntity<?> saveProgress(
+            @PathVariable Long chapterId,
+            @RequestBody ProgressRequest req,
+            @AuthenticationPrincipal UserDetails userDetails) {
 
-        // Hỗ trợ cả "position" (scroll%) lẫn "paragraphIndex"
-        Long position;
-        if (body.containsKey("paragraphIndex")) {
-            position = ((Number) body.get("paragraphIndex")).longValue();
+        if (userDetails == null) return ResponseEntity.ok().build();
+
+        Chapter chapter = chapterRepository.findById(chapterId).orElseThrow();
+        User user = userRepository.findUserByEmail(userDetails.getUsername());
+        if (user == null) return ResponseEntity.ok().build();
+
+        // ✅ Lấy tất cả records, tự xử lý duplicate
+        List<ReadingProgress> all = readingProgressRepository
+                .findAllByUserIdAndChapterId(user.getId(), chapter.getId());
+
+        ReadingProgress progress;
+
+        if (all.isEmpty()) {
+            progress = new ReadingProgress();
+            progress.setUser(user);
+            progress.setChapter(chapter);
         } else {
-            position = ((Number) body.get("position")).longValue();
+            // Giữ record có id lớn nhất (mới nhất)
+            progress = all.stream()
+                    .max(Comparator.comparingLong(ReadingProgress::getId))
+                    .get();
+
+            // Xóa các bản duplicate còn lại
+            if (all.size() > 1) {
+                ReadingProgress keep = progress;
+                readingProgressRepository.deleteAll(
+                        all.stream()
+                                .filter(rp -> !rp.getId().equals(keep.getId()))
+                                .collect(Collectors.toList())
+                );
+            }
         }
 
-        chapterService.saveReadingProgress(user, chapterId, position);
-        return ResponseEntity.ok(Map.of("saved", true));
+        progress.setLastPosition(req.getLastPosition());
+        readingProgressRepository.save(progress);
+
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/settings")

@@ -1324,6 +1324,40 @@ body.theme-light .comments-input {
     background: #f9fafb;
 }
 
+/* Action bar theme styles */
+body.theme-light .paragraph-action-bar,
+body.theme-dark .paragraph-action-bar,
+body.theme-sepia .paragraph-action-bar {
+    background-color: transparent;
+}
+
+body.theme-light .paragraph-action-bar-btn img {
+    filter: none;
+}
+
+body.theme-dark .bookmark-action-bar-btn img,
+body.theme-dark .comment-action-bar-btn img {
+    filter: brightness(0) invert(1);
+}
+
+body.theme-sepia .bookmark-action-bar-btn img,
+body.theme-sepia .comment-action-bar-btn img {
+    filter: none;
+}
+
+/* Selected paragraph highlight */
+body.theme-light .chapter-paragraph.selected {
+    background-color: #fef3c7;
+}
+
+body.theme-dark .chapter-paragraph.selected {
+    background-color: rgba(139, 92, 246, 0.2);
+}
+
+body.theme-sepia .chapter-paragraph.selected {
+    background-color: rgba(202, 138, 90, 0.15);
+}
+
 /* ===== Font family override via CSS class ===== */
 body.font-sans-serif .chapter-paragraph {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -1581,5 +1615,97 @@ body.font-sans-serif .chapter-paragraph {
     .footer-nav-arrow-next img {
         width: 18px;
         height: 18px;
+    }
+}
+
+/* ===== Paragraph Action Bar (Fixed below header on mobile) ===== */
+.paragraph-action-bar {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    right: 0;
+    height: 52px;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    z-index: 90;
+    animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.bookmark-action-bar-btn,
+.comment-action-bar-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    position: relative;
+    transition: opacity 0.2s ease;
+}
+
+.bookmark-action-bar-btn:active,
+.comment-action-bar-btn:active {
+    opacity: 0.7;
+}
+
+.bookmark-action-bar-btn img,
+.comment-action-bar-btn img {
+    width: 22px;
+    height: 22px;
+}
+
+.bookmark-action-bar-btn.bookmarked img {
+    content: url('/img/bookmark-filled.svg');
+}
+
+.comment-count {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9999px;
+    background-color: #f87171;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Mobile: hide inline actions, show fixed bar */
+@media (max-width: 640px) {
+    .paragraph-actions {
+        display: none !important;
+    }
+
+    .chapter-paragraph {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .chapter-paragraph.selected {
+        background-color: #fef3c7;
+        padding: 4px 8px;
+        border-radius: 4px;
     }
 }

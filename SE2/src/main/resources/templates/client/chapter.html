@@ -871,6 +871,39 @@
             }, 300);
         }
     })();
+
+    (function() {
+        document.addEventListener('selectstart', function(e) {
+            if (e.target.closest('.chapter-content')) e.preventDefault();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && ['c','p','s','u'].includes(e.key.toLowerCase())) {
+                e.preventDefault();
+            }
+            if (e.key === 'F12') e.preventDefault();
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i','j','c'].includes(e.key.toLowerCase())) {
+                e.preventDefault();
+            }
+        });
+
+        // Disable right-click context menu on chapter content
+        document.addEventListener('contextmenu', function(e) {
+            if (e.target.closest('.chapter-content')) e.preventDefault();
+        });
+
+        // Detect devtools open via debugger timing
+        (function detectDevTools() {
+            var threshold = 160;
+            setInterval(function() {
+                var start = performance.now();
+                debugger;
+                if (performance.now() - start > threshold) {
+                    document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#0f1115;color:#f87171;font-family:sans-serif;font-size:18px;">Content protection: Developer tools detected.</div>';
+                }
+            }, 1000);
+        })();
+    })();
 </script>
 </body>
 </html>

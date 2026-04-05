@@ -71,4 +71,7 @@ public interface NovelRepository extends JpaRepository<Novel, Long> {
 			Pageable pageable
 	);
 
+    @Query("SELECT n FROM Novel n ORDER BY n.updatedAt DESC")
+    Page<Novel> findAllNovels(Pageable pageable);
+
 }

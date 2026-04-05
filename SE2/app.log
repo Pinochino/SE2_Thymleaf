@@ -4087,3 +4087,168 @@ org.attoparser.ParseException: (Line = 192, Column = 21) Malformed markup: Attri
 2026-04-05T18:15:47.907+07:00  INFO 35756 --- [SE2] [http-nio-9000-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
 2026-04-05T18:15:47.924+07:00  WARN 35756 --- [SE2] [http-nio-9000-exec-1] o.s.w.s.h.HandlerMappingIntrospector     : Cache miss for REQUEST dispatch to '/search/filter' (previous null). Performing CorsConfiguration lookup. This is logged once only at WARN level, and every time at TRACE.
 2026-04-05T18:15:54.308+07:00  WARN 35756 --- [SE2] [http-nio-9000-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource .well-known/appspecific/com.chrome.devtools.json for request '/.well-known/appspecific/com.chrome.devtools.json'.]
+2026-04-05T18:31:05.492+07:00  INFO 35756 --- [SE2] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-05T18:31:05.499+07:00  INFO 35756 --- [SE2] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-04-05T18:31:05.510+07:00  INFO 35756 --- [SE2] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-05T18:31:05.517+07:00  INFO 35756 --- [SE2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-05T18:31:05.523+07:00  INFO 35756 --- [SE2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-04-05T21:18:19.515+07:00  INFO 32504 --- [SE2] [restartedMain] com.example.SE2.Se2Application           : Starting Se2Application using Java 21.0.9 with PID 32504 (E:\Projects\NRW\SE2\target\classes started by vinhp in E:\Projects\NRW\SE2)
+2026-04-05T21:18:19.520+07:00  INFO 32504 --- [SE2] [restartedMain] com.example.SE2.Se2Application           : No active profile set, falling back to 1 default profile: "default"
+2026-04-05T21:18:19.844+07:00  INFO 32504 --- [SE2] [restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\vinhp\.m2\repository\io\github\cdimascio\java-dotenv\5.2.2\java-dotenv-5.2.2.jar referenced one or more files that do not exist: file:/C:/Users/vinhp/.m2/repository/io/github/cdimascio/java-dotenv/5.2.2/kotlin-stdlib-1.4.0.jar,file:/C:/Users/vinhp/.m2/repository/io/github/cdimascio/java-dotenv/5.2.2/kotlin-stdlib-common-1.4.0.jar,file:/C:/Users/vinhp/.m2/repository/io/github/cdimascio/java-dotenv/5.2.2/annotations-13.0.jar
+2026-04-05T21:18:19.844+07:00  INFO 32504 --- [SE2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-05T21:18:19.844+07:00  INFO 32504 --- [SE2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-05T21:18:20.913+07:00  INFO 32504 --- [SE2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-05T21:18:21.109+07:00  INFO 32504 --- [SE2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 185 ms. Found 16 JPA repository interfaces.
+2026-04-05T21:18:22.081+07:00  INFO 32504 --- [SE2] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 9000 (http)
+2026-04-05T21:18:22.157+07:00  INFO 32504 --- [SE2] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 2312 ms
+2026-04-05T21:18:22.340+07:00  INFO 32504 --- [SE2] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-05T21:18:22.401+07:00  INFO 32504 --- [SE2] [restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-04-05T21:18:22.664+07:00  INFO 32504 --- [SE2] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-05T21:19:08.194+07:00  INFO 13768 --- [SE2] [restartedMain] com.example.SE2.Se2Application           : Starting Se2Application using Java 21.0.9 with PID 13768 (E:\Projects\NRW\SE2\target\classes started by vinhp in E:\Projects\NRW\SE2)
+2026-04-05T21:19:08.198+07:00  INFO 13768 --- [SE2] [restartedMain] com.example.SE2.Se2Application           : No active profile set, falling back to 1 default profile: "default"
+2026-04-05T21:19:08.592+07:00  INFO 13768 --- [SE2] [restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\vinhp\.m2\repository\io\github\cdimascio\java-dotenv\5.2.2\java-dotenv-5.2.2.jar referenced one or more files that do not exist: file:/C:/Users/vinhp/.m2/repository/io/github/cdimascio/java-dotenv/5.2.2/kotlin-stdlib-1.4.0.jar,file:/C:/Users/vinhp/.m2/repository/io/github/cdimascio/java-dotenv/5.2.2/kotlin-stdlib-common-1.4.0.jar,file:/C:/Users/vinhp/.m2/repository/io/github/cdimascio/java-dotenv/5.2.2/annotations-13.0.jar
+2026-04-05T21:19:08.593+07:00  INFO 13768 --- [SE2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-05T21:19:08.593+07:00  INFO 13768 --- [SE2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-05T21:19:09.491+07:00  INFO 13768 --- [SE2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-05T21:19:09.641+07:00  INFO 13768 --- [SE2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 139 ms. Found 16 JPA repository interfaces.
+2026-04-05T21:19:10.349+07:00  INFO 13768 --- [SE2] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 9000 (http)
+2026-04-05T21:19:10.360+07:00  INFO 13768 --- [SE2] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-05T21:19:10.362+07:00  INFO 13768 --- [SE2] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-04-05T21:19:10.405+07:00  INFO 13768 --- [SE2] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1811 ms
+2026-04-05T21:19:10.565+07:00  INFO 13768 --- [SE2] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-05T21:19:10.618+07:00  INFO 13768 --- [SE2] [restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-04-05T21:19:10.842+07:00  INFO 13768 --- [SE2] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-05T21:19:11.001+07:00  INFO 13768 --- [SE2] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@7411e646
+2026-04-05T21:19:11.002+07:00  INFO 13768 --- [SE2] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-05T21:19:11.042+07:00  WARN 13768 --- [SE2] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-05T21:19:11.079+07:00  INFO 13768 --- [SE2] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5433/se2]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 15.4
+	Default catalog/schema: se2/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-05T21:19:11.333+07:00  INFO 13768 --- [SE2] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-05T21:19:12.384+07:00  INFO 13768 --- [SE2] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-05T21:19:12.486+07:00  INFO 13768 --- [SE2] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-05T21:19:12.575+07:00  INFO 13768 --- [SE2] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-05T21:19:14.232+07:00  WARN 13768 --- [SE2] [restartedMain] ai.djl.onnxruntime.engine.OrtEngine      : CUDA is not supported OnnxRuntime engine: Error code - ORT_EP_FAIL - message: Failed to find CUDA shared provider
+2026-04-05T21:19:15.618+07:00  INFO 13768 --- [SE2] [restartedMain] ai.djl.util.Platform                     : Found matching platform from: jar:file:/C:/Users/vinhp/.m2/repository/ai/djl/huggingface/tokenizers/0.35.0/tokenizers-0.35.0.jar!/native/lib/tokenizers.properties
+2026-04-05T21:19:15.638+07:00  INFO 13768 --- [SE2] [restartedMain] ai.djl.onnxruntime.engine.OrtModel       : Onnx extension not found in classpath.
+2026-04-05T21:19:16.124+07:00  WARN 13768 --- [SE2] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-05T21:19:16.212+07:00  INFO 13768 --- [SE2] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetailServiceImpl
+2026-04-05T21:19:16.955+07:00  INFO 13768 --- [SE2] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 9000 (http) with context path '/'
+2026-04-05T21:19:16.960+07:00  INFO 13768 --- [SE2] [restartedMain] com.example.SE2.Se2Application           : Started Se2Application in 9.237 seconds (process running for 9.913)
+2026-04-05T21:19:17.106+07:00  INFO 13768 --- [SE2] [restartedMain] com.example.SE2.configs.DataSeed         : Admin created: admin@gmail.com
+2026-04-05T21:23:02.288+07:00  INFO 13768 --- [SE2] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-05T21:23:02.297+07:00  INFO 13768 --- [SE2] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-04-05T21:23:02.310+07:00  INFO 13768 --- [SE2] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-05T21:23:02.318+07:00  INFO 13768 --- [SE2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-05T21:23:02.323+07:00  INFO 13768 --- [SE2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-04-05T21:23:04.693+07:00  INFO 22708 --- [SE2] [restartedMain] com.example.SE2.Se2Application           : Starting Se2Application using Java 21.0.9 with PID 22708 (E:\Projects\NRW\SE2\target\classes started by vinhp in E:\Projects\NRW\SE2)
+2026-04-05T21:23:04.700+07:00  INFO 22708 --- [SE2] [restartedMain] com.example.SE2.Se2Application           : No active profile set, falling back to 1 default profile: "default"
+2026-04-05T21:23:05.046+07:00  INFO 22708 --- [SE2] [restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\vinhp\.m2\repository\io\github\cdimascio\java-dotenv\5.2.2\java-dotenv-5.2.2.jar referenced one or more files that do not exist: file:/C:/Users/vinhp/.m2/repository/io/github/cdimascio/java-dotenv/5.2.2/kotlin-stdlib-1.4.0.jar,file:/C:/Users/vinhp/.m2/repository/io/github/cdimascio/java-dotenv/5.2.2/kotlin-stdlib-common-1.4.0.jar,file:/C:/Users/vinhp/.m2/repository/io/github/cdimascio/java-dotenv/5.2.2/annotations-13.0.jar
+2026-04-05T21:23:05.047+07:00  INFO 22708 --- [SE2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-05T21:23:05.047+07:00  INFO 22708 --- [SE2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-05T21:23:05.962+07:00  INFO 22708 --- [SE2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-05T21:23:06.121+07:00  INFO 22708 --- [SE2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 146 ms. Found 16 JPA repository interfaces.
+2026-04-05T21:23:06.896+07:00  INFO 22708 --- [SE2] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 9000 (http)
+2026-04-05T21:23:06.906+07:00  INFO 22708 --- [SE2] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-05T21:23:06.907+07:00  INFO 22708 --- [SE2] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-04-05T21:23:06.951+07:00  INFO 22708 --- [SE2] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1903 ms
+2026-04-05T21:23:07.114+07:00  INFO 22708 --- [SE2] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-05T21:23:07.181+07:00  INFO 22708 --- [SE2] [restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-04-05T21:23:07.390+07:00  INFO 22708 --- [SE2] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-05T21:23:07.533+07:00  INFO 22708 --- [SE2] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@a50823d
+2026-04-05T21:23:07.534+07:00  INFO 22708 --- [SE2] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-05T21:23:07.559+07:00  WARN 22708 --- [SE2] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-05T21:23:07.586+07:00  INFO 22708 --- [SE2] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5433/se2]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 15.4
+	Default catalog/schema: se2/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-05T21:23:07.794+07:00  INFO 22708 --- [SE2] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-05T21:23:08.730+07:00  INFO 22708 --- [SE2] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-05T21:23:08.804+07:00  INFO 22708 --- [SE2] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-05T21:23:08.893+07:00  INFO 22708 --- [SE2] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-05T21:23:10.437+07:00  WARN 22708 --- [SE2] [restartedMain] ai.djl.onnxruntime.engine.OrtEngine      : CUDA is not supported OnnxRuntime engine: Error code - ORT_EP_FAIL - message: Failed to find CUDA shared provider
+2026-04-05T21:23:11.771+07:00  INFO 22708 --- [SE2] [restartedMain] ai.djl.util.Platform                     : Found matching platform from: jar:file:/C:/Users/vinhp/.m2/repository/ai/djl/huggingface/tokenizers/0.35.0/tokenizers-0.35.0.jar!/native/lib/tokenizers.properties
+2026-04-05T21:23:11.781+07:00  INFO 22708 --- [SE2] [restartedMain] ai.djl.onnxruntime.engine.OrtModel       : Onnx extension not found in classpath.
+2026-04-05T21:23:12.206+07:00  WARN 22708 --- [SE2] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-05T21:23:12.280+07:00  INFO 22708 --- [SE2] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetailServiceImpl
+2026-04-05T21:23:12.968+07:00  INFO 22708 --- [SE2] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 9000 (http) with context path '/'
+2026-04-05T21:23:12.975+07:00  INFO 22708 --- [SE2] [restartedMain] com.example.SE2.Se2Application           : Started Se2Application in 8.828 seconds (process running for 9.726)
+2026-04-05T21:23:13.140+07:00  INFO 22708 --- [SE2] [restartedMain] com.example.SE2.configs.DataSeed         : Admin created: admin@gmail.com
+2026-04-05T21:23:40.243+07:00  INFO 22708 --- [SE2] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-05T21:23:40.247+07:00  INFO 22708 --- [SE2] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-04-05T21:23:40.252+07:00  INFO 22708 --- [SE2] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-05T21:23:40.255+07:00  INFO 22708 --- [SE2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-05T21:23:40.257+07:00  INFO 22708 --- [SE2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-04-05T21:23:47.977+07:00  INFO 25092 --- [SE2] [restartedMain] com.example.SE2.Se2Application           : Starting Se2Application using Java 21.0.9 with PID 25092 (E:\Projects\NRW\SE2\target\classes started by vinhp in E:\Projects\NRW\SE2)
+2026-04-05T21:23:47.984+07:00  INFO 25092 --- [SE2] [restartedMain] com.example.SE2.Se2Application           : No active profile set, falling back to 1 default profile: "default"
+2026-04-05T21:23:48.306+07:00  INFO 25092 --- [SE2] [restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\vinhp\.m2\repository\io\github\cdimascio\java-dotenv\5.2.2\java-dotenv-5.2.2.jar referenced one or more files that do not exist: file:/C:/Users/vinhp/.m2/repository/io/github/cdimascio/java-dotenv/5.2.2/kotlin-stdlib-1.4.0.jar,file:/C:/Users/vinhp/.m2/repository/io/github/cdimascio/java-dotenv/5.2.2/kotlin-stdlib-common-1.4.0.jar,file:/C:/Users/vinhp/.m2/repository/io/github/cdimascio/java-dotenv/5.2.2/annotations-13.0.jar
+2026-04-05T21:23:48.306+07:00  INFO 25092 --- [SE2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-05T21:23:48.306+07:00  INFO 25092 --- [SE2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-05T21:23:49.237+07:00  INFO 25092 --- [SE2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-05T21:23:49.400+07:00  INFO 25092 --- [SE2] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 153 ms. Found 16 JPA repository interfaces.
+2026-04-05T21:23:50.208+07:00  INFO 25092 --- [SE2] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 9000 (http)
+2026-04-05T21:23:50.220+07:00  INFO 25092 --- [SE2] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-05T21:23:50.220+07:00  INFO 25092 --- [SE2] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-04-05T21:23:50.266+07:00  INFO 25092 --- [SE2] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1959 ms
+2026-04-05T21:23:50.444+07:00  INFO 25092 --- [SE2] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-05T21:23:50.503+07:00  INFO 25092 --- [SE2] [restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-04-05T21:23:50.722+07:00  INFO 25092 --- [SE2] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-05T21:23:50.883+07:00  INFO 25092 --- [SE2] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@44f45e25
+2026-04-05T21:23:50.884+07:00  INFO 25092 --- [SE2] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-05T21:23:50.914+07:00  WARN 25092 --- [SE2] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-05T21:23:50.944+07:00  INFO 25092 --- [SE2] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5433/se2]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 15.4
+	Default catalog/schema: se2/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-05T21:23:51.136+07:00  INFO 25092 --- [SE2] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-05T21:23:52.087+07:00  INFO 25092 --- [SE2] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-05T21:23:52.234+07:00  WARN 25092 --- [SE2] [restartedMain] org.hibernate.orm.jdbc.warn              : HHH000247: ErrorCode: 0, SQLState: 00000
+2026-04-05T21:23:52.234+07:00  WARN 25092 --- [SE2] [restartedMain] org.hibernate.orm.jdbc.warn              : constraint "ukn64bqwkct6n8hiwwagqg9awy9" of relation "novel" does not exist, skipping
+2026-04-05T21:23:52.240+07:00  WARN 25092 --- [SE2] [restartedMain] org.hibernate.orm.jdbc.warn              : HHH000247: ErrorCode: 0, SQLState: 00000
+2026-04-05T21:23:52.240+07:00  WARN 25092 --- [SE2] [restartedMain] org.hibernate.orm.jdbc.warn              : constraint "uk3uc2gndhjk9t91rmvpgno5fv3" of relation "novel" does not exist, skipping
+2026-04-05T21:23:52.245+07:00  WARN 25092 --- [SE2] [restartedMain] org.hibernate.orm.jdbc.warn              : HHH000247: ErrorCode: 0, SQLState: 00000
+2026-04-05T21:23:52.245+07:00  WARN 25092 --- [SE2] [restartedMain] org.hibernate.orm.jdbc.warn              : constraint "ukt3rcc72v4qy0gd61yvb907xsh" of relation "reading_setting" does not exist, skipping
+2026-04-05T21:23:52.251+07:00  WARN 25092 --- [SE2] [restartedMain] org.hibernate.orm.jdbc.warn              : HHH000247: ErrorCode: 0, SQLState: 00000
+2026-04-05T21:23:52.251+07:00  WARN 25092 --- [SE2] [restartedMain] org.hibernate.orm.jdbc.warn              : constraint "uk6dotkott2kjsp8vw4d0m25fb7" of relation "users" does not exist, skipping
+2026-04-05T21:23:52.272+07:00  WARN 25092 --- [SE2] [restartedMain] org.hibernate.orm.jdbc.warn              : HHH000247: ErrorCode: 0, SQLState: 00000
+2026-04-05T21:23:52.272+07:00  WARN 25092 --- [SE2] [restartedMain] org.hibernate.orm.jdbc.warn              : constraint "ukr43af9ap4edm43mmtq01oddj6" of relation "users" does not exist, skipping
+2026-04-05T21:23:52.346+07:00  INFO 25092 --- [SE2] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-05T21:23:52.459+07:00  INFO 25092 --- [SE2] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-05T21:23:53.895+07:00  WARN 25092 --- [SE2] [restartedMain] ai.djl.onnxruntime.engine.OrtEngine      : CUDA is not supported OnnxRuntime engine: Error code - ORT_EP_FAIL - message: Failed to find CUDA shared provider
+2026-04-05T21:23:55.250+07:00  INFO 25092 --- [SE2] [restartedMain] ai.djl.util.Platform                     : Found matching platform from: jar:file:/C:/Users/vinhp/.m2/repository/ai/djl/huggingface/tokenizers/0.35.0/tokenizers-0.35.0.jar!/native/lib/tokenizers.properties
+2026-04-05T21:23:55.259+07:00  INFO 25092 --- [SE2] [restartedMain] ai.djl.onnxruntime.engine.OrtModel       : Onnx extension not found in classpath.
+2026-04-05T21:23:55.668+07:00  WARN 25092 --- [SE2] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-05T21:23:55.739+07:00  INFO 25092 --- [SE2] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetailServiceImpl
+2026-04-05T21:23:56.403+07:00  INFO 25092 --- [SE2] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 9000 (http) with context path '/'
+2026-04-05T21:23:56.408+07:00  INFO 25092 --- [SE2] [restartedMain] com.example.SE2.Se2Application           : Started Se2Application in 8.907 seconds (process running for 9.543)
+2026-04-05T21:23:57.346+07:00  INFO 25092 --- [SE2] [restartedMain] com.example.SE2.configs.DataSeed         : Admin created: admin@gmail.com
+2026-04-05T21:25:59.104+07:00  INFO 25092 --- [SE2] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-05T21:25:59.107+07:00  INFO 25092 --- [SE2] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-04-05T21:25:59.113+07:00  INFO 25092 --- [SE2] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-05T21:25:59.116+07:00  INFO 25092 --- [SE2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-05T21:25:59.119+07:00  INFO 25092 --- [SE2] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

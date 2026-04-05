@@ -199,6 +199,17 @@
         </article>
     </main>
 
+    <!-- Mobile Paragraph Action Bar (Fixed below header) -->
+    <div class="paragraph-action-bar" id="paragraphActionBar" style="display: none;">
+        <button class="action-btn bookmark-action-bar-btn" id="bookmarkActionBarBtn" aria-label="Bookmark">
+            <img th:src="@{/img/bookmark.svg}" alt="Bookmark">
+        </button>
+        <button class="action-btn comment-action-bar-btn" id="commentActionBarBtn" aria-label="Add comment">
+            <img th:src="@{/img/comment.svg}" alt="Comment">
+            <span class="comment-count" id="commentCountBar"></span>
+        </button>
+    </div>
+
     <!-- Swipe Indicator (mobile/tablet) -->
     <div class="swipe-indicator" id="swipeIndicator">
         <span class="swipe-label" id="swipeLabel"></span>
@@ -381,6 +392,129 @@
         });
     });
 
+    // === Mobile Paragraph Selection & Action Bar ===
+    var selectedParagraphIndex = null;
+
+    function showParagraphActionBar(index) {
+        var actionBar = document.getElementById('paragraphActionBar');
+        var allParagraphs = document.querySelectorAll('.chapter-paragraph');
+
+        // If clicking the same paragraph again, hide the action bar
+        if (selectedParagraphIndex === index) {
+            hideParagraphActionBar();
+            return;
+        }
+
+        // Update selected paragraph UI
+        allParagraphs.forEach(function(p) { p.classList.remove('selected'); });
+        if (index < allParagraphs.length) {
+            allParagraphs[index].classList.add('selected');
+        }
+
+        // Update action bar buttons
+        selectedParagraphIndex = index;
+        activeParagraphIndex = index;
+
+        // Update comment count
+        var countSpan = document.getElementById('commentCountBar');
+        var commentCountBtn = document.querySelector('.comment-action-btn[data-paragraph-index="' + index + '"] .comment-count');
+        if (commentCountBtn && commentCountBtn.textContent) {
+            countSpan.textContent = commentCountBtn.textContent;
+            countSpan.style.display = 'block';
+        } else {
+            countSpan.textContent = '';
+            countSpan.style.display = 'none';
+        }
+
+        // Update bookmark button
+        var bookmarkBtn = document.querySelector('.bookmark-action-btn[data-paragraph-index="' + index + '"]');
+        var actionBarBookmarkBtn = document.getElementById('bookmarkActionBarBtn');
+        if (bookmarkBtn && bookmarkBtn.classList.contains('bookmarked')) {
+            actionBarBookmarkBtn.classList.add('bookmarked');
+        } else {
+            actionBarBookmarkBtn.classList.remove('bookmarked');
+        }
+
+        // Show action bar with animation
+        actionBar.style.display = 'flex';
+    }
+
+    function hideParagraphActionBar() {
+        var actionBar = document.getElementById('paragraphActionBar');
+        actionBar.style.display = 'none';
+        var allParagraphs = document.querySelectorAll('.chapter-paragraph');
+        allParagraphs.forEach(function(p) { p.classList.remove('selected'); });
+        selectedParagraphIndex = null;
+    }
+
+    // Add click listeners to paragraphs (mobile only)
+    function setupMobileParagraphClickHandlers() {
+        var isMobile = window.innerWidth <= 640;
+        if (!isMobile) return;
+
+        var paragraphs = document.querySelectorAll('.chapter-paragraph');
+        paragraphs.forEach(function(p, index) {
+            p.addEventListener('click', function(e) {
+                e.stopPropagation();
+                showParagraphActionBar(index);
+            });
+        });
+    }
+
+    // Close action bar when clicking outside
+    document.addEventListener('click', function(e) {
+        // Don't close if clicking inside action bar or its buttons
+        if (e.target.closest('.paragraph-action-bar') ||
+            e.target.closest('.bookmark-action-bar-btn') ||
+            e.target.closest('.comment-action-bar-btn')) {
+            return;
+        }
+
+        if (selectedParagraphIndex !== null &&
+            !e.target.closest('.chapter-paragraph')) {
+            hideParagraphActionBar();
+        }
+    });
+
+    // Mobile action bar buttons
+    var bookmarkActionBarBtn = document.getElementById('bookmarkActionBarBtn');
+    var commentActionBarBtn = document.getElementById('commentActionBarBtn');
+
+    if (bookmarkActionBarBtn) {
+        bookmarkActionBarBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (selectedParagraphIndex !== null) {
+                // Find the actual bookmark button and trigger its click
+                var bookmarkBtn = document.querySelector('.bookmark-action-btn[data-paragraph-index="' + selectedParagraphIndex + '"]');
+                if (bookmarkBtn) bookmarkBtn.click();
+            }
+        });
+    }
+
+    if (commentActionBarBtn) {
+        commentActionBarBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (selectedParagraphIndex !== null) {
+                // Load comments and open sidebar
+                clearReply();
+                loadParagraphComments(selectedParagraphIndex);
+                openSidebar('commentsSidebar');
+                hideParagraphActionBar();
+            }
+        });
+    }
+
+    // Setup mobile paragraph handlers on page load
+    setupMobileParagraphClickHandlers();
+
+    // Rebuild handlers when sidebar closes
+    var sidebarOverlay = document.getElementById('sidebarOverlay');
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', function() {
+            setupMobileParagraphClickHandlers();
+        });
+    }
+
     // === Build comment HTML with reply button ===
     function buildCommentHtml(c, isNested) {
         var sizeClass = isNested ? ' comment-avatar-sm' : '';
@@ -543,6 +677,21 @@
                 } else {
                     btnRef.classList.remove('bookmarked');
                     removeBookmarkFromDropdown(pIndex);
+                }
+                // Refresh action bar to show updated state
+                if (selectedParagraphIndex === pIndex) {
+                    var actionBar = document.getElementById('paragraphActionBar');
+                    if (actionBar && actionBar.style.display === 'flex') {
+                        // Refresh the action bar state
+                        var actionBarBookmarkBtn = document.getElementById('bookmarkActionBarBtn');
+                        if (actionBarBookmarkBtn) {
+                            if (data.bookmarked) {
+                                actionBarBookmarkBtn.classList.add('bookmarked');
+                            } else {
+                                actionBarBookmarkBtn.classList.remove('bookmarked');
+                            }
+                        }
+                    }
                 }
             }).catch(function(err) {
                 console.error('Failed to toggle bookmark:', err);

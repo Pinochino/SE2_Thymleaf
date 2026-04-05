@@ -181,27 +181,27 @@
     <div id="mobile-search-overlay" class="hidden md:hidden border-t border-[#1f2937] px-4 py-3">
         <form th:action="@{/search}" method="get" onsubmit="return validateSearch(this)">
             <input type="hidden" name="mode" id="mobile-search-mode" value="semantic"/>
-            <div class="relative flex items-center">
-                <input type="text" name="query" placeholder="Search novels..."
-                       class="w-full bg-[#1e293b] border border-[#374151] rounded-full pl-10 pr-[72px] py-2.5 text-[14px] text-[#e2e8f0] placeholder-[#6b7280] outline-none focus:border-[#4f46e5]"/>
+            <div class="relative flex items-center bg-[#1e293b] border border-[#374151] rounded-full pr-[72px] py-2.5">
                 <!-- Search icon -->
-                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6b7280] pointer-events-none"
+                <svg class="w-4 h-4 text-[#6b7280] pointer-events-none ml-3 mr-2 flex-shrink-0"
                      fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
-                <div class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                    <button type="button" id="mobile-mode-toggle"
-                            class="px-1.5 py-0.5 rounded text-[10px] font-bold font-['Inter'] uppercase tracking-wide transition-colors"
-                            style="background:rgba(79,70,229,0.15);color:#818cf8;"
-                            onclick="toggleSearchMode()"
-                            title="Toggle: Semantic AI / Keyword">AI</button>
-                    <a th:href="@{/search/filter}"
-                       class="p-1 rounded-full hover:bg-white/5 transition flex items-center justify-center">
-                        <svg class="w-[15px] h-[15px] text-[#6b7280]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"/>
-                        </svg>
-                    </a>
-                </div>
+                <input type="text" name="query" placeholder="Search novels..."
+                       class="flex-1 bg-transparent text-[14px] text-[#e2e8f0] placeholder-[#6b7280] outline-none"/>
+            </div>
+            <div class="absolute right-[30px] top-[82px] flex items-center gap-1">
+                <button type="button" id="mobile-mode-toggle"
+                        class="px-1.5 py-0.5 rounded text-[10px] font-bold font-['Inter'] uppercase tracking-wide transition-colors"
+                        style="background:rgba(79,70,229,0.15);color:#818cf8;"
+                        onclick="toggleSearchMode()"
+                        title="Toggle: Semantic AI / Keyword">AI</button>
+                <a th:href="@{/search/filter}"
+                   class="p-1 rounded-full hover:bg-white/5 transition flex items-center justify-center">
+                    <svg class="w-[15px] h-[15px] text-[#6b7280]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"/>
+                    </svg>
+                </a>
             </div>
         </form>
     </div>

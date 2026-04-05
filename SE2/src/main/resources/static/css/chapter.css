@@ -522,13 +522,15 @@ a { text-decoration: none; color: inherit; }
 
 /* Sidebar search */
 .sidebar-search {
-    position: relative;
     padding: 0 16px 17px;
+    display: flex;
+    align-items: center;
+    position: relative;
 }
 
 .sidebar-search-input {
-    width: 100%;
-    padding: 11px 13px 10px 37px;
+    flex: 1;
+    padding: 11px 13px 11px 37px;
     background: rgba(0,0,0,0.05);
     border: 1px solid transparent;
     border-radius: 8px;
@@ -536,6 +538,7 @@ a { text-decoration: none; color: inherit; }
     font-size: 14px;
     color: #433422;
     outline: none;
+    height: 36px;
 }
 
 .sidebar-search-input::placeholder { color: #6b7280; }
@@ -543,10 +546,16 @@ a { text-decoration: none; color: inherit; }
 
 .search-icon {
     position: absolute;
-    left: 28px;
-    top: 12px;
+    left: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
     opacity: 0.4;
     pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* TOC list */

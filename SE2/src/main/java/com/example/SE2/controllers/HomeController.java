@@ -32,8 +32,8 @@ public class HomeController {
     public String homePage(@AuthenticationPrincipal UserDetailImpl userDetails, Model model) {
         User user = (userDetails != null) ? userDetails.getUser() : null;
 
-        Page<Novel> trending = novelService.getTrendingNovels(0, 6);
-        Page<Novel> recentUpdates = novelService.getRecentNovels(0, 6);
+        Page<Novel> trending = novelService.getTrendingNovels(0, 5);
+        Page<Novel> recentUpdates = novelService.getRecentNovels(0, 5);
 
         model.addAttribute("user", user);
         model.addAttribute("trendingNovels", trending.getContent());

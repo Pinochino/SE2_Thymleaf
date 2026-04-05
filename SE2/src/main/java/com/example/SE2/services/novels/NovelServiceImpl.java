@@ -40,7 +40,7 @@ public class NovelServiceImpl implements NovelService {
 
     @Override
     public List<Novel> getCurrentlyReadingNovels(String userId) {
-        return novelRepository.findCurrentlyReadingByUserId(userId, PageRequest.of(0, 6));
+        return novelRepository.findCurrentlyReadingByUserId(userId, PageRequest.of(0, 5));
     }
 
 
@@ -72,7 +72,7 @@ public class NovelServiceImpl implements NovelService {
                 .map(Novel::getId)
                 .collect(Collectors.toList());
 
-        return novelRepository.findByGenreIdsExcluding(genreIds, excludeIds, PageRequest.of(0, 6));
+        return novelRepository.findByGenreIdsExcluding(genreIds, excludeIds, PageRequest.of(0, 5));
     }
 
     public void indexNovel(Novel novel) {

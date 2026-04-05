@@ -64,27 +64,34 @@ public class SearchController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "desc") String sort,
+            @org.springframework.security.core.annotation.AuthenticationPrincipal
+            com.example.SE2.security.UserDetailImpl userDetails,
             Model model
 ) {
+        boolean isLoggedIn = userDetails != null;
 
         Pageable pageable = PageRequest.of(page, size,
                 "asc".equalsIgnoreCase(sort) ? Sort.Direction.ASC : Sort.Direction.DESC,
                 "averageRating");
 
-        NovelStatus status = parseStatus(statusStr);
+        // Only apply status/trending filter when logged in
+        NovelStatus status = isLoggedIn ? parseStatus(statusStr) : null;
+        Boolean effectiveTrending = isLoggedIn ? trending : null;
         Page<Novel> results = searchService.searchByFilter(
-                new NovelFilterRequest(trending, genres, status), pageable);
+                new NovelFilterRequest(effectiveTrending, genres, status), pageable);
 
         populateModel(model, results);
-        model.addAttribute("selectedStatus", statusStr != null ? statusStr : "any");
-        model.addAttribute("isTrending",     trending != null && trending);
+        model.addAttribute("selectedStatus", isLoggedIn && statusStr != null ? statusStr : "any");
+        model.addAttribute("isTrending",     isLoggedIn && trending != null && trending);
         model.addAttribute("selectedGenres", genres   != null ? genres    : List.of());
         model.addAttribute("sort",           sort);
         model.addAttribute("searchMode", "filter");
         model.addAttribute("baseUrl", "/search/filter");
-        model.addAttribute("extraParams", "sort=" + sort
-                + (statusStr != null ? "&statusStr=" + statusStr : "")
-                + (trending != null && trending ? "&trending=true" : ""));
+
+        StringBuilder extra = new StringBuilder("sort=" + sort);
+        if (isLoggedIn && statusStr != null) extra.append("&statusStr=").append(statusStr);
+        if (isLoggedIn && trending != null && trending) extra.append("&trending=true");
+        model.addAttribute("extraParams", extra.toString());
 
         return "client/searchPage";
     }

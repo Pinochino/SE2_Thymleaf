@@ -14,9 +14,8 @@
 <main layout:fragment="content">
   <div class="search-wrap">
     <section id="filter-section">
-      <form id="filter-form" th:action="@{/search}" method="get">
-        <input type="hidden" name="query" th:value="${query}" />
-        <input type="hidden" id="status-input" name="status" th:value="${selectedStatus ?: 'any'}" />
+      <form id="filter-form" th:action="@{/search/filter}" method="get">
+        <input th:if="${isLoggedIn}" type="hidden" id="status-input" name="statusStr" th:value="${selectedStatus ?: 'any'}" />
 
         <!-- ── MOBILE panel ── -->
         <div id="filter-mobile">
@@ -24,7 +23,7 @@
             <span class="filter-title">FILTERS</span>
             <button type="button" class="btn-reset" onclick="resetFilters()">Reset</button>
           </div>
-          <label class="cb-wrap" style="margin-bottom:10px;">
+          <label th:if="${isLoggedIn}" class="cb-wrap" style="margin-bottom:10px;">
             <input type="checkbox" name="trending" value="true" th:checked="${isTrending}">
             <span class="cb-box"></span><span class="cb-label">Trending</span>
           </label>
@@ -33,19 +32,19 @@
             <div class="genre-row">
               <label class="cb-wrap" th:each="genre : ${genres}">
                 <input type="checkbox" name="genres" th:value="${genre.id}"
-                       th:checked="${selectedGenres != null and selectedGenres.contains(genre.id)}">
+                       th:checked="${selectedGenres != null and selectedGenres.contains(genre.id.toString())}">
                 <span class="cb-box"></span>
                 <span class="cb-label" th:text="${genre.name}">Genre</span>
               </label>
             </div>
           </div>
-          <div style="margin-bottom:10px;">
+          <div th:if="${isLoggedIn}" style="margin-bottom:10px;">
             <p class="filter-group-label">Status</p>
             <div style="display:flex;flex-wrap:wrap;gap:7px;">
-              <button type="button" class="status-pill" th:classappend="${(selectedStatus==null or selectedStatus=='any')}?' active':''" data-value="any"      onclick="selectPill(this)">Any</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='hiatus'}   ?' active':''" data-value="hiatus"    onclick="selectPill(this)">Hiatus</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='completed'}?' active':''" data-value="completed" onclick="selectPill(this)">Completed</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='ongoing'}  ?' active':''" data-value="ongoing"   onclick="selectPill(this)">Ongoing</button>
+              <button type="button" class="status-pill" th:classappend="${(selectedStatus==null or selectedStatus=='any')}?' active':''" data-value="any"       onclick="selectPill(this)">Any</button>
+              <button type="button" class="status-pill" th:classappend="${selectedStatus=='ONGOING'}  ?' active':''" data-value="ONGOING"   onclick="selectPill(this)">Ongoing</button>
+              <button type="button" class="status-pill" th:classappend="${selectedStatus=='COMPLETED'}?' active':''" data-value="COMPLETED" onclick="selectPill(this)">Completed</button>
+              <button type="button" class="status-pill" th:classappend="${selectedStatus=='DROPPED'}  ?' active':''" data-value="DROPPED"   onclick="selectPill(this)">Dropped</button>
             </div>
           </div>
           <button type="submit" class="btn-apply">Apply Filters</button>
@@ -57,32 +56,36 @@
             <span class="filter-title">FILTERS</span>
             <button type="button" class="btn-reset" onclick="resetFilters()">Reset</button>
           </div>
+          <th:block th:if="${isLoggedIn}">
           <label class="cb-wrap" style="margin-bottom:1rem;">
             <input type="checkbox" name="trending" value="true" th:checked="${isTrending}">
             <span class="cb-box"></span><span class="cb-label">Trending</span>
           </label>
           <hr class="filter-divider">
+          </th:block>
           <div style="margin-bottom:1rem;">
             <p class="filter-group-label">Genre</p>
             <div style="display:flex;flex-direction:column;gap:9px;">
               <label class="cb-wrap" th:each="genre : ${genres}">
                 <input type="checkbox" name="genres" th:value="${genre.id}"
-                       th:checked="${selectedGenres != null and selectedGenres.contains(genre.id)}">
+                       th:checked="${selectedGenres != null and selectedGenres.contains(genre.id.toString())}">
                 <span class="cb-box"></span>
                 <span class="cb-label" th:text="${genre.name}">Genre</span>
               </label>
             </div>
           </div>
+          <th:block th:if="${isLoggedIn}">
           <hr class="filter-divider">
           <div style="margin-bottom:1.1rem;">
             <p class="filter-group-label">Status</p>
             <div style="display:flex;flex-wrap:wrap;gap:7px;">
-              <button type="button" class="status-pill" th:classappend="${(selectedStatus==null or selectedStatus=='any')}?' active':''" data-value="any"      onclick="selectPill(this)">Any</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='completed'}?' active':''" data-value="completed" onclick="selectPill(this)">Completed</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='ongoing'}  ?' active':''" data-value="ongoing"   onclick="selectPill(this)">Ongoing</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='hiatus'}   ?' active':''" data-value="hiatus"    onclick="selectPill(this)">Hiatus</button>
+              <button type="button" class="status-pill" th:classappend="${(selectedStatus==null or selectedStatus=='any')}?' active':''" data-value="any"       onclick="selectPill(this)">Any</button>
+              <button type="button" class="status-pill" th:classappend="${selectedStatus=='ONGOING'}  ?' active':''" data-value="ONGOING"   onclick="selectPill(this)">Ongoing</button>
+              <button type="button" class="status-pill" th:classappend="${selectedStatus=='COMPLETED'}?' active':''" data-value="COMPLETED" onclick="selectPill(this)">Completed</button>
+              <button type="button" class="status-pill" th:classappend="${selectedStatus=='DROPPED'}  ?' active':''" data-value="DROPPED"   onclick="selectPill(this)">Dropped</button>
             </div>
           </div>
+          </th:block>
           <button type="submit" class="btn-apply">Apply Filters</button>
         </div>
       </form>
@@ -103,16 +106,15 @@
             result<span th:if="${totalResults != 1}">s</span> for your query in all categories.
           </p>
         </div>
-        <form th:action="@{/search}" method="get" style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-top:4px;">
-          <input type="hidden" name="query"    th:value="${query}" />
-          <input type="hidden" name="status"   th:value="${selectedStatus}" />
-          <input type="hidden" name="trending" th:value="${isTrending}" />
+        <form th:action="@{/search/filter}" method="get" style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-top:4px;">
+          <input th:if="${isLoggedIn}" type="hidden" name="statusStr" th:value="${selectedStatus}" />
+          <input th:if="${isLoggedIn}" type="hidden" name="trending" th:value="${isTrending}" />
           <th:block th:each="gid : ${selectedGenres}"><input type="hidden" name="genres" th:value="${gid}" /></th:block>
-          <input type="hidden" name="page" value="1" />
+          <input type="hidden" name="page" value="0" />
           <span style="font-size:0.68rem;font-weight:700;letter-spacing:.12em;color:var(--lw);">SORT BY:</span>
           <select class="sort-select" name="sort" onchange="this.form.submit()">
-            <option value="asc"  th:selected="${sort=='asc'}">Ascending</option>
-            <option value="desc" th:selected="${sort=='desc'}">Descending</option>
+            <option value="desc" th:selected="${sort == null or sort == 'desc'}">Descending</option>
+            <option value="asc"  th:selected="${sort == 'asc'}">Ascending</option>
           </select>
         </form>
       </div>

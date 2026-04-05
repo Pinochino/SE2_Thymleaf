@@ -74,4 +74,16 @@ public interface NovelRepository extends JpaRepository<Novel, Long> {
     @Query("SELECT n FROM Novel n ORDER BY n.updatedAt DESC")
     Page<Novel> findAllNovels(Pageable pageable);
 
+    @Query("""
+        SELECT DISTINCT n FROM Novel n
+        JOIN n.genres g
+        WHERE g.id IN :genreIds AND n.id NOT IN :excludeIds
+        ORDER BY n.updatedAt DESC
+    """)
+    List<Novel> findByGenreIdsExcluding(
+            @Param("genreIds") List<Long> genreIds,
+            @Param("excludeIds") List<Long> excludeIds,
+            Pageable pageable
+    );
+
 }

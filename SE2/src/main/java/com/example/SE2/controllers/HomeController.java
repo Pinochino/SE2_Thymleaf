@@ -2,6 +2,7 @@ package com.example.SE2.controllers;
 
 import com.example.SE2.models.Novel;
 import com.example.SE2.models.User;
+import java.util.List;
 import com.example.SE2.security.UserDetailImpl;
 import com.example.SE2.services.novels.NovelService;
 import org.slf4j.Logger;
@@ -43,8 +44,15 @@ public class HomeController {
         }
 
         if (user != null) {
-            model.addAttribute("favoriteNovels", novelService.getFavoriteNovels(user.getId()));
-            model.addAttribute("currentlyReading", novelService.getCurrentlyReadingNovels(user.getId()));
+            List<Novel> favorites = novelService.getFavoriteNovels(user.getId());
+            List<Novel> currentlyReading = novelService.getCurrentlyReadingNovels(user.getId());
+            model.addAttribute("favoriteNovels", favorites);
+            model.addAttribute("currentlyReading", currentlyReading);
+
+            List<Novel> recommended = novelService.getRecommendedNovels(user.getId());
+            if (!recommended.isEmpty()) {
+                model.addAttribute("recommendedNovels", recommended);
+            }
         }
 
         return "client/homePage";

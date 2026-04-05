@@ -17,5 +17,7 @@ public interface NovelService {
 
 
 
+    List<Novel> getRecommendedNovels(String userId);
+
     void indexNovel(Novel novel);
 }

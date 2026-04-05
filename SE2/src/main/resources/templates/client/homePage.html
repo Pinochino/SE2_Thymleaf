@@ -165,6 +165,37 @@
             </div>
         </div>
 
+        <!-- ── Recommended for You ── -->
+        <div class="section-block" th:if="${recommendedNovels != null and !recommendedNovels.isEmpty()}">
+            <div class="section-header">
+                <h2 class="section-title">Recommended for You</h2>
+                <p class="section-subtitle">Based on what you're reading &amp; your favorites.</p>
+            </div>
+            <div class="cards-scroll-wrapper">
+                <div class="cards-grid">
+                    <div th:each="novel : ${recommendedNovels}">
+                        <a class="card-item"
+                           th:href="@{/novels/information/{publicId}(publicId=${novel.publicId})}">
+                            <div class="novel-card">
+                                <img th:if="${novel.coverImgUrl != null}"
+                                     th:src="${novel.coverImgUrl}"
+                                     th:alt="${novel.title}"
+                                     class="novel-card-cover"/>
+                                <div class="novel-card-inner" th:unless="${novel.coverImgUrl != null}"></div>
+                                <span th:if="${novel.averageRating != null}"
+                                      class="card-rating"
+                                      th:text="'&#9733; ' + ${#numbers.formatDecimal(novel.averageRating, 1, 1)}">&#9733; 4.8</span>
+                            </div>
+                            <p class="card-title" th:text="${novel.title}">Novel Title</p>
+                            <p class="card-status">
+                                <span th:text="${novel.status}">Status</span>
+                            </p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- ── Trending / Hot Novels ── -->
         <div class="section-block">
             <div class="section-header-row">

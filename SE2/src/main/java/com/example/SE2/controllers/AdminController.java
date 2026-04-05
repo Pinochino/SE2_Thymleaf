@@ -7,6 +7,7 @@ import com.example.SE2.repositories.GenreRepository;
 import com.example.SE2.repositories.NovelRepository;
 import com.example.SE2.repositories.UserRepository;
 import com.example.SE2.services.file.FileService;
+import com.example.SE2.services.novels.NovelServiceImpl;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -34,16 +35,19 @@ public class AdminController {
     private final NovelRepository novelRepository;
     private final GenreRepository genreRepository;
     private final FileService fileService;
+    private final NovelServiceImpl novelService;
     private final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
     @Autowired
     public AdminController(
             GenreRepository genreRepository,
             FileService fileService,
-            NovelRepository novelRepository) {
+            NovelRepository novelRepository,
+            NovelServiceImpl novelService) {
         this.novelRepository = novelRepository;
         this.genreRepository = genreRepository;
         this.fileService = fileService;
+        this.novelService = novelService;
     }
 
     /**
@@ -97,6 +101,12 @@ public class AdminController {
         newNovel.setGenres(genres);
         novelRepository.save(newNovel);
 
+        try {
+            novelService.indexNovel(newNovel);
+        } catch (Exception e) {
+            logger.warn("Failed to index novel vector: {}", e.getMessage());
+        }
+
         return "redirect:/admin/novels/list";
     }
 
@@ -115,6 +125,25 @@ public class AdminController {
 
         novelRepository.delete(novel);
         return "redirect:/admin/novels/list";
+    }
+
+    @GetMapping("/novels/reindex")
+    @ResponseBody
+    @Transactional
+    public String reindexAllNovels() {
+        List<Novel> novels = novelRepository.findAll();
+        int success = 0, failed = 0;
+        for (Novel novel : novels) {
+            try {
+                novelService.indexNovel(novel);
+                success++;
+                logger.info("Indexed novel [{}]: {}", novel.getId(), novel.getTitle());
+            } catch (Exception e) {
+                failed++;
+                logger.error("Failed to index novel [{}]: {}", novel.getId(), e.getMessage(), e);
+            }
+        }
+        return String.format("Reindex complete: %d success, %d failed, %d total", success, failed, novels.size());
     }
 
     /**

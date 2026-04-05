@@ -74,6 +74,23 @@ public interface NovelRepository extends JpaRepository<Novel, Long> {
     @Query("SELECT n FROM Novel n ORDER BY n.updatedAt DESC")
     Page<Novel> findAllNovels(Pageable pageable);
 
+    @Query(value = """
+        SELECT * FROM novel
+        WHERE to_tsvector('english', coalesce(title,'') || ' ' || coalesce(author,'') || ' ' || coalesce(description,''))
+              @@ plainto_tsquery('english', :query)
+        ORDER BY ts_rank(
+            to_tsvector('english', coalesce(title,'') || ' ' || coalesce(author,'') || ' ' || coalesce(description,'')),
+            plainto_tsquery('english', :query)
+        ) DESC
+    """,
+    countQuery = """
+        SELECT count(*) FROM novel
+        WHERE to_tsvector('english', coalesce(title,'') || ' ' || coalesce(author,'') || ' ' || coalesce(description,''))
+              @@ plainto_tsquery('english', :query)
+    """,
+    nativeQuery = true)
+    Page<Novel> searchFullText(@Param("query") String query, Pageable pageable);
+
     @Query("""
         SELECT DISTINCT n FROM Novel n
         JOIN n.genres g

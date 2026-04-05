@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface SearchService {
     Page<Novel> searchByVector(String query, int page, int size);
+    Page<Novel> searchByKeyword(String query, int page, int size);
     Page<Novel> searchByFilter(NovelFilterRequest request, Pageable pageable);
 }

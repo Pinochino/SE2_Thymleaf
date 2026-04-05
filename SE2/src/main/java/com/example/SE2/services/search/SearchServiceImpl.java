@@ -38,6 +38,11 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
+    public Page<Novel> searchByKeyword(String query, int page, int size) {
+        return novelRepository.searchFullText(query, PageRequest.of(page, size));
+    }
+
+    @Override
     public Page<Novel> searchByFilter(NovelFilterRequest request, Pageable pageable) {
         Assert.notNull(request, "Filter must not null");
 

@@ -83,7 +83,7 @@
             <div class="results-header">
                 <div>
                     <h1 class="results-title">
-                        <span th:text="${searchMode == 'vector'} ? 'Vector Search:' : 'Filter Results:'">Results:</span>
+                        <span th:text="${searchMode == 'vector'} ? 'Semantic Search:' : (${searchMode == 'keyword'} ? 'Keyword Search:' : 'Filter Results:')">Results:</span>
                         <span class="results-title-query"
                               th:text="${query != null and !#strings.isEmpty(query)} ? '\'' + ${query} + '\'' : 'All Novels'">
                         'Epic Fantasy'
@@ -93,7 +93,7 @@
                         Found
                         <span th:text="${#numbers.formatInteger(totalResults, 1, 'COMMA')}">0</span>
                         result<span th:if="${totalResults != 1}">s</span>
-                        <span th:text="${searchMode == 'vector'} ? 'by semantic similarity' : 'matching your filters'"></span>
+                        <span th:text="${searchMode == 'vector'} ? 'by semantic similarity' : (${searchMode == 'keyword'} ? 'by keyword match' : 'matching your filters')"></span>
                     </p>
                 </div>
 
@@ -204,10 +204,11 @@
 
                 <!-- hidden form — action depends on searchMode -->
                 <form id="page-form"
-                      th:action="${searchMode == 'vector'} ? @{/search} : @{/search/filter}"
+                      th:action="${searchMode == 'vector' or searchMode == 'keyword'} ? @{/search} : @{/search/filter}"
                       method="get" hidden>
                     <input type="hidden" name="query" th:value="${query}"/>
                     <input type="hidden" name="sort" th:value="${sort}"/>
+                    <input th:if="${searchModeOption != null}" type="hidden" name="mode" th:value="${searchModeOption}"/>
                     <th:block th:if="${searchMode == 'filter'}">
                         <input type="hidden" name="statusStr" th:value="${selectedStatus}"/>
                         <input type="hidden" name="trending" th:value="${isTrending ? 'true' : ''}"/>

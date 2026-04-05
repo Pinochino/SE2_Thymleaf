@@ -35,13 +35,22 @@ public class SearchController {
 @GetMapping
     public String search(
             @RequestParam(required = false) String query,
+            @RequestParam(defaultValue = "semantic") String mode,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             Model model) {
 
         Page<Novel> results;
+        String searchMode = "filter";
+
         if (query != null && !query.isBlank()) {
-            results = searchService.searchByVector(query, page, size);
+            if ("keyword".equalsIgnoreCase(mode)) {
+                results = searchService.searchByKeyword(query, page, size);
+                searchMode = "keyword";
+            } else {
+                results = searchService.searchByVector(query, page, size);
+                searchMode = "vector";
+            }
         } else {
             results = novelRepository.findAllNovels(PageRequest.of(page, size));
         }
@@ -53,7 +62,8 @@ public class SearchController {
         model.addAttribute("isTrending",     false);
         model.addAttribute("selectedGenres", List.of());
         model.addAttribute("sort",           "desc");
-        model.addAttribute("searchMode", query != null && !query.isBlank() ? "vector" : "filter");
+        model.addAttribute("searchMode",     searchMode);
+        model.addAttribute("searchModeOption", mode);
 
         return "client/searchPage";
     }

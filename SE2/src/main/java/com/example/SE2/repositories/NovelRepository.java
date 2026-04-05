@@ -27,8 +27,8 @@ public interface NovelRepository extends JpaRepository<Novel, Long> {
 	@Query("SELECT n FROM Novel n ORDER BY n.updatedAt DESC")
 	Page<Novel> findRecentNovels(Pageable pageable);
 
-	@Query("SELECT n FROM Novel n WHERE n.id IN (SELECT DISTINCT rp.chapter.novel.id FROM ReadingProgress rp WHERE rp.user.id = :userId) ORDER BY n.updatedAt DESC")
-	List<Novel> findCurrentlyReadingByUserId(String userId, Pageable pageable);
+	@Query("SELECT n FROM Novel n JOIN ReadingProgress rp ON rp.chapter.novel = n WHERE rp.user.id = :userId GROUP BY n ORDER BY MAX(rp.updatedAt) DESC")
+	List<Novel> findCurrentlyReadingByUserId(@Param("userId") String userId, Pageable pageable);
 
 	@Query("SELECT f.novel FROM Favorite f WHERE f.user.id = :userId")
 	List<Novel> findFavoritesByUserId(String userId);

@@ -231,7 +231,7 @@ body { background: var(--bg-base); color: var(--nor); font-family: var(--font-no
 .rating-value { color: #e2e8f0; font-weight: 600; }
 
 /* ─── Card genres ───────────────────────────────────────────── */
-.card-genres { display: none; flex-wrap: wrap; gap: 6px; }
+.card-genres { display: flex; flex-wrap: wrap; gap: 6px; }
 .genre-tag {
     font-size: 0.68rem; color: var(--accent2);
     background: rgba(63,103,232,0.1); border: 1px solid rgba(63,103,232,0.25);

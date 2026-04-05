@@ -1,7 +1,6 @@
 package com.example.SE2.controllers;
 
 import com.example.SE2.dtos.request.NovelFilterRequest;
-import com.example.SE2.models.Genre;
 import com.example.SE2.models.Novel;
 import com.example.SE2.repositories.GenreRepository;
 import com.example.SE2.services.search.SearchService;
@@ -12,15 +11,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.example.SE2.constants.NovelStatus;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/search")
@@ -32,6 +27,9 @@ public class SearchController {
     @Autowired
     GenreRepository genreRepository;
 
+    @Autowired
+    com.example.SE2.repositories.NovelRepository novelRepository;
+
 @GetMapping
     public String search(
             @RequestParam(required = false) String query,
@@ -39,9 +37,12 @@ public class SearchController {
             @RequestParam(defaultValue = "10") int size,
             Model model) {
 
-        Page<Novel> results = (query != null && !query.isBlank())
-                ? searchService.searchByVector(query, page, size)
-                : Page.empty();
+        Page<Novel> results;
+        if (query != null && !query.isBlank()) {
+            results = searchService.searchByVector(query, page, size);
+        } else {
+            results = novelRepository.findAllNovels(PageRequest.of(page, size));
+        }
 
         populateModel(model, results);
 
@@ -49,6 +50,8 @@ public class SearchController {
         model.addAttribute("selectedStatus", "any");
         model.addAttribute("isTrending",     false);
         model.addAttribute("selectedGenres", List.of());
+        model.addAttribute("baseUrl", "/search");
+        model.addAttribute("extraParams", query != null ? "query=" + query : "");
 
         return "client/searchPage";
     }
@@ -78,11 +81,13 @@ public class SearchController {
         model.addAttribute("selectedGenres", genres   != null ? genres    : List.of());
         model.addAttribute("sort",           sort);
         model.addAttribute("searchMode", "filter");
+        model.addAttribute("baseUrl", "/search/filter");
+        model.addAttribute("extraParams", "sort=" + sort
+                + (statusStr != null ? "&statusStr=" + statusStr : "")
+                + (trending != null && trending ? "&trending=true" : ""));
 
         return "client/searchPage";
     }
-
-    //HELPER
 
     private void populateModel(Model model, Page<Novel> results) {
         int currentPage = results.getNumber();

@@ -41,17 +41,9 @@ public class UserController {
     @PostMapping("/user/profile/avatar")
     public String updateAvatar(@AuthenticationPrincipal UserDetailImpl userDetails,
                                @RequestParam String avatarUrl) {
-        User currentUser = userDetails.getUser();
-        currentUser.setAvatarUrl(avatarUrl);
-        userRepository.save(currentUser);
-
-    @PostMapping(value = "/user/profile/update-avatar")
-    public String updateAvatar(@AuthenticationPrincipal UserDetailImpl userDetails,
-                               @RequestParam String avatarUrl) {
         User user = userDetails.getUser();
         user.setAvatarUrl(avatarUrl);
         userRepository.save(user);
-
         return "redirect:/user/profile";
     }
 

@@ -28,8 +28,28 @@
         <!-- Desktop Nav -->
         <nav class="hidden md:flex items-center gap-0 ml-10">
             <a th:href="@{/}" class="px-3 py-2 rounded-md text-[14px] font-['Inter'] font-medium text-white">Home</a>
-            <a th:href="@{/user/favorite-novels}" class="px-3 py-2 rounded-md text-[14px] font-['Inter'] font-medium text-[#94a3b8] hover:text-white transition-colors ml-8">Favourite</a>
-            <a th:href="@{/user/translations}"    class="px-3 py-2 rounded-md text-[14px] font-['Inter'] font-medium text-[#94a3b8] hover:text-white transition-colors ml-8">Contribute</a>
+            <!-- Genres Dropdown -->
+            <div class="relative ml-8" id="genres-dropdown-wrapper">
+                <button onclick="document.getElementById('genresDropdown').classList.toggle('hidden')"
+                        class="px-3 py-2 rounded-md text-[14px] font-['Inter'] font-medium text-[#94a3b8] hover:text-white transition-colors flex items-center gap-1">
+                    Genres
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
+                    </svg>
+                </button>
+                <div id="genresDropdown"
+                     class="hidden absolute left-0 top-[calc(100%+8px)] w-[180px] bg-[#0d1117] border border-[rgba(255,255,255,0.08)] rounded-xl p-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.6)] z-50">
+                    <div class="absolute -top-[6px] left-[20px] w-[10px] h-[10px] bg-[#0d1117] border-l border-t border-[rgba(255,255,255,0.08)] rotate-45"></div>
+                    <a th:each="genre : ${headerGenres}"
+                       th:href="@{/search(genre=${genre.name})}"
+                       th:text="${#strings.capitalize(#strings.toLowerCase(genre.name.name()))}"
+                       class="block px-3 py-2 rounded-lg text-[13px] text-[#94a3b8] hover:bg-[rgba(255,255,255,0.05)] hover:text-[#e2e8f0] transition-colors capitalize"></a>
+                </div>
+            </div>
+            <a th:if="${isLoggedIn}" th:href="@{/user/favorite-novels}"
+               class="px-3 py-2 rounded-md text-[14px] font-['Inter'] font-medium text-[#94a3b8] hover:text-white transition-colors ml-8">Favourite</a>
+            <a th:href="@{/user/translations}"
+               class="px-3 py-2 rounded-md text-[14px] font-['Inter'] font-medium text-[#94a3b8] hover:text-white transition-colors ml-8">Contribute</a>
         </nav>
 
         <div class="flex-1"></div>
@@ -87,15 +107,23 @@
                 <!-- Avatar + Dropdown -->
                 <div class="relative hidden sm:block" id="avatar-wrapper">
                     <button onclick="toggleUserMenu()" class="flex items-center">
-                        <div class="w-[36px] h-[36px] rounded-full border-2 border-[#374151] overflow-hidden bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold cursor-pointer hover:border-[#4f46e5] transition-colors"
-                             th:text="${loggedInUser?.substring(0,1)?.toUpperCase() ?: 'U'}">U</div>
+                        <div class="w-[36px] h-[36px] rounded-full border-2 border-[#374151] overflow-hidden bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold cursor-pointer hover:border-[#4f46e5] transition-colors">
+                            <img th:if="${loggedInAvatarUrl != null && !loggedInAvatarUrl.isEmpty()}" th:src="${loggedInAvatarUrl}" alt="Avatar" class="w-full h-full object-cover"/>
+                            <span th:if="${loggedInAvatarUrl == null || loggedInAvatarUrl.isEmpty()}" th:text="${loggedInUser?.substring(0,1)?.toUpperCase() ?: 'U'}">U</span>
+                        </div>
                     </button>
                     <div id="userMenu" class="hidden absolute right-0 top-[calc(100%+10px)] w-[220px] bg-[#0d1117] border border-[rgba(255,255,255,0.08)] rounded-xl p-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.6)] z-50">
                         <div class="absolute -top-[6px] right-[10px] w-[10px] h-[10px] bg-[#0d1117] border-l border-t border-[rgba(255,255,255,0.08)] rotate-45"></div>
                         <div class="px-3 py-2.5 border-b border-[rgba(255,255,255,0.06)] mb-1.5 flex items-center gap-2.5">
-                            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-teal-400 to-teal-700 flex items-center justify-center text-white text-sm font-bold shrink-0"
-                                 th:text="${loggedInUser?.substring(0,1)?.toUpperCase() ?: 'U'}">U</div>
-                            <div class="text-[13px] font-semibold text-[#e2e8f0]" th:text="${loggedInUser ?: 'User'}">User</div>
+                            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-teal-400 to-teal-700 flex items-center justify-center text-white text-sm font-bold shrink-0 overflow-hidden">
+                                <img th:if="${loggedInAvatarUrl != null && !loggedInAvatarUrl.isEmpty()}" th:src="${loggedInAvatarUrl}" alt="Avatar" class="w-full h-full object-cover"/>
+                                <span th:if="${loggedInAvatarUrl == null || loggedInAvatarUrl.isEmpty()}" th:text="${loggedInUser?.substring(0,1)?.toUpperCase() ?: 'U'}">U</span>
+                            </div>
+                            <div>
+                                <div class="text-[13px] font-semibold text-[#e2e8f0]"
+                                     th:text="${loggedInUser ?: 'User'}">User
+                                </div>
+                            </div>
                         </div>
                         <a th:href="@{/user/profile}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-[#94a3b8] hover:bg-[rgba(255,255,255,0.05)] hover:text-[#e2e8f0] transition-colors">
                             <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
@@ -168,9 +196,28 @@
 
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="hidden md:hidden border-t border-[#1f2937] px-4 py-3 space-y-1 bg-[#0f172a]">
-        <a th:href="@{/}"                    class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-white hover:bg-white/5 transition-colors">Home</a>
-        <a th:href="@{/user/favorite-novels}" class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Favourite</a>
-        <a th:href="@{/user/translations}"    class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Contribute</a>
+        <a th:href="@{/}"
+           class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-white hover:bg-white/5 transition-colors">Home</a>
+        <!-- Mobile Genres -->
+        <div>
+            <button onclick="this.nextElementSibling.classList.toggle('hidden')"
+                    class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">
+                Genres
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
+                </svg>
+            </button>
+            <div class="hidden pl-4 space-y-0.5">
+                <a th:each="genre : ${headerGenres}"
+                   th:href="@{/search(genre=${genre.name})}"
+                   th:text="${#strings.capitalize(#strings.toLowerCase(genre.name.name()))}"
+                   class="block px-3 py-2 rounded-lg text-[13px] text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors capitalize"></a>
+            </div>
+        </div>
+        <a th:if="${isLoggedIn}" th:href="@{/user/favorite-novels}"
+           class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Favourite</a>
+        <a th:href="@{/user/translations}"
+           class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Contribute</a>
         <div class="h-px bg-[#1f2937] my-2"></div>
 
         <!-- Mobile logged in -->
@@ -292,9 +339,23 @@
                 document.getElementById('notifDropdown')?.classList.add('hidden');
         });
 
-        // ── Load badge on page load ───────────────────────────────
-        document.addEventListener('DOMContentLoaded', function() {
-            if (document.getElementById('notif-badge')) loadNotifications();
+        // ── Click outside handlers ──
+        document.addEventListener("click", function (event) {
+            var avatarWrapper = document.getElementById("avatar-wrapper");
+            var menu = document.getElementById("userMenu");
+            if (avatarWrapper && menu && !avatarWrapper.contains(event.target)) {
+                menu.classList.add("hidden");
+            }
+            var notifWrapper = document.getElementById("notification-wrapper");
+            var notifDrop = document.getElementById("notifDropdown");
+            if (notifWrapper && notifDrop && !notifWrapper.contains(event.target)) {
+                notifDrop.classList.add("hidden");
+            }
+            var genresWrapper = document.getElementById("genres-dropdown-wrapper");
+            var genresDrop = document.getElementById("genresDropdown");
+            if (genresWrapper && genresDrop && !genresWrapper.contains(event.target)) {
+                genresDrop.classList.add("hidden");
+            }
         });
     </script>
 </header>

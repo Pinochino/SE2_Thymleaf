@@ -14,8 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.List;
-
 @Controller
 public class HomeController {
 
@@ -31,7 +29,6 @@ public class HomeController {
 
     @RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
     public String homePage(@AuthenticationPrincipal UserDetailImpl userDetails, Model model) {
-
         User user = (userDetails != null) ? userDetails.getUser() : null;
 
         Page<Novel> trending = novelService.getTrendingNovels(0, 6);
@@ -45,20 +42,13 @@ public class HomeController {
             model.addAttribute("heroNovel", trending.getContent().get(0));
         }
 
-        // Chỉ load dữ liệu cần login khi đã đăng nhập
         if (user != null) {
-            List<Novel> favorites = novelService.getFavoriteNovels(user.getId());
-            List<Novel> currentlyReading = novelService.getCurrentlyReadingNovels(user.getId());
-            model.addAttribute("favoriteNovels", favorites);
-            model.addAttribute("currentlyReading", currentlyReading);
-        } else {
-            model.addAttribute("favoriteNovels", List.of());
-            model.addAttribute("currentlyReading", List.of());
+            model.addAttribute("favoriteNovels", novelService.getFavoriteNovels(user.getId()));
+            model.addAttribute("currentlyReading", novelService.getCurrentlyReadingNovels(user.getId()));
         }
 
         return "client/homePage";
     }
-
 
     @RequestMapping(value = "/page-not-found", method = RequestMethod.GET)
     public String pageNotFound() {

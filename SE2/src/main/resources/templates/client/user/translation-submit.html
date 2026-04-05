@@ -59,7 +59,7 @@
                                     </div>
                                     <div th:if="${selectedNovel.averageRating != null}" class="flex items-center justify-between">
                                         <span class="text-[#64748b]">Rating</span>
-                                        <span class="text-[#c9a46a] font-medium" th:text="'&#9733; ' + ${selectedNovel.averageRating}">Rating</span>
+                                        <span class="text-[#c9a46a] font-medium" th:text="'&#9733; ' + ${#numbers.formatDecimal(selectedNovel.averageRating, 1, 1)}">Rating</span>
                                     </div>
                                 </div>
                             </div>

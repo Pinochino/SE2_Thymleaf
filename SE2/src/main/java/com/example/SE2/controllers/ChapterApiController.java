@@ -44,6 +44,9 @@ public class ChapterApiController {
         List<ParagraphComment> comments = chapterService.getCommentsByParagraph(chapterId, paragraphIndex);
         List<Map<String, Object>> result = new ArrayList<>();
         for (ParagraphComment c : comments) {
+            if (c.getUser() == null) {
+                continue;
+            }
             Map<String, Object> item = new HashMap<>();
             item.put("id", c.getId());
             item.put("userName", c.getUser().getFirstName() != null ? c.getUser().getFirstName() : c.getUser().getUsername());
@@ -52,6 +55,9 @@ public class ChapterApiController {
             // Replies
             List<Map<String, Object>> replies = new ArrayList<>();
             for (ParagraphComment r : c.getReplies()) {
+                if (r.getUser() == null) {
+                    continue;
+                }
                 Map<String, Object> reply = new HashMap<>();
                 reply.put("id", r.getId());
                 reply.put("userName", r.getUser().getFirstName() != null ? r.getUser().getFirstName() : r.getUser().getUsername());

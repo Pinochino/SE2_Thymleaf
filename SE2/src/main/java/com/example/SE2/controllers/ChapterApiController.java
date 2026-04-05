@@ -17,6 +17,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.SE2.utils.TimeUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,28 +46,12 @@ public class ChapterApiController {
         List<ParagraphComment> comments = chapterService.getCommentsByParagraph(chapterId, paragraphIndex);
         List<Map<String, Object>> result = new ArrayList<>();
         for (ParagraphComment c : comments) {
-            if (c.getUser() == null) {
-                continue;
-            }
-            Map<String, Object> item = new HashMap<>();
-            item.put("id", c.getId());
-            item.put("userName", c.getUser().getFirstName() != null ? c.getUser().getFirstName() : c.getUser().getUsername());
-            item.put("userInitial", c.getUser().getFirstName() != null && !c.getUser().getFirstName().isEmpty() ? c.getUser().getFirstName().substring(0, 1) : "U");
-            item.put("avatarUrl", c.getUser().getAvatarUrl());
-            item.put("content", c.getContent());
-            // Replies
+            if (c.getUser() == null) continue;
+            Map<String, Object> item = buildCommentMap(c);
             List<Map<String, Object>> replies = new ArrayList<>();
             for (ParagraphComment r : c.getReplies()) {
-                if (r.getUser() == null) {
-                    continue;
-                }
-                Map<String, Object> reply = new HashMap<>();
-                reply.put("id", r.getId());
-                reply.put("userName", r.getUser().getFirstName() != null ? r.getUser().getFirstName() : r.getUser().getUsername());
-                reply.put("userInitial", r.getUser().getFirstName() != null && !r.getUser().getFirstName().isEmpty() ? r.getUser().getFirstName().substring(0, 1) : "U");
-                reply.put("avatarUrl", r.getUser().getAvatarUrl());
-                reply.put("content", r.getContent());
-                replies.add(reply);
+                if (r.getUser() == null) continue;
+                replies.add(buildCommentMap(r));
             }
             item.put("replies", replies);
             result.add(item);
@@ -104,12 +90,7 @@ public class ChapterApiController {
         // Notify users who bookmarked this paragraph
         notificationService.notifyBookmarkHolders(comment);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("id", comment.getId());
-        response.put("userName", user.getFirstName() != null ? user.getFirstName() : user.getUsername());
-        response.put("userInitial", user.getFirstName() != null && !user.getFirstName().isEmpty() ? user.getFirstName().substring(0, 1) : "U");
-        response.put("avatarUrl", user.getAvatarUrl());
-        response.put("content", comment.getContent());
+        Map<String, Object> response = buildCommentMap(comment);
         response.put("paragraphIndex", comment.getParagraphIndex());
         return ResponseEntity.ok(response);
     }
@@ -177,6 +158,26 @@ public class ChapterApiController {
         ReadingSetting saved = chapterService.saveReadingSetting(user, theme, fontSize, fontFamily, lineSpacing);
 
         return ResponseEntity.ok(Map.of("saved", true));
+    }
+
+    private Map<String, Object> buildCommentMap(ParagraphComment c) {
+        User u = c.getUser();
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", c.getId());
+        String fullName = buildFullName(u);
+        map.put("userName", fullName);
+        map.put("userInitial", fullName.substring(0, 1));
+        map.put("avatarUrl", u.getAvatarUrl());
+        map.put("content", c.getContent());
+        map.put("timeAgo", c.getCreatedAt() != null ? TimeUtils.timeAgo(c.getCreatedAt()) : "");
+        return map;
+    }
+
+    private String buildFullName(User u) {
+        String first = u.getFirstName() != null ? u.getFirstName() : "";
+        String last = u.getLastName() != null ? u.getLastName() : "";
+        String full = (first + " " + last).trim();
+        return full.isEmpty() ? u.getUsername() : full;
     }
 
     private User getCurrentUser() {

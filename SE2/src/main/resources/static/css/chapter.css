@@ -763,28 +763,20 @@ a { text-decoration: none; color: inherit; }
 }
 
 .comment-reply-btn {
-    position: absolute;
-    top: 4px;
-    right: 0;
-    background: rgba(139, 92, 246, 0.1);
+    position: static;
+    background: none;
     border: none;
-    color: #8b5cf6;
+    color: #433422;
     font-size: 12px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    padding: 3px 10px;
-    border-radius: 12px;
+    font-family: 'Merriweather', serif;
+    font-weight: 400;
+    padding: 0;
     cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.15s;
-}
-
-.comment-item:hover > .comment-reply-btn {
-    opacity: 1;
+    opacity: 0.6;
 }
 
 .comment-reply-btn:hover {
-    background: rgba(139, 92, 246, 0.2);
+    opacity: 1;
 }
 
 /* Reply indicator above input */

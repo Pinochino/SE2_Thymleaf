@@ -386,23 +386,25 @@
         var sizeClass = isNested ? ' comment-avatar-sm' : '';
         var nameStyle = isNested ? ' style="font-size:12px;"' : '';
         var textStyle = isNested ? ' style="font-size:12px;line-height:16.5px;"' : '';
-        var replyBtn = '';
-        if (isLoggedIn && !isNested) {
-            replyBtn = '<button class="comment-reply-btn" data-comment-id="' + c.id +
-                '" data-user-name="' + escapeHtml(c.userName) +
-                '" data-comment-text="' + escapeHtml(c.content).replace(/"/g, '&quot;') + '">Reply</button>';
-        }
         var avatarContent = c.avatarUrl
             ? '<img src="' + escapeHtml(c.avatarUrl) + '" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:9999px;"/>'
             : escapeHtml(c.userInitial);
+        var replyAction = '';
+        if (isLoggedIn && !isNested) {
+            replyAction = '<span class="comment-reply comment-reply-btn" data-comment-id="' + c.id +
+                '" data-user-name="' + escapeHtml(c.userName) +
+                '" data-comment-text="' + escapeHtml(c.content).replace(/"/g, '&quot;') + '">Reply</span>';
+        }
+        var timeAgo = c.timeAgo ? escapeHtml(c.timeAgo) : '';
         return '<div class="comment-item' + (isNested ? ' comment-item-nested' : '') + '">' +
-            replyBtn +
             '<div class="comment-avatar' + sizeClass + '">' + avatarContent + '</div>' +
             '<div class="comment-content">' +
                 '<div class="comment-header">' +
                     '<span class="comment-name"' + nameStyle + '>' + escapeHtml(c.userName) + '</span>' +
+                    '<span class="comment-time">' + timeAgo + '</span>' +
                 '</div>' +
                 '<p class="comment-text"' + textStyle + '>' + escapeHtml(c.content) + '</p>' +
+                '<div class="comment-actions">' + replyAction + '</div>' +
             '</div>' +
         '</div>';
     }

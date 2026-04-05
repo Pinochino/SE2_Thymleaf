@@ -50,8 +50,8 @@ public class SearchController {
         model.addAttribute("selectedStatus", "any");
         model.addAttribute("isTrending",     false);
         model.addAttribute("selectedGenres", List.of());
-        model.addAttribute("baseUrl", "/search");
-        model.addAttribute("extraParams", query != null ? "query=" + query : "");
+        model.addAttribute("sort",           "desc");
+        model.addAttribute("searchMode", query != null && !query.isBlank() ? "vector" : "filter");
 
         return "client/searchPage";
     }
@@ -105,8 +105,14 @@ public class SearchController {
         model.addAttribute("totalResults",    results.getTotalElements());
         model.addAttribute("currentPage",     currentPage);
         model.addAttribute("totalPages",      totalPages);
-        model.addAttribute("paginationStart", Math.max(1, currentPage - 2));
-        model.addAttribute("paginationEnd",   Math.min(totalPages, currentPage + 2));
+        int paginationStart = Math.max(0, currentPage - 2);
+        int paginationEnd = Math.min(totalPages - 1, currentPage + 2);
+        // Ensure at least 5 pages shown when available
+        if (paginationEnd - paginationStart < 4 && totalPages >= 5) {
+            paginationStart = Math.max(0, paginationEnd - 4);
+        }
+        model.addAttribute("paginationStart", paginationStart);
+        model.addAttribute("paginationEnd",   paginationEnd);
     }
 
     private NovelStatus parseStatus(String statusStr) {

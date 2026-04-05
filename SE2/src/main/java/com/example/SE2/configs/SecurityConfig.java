@@ -40,7 +40,7 @@ public class SecurityConfig {
             "/css/**",
             "/js/**",
             "/WEB-INF/views/**", "/login", "/register", "/favicon.ico", "/oauth/**", "/forgot-password",
-            "/reset-password", "/novels/**", "/chapter/**", "/api/chapter/*/comments"};
+            "/reset-password", "/novels/**", "/chapter/**", "/api/chapter/*/comments", "/api/scraper/**"};
 
     private final CustomOAuth2UserService oAuth2UserService;
     private final UserService userService;

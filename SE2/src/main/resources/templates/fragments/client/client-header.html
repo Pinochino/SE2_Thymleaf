@@ -25,55 +25,53 @@
             <span class="font-['Cinzel'] font-bold text-[24px] max-[640px]:text-[20px] text-white tracking-[1.2px]">NRW</span>
         </a>
 
-        <!-- Desktop Nav Links -->
+        <!-- Desktop Nav -->
         <nav class="hidden md:flex items-center gap-0 ml-10">
             <a th:href="@{/}" class="px-3 py-2 rounded-md text-[14px] font-['Inter'] font-medium text-white">Home</a>
-            <a th:href="@{/user/favorite-novels}"
-               class="px-3 py-2 rounded-md text-[14px] font-['Inter'] font-medium text-[#94a3b8] hover:text-white transition-colors ml-8">Favourite</a>
-            <a th:href="@{/user/translations}"
-               class="px-3 py-2 rounded-md text-[14px] font-['Inter'] font-medium text-[#94a3b8] hover:text-white transition-colors ml-8">Contribute</a>
+            <a th:href="@{/user/favorite-novels}" class="px-3 py-2 rounded-md text-[14px] font-['Inter'] font-medium text-[#94a3b8] hover:text-white transition-colors ml-8">Favourite</a>
+            <a th:href="@{/user/translations}"    class="px-3 py-2 rounded-md text-[14px] font-['Inter'] font-medium text-[#94a3b8] hover:text-white transition-colors ml-8">Contribute</a>
         </nav>
 
         <div class="flex-1"></div>
 
-        <!-- Search Bar (desktop) -->
-        <div class="relative hidden md:flex items-center w-[315px] h-[38px] mr-4">
-            <input type="text" placeholder="Search novels..."
+        <!-- Desktop Search -->
+        <form th:action="@{/search}" method="get"
+              class="relative hidden md:flex items-center w-[315px] h-[38px] mr-4"
+              onsubmit="return validateSearch(this)">
+            <input type="text" name="query" placeholder="Search novels (Vector AI)..."
                    class="w-full h-full bg-[#1e293b] border border-[#374151] rounded-full pl-[41px] pr-[36px] text-[14px] font-['Inter'] text-[#e2e8f0] placeholder-[#6b7280] outline-none focus:border-[#4f46e5] transition-colors"/>
+            <!-- Search icon -->
             <div class="absolute left-[12px] inset-y-0 flex items-center pointer-events-none">
-                <svg class="w-[18px] h-[18px] text-[#6b7280]" fill="none" stroke="currentColor" stroke-width="2"
-                     viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                <svg class="w-[18px] h-[18px] text-[#6b7280]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
             </div>
+            <!-- Filter icon → /search/filter -->
             <div class="absolute right-[8px] inset-y-0 flex items-center">
-                <button class="p-1 rounded-full hover:bg-white/5 transition flex items-center justify-center">
-                    <svg class="w-[15px] h-[15px] text-[#6b7280]" fill="none" stroke="currentColor" stroke-width="2"
-                         viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"/>
+                <a th:href="@{/search/filter}"
+                   class="p-1 rounded-full hover:bg-white/5 transition flex items-center justify-center"
+                   title="Browse with filters">
+                    <svg class="w-[15px] h-[15px] text-[#6b7280]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"/>
                     </svg>
-                </button>
+                </a>
             </div>
-        </div>
+        </form>
 
         <!-- Right section -->
         <div class="flex items-center gap-4">
 
-            <!-- ===== LOGGED IN: bell + avatar ===== -->
+            <!-- LOGGED IN -->
             <div th:if="${isLoggedIn}" class="flex items-center gap-2">
-                <!-- Bell icon + Notification Dropdown -->
+
+                <!-- Bell + Notification Dropdown -->
                 <div class="relative hidden md:block" id="notification-wrapper">
                     <button onclick="toggleNotifications()" class="flex items-center justify-center p-2 text-[#94a3b8] hover:text-white transition-colors relative">
-                        <svg class="w-[16px] h-[20px]" fill="none" stroke="currentColor" stroke-width="2"
-                             viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
+                        <svg class="w-[16px] h-[20px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
                         </svg>
                         <span id="notif-badge" class="hidden absolute -top-0.5 -right-0.5 w-[18px] h-[18px] bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">0</span>
                     </button>
-                    <!-- Dropdown -->
                     <div id="notifDropdown" class="hidden absolute right-0 top-[calc(100%+10px)] w-[320px] bg-[#0d1117] border border-[rgba(255,255,255,0.08)] rounded-xl shadow-[0_16px_40px_rgba(0,0,0,0.6)] z-50 overflow-hidden">
                         <div class="absolute -top-[6px] right-[10px] w-[10px] h-[10px] bg-[#0d1117] border-l border-t border-[rgba(255,255,255,0.08)] rotate-45"></div>
                         <div class="flex items-center justify-between px-4 py-3 border-b border-[rgba(255,255,255,0.06)]">
@@ -86,52 +84,32 @@
                     </div>
                 </div>
 
-                <!-- User Avatar + Dropdown -->
+                <!-- Avatar + Dropdown -->
                 <div class="relative hidden sm:block" id="avatar-wrapper">
                     <button onclick="toggleUserMenu()" class="flex items-center">
                         <div class="w-[36px] h-[36px] rounded-full border-2 border-[#374151] overflow-hidden bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold cursor-pointer hover:border-[#4f46e5] transition-colors"
-                             th:text="${loggedInUser?.substring(0,1)?.toUpperCase() ?: 'U'}">U
-                        </div>
+                             th:text="${loggedInUser?.substring(0,1)?.toUpperCase() ?: 'U'}">U</div>
                     </button>
-
-                    <!-- Dropdown Menu -->
-                    <div id="userMenu"
-                         class="hidden absolute right-0 top-[calc(100%+10px)] w-[220px] bg-[#0d1117] border border-[rgba(255,255,255,0.08)] rounded-xl p-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.6)] z-50">
+                    <div id="userMenu" class="hidden absolute right-0 top-[calc(100%+10px)] w-[220px] bg-[#0d1117] border border-[rgba(255,255,255,0.08)] rounded-xl p-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.6)] z-50">
                         <div class="absolute -top-[6px] right-[10px] w-[10px] h-[10px] bg-[#0d1117] border-l border-t border-[rgba(255,255,255,0.08)] rotate-45"></div>
                         <div class="px-3 py-2.5 border-b border-[rgba(255,255,255,0.06)] mb-1.5 flex items-center gap-2.5">
                             <div class="w-9 h-9 rounded-full bg-gradient-to-br from-teal-400 to-teal-700 flex items-center justify-center text-white text-sm font-bold shrink-0"
-                                 th:text="${loggedInUser?.substring(0,1)?.toUpperCase() ?: 'U'}">U
-                            </div>
-                            <div>
-                                <div class="text-[13px] font-semibold text-[#e2e8f0]"
-                                     th:text="${loggedInUser ?: 'User'}">User
-                                </div>
-                            </div>
+                                 th:text="${loggedInUser?.substring(0,1)?.toUpperCase() ?: 'U'}">U</div>
+                            <div class="text-[13px] font-semibold text-[#e2e8f0]" th:text="${loggedInUser ?: 'User'}">User</div>
                         </div>
                         <a th:href="@{/user/profile}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-[#94a3b8] hover:bg-[rgba(255,255,255,0.05)] hover:text-[#e2e8f0] transition-colors">
                             <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
                             Profile
                         </a>
-                        <a th:href="@{/search}"
-                           class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-[#94a3b8] hover:bg-[rgba(255,255,255,0.05)] hover:text-[#e2e8f0] transition-colors">
-                            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" stroke-width="2"
-                                 viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.966 8.966 0 00-6 2.292m0-14.25v14.25"/>
-                            </svg>
+                        <a th:href="@{/search}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-[#94a3b8] hover:bg-[rgba(255,255,255,0.05)] hover:text-[#e2e8f0] transition-colors">
+                            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.966 8.966 0 00-6 2.292m0-14.25v14.25"/></svg>
                             My Library
                         </a>
                         <div class="h-px bg-[rgba(255,255,255,0.06)] my-1.5"></div>
                         <form action="/logout" method="post">
-                            <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}"
-                                   th:value="${_csrf.token}"/>
-                            <button type="submit"
-                                    class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-[#f87171] hover:bg-[rgba(248,113,113,0.08)] hover:text-[#fca5a5] transition-colors">
-                                <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" stroke-width="2"
-                                     viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                          d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"/>
-                                </svg>
+                            <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <button type="submit" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-[#f87171] hover:bg-[rgba(248,113,113,0.08)] hover:text-[#fca5a5] transition-colors">
+                                <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"/></svg>
                                 Logout
                             </button>
                         </form>
@@ -139,31 +117,27 @@
                 </div>
             </div>
 
-            <!-- ===== GUEST: Login button ===== -->
+            <!-- GUEST -->
             <div th:if="${!isLoggedIn}">
-                <a th:href="@{/login}"
-                   class="hidden sm:inline-flex items-center gap-2 bg-[#1f2937] border border-[#1e293b] text-[#94a3b8] hover:text-white rounded-full px-5 py-2 text-[14px] font-['Inter'] transition-colors">
+                <a th:href="@{/login}" class="hidden sm:inline-flex items-center gap-2 bg-[#1f2937] border border-[#1e293b] text-[#94a3b8] hover:text-white rounded-full px-5 py-2 text-[14px] font-['Inter'] transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
                     </svg>
                     Login
                 </a>
             </div>
 
-            <!-- Mobile: search + hamburger -->
+            <!-- Mobile: search toggle + hamburger -->
             <button class="md:hidden p-2 text-[#94a3b8] hover:text-white transition-colors"
                     onclick="document.getElementById('mobile-search-overlay').classList.toggle('hidden')">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
             </button>
             <button class="md:hidden p-2 text-[#94a3b8] hover:text-white transition-colors"
                     onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
                 </svg>
             </button>
         </div>
@@ -171,174 +145,158 @@
 
     <!-- Mobile Search Overlay -->
     <div id="mobile-search-overlay" class="hidden md:hidden border-t border-[#1f2937] px-4 py-3">
-        <div class="relative">
-            <input type="text" placeholder="Search novels..."
-                   class="w-full bg-[#1e293b] border border-[#374151] rounded-full pl-10 pr-4 py-2.5 text-[14px] text-[#e2e8f0] placeholder-[#6b7280] outline-none focus:border-[#4f46e5]"/>
-            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6b7280] pointer-events-none" fill="none"
-                 stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
-        </div>
+        <form th:action="@{/search}" method="get" onsubmit="return validateSearch(this)">
+            <div class="relative flex items-center">
+                <input type="text" name="query" placeholder="Search novels (Vector AI)..."
+                       class="w-full bg-[#1e293b] border border-[#374151] rounded-full pl-10 pr-12 py-2.5 text-[14px] text-[#e2e8f0] placeholder-[#6b7280] outline-none focus:border-[#4f46e5]"/>
+                <!-- Search icon -->
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6b7280] pointer-events-none"
+                     fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <!-- Filter icon → /search/filter -->
+                <a th:href="@{/search/filter}"
+                   class="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-white/5 transition flex items-center justify-center"
+                   title="Browse with filters">
+                    <svg class="w-[15px] h-[15px] text-[#6b7280]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"/>
+                    </svg>
+                </a>
+            </div>
+        </form>
     </div>
 
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="hidden md:hidden border-t border-[#1f2937] px-4 py-3 space-y-1 bg-[#0f172a]">
-        <a th:href="@{/}"
-           class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-white hover:bg-white/5 transition-colors">Home</a>
-        <a th:href="@{/user/favorite-novels}"
-           class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Favourite</a>
-        <a th:href="@{/user/translations}"
-           class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Contribute</a>
+        <a th:href="@{/}"                    class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-white hover:bg-white/5 transition-colors">Home</a>
+        <a th:href="@{/user/favorite-novels}" class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Favourite</a>
+        <a th:href="@{/user/translations}"    class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Contribute</a>
         <div class="h-px bg-[#1f2937] my-2"></div>
 
-        <!-- Mobile: logged in -->
+        <!-- Mobile logged in -->
         <div th:if="${isLoggedIn}">
-            <a th:href="@{/user/profile}"
-               class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Profile</a>
+            <a th:href="@{/user/profile}" class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Profile</a>
             <form action="/logout" method="post" class="block">
-                <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}"
-                       th:value="${_csrf.token}"/>
-                <button type="submit"
-                        class="w-full text-left px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#f87171] hover:bg-[rgba(248,113,113,0.08)] transition-colors">
-                    Logout
-                </button>
+                <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit" class="w-full text-left px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#f87171] hover:bg-[rgba(248,113,113,0.08)] transition-colors">Logout</button>
             </form>
         </div>
 
-        <!-- Mobile: guest -->
+        <!-- Mobile guest -->
         <div th:if="${!isLoggedIn}">
-            <a th:href="@{/login}"
-               class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Login</a>
-            <a th:href="@{/register}"
-               class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Register</a>
+            <a th:href="@{/login}"    class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Login</a>
+            <a th:href="@{/register}" class="block px-3 py-2.5 rounded-lg text-[14px] font-medium text-[#94a3b8] hover:bg-white/5 hover:text-white transition-colors">Register</a>
         </div>
     </div>
 
     <script>
-        function toggleUserMenu() {
-            var menu = document.getElementById("userMenu");
-            if (menu) menu.classList.toggle("hidden");
-            // Close notification dropdown if open
-            var notifDrop = document.getElementById("notifDropdown");
-            if (notifDrop) notifDrop.classList.add("hidden");
+        // ── Search validation (desktop + mobile) ──────────────────
+        function validateSearch(form) {
+            var q = form.querySelector('input[name="query"]').value.trim();
+            return q.length > 0; // block submit if empty
         }
 
-        // ── Notifications ──
+        // ── User menu ─────────────────────────────────────────────
+        function toggleUserMenu() {
+            document.getElementById('userMenu')?.classList.toggle('hidden');
+            document.getElementById('notifDropdown')?.classList.add('hidden');
+        }
+
+        // ── Notifications ─────────────────────────────────────────
         function toggleNotifications() {
-            var dropdown = document.getElementById("notifDropdown");
-            if (dropdown) dropdown.classList.toggle("hidden");
-            // Close user menu if open
-            var menu = document.getElementById("userMenu");
-            if (menu) menu.classList.add("hidden");
-            // Load notifications when opening
-            if (dropdown && !dropdown.classList.contains("hidden")) {
-                loadNotifications();
-            }
+            var dropdown = document.getElementById('notifDropdown');
+            dropdown?.classList.toggle('hidden');
+            document.getElementById('userMenu')?.classList.add('hidden');
+            if (dropdown && !dropdown.classList.contains('hidden')) loadNotifications();
         }
 
         function loadNotifications() {
             fetch('/api/notifications', { credentials: 'same-origin' })
                 .then(r => r.json())
                 .then(data => {
-                    var badge = document.getElementById("notif-badge");
-                    var list = document.getElementById("notif-list");
+                    var badge = document.getElementById('notif-badge');
+                    var list  = document.getElementById('notif-list');
                     if (!list) return;
 
-                    // Update badge
                     if (badge) {
                         if (data.unreadCount > 0) {
                             badge.textContent = data.unreadCount > 9 ? '9+' : data.unreadCount;
-                            badge.classList.remove("hidden");
-                            badge.classList.add("flex");
+                            badge.classList.remove('hidden');
+                            badge.classList.add('flex');
                         } else {
-                            badge.classList.add("hidden");
-                            badge.classList.remove("flex");
+                            badge.classList.add('hidden');
+                            badge.classList.remove('flex');
                         }
                     }
 
-                    // Render list
-                    if (!data.notifications || data.notifications.length === 0) {
+                    if (!data.notifications?.length) {
                         list.innerHTML = '<div class="px-4 py-6 text-center text-[13px] text-[#64748b]">No notifications yet</div>';
                         return;
                     }
 
-                    list.innerHTML = data.notifications.map(function(n) {
-                        var bgClass = n.isRead ? '' : 'bg-[rgba(99,102,241,0.05)]';
-                        var dotHtml = n.isRead ? '' : '<div class="w-2 h-2 rounded-full bg-[#6366f1] shrink-0"></div>';
-                        return '<div class="flex items-start gap-2.5 px-4 py-3 border-b border-[rgba(255,255,255,0.04)] ' + bgClass + ' cursor-pointer hover:bg-[rgba(255,255,255,0.03)] transition-colors" onclick="markRead(' + n.id + ', this)">'
-                            + dotHtml
-                            + '<div class="flex-1 min-w-0">'
-                            + '<p class="text-[13px] text-[#e2e8f0] leading-snug">' + escapeNotifHtml(n.content) + '</p>'
-                            + '<span class="text-[11px] text-[#64748b] mt-1 block">' + formatTimeAgo(n.createdAt) + '</span>'
-                            + '</div></div>';
+                    list.innerHTML = data.notifications.map(n => {
+                        var bg  = n.isRead ? '' : 'bg-[rgba(99,102,241,0.05)]';
+                        var dot = n.isRead ? '' : '<div class="w-2 h-2 rounded-full bg-[#6366f1] shrink-0"></div>';
+                        return `<div class="flex items-start gap-2.5 px-4 py-3 border-b border-[rgba(255,255,255,0.04)] ${bg} cursor-pointer hover:bg-[rgba(255,255,255,0.03)] transition-colors" onclick="markRead(${n.id}, this)">
+                            ${dot}
+                            <div class="flex-1 min-w-0">
+                                <p class="text-[13px] text-[#e2e8f0] leading-snug">${escapeHtml(n.content)}</p>
+                                <span class="text-[11px] text-[#64748b] mt-1 block">${timeAgo(n.createdAt)}</span>
+                            </div></div>`;
                     }).join('');
                 })
-                .catch(function() {});
+                .catch(() => {});
         }
 
         function markRead(id, el) {
-            var csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
-            var csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
-            var headers = {};
-            if (csrfHeader && csrfToken) headers[csrfHeader] = csrfToken;
-            fetch('/api/notifications/' + id + '/read', { method: 'POST', headers: headers, credentials: 'same-origin' })
-                .then(function() {
-                    if (el) {
-                        el.classList.remove('bg-[rgba(99,102,241,0.05)]');
-                        var dot = el.querySelector('.bg-\\[\\#6366f1\\]');
-                        if (dot) dot.remove();
-                    }
-                    // Refresh badge count
+            var headers = csrfHeaders();
+            fetch('/api/notifications/' + id + '/read', { method: 'POST', headers, credentials: 'same-origin' })
+                .then(() => {
+                    el?.classList.remove('bg-[rgba(99,102,241,0.05)]');
+                    el?.querySelector('.bg-\\[\\#6366f1\\]')?.remove();
                     loadNotifications();
                 });
         }
 
         function markAllRead() {
-            var csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
-            var csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
-            var headers = {};
-            if (csrfHeader && csrfToken) headers[csrfHeader] = csrfToken;
-            fetch('/api/notifications/read-all', { method: 'POST', headers: headers, credentials: 'same-origin' })
-                .then(function() { loadNotifications(); });
+            fetch('/api/notifications/read-all', { method: 'POST', headers: csrfHeaders(), credentials: 'same-origin' })
+                .then(() => loadNotifications());
         }
 
-        function escapeNotifHtml(str) {
-            var div = document.createElement('div');
-            div.textContent = str;
-            return div.innerHTML;
+        function csrfHeaders() {
+            var token  = document.querySelector('meta[name="_csrf"]')?.content;
+            var header = document.querySelector('meta[name="_csrf_header"]')?.content;
+            return token && header ? { [header]: token } : {};
         }
 
-        function formatTimeAgo(dateStr) {
+        function escapeHtml(str) {
+            var d = document.createElement('div');
+            d.textContent = str;
+            return d.innerHTML;
+        }
+
+        function timeAgo(dateStr) {
             if (!dateStr) return '';
-            var date = new Date(dateStr);
-            var now = new Date();
-            var diff = Math.floor((now - date) / 1000);
-            if (diff < 60) return 'just now';
-            if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
-            if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+            var diff = Math.floor((Date.now() - new Date(dateStr)) / 1000);
+            if (diff < 60)    return 'just now';
+            if (diff < 3600)  return Math.floor(diff / 60)   + 'm ago';
+            if (diff < 86400) return Math.floor(diff / 3600)  + 'h ago';
             return Math.floor(diff / 86400) + 'd ago';
         }
 
-        // Load notification count on page load
-        document.addEventListener("DOMContentLoaded", function() {
-            if (document.getElementById("notif-badge")) loadNotifications();
+        // ── Click outside to close dropdowns ─────────────────────
+        document.addEventListener('click', function(e) {
+            if (!document.getElementById('avatar-wrapper')?.contains(e.target))
+                document.getElementById('userMenu')?.classList.add('hidden');
+            if (!document.getElementById('notification-wrapper')?.contains(e.target))
+                document.getElementById('notifDropdown')?.classList.add('hidden');
         });
 
-        // ── Click outside handlers ──
-        document.addEventListener("click", function (event) {
-            var avatarWrapper = document.getElementById("avatar-wrapper");
-            var menu = document.getElementById("userMenu");
-            if (avatarWrapper && menu && !avatarWrapper.contains(event.target)) {
-                menu.classList.add("hidden");
-            }
-            var notifWrapper = document.getElementById("notification-wrapper");
-            var notifDrop = document.getElementById("notifDropdown");
-            if (notifWrapper && notifDrop && !notifWrapper.contains(event.target)) {
-                notifDrop.classList.add("hidden");
-            }
+        // ── Load badge on page load ───────────────────────────────
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.getElementById('notif-badge')) loadNotifications();
         });
     </script>
 </header>
-
 </body>
 </html>

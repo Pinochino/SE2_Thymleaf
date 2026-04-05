@@ -4,7 +4,7 @@ import com.example.SE2.models.Novel;
 
 public interface EmbeddingService{
 
-    Float[] embed(String text);
+    float[] embed(String text);
 
-    Float[] embedNovel(Novel novel);
+    float[] embedNovel(Novel novel);
 }

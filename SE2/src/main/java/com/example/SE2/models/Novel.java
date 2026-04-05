@@ -38,8 +38,8 @@ public class Novel extends AbstractEntity {
 
     @JsonIgnore
     @JdbcTypeCode(SqlTypes.VECTOR)
-    @Column(columnDefinition = "VECTOR(1024)")
-    private Float[] metaVector;
+    @Column(name = "meta_vector", columnDefinition = "vector(384)")
+    private float[] metaVector;
 
     @ManyToMany(mappedBy = "novels")
     @JsonBackReference
@@ -127,11 +127,11 @@ public class Novel extends AbstractEntity {
         this.coverImgUrl = coverImgUrl;
     }
 
-    public Float[] getMetaVector(){
+    public float[] getMetaVector(){
         return this.metaVector;
     }
 
-    public void setMetaVector(Float[] metaVector){
+    public void setMetaVector(float[] metaVector){
         this.metaVector = metaVector;
     }
 
@@ -168,7 +168,7 @@ public class Novel extends AbstractEntity {
                  NovelStatus status,
                  Float averageRating,
                  String coverImgUrl,
-                 Float[] metaVector,
+                 float[] metaVector,
                  Set<Genre> genres,
                  Set<Chapter> chapters,
                  List<NovelComment> comments) {

@@ -54,7 +54,6 @@ public interface NovelRepository extends JpaRepository<Novel, Long> {
 		(:trending IS NULL OR (:trending = true AND n.averageRating > 4.0))
 		AND (:#{#genres == null || #genres.isEmpty()} = true OR g.id IN :genres)
 		AND (:status IS NULL OR n.status = :status)
-	ORDER BY n.averageRating DESC NULLS LAST
 	""",
 			countQuery = """
 	SELECT COUNT(DISTINCT n) FROM Novel n

@@ -21,13 +21,13 @@
                 <!-- ── MOBILE header only ── -->
                 <div id="filter-mobile-header" class="filter-header" style="display:none">
                     <span class="filter-title">FILTERS</span>
-                    <button type="button" class="btn-reset" onclick="resetFilters()">Reset</button>
+                    <button type="button" class="btn-reset" onclick="window.location.href='/search'">Reset</button>
                 </div>
 
                 <!-- ── DESKTOP header ── -->
                 <div class="filter-header filter-header--desktop">
                     <span class="filter-title">FILTERS</span>
-                    <button type="button" class="btn-reset" onclick="resetFilters()">Reset</button>
+                    <button type="button" class="btn-reset" onclick="window.location.href='/search'">Reset</button>
                 </div>
 
                 <!-- ── SINGLE trending checkbox (shown in both) ── -->
@@ -176,7 +176,7 @@
                                 </svg>
                                 Read Now
                             </a>
-                            <button class="btn-save" th:data-novel-id="${novel.publicId}" onclick="toggleSave(this)">
+                            <button class="btn-save" th:data-novel-id="${novel.publicId}">
                                 <svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
                                      stroke-linecap="round" stroke-linejoin="round" fill="none">
                                     <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>

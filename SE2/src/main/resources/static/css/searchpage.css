@@ -77,13 +77,10 @@ body { background: var(--bg-base); color: var(--nor); font-family: var(--font-no
 }
 .btn-save svg { color: var(--noti); display: inline-block; }
 .btn-save:hover { border-color: var(--noti); background: rgba(239,68,68,.07); }
-.btn-save.saved { border-color: var(--noti); color: var(--noti); background: rgba(239,68,68,.07); box-shadow: 0 0 0 1px rgba(239,68,68,0.2) inset; }
+.btn-save.saved { border-color: var(--noti); color: var(--noti); background: rgba(239,68,68,0.2); box-shadow: 0 0 0 1px rgba(239,68,68,0.3) inset; }
 .btn-save:active { transform: scale(0.97); }
 
-.btn-save-clicked {
-    background: rgba(239, 68, 68, 0.3) !important;
-    transition: background 0.2s ease;
-}
+/* .btn-save-clicked removed - no temporary effect */
 
 /* ─── Sort select ───────────────────────────────────────────── */
 .sort-select {

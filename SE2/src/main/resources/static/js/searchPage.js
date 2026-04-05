@@ -1,52 +1,23 @@
+// ── Status pills ──────────────────────────────────────────────
+document.getElementById('status-pills')
+        .addEventListener('click', function(e) {
+    var pill = e.target.closest('button.status-pill');
+    if (!pill) return;
+
+    e.preventDefault();
+
+    document.querySelectorAll('#status-pills .status-pill')
+            .forEach(function(p) { p.classList.remove('active'); });
+    pill.classList.add('active');
+
+    document.getElementById('status-input').value = pill.dataset.value || 'any';
+});
+
+
 // ── Pagination ────────────────────────────────────────────────
-// page is already 0-based (Spring convention) — pass directly
 function goToPage(page) {
     document.getElementById('page-input').value = page;
     document.getElementById('page-form').submit();
-}
-
-// ── Status pills ──────────────────────────────────────────────
-// Wire ALL pill groups with one delegated listener
-document.querySelectorAll('.filter-status-row').forEach(function(row) {
-    row.addEventListener('click', function(e) {
-        var pill = e.target.closest('.status-pill');
-        if (!pill) return;
-
-        // deactivate siblings in this row only
-        row.querySelectorAll('.status-pill').forEach(function(p) {
-            p.classList.remove('active');
-        });
-        pill.classList.add('active');
-
-        // sync the single hidden input
-        document.getElementById('status-input').value = pill.dataset.value || 'any';
-
-        // keep both pill groups in sync (mobile ↔ desktop)
-        document.querySelectorAll('.filter-status-row').forEach(function(otherRow) {
-            if (otherRow === row) return;
-            otherRow.querySelectorAll('.status-pill').forEach(function(p) {
-                p.classList.toggle('active', p.dataset.value === pill.dataset.value);
-            });
-        });
-    });
-});
-
-// ── Reset filters ─────────────────────────────────────────────
-function resetFilters() {
-    // uncheck all checkboxes in filter form
-    document.querySelectorAll('#filter-form input[type="checkbox"]').forEach(function(cb) {
-        cb.checked = false;
-    });
-
-    // reset all pill groups to "Any"
-    document.querySelectorAll('.filter-status-row').forEach(function(row) {
-        row.querySelectorAll('.status-pill').forEach(function(p) {
-            p.classList.toggle('active', p.dataset.value === 'any');
-        });
-    });
-
-    // reset hidden status input
-    document.getElementById('status-input').value = 'any';
 }
 
 // ── Save / favourite toggle ───────────────────────────────────

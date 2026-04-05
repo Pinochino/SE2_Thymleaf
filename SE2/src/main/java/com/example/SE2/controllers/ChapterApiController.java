@@ -51,6 +51,7 @@ public class ChapterApiController {
             item.put("id", c.getId());
             item.put("userName", c.getUser().getFirstName() != null ? c.getUser().getFirstName() : c.getUser().getUsername());
             item.put("userInitial", c.getUser().getFirstName() != null && !c.getUser().getFirstName().isEmpty() ? c.getUser().getFirstName().substring(0, 1) : "U");
+            item.put("avatarUrl", c.getUser().getAvatarUrl());
             item.put("content", c.getContent());
             // Replies
             List<Map<String, Object>> replies = new ArrayList<>();
@@ -62,6 +63,7 @@ public class ChapterApiController {
                 reply.put("id", r.getId());
                 reply.put("userName", r.getUser().getFirstName() != null ? r.getUser().getFirstName() : r.getUser().getUsername());
                 reply.put("userInitial", r.getUser().getFirstName() != null && !r.getUser().getFirstName().isEmpty() ? r.getUser().getFirstName().substring(0, 1) : "U");
+                reply.put("avatarUrl", r.getUser().getAvatarUrl());
                 reply.put("content", r.getContent());
                 replies.add(reply);
             }
@@ -102,13 +104,14 @@ public class ChapterApiController {
         // Notify users who bookmarked this paragraph
         notificationService.notifyBookmarkHolders(comment);
 
-        return ResponseEntity.ok(Map.of(
-                "id", comment.getId(),
-                "userName", user.getFirstName() != null ? user.getFirstName() : user.getUsername(),
-                "userInitial", user.getFirstName() != null && !user.getFirstName().isEmpty() ? user.getFirstName().substring(0, 1) : "U",
-                "content", comment.getContent(),
-                "paragraphIndex", comment.getParagraphIndex()
-        ));
+        Map<String, Object> response = new HashMap<>();
+        response.put("id", comment.getId());
+        response.put("userName", user.getFirstName() != null ? user.getFirstName() : user.getUsername());
+        response.put("userInitial", user.getFirstName() != null && !user.getFirstName().isEmpty() ? user.getFirstName().substring(0, 1) : "U");
+        response.put("avatarUrl", user.getAvatarUrl());
+        response.put("content", comment.getContent());
+        response.put("paragraphIndex", comment.getParagraphIndex());
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{chapterId}/bookmarks")

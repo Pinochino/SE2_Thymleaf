@@ -37,8 +37,12 @@
                         <h3 class="mt-2 text-[16px] font-['Noto_Serif'] font-medium text-[#f1f5f9] leading-tight" th:text="${favorite.novel.title}">Novel Title</h3>
                     </a>
                     <p class="text-[12px] font-['Noto_Serif'] text-[#94a3b8] mt-0.5" th:text="${favorite.novel.author}">Author Name</p>
-                    <button class="text-[11px] tracking-[0.55px] text-[rgba(239,68,68,0.8)] mt-1 uppercase font-['Noto_Sans'] font-bold hover:text-red-400 transition"
-                            th:onclick="'removeFavorite(' + ${favorite.novel.id} + ')'">REMOVE</button>
+                    <form th:action="@{/user/favorite-novels/remove/{id}(id=${favorite.id})}" method="post">
+                        <button type="submit"
+                                class="text-[11px] tracking-[0.55px] text-[rgba(239,68,68,0.8)] mt-1 uppercase font-['Noto_Sans'] font-bold hover:text-red-400 transition">
+                            REMOVE
+                        </button>
+                    </form>
                 </div>
 
             </div>

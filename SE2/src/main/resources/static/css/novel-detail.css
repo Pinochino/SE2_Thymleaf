@@ -633,6 +633,7 @@ input, textarea { font-family: inherit; }
 
 /* ---------- DISCUSSION & RATINGS ---------- */
 .nd-discussion {
+    margin-top: 1rem;
     background: #181b21;
     border: 1px solid #2d3340;
     border-radius: 12px;

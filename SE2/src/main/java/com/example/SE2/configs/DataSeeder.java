@@ -82,7 +82,7 @@ public class DataSeeder implements CommandLineRunner {
                 "Victoria Ashford",
                 NovelStatus.ONGOING,
                 4.5f,
-                null
+                "https://i0.wp.com/picjumbo.com/wp-content/uploads/tiger-eyes-looking-from-the-bushes-free-image.jpeg?h=800&quality=80"
         );
         fantasy.getNovels().add(novel1);
         adventure.getNovels().add(novel1);
@@ -156,7 +156,7 @@ public class DataSeeder implements CommandLineRunner {
                 "James Rothwell",
                 NovelStatus.ONGOING,
                 4.2f,
-                null
+                "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg"
         );
         scifi.getNovels().add(novel2);
         mystery.getNovels().add(novel2);
@@ -198,7 +198,7 @@ public class DataSeeder implements CommandLineRunner {
                 "Elena Marquez",
                 NovelStatus.COMPLETED,
                 4.8f,
-                null
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQykzoZeCE0p7LeuyHnLYCdPP2jju9d5PaMeA&s"
         );
         romance.getNovels().add(novel3);
         genreRepository.save(romance);

@@ -12,10 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -47,6 +44,14 @@ public class UserController {
         User currentUser = userDetails.getUser();
         currentUser.setAvatarUrl(avatarUrl);
         userRepository.save(currentUser);
+
+    @PostMapping(value = "/user/profile/update-avatar")
+    public String updateAvatar(@AuthenticationPrincipal UserDetailImpl userDetails,
+                               @RequestParam String avatarUrl) {
+        User user = userDetails.getUser();
+        user.setAvatarUrl(avatarUrl);
+        userRepository.save(user);
+
         return "redirect:/user/profile";
     }
 
@@ -83,6 +88,15 @@ public class UserController {
         return "client/user/favorite-novels";
     }
 
+    @PostMapping(value = "/user/favorite-novels/remove/{id}")
+    public String removeFavoriteNovels(
+            @PathVariable(value = "id") String id) {
+
+        favoriteRepository.deleteById(Long.parseLong(id));
+
+        return "redirect:/user/favorite-novels";
+    }
+
     @GetMapping(value = "/user/translations")
     public String userTranslations(@AuthenticationPrincipal UserDetailImpl userDetails, Model model,
                                    @RequestParam(defaultValue = "0") int page,
@@ -105,11 +119,8 @@ public class UserController {
                                     @RequestParam(required = false) Long novelId,
                                     @RequestParam(required = false) Long chapterId,
                                     Model model) {
-        // Load all novels for the dropdown
         List<Novel> novels = novelRepository.findAll();
         model.addAttribute("novels", novels);
-
-        // If novelId is provided, load its chapters
         if (novelId != null) {
             Novel novel = novelRepository.findById(novelId).orElse(null);
             model.addAttribute("selectedNovel", novel);

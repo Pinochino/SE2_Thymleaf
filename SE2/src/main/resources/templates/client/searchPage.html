@@ -12,7 +12,6 @@
   <link rel="stylesheet" th:href="@{/css/client/searchPage.css}"/>
 
 </head>
-
 <body>
 <main layout:fragment="content">
   <div class="search-wrap">
@@ -21,76 +20,21 @@
         <input type="hidden" name="query" th:value="${query}" />
         <input type="hidden" id="status-input" name="status" th:value="${selectedStatus ?: 'any'}" />
 
-        <!-- ── MOBILE panel ── -->
-        <div id="filter-mobile">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-            <span class="filter-title">FILTERS</span>
-            <button type="button" class="btn-reset" onclick="resetFilters()">Reset</button>
-          </div>
-          <label class="cb-wrap" style="margin-bottom:10px;">
-            <input type="checkbox" name="trending" value="true" th:checked="${isTrending}">
-            <span class="cb-box"></span><span class="cb-label">Trending</span>
-          </label>
-          <div style="margin-bottom:10px;">
-            <p class="filter-group-label">Genre</p>
-            <div class="genre-row">
-              <label class="cb-wrap" th:each="genre : ${genres}">
-                <input type="checkbox" name="genres" th:value="${genre.genre_id}"
-                       th:checked="${selectedGenres != null and selectedGenres.contains(genre.genre_id)}">
-                <span class="cb-box"></span>
-                <span class="cb-label" th:text="${genre.name}">Genre</span>
-              </label>
-            </div>
-          </div>
-          <div style="margin-bottom:10px;">
-            <p class="filter-group-label">Status</p>
-            <div style="display:flex;flex-wrap:wrap;gap:7px;">
-              <button type="button" class="status-pill" th:classappend="${(selectedStatus==null or selectedStatus=='any')}?' active':''" data-value="any"      onclick="selectPill(this)">Any</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='hiatus'}   ?' active':''" data-value="hiatus"    onclick="selectPill(this)">Hiatus</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='completed'}?' active':''" data-value="completed" onclick="selectPill(this)">Completed</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='ongoing'}  ?' active':''" data-value="ongoing"   onclick="selectPill(this)">Ongoing</button>
-            </div>
-          </div>
-          <button type="submit" class="btn-apply">Apply Filters</button>
-        </div>
+                <!-- shared hidden status field -->
+                <input type="hidden" id="status-input" name="statusStr"
+                       th:value="${selectedStatus ?: 'any'}" />
 
-        <!-- ── DESKTOP panel ── -->
-        <div id="filter-desktop">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem;">
-            <span class="filter-title">FILTERS</span>
-            <button type="button" class="btn-reset" onclick="resetFilters()">Reset</button>
-          </div>
-          <label class="cb-wrap" style="margin-bottom:1rem;">
-            <input type="checkbox" name="trending" value="true" th:checked="${isTrending}">
-            <span class="cb-box"></span><span class="cb-label">Trending</span>
-          </label>
-          <hr class="filter-divider">
-          <div style="margin-bottom:1rem;">
-            <p class="filter-group-label">Genre</p>
-            <div style="display:flex;flex-direction:column;gap:9px;">
-              <label class="cb-wrap" th:each="genre : ${genres}">
-                <input type="checkbox" name="genres" th:value="${genre.genre_id}"
-                       th:checked="${selectedGenres != null and selectedGenres.contains(genre.genre_id)}">
-                <span class="cb-box"></span>
-                <span class="cb-label" th:text="${genre.name}">Genre</span>
-              </label>
-            </div>
-          </div>
-          <hr class="filter-divider">
-          <div style="margin-bottom:1.1rem;">
-            <p class="filter-group-label">Status</p>
-            <div style="display:flex;flex-wrap:wrap;gap:7px;">
-              <button type="button" class="status-pill" th:classappend="${(selectedStatus==null or selectedStatus=='any')}?' active':''" data-value="any"      onclick="selectPill(this)">Any</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='completed'}?' active':''" data-value="completed" onclick="selectPill(this)">Completed</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='ongoing'}  ?' active':''" data-value="ongoing"   onclick="selectPill(this)">Ongoing</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='hiatus'}   ?' active':''" data-value="hiatus"    onclick="selectPill(this)">Hiatus</button>
-            </div>
-          </div>
-          <button type="submit" class="btn-apply">Apply Filters</button>
-        </div>
-      </form>
-    </section>
+                <!-- ── MOBILE ── -->
+                <div id="filter-mobile">
+                    <div class="filter-header">
+                        <span class="filter-title">FILTERS</span>
+                        <button type="button" class="btn-reset" onclick="resetFilters()">Reset</button>
+                    </div>
 
+                    <label class="cb-wrap filter-trending">
+                        <input type="checkbox" name="trending" value="true" th:checked="${isTrending}">
+                        <span class="cb-box"></span><span class="cb-label">Trending</span>
+                    </label>
 
     <section id="results">
       <div class="results-header">
@@ -166,8 +110,8 @@
       <!-- ── Pagination ── -->
       <div th:replace="~{fragments/client/pagination :: pagination}"></div>
 
-    </section>
-  </div><!-- /search-wrap -->
+        </section>
+    </div>
 </main>
 
 <script>

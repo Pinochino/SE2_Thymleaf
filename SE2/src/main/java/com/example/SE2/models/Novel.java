@@ -2,8 +2,11 @@ package com.example.SE2.models;
 
 import com.example.SE2.constants.NovelStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.*;
 
@@ -33,10 +36,10 @@ public class Novel extends AbstractEntity {
     @Column(columnDefinition = "TEXT")
     private String coverImgUrl;
 
-//    @JdbcTypeCode(SqlTypes.VECTOR)
-//    @Array(length = 1024)
-//    @Column(columnDefinition = "VECTOR(1024)")
-//    private float[] metaVector;
+    @JsonIgnore
+    @JdbcTypeCode(SqlTypes.VECTOR)
+    @Column(name = "meta_vector", columnDefinition = "vector(384)")
+    private float[] metaVector;
 
     @ManyToMany(mappedBy = "novels")
     @JsonBackReference
@@ -124,6 +127,14 @@ public class Novel extends AbstractEntity {
         this.coverImgUrl = coverImgUrl;
     }
 
+    public float[] getMetaVector(){
+        return this.metaVector;
+    }
+
+    public void setMetaVector(float[] metaVector){
+        this.metaVector = metaVector;
+    }
+
     public Set<Genre> getGenres() {
         return genres;
     }
@@ -149,7 +160,18 @@ public class Novel extends AbstractEntity {
     }
 
 
-    public Novel(Long id, UUID publicId, String title, String description, String author, NovelStatus status, Float averageRating, String coverImgUrl, Set<Genre> genres, Set<Chapter> chapters, List<NovelComment> comments) {
+    public Novel(Long id,
+                 UUID publicId,
+                 String title,
+                 String description,
+                 String author,
+                 NovelStatus status,
+                 Float averageRating,
+                 String coverImgUrl,
+                 float[] metaVector,
+                 Set<Genre> genres,
+                 Set<Chapter> chapters,
+                 List<NovelComment> comments) {
         this.id = id;
         this.publicId = publicId;
         this.title = title;
@@ -158,6 +180,7 @@ public class Novel extends AbstractEntity {
         this.status = status;
         this.averageRating = averageRating;
         this.coverImgUrl = coverImgUrl;
+        this.metaVector=metaVector;
         this.genres = genres;
         this.chapters = chapters;
         this.comments = comments;

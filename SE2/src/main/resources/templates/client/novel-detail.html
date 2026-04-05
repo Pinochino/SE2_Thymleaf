@@ -251,7 +251,7 @@
         <form th:if="${userLogin != null}" th:action="@{/comments/save/{publicId} (publicId=${novel.publicId})}" th:method="post"
               th:object="${novelComment}" class="nd-comment-form">
             <div class="nd-comment-avatar"
-                 th:text="${userLogin.user.lastName} != null ? ${userLogin.user.lastName.substring(0, 1)} : 'U'">U
+                 th:text="${userLogin.user.lastName != null and !userLogin.user.lastName.isEmpty()} ? ${userLogin.user.lastName.substring(0, 1)} : 'U'">U
             </div>
             <div class="nd-comment-form-body">
                     <textarea class="nd-comment-textarea"
@@ -279,7 +279,7 @@
                     <div style="width:100%;height:100%;background:#6366f1;display:flex;
                         align-items:center;justify-content:center;color:#fff;
                         font-size:14px;font-weight:600;border-radius:9999px;"
-                         th:text="${comment.user.lastName != null
+                         th:text="${comment.user.lastName != null and !comment.user.lastName.isEmpty()
                            ? comment.user.lastName.substring(0, 1) : 'U'}">
                     </div>
                 </div>
@@ -311,7 +311,7 @@
                         <input type="hidden" name="parentId" th:value="${comment.id}"/>
 
                         <div class="nd-comment-avatar"
-                             th:text="${userLogin.user.lastName != null
+                             th:text="${userLogin.user.lastName != null and !userLogin.user.lastName.isEmpty()
                                ? userLogin.user.lastName.substring(0,1) : 'U'}">
                         </div>
                         <div class="nd-comment-form-body">
@@ -335,7 +335,7 @@
                                 <div style="width:100%;height:100%;background:#10b981;display:flex;
                                     align-items:center;justify-content:center;color:#fff;
                                     font-size:14px;font-weight:600;border-radius:9999px;"
-                                     th:text="${reply.user.lastName != null
+                                     th:text="${reply.user.lastName != null and !reply.user.lastName.isEmpty()
                                        ? reply.user.lastName.substring(0,1) : 'U'}">
                                 </div>
                             </div>

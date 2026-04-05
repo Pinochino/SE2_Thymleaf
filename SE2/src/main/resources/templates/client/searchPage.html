@@ -9,8 +9,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet"/>
-  
-  <!-- Link extracted local styles -->
   <link rel="stylesheet" th:href="@{/css/client/searchPage.css}"/>
 
 </head>
@@ -18,10 +16,6 @@
 <body>
 <main layout:fragment="content">
   <div class="search-wrap">
-
-    <!-- ══════════════════════════════
-         FILTER SECTION
-    ══════════════════════════════ -->
     <section id="filter-section">
       <form id="filter-form" th:action="@{/search}" method="get">
         <input type="hidden" name="query" th:value="${query}" />
@@ -98,12 +92,7 @@
     </section>
 
 
-    <!-- ══════════════════════════════
-         RESULTS SECTION
-    ══════════════════════════════ -->
     <section id="results">
-
-      <!-- Header -->
       <div class="results-header">
         <div>
           <h1 class="results-title">
@@ -131,8 +120,6 @@
         </form>
       </div>
 
-
-      <!-- ── Novel cards from data ── -->
       <div id="novel-list" th:if="${novels != null and !novels.isEmpty()}">
         <div class="novel-card" th:each="novel : ${novels}">
           <div class="card-cover">

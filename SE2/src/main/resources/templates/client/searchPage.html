@@ -3,313 +3,277 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/_clientLayout}">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title th:text="'Search – ' + (${query} != null ? '\'' + ${query} + '\'' : 'Novel Library')">Search – Novel Library</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet"/>
-  
-  <!-- Link extracted local styles -->
-  <link rel="stylesheet" th:href="@{/css/client/searchPage.css}"/>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="'Search – ' + (${query} != null ? '\'' + ${query} + '\'' : 'Novel Library')">Search</title>
+    <link rel="stylesheet" th:href="@{/css/searchpage.css}"/>
 </head>
-
 <body>
 <main layout:fragment="content">
-  <div class="search-wrap">
+    <div class="search-wrap">
 
-    <!-- ══════════════════════════════
-         FILTER SECTION
-    ══════════════════════════════ -->
-    <section id="filter-section">
-      <form id="filter-form" th:action="@{/search}" method="get">
-        <input type="hidden" name="query" th:value="${query}" />
-        <input type="hidden" id="status-input" name="status" th:value="${selectedStatus ?: 'any'}" />
+        <!-- ── FILTER SIDEBAR ─────────────────────────────────────── -->
+        <section id="filter-section">
+            <form id="filter-form" th:action="@{/search/filter}" method="get">
 
-        <!-- ── MOBILE panel ── -->
-        <div id="filter-mobile">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-            <span class="filter-title">FILTERS</span>
-            <button type="button" class="btn-reset" onclick="resetFilters()">Reset</button>
-          </div>
-          <label class="cb-wrap" style="margin-bottom:10px;">
-            <input type="checkbox" name="trending" value="true" th:checked="${isTrending}">
-            <span class="cb-box"></span><span class="cb-label">Trending</span>
-          </label>
-          <div style="margin-bottom:10px;">
-            <p class="filter-group-label">Genre</p>
-            <div class="genre-row">
-              <label class="cb-wrap" th:each="genre : ${genres}">
-                <input type="checkbox" name="genres" th:value="${genre.genre_id}"
-                       th:checked="${selectedGenres != null and selectedGenres.contains(genre.genre_id)}">
-                <span class="cb-box"></span>
-                <span class="cb-label" th:text="${genre.name}">Genre</span>
-              </label>
+                <!-- shared hidden status field -->
+                <input type="hidden" id="status-input" name="statusStr"
+                       th:value="${selectedStatus ?: 'any'}" />
+
+                <!-- ── MOBILE ── -->
+                <div id="filter-mobile">
+                    <div class="filter-header">
+                        <span class="filter-title">FILTERS</span>
+                        <button type="button" class="btn-reset" onclick="resetFilters()">Reset</button>
+                    </div>
+
+                    <label class="cb-wrap filter-trending">
+                        <input type="checkbox" name="trending" value="true" th:checked="${isTrending}">
+                        <span class="cb-box"></span><span class="cb-label">Trending</span>
+                    </label>
+
+                    <div class="filter-group">
+                        <p class="filter-group-label">Genre</p>
+                        <div class="genre-row">
+                            <label class="cb-wrap" th:each="genre : ${genres}">
+                                <input type="checkbox" name="genres" th:value="${genre.id}"
+                                       th:checked="${selectedGenres != null and selectedGenres.contains(genre.id.toString())}">
+                                <span class="cb-box"></span>
+                                <span class="cb-label" th:text="${genre.name}">Genre</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <p class="filter-group-label">Status</p>
+                        <div class="filter-status-row" id="status-pills-mobile">
+                            <button type="button" class="status-pill" th:classappend="${selectedStatus == null or selectedStatus == 'any'} ? ' active'" data-value="any">Any</button>
+                            <button type="button" class="status-pill" th:classappend="${selectedStatus == 'HIATUS'}    ? ' active'" data-value="HIATUS">Hiatus</button>
+                            <button type="button" class="status-pill" th:classappend="${selectedStatus == 'COMPLETED'} ? ' active'" data-value="COMPLETED">Completed</button>
+                            <button type="button" class="status-pill" th:classappend="${selectedStatus == 'ONGOING'}   ? ' active'" data-value="ONGOING">Ongoing</button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-apply">Apply Filters</button>
+                </div>
+
+                <!-- ── DESKTOP ── -->
+                <div id="filter-desktop">
+                    <div class="filter-header filter-header--desktop">
+                        <span class="filter-title">FILTERS</span>
+                        <button type="button" class="btn-reset" onclick="resetFilters()">Reset</button>
+                    </div>
+
+                    <label class="cb-wrap filter-trending filter-trending--desktop">
+                        <input type="checkbox" name="trending" value="true" th:checked="${isTrending}">
+                        <span class="cb-box"></span><span class="cb-label">Trending</span>
+                    </label>
+                    <hr class="filter-divider">
+
+                    <div class="filter-group filter-group--desktop">
+                        <p class="filter-group-label">Genre</p>
+                        <div class="filter-genre-col">
+                            <label class="cb-wrap" th:each="genre : ${genres}">
+                                <input type="checkbox" name="genres" th:value="${genre.id}"
+                                       th:checked="${selectedGenres != null and selectedGenres.contains(genre.id.toString())}">
+                                <span class="cb-box"></span>
+                                <span class="cb-label" th:text="${genre.name}">Genre</span>
+                            </label>
+                        </div>
+                    </div>
+                    <hr class="filter-divider">
+
+                    <div class="filter-status-group--desktop">
+                        <p class="filter-group-label">Status</p>
+                        <div class="filter-status-row" id="status-pills-desktop">
+                            <button type="button" class="status-pill" th:classappend="${selectedStatus == null or selectedStatus == 'any'} ? ' active'" data-value="any">Any</button>
+                            <button type="button" class="status-pill" th:classappend="${selectedStatus == 'COMPLETED'} ? ' active'" data-value="COMPLETED">Completed</button>
+                            <button type="button" class="status-pill" th:classappend="${selectedStatus == 'ONGOING'}   ? ' active'" data-value="ONGOING">Ongoing</button>
+                            <button type="button" class="status-pill" th:classappend="${selectedStatus == 'HIATUS'}    ? ' active'" data-value="HIATUS">Hiatus</button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-apply">Apply Filters</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- ── RESULTS ────────────────────────────────────────────── -->
+        <section id="results">
+
+            <!-- Header -->
+            <div class="results-header">
+                <div>
+                    <h1 class="results-title">
+                        <span th:text="${searchMode == 'vector'} ? 'Vector Search:' : 'Filter Results:'">Results:</span>
+                        <span class="results-title-query"
+                              th:text="${query != null and !#strings.isEmpty(query)} ? '\'' + ${query} + '\'' : 'All Novels'">
+                        'Epic Fantasy'
+                    </span>
+                    </h1>
+                    <p class="results-count">
+                        Found
+                        <span th:text="${#numbers.formatInteger(totalResults, 1, 'COMMA')}">0</span>
+                        result<span th:if="${totalResults != 1}">s</span>
+                        <span th:text="${searchMode == 'vector'} ? 'by semantic similarity' : 'matching your filters'"></span>
+                    </p>
+                </div>
+
+                <!-- Sort — only meaningful for filter mode -->
+                <form th:if="${searchMode == 'filter'}" class="sort-form"
+                      th:action="@{/search/filter}" method="get">
+                    <input type="hidden" name="statusStr" th:value="${selectedStatus}" />
+                    <input type="hidden" name="trending"  th:value="${isTrending ? 'true' : ''}" />
+                    <th:block th:each="gid : ${selectedGenres}">
+                        <input type="hidden" name="genres" th:value="${gid}" />
+                    </th:block>
+                    <input type="hidden" name="page" value="0" />
+                    <span class="sort-label">SORT BY:</span>
+                    <select class="sort-select" name="sort" onchange="this.form.submit()">
+                        <option value="asc"  th:selected="${sort == 'asc'}">Ascending</option>
+                        <option value="desc" th:selected="${sort == 'desc'}">Descending</option>
+                    </select>
+                </form>
             </div>
-          </div>
-          <div style="margin-bottom:10px;">
-            <p class="filter-group-label">Status</p>
-            <div style="display:flex;flex-wrap:wrap;gap:7px;">
-              <button type="button" class="status-pill" th:classappend="${(selectedStatus==null or selectedStatus=='any')}?' active':''" data-value="any"      onclick="selectPill(this)">Any</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='hiatus'}   ?' active':''" data-value="hiatus"    onclick="selectPill(this)">Hiatus</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='completed'}?' active':''" data-value="completed" onclick="selectPill(this)">Completed</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='ongoing'}  ?' active':''" data-value="ongoing"   onclick="selectPill(this)">Ongoing</button>
-            </div>
-          </div>
-          <button type="submit" class="btn-apply">Apply Filters</button>
-        </div>
 
-        <!-- ── DESKTOP panel ── -->
-        <div id="filter-desktop">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem;">
-            <span class="filter-title">FILTERS</span>
-            <button type="button" class="btn-reset" onclick="resetFilters()">Reset</button>
-          </div>
-          <label class="cb-wrap" style="margin-bottom:1rem;">
-            <input type="checkbox" name="trending" value="true" th:checked="${isTrending}">
-            <span class="cb-box"></span><span class="cb-label">Trending</span>
-          </label>
-          <hr class="filter-divider">
-          <div style="margin-bottom:1rem;">
-            <p class="filter-group-label">Genre</p>
-            <div style="display:flex;flex-direction:column;gap:9px;">
-              <label class="cb-wrap" th:each="genre : ${genres}">
-                <input type="checkbox" name="genres" th:value="${genre.genre_id}"
-                       th:checked="${selectedGenres != null and selectedGenres.contains(genre.genre_id)}">
-                <span class="cb-box"></span>
-                <span class="cb-label" th:text="${genre.name}">Genre</span>
-              </label>
-            </div>
-          </div>
-          <hr class="filter-divider">
-          <div style="margin-bottom:1.1rem;">
-            <p class="filter-group-label">Status</p>
-            <div style="display:flex;flex-wrap:wrap;gap:7px;">
-              <button type="button" class="status-pill" th:classappend="${(selectedStatus==null or selectedStatus=='any')}?' active':''" data-value="any"      onclick="selectPill(this)">Any</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='completed'}?' active':''" data-value="completed" onclick="selectPill(this)">Completed</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='ongoing'}  ?' active':''" data-value="ongoing"   onclick="selectPill(this)">Ongoing</button>
-              <button type="button" class="status-pill" th:classappend="${selectedStatus=='hiatus'}   ?' active':''" data-value="hiatus"    onclick="selectPill(this)">Hiatus</button>
-            </div>
-          </div>
-          <button type="submit" class="btn-apply">Apply Filters</button>
-        </div>
-      </form>
-    </section>
+            <!-- Novel list -->
+            <div id="novel-list"
+                 th:if="${searchedNovels != null and not #lists.isEmpty(searchedNovels.content)}">
+                <div class="novel-card"
+                     th:each="novel : ${searchedNovels.content}"
+                     th:attr="data-title=${novel.title}, data-rating=${novel.averageRating ?: 0}">
 
+                    <!-- Cover -->
+                    <div class="card-cover">
+                        <div class="card-cover-inner">
+                            <img th:if="${novel.coverImgUrl != null}"
+                                 th:src="${novel.coverImgUrl}" th:alt="${novel.title}" />
+                            <span th:unless="${novel.coverImgUrl != null}"
+                                  class="cover-label" th:text="${novel.title}">Novel Title</span>
+                        </div>
+                    </div>
 
-    <!-- ══════════════════════════════
-         RESULTS SECTION
-    ══════════════════════════════ -->
-    <section id="results">
+                    <!-- Body -->
+                    <div class="card-body">
+                        <div class="card-head-row">
+                            <a class="card-title"
+                               th:href="@{/novels/information/{id}(id=${novel.publicId})}"
+                               th:text="${novel.title}">Novel Title</a>
+                            <span class="card-status-badge"
+                                  th:classappend="${novel.status != null ? 'badge-' + #strings.toLowerCase(novel.status.name()) : 'badge-new'}"
+                                  th:text="${novel.status != null ? novel.status.name() : 'New'}">Status</span>
+                        </div>
 
-      <!-- Header -->
-      <div class="results-header">
-        <div>
-          <h1 class="results-title">
-            Search Results:
-            <span style="color:var(--accent2);"
-                  th:text="${query != null and !#strings.isEmpty(query)} ? '\'' + ${query} + '\'' : 'All Novels'">'Epic Fantasy'</span>
-          </h1>
-          <p style="font-size:0.8rem;color:var(--lw);margin-top:5px;">
-            Found
-            <span th:text="${#numbers.formatInteger(totalResults, 1, 'COMMA')}">1,240</span>
-            result<span th:if="${totalResults != 1}">s</span> for your query in all categories.
-          </p>
-        </div>
-        <form th:action="@{/search}" method="get" style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-top:4px;">
-          <input type="hidden" name="query"    th:value="${query}" />
-          <input type="hidden" name="status"   th:value="${selectedStatus}" />
-          <input type="hidden" name="trending" th:value="${isTrending}" />
-          <th:block th:each="gid : ${selectedGenres}"><input type="hidden" name="genres" th:value="${gid}" /></th:block>
-          <input type="hidden" name="page" value="1" />
-          <span style="font-size:0.68rem;font-weight:700;letter-spacing:.12em;color:var(--lw);">SORT BY:</span>
-          <select class="sort-select" name="sort" onchange="this.form.submit()">
-            <option value="asc"  th:selected="${sort=='asc'}">Ascending</option>
-            <option value="desc" th:selected="${sort=='desc'}">Descending</option>
-          </select>
-        </form>
-      </div>
+                        <div class="card-meta">
+                        <span class="meta-item" th:if="${novel.author != null}">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                                <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/>
+                            </svg>
+                            <span th:text="${novel.author}">Author</span>
+                        </span>
+                            <span class="meta-item meta-item--rating" th:if="${novel.averageRating != null}">
+                            <svg width="12" height="12" viewBox="0 0 24 24" stroke-width="1">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                            </svg>
+                            <span class="rating-value" th:text="${novel.averageRating}">4.8</span>
+                        </span>
+                        </div>
 
+                        <div class="card-genres" th:if="${novel.genres != null and !novel.genres.isEmpty()}">
+                            <span class="genre-tag" th:each="genre : ${novel.genres}" th:text="${genre.name}">Genre</span>
+                        </div>
 
-      <!-- ── Sample cards (fallback / preview when no Thymeleaf data) ── -->
-      <div id="novel-list" th:if="${novels == null or novels.isEmpty()}">
+                        <p class="card-description" th:if="${novel.description != null}"
+                           th:text="${novel.description}">Description</p>
 
-        <!-- Sample 1 -->
-        <div class="novel-card">
-          <div class="card-cover">
-            <div class="card-cover-inner" style="background:linear-gradient(160deg,#1e3a5a 0%,#2a5a7a 50%,#182840 100%);">
-              <span style="font-family:var(--font-head);font-size:0.48rem;color:rgba(255,255,255,.22);text-align:center;padding:0 10px;line-height:1.7;">Shadow of the Dragon Queen</span>
+                        <div class="card-actions">
+                            <a class="btn-read" th:href="@{/novels/information/{id}(id=${novel.publicId})}">
+                                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                                </svg>
+                                Read Now
+                            </a>
+                            <button class="btn-save" th:data-novel-id="${novel.publicId}" onclick="toggleSave(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                                    <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+                                </svg>
+                                <span>Save</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="card-body">
-            <div class="card-head-row">
-              <a href="#" class="card-title">Shadow of the Dragon Queen</a>
-              <span class="card-status-badge badge-completed">Completed</span>
-            </div>
-            <div class="card-meta">
-              <span style="display:flex;align-items:center;gap:5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/></svg>Elara Vance</span>
-              <span style="display:flex;align-items:center;gap:4px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span style="color:#e2e8f0;font-weight:600;">4.8</span></span>
-            </div>
-            <div class="card-genres">
-              <span style="font-size:0.68rem;color:var(--accent2);background:rgba(63,103,232,0.1);border:1px solid rgba(63,103,232,0.25);border-radius:4px;padding:2px 7px;">Fantasy</span>
-              <span style="font-size:0.68rem;color:var(--accent2);background:rgba(63,103,232,0.1);border:1px solid rgba(63,103,232,0.25);border-radius:4px;padding:2px 7px;">Adventure</span>
-            </div>
-            <p class="card-description">A legendary queen rises from the ashes of a fallen empire. With a dragon companion at her side and a kingdom to reclaim, she must navigate a world of treacherous magic and ancient gods. The war for the Crown of Embers has only just begun...</p>
-            <div class="card-actions">
-              <a href="#" class="btn-read"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Read Now</a>
-              <button class="btn-save" onclick="toggleSave(this)" data-novel-id="1"><svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg><span>Save</span></button>
-            </div>
-          </div>
-        </div>
 
-        <!-- Sample 2 -->
-        <div class="novel-card">
-          <div class="card-cover">
-            <div class="card-cover-inner" style="background:linear-gradient(160deg,#1a2a1e 0%,#2d4a35 50%,#101a12 100%);">
-              <span style="font-family:var(--font-head);font-size:0.48rem;color:rgba(255,255,255,.22);text-align:center;padding:0 10px;line-height:1.7;">The Alchemist's Secret</span>
+            <!-- Empty state -->
+            <div class="empty-state"
+                 th:if="${searchedNovels == null or #lists.isEmpty(searchedNovels.content)}">
+                <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <p class="empty-state__title">No novels found</p>
+                <p class="empty-state__sub">Try a different search term or adjust your filters.</p>
             </div>
-          </div>
-          <div class="card-body">
-            <div class="card-head-row">
-              <a href="#" class="card-title">The Alchemist's Secret</a>
-              <span class="card-status-badge badge-new">New</span>
+
+            <!-- ── PAGINATION ──────────────────────────────────────── -->
+            <div class="pagination" th:if="${totalPages != null and totalPages > 0}">
+
+                <!-- hidden form — action depends on searchMode -->
+                <form id="page-form"
+                      th:action="${searchMode == 'vector'} ? @{/search} : @{/search/filter}"
+                      method="get" hidden>
+                    <input type="hidden" name="query"  th:value="${query}" />
+                    <input type="hidden" name="sort"   th:value="${sort}" />
+                    <th:block th:if="${searchMode == 'filter'}">
+                        <input type="hidden" name="statusStr" th:value="${selectedStatus}" />
+                        <input type="hidden" name="trending"  th:value="${isTrending ? 'true' : ''}" />
+                        <th:block th:each="gid : ${selectedGenres}">
+                            <input type="hidden" name="genres" th:value="${gid}" />
+                        </th:block>
+                    </th:block>
+                    <input type="hidden" name="page" id="page-input" value="0" />
+                </form>
+
+                <!-- Prev -->
+                <button class="page-btn"
+                        th:classappend="${currentPage == 0} ? ' page-btn--disabled'"
+                        th:onclick="${currentPage > 0} ? 'goToPage(' + ${currentPage - 1} + ')' : 'return false'">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                </button>
+
+                <!-- First page shortcut -->
+                <button th:if="${paginationStart > 0}" class="page-btn" onclick="goToPage(0)">1</button>
+                <span   th:if="${paginationStart > 1}"  class="page-btn page-btn--ellipsis">…</span>
+
+                <!-- Page range (0-based internally, display +1) -->
+                <th:block th:each="p : ${#numbers.sequence(paginationStart, paginationEnd)}">
+                    <button class="page-btn"
+                            th:classappend="${p == currentPage} ? ' active'"
+                            th:text="${p + 1}"
+                            th:onclick="'goToPage(' + ${p} + ')'">1</button>
+                </th:block>
+
+                <!-- Last page shortcut -->
+                <span   th:if="${paginationEnd < totalPages - 2}" class="page-btn page-btn--ellipsis">…</span>
+                <button th:if="${paginationEnd < totalPages - 1}" class="page-btn"
+                        th:text="${totalPages}"
+                        th:onclick="'goToPage(' + (${totalPages} - 1) + ')'"></button>
+
+                <!-- Next -->
+                <button class="page-btn"
+                        th:classappend="${currentPage + 1 >= totalPages} ? ' page-btn--disabled'"
+                        th:onclick="${currentPage + 1 < totalPages} ? 'goToPage(' + (${currentPage + 1}) + ')' : 'return false'">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <polyline points="9 18 15 12 9 6"/>
+                    </svg>
+                </button>
             </div>
-            <div class="card-meta">
-              <span style="display:flex;align-items:center;gap:5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/></svg>Julian Thorne</span>
-              <span style="display:flex;align-items:center;gap:4px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span style="color:#e2e8f0;font-weight:600;">4.5</span></span>
-            </div>
-            <div class="card-genres">
-              <span style="font-size:0.68rem;color:var(--accent2);background:rgba(63,103,232,0.1);border:1px solid rgba(63,103,232,0.25);border-radius:4px;padding:2px 7px;">Fantasy</span>
-              <span style="font-size:0.68rem;color:var(--accent2);background:rgba(63,103,232,0.1);border:1px solid rgba(63,103,232,0.25);border-radius:4px;padding:2px 7px;">Action</span>
-            </div>
-            <p class="card-description">In a city where gold is blood and lead is life, a young apprentice discovers a formula that shouldn't exist. Now hunted by the Alchemist Guild, he must find the source of the forbidden art before the city is consumed by its own greed.</p>
-            <div class="card-actions">
-              <a href="#" class="btn-read"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Read Now</a>
-              <button class="btn-save saved" onclick="toggleSave(this)" data-novel-id="2"><svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="currentColor"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg><span>Saved</span></button>
-            </div>
-          </div>
-        </div>
 
-        <!-- Sample 3 -->
-        <div class="novel-card">
-          <div class="card-cover">
-            <div class="card-cover-inner" style="background:linear-gradient(160deg,#1a2a3a 0%,#25404f 50%,#0e1e2a 100%);">
-              <span style="font-family:var(--font-head);font-size:0.72rem;color:rgba(255,255,255,.3);text-align:center;padding:0 12px;letter-spacing:.1em;">NOVEL</span>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="card-head-row">
-              <a href="#" class="card-title">The Last Ember</a>
-              <span class="card-status-badge badge-new">New</span>
-            </div>
-            <div class="card-meta">
-              <span style="display:flex;align-items:center;gap:5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/></svg>S.K. Aris</span>
-              <span style="display:flex;align-items:center;gap:4px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span style="color:#e2e8f0;font-weight:600;">4.9</span></span>
-            </div>
-            <div class="card-genres">
-              <span style="font-size:0.68rem;color:var(--accent2);background:rgba(63,103,232,0.1);border:1px solid rgba(63,103,232,0.25);border-radius:4px;padding:2px 7px;">Fantasy</span>
-              <span style="font-size:0.68rem;color:var(--accent2);background:rgba(63,103,232,0.1);border:1px solid rgba(63,103,232,0.25);border-radius:4px;padding:2px 7px;">Romance</span>
-            </div>
-            <p class="card-description">The world has gone dark. Only the Embers keep the shadows at bay. As the last torchbearer, Kaelen must journey to the Sun Peaks to reignite the Great Fire, but ancient horrors lurk in the permanent night, waiting for the light to flicker.</p>
-            <div class="card-actions">
-              <a href="#" class="btn-read"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Read Now</a>
-              <button class="btn-save" onclick="toggleSave(this)" data-novel-id="3"><svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg><span>Save</span></button>
-            </div>
-          </div>
-        </div>
-
-      </div><!-- /novel-list sample -->
-
-      <!-- ── Pagination ── -->
-      <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:1.75rem;flex-wrap:wrap;padding-bottom:1rem;">
-
-        <form id="page-form" th:action="@{/search}" method="get" style="display:none;">
-          <input type="hidden" name="query"    th:value="${query}" />
-          <input type="hidden" name="sort"     th:value="${sort}" />
-          <input type="hidden" name="status"   th:value="${selectedStatus}" />
-          <input type="hidden" name="trending" th:value="${isTrending}" />
-          <th:block th:each="gid : ${selectedGenres}"><input type="hidden" name="genres" th:value="${gid}" /></th:block>
-          <input type="hidden" name="page" id="page-input" value="1" />
-        </form>
-
-        <!-- Prev -->
-        <button class="page-btn"
-                th:disabled="${currentPage <= 1}"
-                th:style="${currentPage <= 1} ? 'opacity:0.3;cursor:default;' : ''"
-                th:onclick="${currentPage > 1} ? 'goToPage(' + (currentPage - 1) + ')' : 'return false'"
-                style="opacity:0.3;cursor:default;" onclick="return false">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-
-        <!-- Thymeleaf pages -->
-        <th:block th:if="${totalPages != null and totalPages > 1}">
-          <button th:if="${paginationStart > 1}" class="page-btn" onclick="goToPage(1)">1</button>
-          <span   th:if="${paginationStart > 2}" class="page-btn" style="pointer-events:none;border-color:transparent;background:transparent;color:var(--lw);">…</span>
-          <th:block th:each="p : ${#numbers.sequence(paginationStart, paginationEnd)}">
-            <button class="page-btn" th:classappend="${p==currentPage}?' active':''" th:text="${p}" th:onclick="'goToPage('+${p}+')'">1</button>
-          </th:block>
-          <span   th:if="${paginationEnd < totalPages-1}" class="page-btn" style="pointer-events:none;border-color:transparent;background:transparent;color:var(--lw);">…</span>
-          <button th:if="${paginationEnd < totalPages}" class="page-btn" th:text="${totalPages}" th:onclick="'goToPage('+${totalPages}+')'">124</button>
-        </th:block>
-
-        <!-- Static sample pagination -->
-        <th:block th:if="${totalPages == null or totalPages <= 1}">
-          <button class="page-btn active">1</button>
-          <button class="page-btn">2</button>
-          <button class="page-btn">3</button>
-          <span   class="page-btn" style="pointer-events:none;border-color:transparent;background:transparent;color:var(--lw);">…</span>
-          <button class="page-btn">124</button>
-        </th:block>
-
-        <!-- Next -->
-        <button class="page-btn"
-                th:disabled="${currentPage >= totalPages}"
-                th:style="${currentPage >= totalPages} ? 'opacity:0.3;cursor:default;' : ''"
-                th:onclick="${currentPage < totalPages} ? 'goToPage(' + (currentPage + 1) + ')' : 'return false'">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-
-      </div>
-
-    </section>
-  </div><!-- /search-wrap -->
+        </section>
+    </div>
 </main>
-
-<script>
-  function goToPage(n) {
-    document.getElementById('page-input').value = n;
-    document.getElementById('page-form').submit();
-  }
-  function selectPill(el) {
-    el.closest('div').querySelectorAll('.status-pill').forEach(p => p.classList.remove('active'));
-    el.classList.add('active');
-    document.querySelectorAll('#status-input').forEach(inp => inp.value = el.dataset.value || 'any');
-  }
-  function resetFilters() {
-    document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
-    document.querySelectorAll('.status-pill').forEach((p, i) => p.classList.toggle('active', i === 0));
-    document.querySelectorAll('#status-input').forEach(inp => inp.value = 'any');
-  }
-  const csrfToken  = document.querySelector('meta[name="_csrf"]')?.content;
-  const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.content;
-  async function toggleSave(btn) {
-    const novelId = btn.dataset.novelId;
-    const isSaved = btn.classList.contains('saved');
-    try {
-      const headers = { 'Content-Type': 'application/json' };
-      if (csrfToken && csrfHeader) headers[csrfHeader] = csrfToken;
-      const res = await fetch('/favorites/toggle', {
-        method: 'POST', headers,
-        body: JSON.stringify({ novelId, action: isSaved ? 'remove' : 'add' })
-      });
-      if (!res.ok) throw new Error('failed');
-      btn.classList.toggle('saved');
-      const nowSaved = btn.classList.contains('saved');
-      btn.querySelector('svg').setAttribute('fill', nowSaved ? 'currentColor' : 'none');
-      btn.querySelector('span').textContent = nowSaved ? 'Saved' : 'Save';
-    } catch(e) { console.error('toggleSave:', e); }
-  }
-</script>
+<script th:src="@{/js/searchPage.js}"></script>
 </body>
 </html>

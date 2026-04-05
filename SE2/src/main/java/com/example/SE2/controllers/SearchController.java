@@ -1,19 +1,26 @@
 package com.example.SE2.controllers;
 
 import com.example.SE2.dtos.request.NovelFilterRequest;
+import com.example.SE2.models.Genre;
 import com.example.SE2.models.Novel;
+import com.example.SE2.repositories.GenreRepository;
 import com.example.SE2.services.search.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.example.SE2.constants.NovelStatus;
-
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/search")
@@ -22,66 +29,80 @@ public class SearchController {
     @Autowired
     SearchService searchService;
 
-    @GetMapping
-    public String searchPage() {
-        return "client/searchPage";
-    }
+    @Autowired
+    GenreRepository genreRepository;
 
-    @GetMapping("/vector")
-    public String searchByVector(
-            @RequestParam(required = false) String keyword,
-            @RequestParam(defaultValue = "0")  int page,
+@GetMapping
+    public String search(
+            @RequestParam(required = false) String query,
+            @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            Model model
-    ) {
-        if (keyword == null || keyword.isBlank()) {
-            model.addAttribute("searchedNovels", Page.empty());
-            model.addAttribute("currentPage", 0);
-            model.addAttribute("totalPages",  0);
-            return "client/searchPage";
-        }
+            Model model) {
 
-        Page<Novel> results = searchService.searchByVector(keyword, page, size);
+        Page<Novel> results = (query != null && !query.isBlank())
+                ? searchService.searchByVector(query, page, size)
+                : Page.empty();
 
-        model.addAttribute("searchedNovels", results);
-        model.addAttribute("currentPage",    page);
-        model.addAttribute("totalPages",     results.getTotalPages());
-        model.addAttribute("keyword",        keyword);
+        populateModel(model, results);
+
+        model.addAttribute("query",          query);
+        model.addAttribute("selectedStatus", "any");
+        model.addAttribute("isTrending",     false);
+        model.addAttribute("selectedGenres", List.of());
 
         return "client/searchPage";
     }
 
-    @GetMapping("/filter")
+@GetMapping("/filter")
     public String searchByFilter(
             @RequestParam(required = false) Boolean trending,
             @RequestParam(required = false) List<String> genres,
-            @RequestParam(required = false) NovelStatus status,
-            @RequestParam(defaultValue = "0")  int page,
+            @RequestParam(required = false) String statusStr,
+            @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "desc") String sort,
             Model model
-    ) {
-        NovelFilterRequest req = new NovelFilterRequest(trending, genres, status);
+) {
 
-        boolean hasFilter = (trending != null && trending)
-                || (genres != null && !genres.isEmpty())
-                || status != null;
+        Pageable pageable = PageRequest.of(page, size,
+                "asc".equalsIgnoreCase(sort) ? Sort.Direction.ASC : Sort.Direction.DESC,
+                "averageRating");
 
-        if (!hasFilter) {
-            model.addAttribute("searchedNovels", Page.empty());
-            model.addAttribute("currentPage", 0);
-            model.addAttribute("totalPages",  0);
-            return "client/searchPage";
-        }
+        NovelStatus status = parseStatus(statusStr);
+        Page<Novel> results = searchService.searchByFilter(
+                new NovelFilterRequest(trending, genres, status), pageable);
 
-        Page<Novel> results = searchService.searchByFilter(req, PageRequest.of(page, size));
-
-        model.addAttribute("searchedNovels", results);
-        model.addAttribute("currentPage",    page);
-        model.addAttribute("totalPages",     results.getTotalPages());
-        model.addAttribute("trending",       trending);
-        model.addAttribute("genres",         genres);
-        model.addAttribute("status",         status);
+        populateModel(model, results);
+        model.addAttribute("selectedStatus", statusStr != null ? statusStr : "any");
+        model.addAttribute("isTrending",     trending != null && trending);
+        model.addAttribute("selectedGenres", genres   != null ? genres    : List.of());
+        model.addAttribute("sort",           sort);
+        model.addAttribute("searchMode", "filter");
 
         return "client/searchPage";
+    }
+
+    //HELPER
+
+    private void populateModel(Model model, Page<Novel> results) {
+        int currentPage = results.getNumber();
+        int totalPages  = results.getTotalPages();
+
+        model.addAttribute("genres",          genreRepository.findAll());
+        model.addAttribute("searchedNovels",  results);
+        model.addAttribute("totalResults",    results.getTotalElements());
+        model.addAttribute("currentPage",     currentPage);
+        model.addAttribute("totalPages",      totalPages);
+        model.addAttribute("paginationStart", Math.max(1, currentPage - 2));
+        model.addAttribute("paginationEnd",   Math.min(totalPages, currentPage + 2));
+    }
+
+    private NovelStatus parseStatus(String statusStr) {
+        if (statusStr == null || "any".equalsIgnoreCase(statusStr)) return null;
+        try {
+            return NovelStatus.valueOf(statusStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 }

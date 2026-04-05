@@ -47,13 +47,13 @@ public class NovelServiceImpl implements NovelService {
     public void indexNovel(Novel novel) {
         Hibernate.initialize(novel.getGenres());
 
-        Float[] vector = embeddingService.embedNovel(novel);
+        float[] vector = embeddingService.embedNovel(novel);
 
         saveWithTransaction(novel, vector);
     }
 
     @Transactional
-    public void saveWithTransaction(Novel novel, Float[] vector) {
+    public void saveWithTransaction(Novel novel, float[] vector) {
         novel.setMetaVector(vector);
         novelRepository.save(novel);
     }

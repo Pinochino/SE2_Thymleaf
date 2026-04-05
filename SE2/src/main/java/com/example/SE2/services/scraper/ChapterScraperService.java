@@ -1,8 +1,12 @@
 package com.example.SE2.services.scraper;
 
+import com.example.SE2.constants.GenreName;
+import com.example.SE2.constants.NovelStatus;
 import com.example.SE2.models.Chapter;
+import com.example.SE2.models.Genre;
 import com.example.SE2.models.Novel;
 import com.example.SE2.repositories.ChapterRepository;
+import com.example.SE2.repositories.GenreRepository;
 import com.example.SE2.repositories.NovelRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,44 +38,40 @@ public class ChapterScraperService {
             .followRedirects(HttpClient.Redirect.NORMAL)
             .build();
 
-    /**
-     * Gutenberg book ID -> novel title substring to match in DB.
-     * Curated list of public domain novels across genres.
-     */
-    private static final LinkedHashMap<Integer, String> GUTENBERG_BOOKS = new LinkedHashMap<>() {{
+    @Autowired
+    private GenreRepository genreRepository;
+
+    /** Gutenberg book metadata: id, title, author, genre, search key */
+    private record BookInfo(int id, String title, String author, GenreName genre, String searchKey) {}
+
+    private static final List<BookInfo> GUTENBERG_BOOKS = List.of(
         // HORROR
-        put(84, "Frankenstein");
-        put(345, "Dracula");
-        put(174, "Dorian Gray");
-        put(696, "Jekyll");  // Strange Case of Dr Jekyll and Mr Hyde
-
+        new BookInfo(84, "Frankenstein", "Mary Shelley", GenreName.HORROR, "Frankenstein"),
+        new BookInfo(345, "Dracula", "Bram Stoker", GenreName.HORROR, "Dracula"),
+        new BookInfo(174, "The Picture of Dorian Gray", "Oscar Wilde", GenreName.HORROR, "Dorian Gray"),
+        new BookInfo(696, "Strange Case of Dr Jekyll and Mr Hyde", "Robert Louis Stevenson", GenreName.HORROR, "Jekyll"),
         // CRIME
-        put(1661, "Sherlock Holmes");  // Adventures of Sherlock Holmes
-        put(730, "Oliver Twist");
-        put(2852, "Hound of the Baskervilles");
-
+        new BookInfo(1661, "The Adventures of Sherlock Holmes", "Arthur Conan Doyle", GenreName.CRIME, "Sherlock Holmes"),
+        new BookInfo(730, "Oliver Twist", "Charles Dickens", GenreName.CRIME, "Oliver Twist"),
+        new BookInfo(2852, "The Hound of the Baskervilles", "Arthur Conan Doyle", GenreName.CRIME, "Hound of the Baskerville"),
         // ROMANCE
-        put(1342, "Pride and Prejudice");
-        put(161, "Sense and Sensibility");
-        put(768, "Wuthering Heights");
-        put(1260, "Jane Eyre");
-
+        new BookInfo(1342, "Pride and Prejudice", "Jane Austen", GenreName.ROMANCE, "Pride and Prejudice"),
+        new BookInfo(161, "Sense and Sensibility", "Jane Austen", GenreName.ROMANCE, "Sense and Sensibility"),
+        new BookInfo(768, "Wuthering Heights", "Emily Bronte", GenreName.ROMANCE, "Wuthering Heights"),
+        new BookInfo(1260, "Jane Eyre", "Charlotte Bronte", GenreName.ROMANCE, "Jane Eyre"),
         // FANTASY
-        put(11, "Alice");  // Alice's Adventures in Wonderland
-        put(35, "Time Machine");
-
+        new BookInfo(11, "Alice's Adventures in Wonderland", "Lewis Carroll", GenreName.FANTASY, "Alice"),
+        new BookInfo(35, "The Time Machine", "H.G. Wells", GenreName.FANTASY, "Time Machine"),
         // SCIFI
-        put(36, "War of the Worlds");
-        put(164, "Twenty Thousand Leagues");
-
+        new BookInfo(36, "The War of the Worlds", "H.G. Wells", GenreName.SCIFI, "War of the Worlds"),
+        new BookInfo(164, "Twenty Thousand Leagues Under the Sea", "Jules Verne", GenreName.SCIFI, "Twenty Thousand"),
         // HISTORIC
-        put(98, "Tale of Two Cities");
-        put(1399, "Anna Karenina");
-
+        new BookInfo(98, "A Tale of Two Cities", "Charles Dickens", GenreName.HISTORIC, "Tale of Two Cities"),
+        new BookInfo(1399, "Anna Karenina", "Leo Tolstoy", GenreName.HISTORIC, "Anna Karenina"),
         // COMEDY
-        put(76, "Huckleberry Finn");
-        put(1400, "Great Expectations");
-    }};
+        new BookInfo(76, "Adventures of Huckleberry Finn", "Mark Twain", GenreName.COMEDY, "Huckleberry Finn"),
+        new BookInfo(1400, "Great Expectations", "Charles Dickens", GenreName.COMEDY, "Great Expectations")
+    );
 
     /**
      * Scrape chapters from Project Gutenberg for novels already in DB.
@@ -82,17 +82,14 @@ public class ChapterScraperService {
         int totalChapters = 0;
         int booksProcessed = 0;
 
-        for (Map.Entry<Integer, String> entry : GUTENBERG_BOOKS.entrySet()) {
+        for (BookInfo book : GUTENBERG_BOOKS) {
             if (booksProcessed >= maxBooks) break;
 
-            int gutenbergId = entry.getKey();
-            String titleMatch = entry.getValue();
-
-            // Find matching novel in DB
-            Novel novel = findNovelByTitleContaining(titleMatch);
+            // Find or create novel in DB
+            Novel novel = findNovelByTitleContaining(book.searchKey());
             if (novel == null) {
-                log.warn("No novel found matching '{}', skipping Gutenberg #{}", titleMatch, gutenbergId);
-                continue;
+                novel = createNovel(book);
+                log.info("Created novel '{}' in DB", novel.getTitle());
             }
 
             // Skip if novel already has chapters
@@ -103,16 +100,16 @@ public class ChapterScraperService {
                 continue;
             }
 
-            log.info("Fetching Gutenberg #{} for novel '{}'...", gutenbergId, novel.getTitle());
-            String fullText = fetchGutenbergText(gutenbergId);
+            log.info("Fetching Gutenberg #{} for novel '{}'...", book.id(), novel.getTitle());
+            String fullText = fetchGutenbergText(book.id());
             if (fullText == null) {
-                log.warn("Failed to fetch text for Gutenberg #{}", gutenbergId);
+                log.warn("Failed to fetch text for Gutenberg #{}", book.id());
                 continue;
             }
 
             List<ParsedChapter> parsed = parseChapters(fullText);
             if (parsed.isEmpty()) {
-                log.warn("No chapters parsed from Gutenberg #{}", gutenbergId);
+                log.warn("No chapters parsed from Gutenberg #{}", book.id());
                 continue;
             }
 
@@ -139,6 +136,28 @@ public class ChapterScraperService {
 
         log.info("Chapter scraping complete. {} chapters saved across {} books", totalChapters, booksProcessed);
         return totalChapters;
+    }
+
+    private Novel createNovel(BookInfo book) {
+        Novel novel = new Novel();
+        novel.setPublicId(UUID.randomUUID());
+        novel.setTitle(book.title());
+        novel.setAuthor(book.author());
+        novel.setDescription("A classic novel by " + book.author() + ".");
+        novel.setStatus(NovelStatus.COMPLETED);
+        novel.setAverageRating(4.0f + new Random().nextFloat());
+        novel.setCoverImgUrl("https://covers.openlibrary.org/b/id/" + (book.id() * 10) + "-L.jpg");
+        novel = novelRepository.save(novel);
+
+        // Link genre
+        Genre genre = genreRepository.findGenreByName(book.genre());
+        if (genre == null) {
+            genre = genreRepository.save(new Genre(book.genre()));
+        }
+        genre.getNovels().add(novel);
+        genreRepository.save(genre);
+
+        return novel;
     }
 
     private Novel findNovelByTitleContaining(String titleMatch) {

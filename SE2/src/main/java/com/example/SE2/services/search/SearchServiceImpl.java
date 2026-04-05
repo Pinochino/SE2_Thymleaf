@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class SearchServiceImpl implements SearchService{
+public class SearchServiceImpl implements SearchService {
 
     @Autowired
     private NovelRepository novelRepository;
@@ -25,13 +25,14 @@ public class SearchServiceImpl implements SearchService{
     private EmbeddingService embeddingService;
 
     private static final int MAX_VECTOR_TOTAL = 100;
+
     @Override
     public Page<Novel> searchByVector(String query, int page, int size) {
-        int offset       = page * size;
-        float[] vector   = embeddingService.embed(query);
+        int offset = page * size;
+        float[] vector = embeddingService.embed(query);
         String formated = toVectorString(vector);
         List<Novel> results = novelRepository.searchVector(formated, size, offset);
-        long total          =Math.min(novelRepository.countAllNovels(), MAX_VECTOR_TOTAL);
+        long total = Math.min(novelRepository.countAllNovels(), MAX_VECTOR_TOTAL);
 
         return new PageImpl<>(results, PageRequest.of(page, size), total);
     }

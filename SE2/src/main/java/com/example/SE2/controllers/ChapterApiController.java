@@ -47,7 +47,7 @@ public class ChapterApiController {
             Map<String, Object> item = new HashMap<>();
             item.put("id", c.getId());
             item.put("userName", c.getUser().getFirstName() != null ? c.getUser().getFirstName() : c.getUser().getUsername());
-            item.put("userInitial", c.getUser().getFirstName() != null ? c.getUser().getFirstName().substring(0, 1) : "U");
+            item.put("userInitial", c.getUser().getFirstName() != null && !c.getUser().getFirstName().isEmpty() ? c.getUser().getFirstName().substring(0, 1) : "U");
             item.put("content", c.getContent());
             // Replies
             List<Map<String, Object>> replies = new ArrayList<>();
@@ -55,7 +55,7 @@ public class ChapterApiController {
                 Map<String, Object> reply = new HashMap<>();
                 reply.put("id", r.getId());
                 reply.put("userName", r.getUser().getFirstName() != null ? r.getUser().getFirstName() : r.getUser().getUsername());
-                reply.put("userInitial", r.getUser().getFirstName() != null ? r.getUser().getFirstName().substring(0, 1) : "U");
+                reply.put("userInitial", r.getUser().getFirstName() != null && !r.getUser().getFirstName().isEmpty() ? r.getUser().getFirstName().substring(0, 1) : "U");
                 reply.put("content", r.getContent());
                 replies.add(reply);
             }
@@ -99,7 +99,7 @@ public class ChapterApiController {
         return ResponseEntity.ok(Map.of(
                 "id", comment.getId(),
                 "userName", user.getFirstName() != null ? user.getFirstName() : user.getUsername(),
-                "userInitial", user.getFirstName() != null ? user.getFirstName().substring(0, 1) : "U",
+                "userInitial", user.getFirstName() != null && !user.getFirstName().isEmpty() ? user.getFirstName().substring(0, 1) : "U",
                 "content", comment.getContent(),
                 "paragraphIndex", comment.getParagraphIndex()
         ));

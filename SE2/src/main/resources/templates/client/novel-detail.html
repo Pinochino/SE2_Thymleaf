@@ -86,7 +86,8 @@
                         Read Now
                     </button>
                 </a>
-                <button class="nd-btn-save" id="favoriteBtn"
+                <!-- Save button: logged in -->
+                <button th:if="${userLogin != null}" class="nd-btn-save" id="favoriteBtn"
                         th:data-novel-id="${novel.id}">
                     <svg width="20" height="18" viewBox="0 0 20 18" fill="none">
                         <path id="favoriteIcon" d="M10 16.35S1 10 1 5.5C1 2.42 3.42 0 6.5 0 8.24 0 9.91.81 10 2.09 10.09.81 11.76 0 13.5 0 16.58 0 19 2.42 19 5.5c0 4.5-9 10.85-9 10.85z"
@@ -94,6 +95,16 @@
                     </svg>
                     <span id="favoriteBtnText">Save</span>
                 </button>
+                <!-- Save button: guest → redirect login -->
+                <a th:if="${userLogin == null}" th:href="@{/login}">
+                    <button class="nd-btn-save">
+                        <svg width="20" height="18" viewBox="0 0 20 18" fill="none">
+                            <path d="M10 16.35S1 10 1 5.5C1 2.42 3.42 0 6.5 0 8.24 0 9.91.81 10 2.09 10.09.81 11.76 0 13.5 0 16.58 0 19 2.42 19 5.5c0 4.5-9 10.85-9 10.85z"
+                                  fill="none" stroke="#f87171" stroke-width="1.5"/>
+                        </svg>
+                        <span>Save</span>
+                    </button>
+                </a>
             </div>
         </div>
 
@@ -219,7 +230,7 @@
                     ratings
                 </div>
             </div>
-            <div class="nd-rating-right">
+            <div class="nd-rating-right" th:if="${userLogin != null}">
                 <div class="nd-rating-cta">Rate this novel:</div>
                 <div class="nd-rate-stars" th:data-novel-id="${novel.id}">
                     <button class="nd-rate-star" th:each="i : ${#numbers.sequence(1,5)}" th:data-score="${i}">
@@ -230,10 +241,14 @@
                     </button>
                 </div>
             </div>
+            <div class="nd-rating-right" th:if="${userLogin == null}">
+                <div class="nd-rating-cta">Rate this novel:</div>
+                <a th:href="@{/login}" style="text-decoration:none; color:#c9a46a; font-size:0.82rem;">Login to rate</a>
+            </div>
         </div>
 
-        <!-- Comment Form -->
-        <form th:action="@{/comments/save/{publicId} (publicId=${novel.publicId})}" th:method="post"
+        <!-- Comment Form (only when logged in) -->
+        <form th:if="${userLogin != null}" th:action="@{/comments/save/{publicId} (publicId=${novel.publicId})}" th:method="post"
               th:object="${novelComment}" class="nd-comment-form">
             <div class="nd-comment-avatar"
                  th:text="${userLogin.user.lastName} != null ? ${userLogin.user.lastName.substring(0, 1)} : 'U'">U
@@ -248,6 +263,10 @@
                 </div>
             </div>
         </form>
+        <!-- Login prompt when not logged in -->
+        <div th:if="${userLogin == null}" class="nd-comment-form" style="justify-content: center; padding: 16px;">
+            <a th:href="@{/login}" class="nd-btn-post" style="text-decoration: none;">Login to comment</a>
+        </div>
 
         <!-- Comments (shown when data exists) -->
         <!-- Comments Section -->
@@ -276,15 +295,15 @@
 
                     <p class="nd-comment-text" th:text="${comment.content}"></p>
 
-                    <!-- Nút reply cấp 1 -->
-                    <button class="nd-comment-reply-link reply-comment-button"
+                    <!-- Nút reply cấp 1 (only when logged in) -->
+                    <button th:if="${userLogin != null}" class="nd-comment-reply-link reply-comment-button"
                             th:attr="data-form-id=${comment.id},
                              data-mention=''">
                         Reply
                     </button>
 
-                    <!-- Form reply cấp 1 -->
-                    <form th:action="@{/comments/save/{publicId}(publicId=${novel.publicId})}"
+                    <!-- Form reply cấp 1 (only when logged in) -->
+                    <form th:if="${userLogin != null}" th:action="@{/comments/save/{publicId}(publicId=${novel.publicId})}"
                           method="post"
                           th:id="'reply-form-' + ${comment.id}"
                           class="nd-comment-form reply-comment-form hidden">
@@ -332,9 +351,8 @@
 
                                 <p class="nd-comment-text" th:text="${reply.content}"></p>
 
-                                <!-- Nút reply cấp 2 → form vẫn là reply-form của ROOT comment -->
-                                <!-- data-form-id trỏ về ROOT, data-mention là tên người được reply -->
-                                <button class="nd-comment-reply-link reply-comment-button"
+                                <!-- Nút reply cấp 2 (only when logged in) -->
+                                <button th:if="${userLogin != null}" class="nd-comment-reply-link reply-comment-button"
                                         th:attr="data-form-id=${comment.id},
                                          data-mention=${reply.user.firstName + ' ' + reply.user.lastName}">
                                     Reply

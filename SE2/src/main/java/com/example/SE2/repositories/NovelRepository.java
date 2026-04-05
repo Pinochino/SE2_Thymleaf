@@ -33,6 +33,11 @@ public interface NovelRepository extends JpaRepository<Novel, Long> {
     @Query("SELECT f.novel FROM Favorite f WHERE f.user.id = :userId")
     List<Novel> findFavoritesByUserId(String userId);
 
+    @Query("SELECT DISTINCT n FROM Novel n JOIN n.genres g WHERE g.name = :genreName ORDER BY n.updatedAt DESC")
+    Page<Novel> findByGenreName(@org.springframework.data.repository.query.Param("genreName") com.example.SE2.constants.GenreName genreName, Pageable pageable);
+
+    @Query("SELECT n FROM Novel n ORDER BY n.updatedAt DESC")
+    Page<Novel> findAllNovels(Pageable pageable);
     @Query(value = """
         SELECT * FROM novel
         ORDER BY meta_vector <=> CAST(:queryVector AS vector)

@@ -38,12 +38,20 @@ public class UserController {
         return "client/user/profile";
     }
 
+    @PostMapping("/user/profile/avatar")
+    public String updateAvatar(@AuthenticationPrincipal UserDetailImpl userDetails,
+                               @RequestParam String avatarUrl) {
+        User currentUser = userDetails.getUser();
+        currentUser.setAvatarUrl(avatarUrl);
+        userRepository.save(currentUser);
+
     @PostMapping(value = "/user/profile/update-avatar")
     public String updateAvatar(@AuthenticationPrincipal UserDetailImpl userDetails,
                                @RequestParam String avatarUrl) {
         User user = userDetails.getUser();
         user.setAvatarUrl(avatarUrl);
         userRepository.save(user);
+
         return "redirect:/user/profile";
     }
 
@@ -75,6 +83,8 @@ public class UserController {
         model.addAttribute("favoriteNovels", favoritePage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", favoritePage.getTotalPages());
+        model.addAttribute("baseUrl", "/user/favorite-novels");
+        model.addAttribute("extraParams", "");
         return "client/user/favorite-novels";
     }
 
@@ -99,6 +109,8 @@ public class UserController {
         model.addAttribute("translations", translationPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", translationPage.getTotalPages());
+        model.addAttribute("baseUrl", "/user/translations");
+        model.addAttribute("extraParams", "");
         return "client/user/translations";
     }
 

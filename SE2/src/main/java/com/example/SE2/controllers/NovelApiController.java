@@ -62,16 +62,19 @@ public class NovelApiController {
         }
         ratingRepository.save(rating);
 
-        // Update novel average rating
+        // Update novel average rating and get count
         Float avg = ratingRepository.findAverageByNovelId(novelId);
         if (avg != null) {
             novel.setAverageRating(Math.round(avg * 10) / 10.0f);
             novelRepository.save(novel);
         }
 
+        long ratingCount = ratingRepository.countByNovelId(novelId);
+
         return ResponseEntity.ok(Map.of(
                 "score", score,
-                "averageRating", novel.getAverageRating() != null ? novel.getAverageRating() : 0
+                "averageRating", novel.getAverageRating() != null ? novel.getAverageRating() : 0,
+                "ratingCount", ratingCount
         ));
     }
 

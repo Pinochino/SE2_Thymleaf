@@ -2,12 +2,16 @@ package com.example.SE2.controllers;
 
 import com.example.SE2.dtos.request.NovelFilterRequest;
 import com.example.SE2.models.Novel;
+import com.example.SE2.models.User;
 import com.example.SE2.repositories.GenreRepository;
+import com.example.SE2.repositories.UserRepository;
 import com.example.SE2.services.search.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,12 +29,17 @@ public class SearchController {
 
     @Autowired
     SearchService searchService;
+    private final UserRepository userRepository;
 
     @Autowired
     GenreRepository genreRepository;
 
     @Autowired
     com.example.SE2.repositories.NovelRepository novelRepository;
+
+    public SearchController (UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
 
 @GetMapping
     public String search(
@@ -65,7 +74,23 @@ public class SearchController {
         model.addAttribute("searchMode",     searchMode);
         model.addAttribute("searchModeOption", mode);
 
+        User currentUser = getCurrentUser();
+        if (currentUser != null) {
+            model.addAttribute("isLoggedIn", true);
+
+        }
+        model.addAttribute("isLoggedIn", false);
+
         return "client/searchPage";
+    }
+    private User getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated() ||
+                "anonymousUser".equals(auth.getPrincipal())) {
+            return null;
+        }
+        String email = auth.getName();
+        return userRepository.findUserByEmail(email);
     }
 
 @GetMapping("/filter")

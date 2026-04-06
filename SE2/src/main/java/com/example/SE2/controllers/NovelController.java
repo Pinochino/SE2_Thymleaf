@@ -3,7 +3,6 @@ package com.example.SE2.controllers;
 import com.example.SE2.repositories.NovelCommentRepository;
 import com.example.SE2.repositories.NovelRepository;
 import com.example.SE2.repositories.ReadingProgressRepository;
-import com.example.SE2.repositories.RatingRepository;
 import com.example.SE2.security.UserDetailImpl;
 import com.example.SE2.utils.TimeUtils;
 import org.slf4j.Logger;
@@ -36,7 +35,6 @@ public class NovelController {
     private final ChapterService chapterService;
     private final UserRepository userRepository;
     private final ReadingProgressRepository readingProgressRepository;
-    private final RatingRepository ratingRepository;
     private final Logger logger = LoggerFactory.getLogger(NovelController.class);
 
     @Autowired
@@ -44,14 +42,12 @@ public class NovelController {
             NovelCommentRepository novelCommentRepository,
             ChapterService chapterService,
             UserRepository userRepository,
-            ReadingProgressRepository readingProgressRepository,
-            RatingRepository ratingRepository) {
+            ReadingProgressRepository readingProgressRepository) {
         this.novelRepository = novelRepository;
         this.novelCommentRepository = novelCommentRepository;
         this.chapterService = chapterService;
         this.userRepository = userRepository;
         this.readingProgressRepository = readingProgressRepository;
-        this.ratingRepository = ratingRepository;
     }
 
 //     @RequestMapping(value = "/information/{publicId}", method =
@@ -195,8 +191,6 @@ public class NovelController {
   List<Chapter> chapters = chapterService.getChaptersByNovelId(novel.getId());
   int totalChapters = chapters.size();
 
-  long ratingCount = ratingRepository.countByNovelId(novel.getId());
-
   model.addAttribute("novel", novel);
   model.addAttribute("novelComment", new NovelComment());
   model.addAttribute("userLogin", userDetail);
@@ -205,9 +199,8 @@ public class NovelController {
   model.addAttribute("chapters", chapters);
   model.addAttribute("totalChapters", totalChapters);
   model.addAttribute("hasChapters", !chapters.isEmpty());
-  model.addAttribute("ratingCount", ratingCount);
 
-  // Tính reading progress
+  // ✅ Tính reading progress
   int currentChapter = 0;
   int progressPct = 0;
 

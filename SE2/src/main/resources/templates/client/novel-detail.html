@@ -50,18 +50,18 @@
 
                         <!-- Rating row -->
                         <div class="nd-rating ">
-                            <div class="nd-stars" th:with="ratingVal=${novel != null ? novel.averageRating : 0}">
-                                <svg th:each="i : ${#numbers.sequence(1,5)}" viewBox="0 0 20 19" fill="none">
-                                    <path d="M10 0l2.47 7.6h7.99l-6.47 4.7 2.47 7.6L10 15.2l-6.47 4.7 2.47-7.6L-.47 7.6h7.99z"
-                                          th:fill="${i <= ratingVal ? '#c9a46a' : 'none'}"
-                                          th:stroke="${i > ratingVal ? '#94a3b8' : 'none'}"
-                                          stroke-width="1"/>
-                                </svg>
-                            </div>
-                            <span class="nd-rating-score" th:if="${novel != null && novel.averageRating > 0}"
-                                  th:text="${#numbers.formatDecimal(novel.averageRating, 1, 1)}">4.8</span>
-                            <span class="nd-rating-count"
-                                  th:text="${novel != null && novel.averageRating > 0 ? '(' + ratingCount + ' rating' + (ratingCount != 1 ? 's' : '') + ')' : '(0 ratings)'}">(2.4k ratings)</span>
+                                                        <div class="nd-stars" th:with="ratingVal=${novel != null ? novel.averageRating : 0}">
+                                                            <svg th:each="i : ${#numbers.sequence(1,5)}" viewBox="0 0 20 19" fill="none">
+                                                                <path d="M10 0l2.47 7.6h7.99l-6.47 4.7 2.47 7.6L10 15.2l-6.47 4.7 2.47-7.6L-.47 7.6h7.99z"
+                                                                      th:fill="${i <= ratingVal ? '#c9a46a' : 'none'}"
+                                                                      th:stroke="${i > ratingVal ? '#94a3b8' : 'none'}"
+                                                                      stroke-width="1"/>
+                                                            </svg>
+                                                        </div>
+                                                        <span class="nd-rating-score" th:if="${novel != null && novel.averageRating > 0}"
+                                                              th:text="${novel.averageRating}">4.8</span>
+                                                        <span class="nd-rating-count"
+                                                              th:text="${novel != null && novel.averageRating > 0 ? '(' + novel.averageRating + ' ratings)' : '0 rating'}">(2.4k ratings)</span>
                         </div>
 
                         <!-- Genre Tags -->
@@ -76,8 +76,7 @@
 
             <!-- Action Buttons -->
             <div class="nd-actions">
-                <a th:if="${hasChapters and !chapters.isEmpty()}"
-                   th:href="@{/novels/chapter/{id}(id=${chapters[0].id})}">
+                <a th:if="${hasChapters and !chapters.isEmpty()}" th:href="@{/novels/chapter/{id}(id=${chapters[0].id})}">
                     <button class="nd-btn-read">
                         <svg width="22" height="16" viewBox="0 0 22 16" fill="none">
                             <path d="M1 1h8c1 0 2 1 2 2v11S10 13 9 13H1V1zM21 1h-8c-1 0-2 1-2 2v11s1-1 2-1h8V1z"
@@ -87,26 +86,14 @@
                         Read Now
                     </button>
                 </a>
-                <!-- Save button: logged in -->
-                <button th:if="${userLogin != null}" class="nd-btn-save" id="favoriteBtn"
+                <button class="nd-btn-save" id="favoriteBtn"
                         th:data-novel-id="${novel.id}">
                     <svg width="20" height="18" viewBox="0 0 20 18" fill="none">
-                        <path id="favoriteIcon"
-                              d="M10 16.35S1 10 1 5.5C1 2.42 3.42 0 6.5 0 8.24 0 9.91.81 10 2.09 10.09.81 11.76 0 13.5 0 16.58 0 19 2.42 19 5.5c0 4.5-9 10.85-9 10.85z"
+                        <path id="favoriteIcon" d="M10 16.35S1 10 1 5.5C1 2.42 3.42 0 6.5 0 8.24 0 9.91.81 10 2.09 10.09.81 11.76 0 13.5 0 16.58 0 19 2.42 19 5.5c0 4.5-9 10.85-9 10.85z"
                               fill="none" stroke="#f87171" stroke-width="1.5"/>
                     </svg>
                     <span id="favoriteBtnText">Save</span>
                 </button>
-                <!-- Save button: guest → redirect login -->
-                <a th:if="${userLogin == null}" th:href="@{/login}">
-                    <button class="nd-btn-save">
-                        <svg width="20" height="18" viewBox="0 0 20 18" fill="none">
-                            <path d="M10 16.35S1 10 1 5.5C1 2.42 3.42 0 6.5 0 8.24 0 9.91.81 10 2.09 10.09.81 11.76 0 13.5 0 16.58 0 19 2.42 19 5.5c0 4.5-9 10.85-9 10.85z"
-                                  fill="none" stroke="#f87171" stroke-width="1.5"/>
-                        </svg>
-                        <span>Save</span>
-                    </button>
-                </a>
             </div>
         </div>
 
@@ -215,25 +202,24 @@
         <div class="nd-rating-box">
             <div class="nd-rating-left">
                 <div class="nd-rating-big"
-                     th:text="${novel.averageRating != null && novel.averageRating > 0 ? #numbers.formatDecimal(novel.averageRating, 1, 1) : '0'}">
-                    4.8
+                     th:text="${novel.averageRating != null && novel.averageRating > 0 ? novel.averageRating : '0'}">4.8
                 </div>
-                <div class="nd-stars"
-                     th:with="ratingVal=${novel != null && novel.averageRating != null ? novel.averageRating : 0}">
+                <div class="nd-stars">
                     <svg th:each="i : ${#numbers.sequence(1,5)}" width="20" height="19" viewBox="0 0 20 19"
                          fill="none">
                         <path d="M10 0l2.47 7.6h7.99l-6.47 4.7 2.47 7.6L10 15.2l-6.47 4.7 2.47-7.6L-.47 7.6h7.99z"
-                              th:fill="${i <= ratingVal ? '#c9a46a' : 'none'}"
-                              th:stroke="${i > ratingVal ? '#94a3b8' : 'none'}"
+                              th:fill="${novel != null && i <= novel.averageRating ? '#c9a46a' : 'none'}"
+                              th:stroke="${novel == null || i > novel.averageRating ? '#94a3b8' : 'none'}"
                               stroke-width="1"/>
                     </svg>
                 </div>
                 <div class="nd-rating-total"
-                     th:text="${novel.averageRating != null && novel.averageRating > 0 ? #numbers.formatDecimal(novel.averageRating, 1, 1) + ' (' + ratingCount + ' rating' + (ratingCount != 1 ? 's' : '') + ')' : ''}">
-                    4.8 (2.4k ratings)
+                     th:text="${novel.averageRating != null && novel.averageRating > 0 ? novel.averageRating + ' ratings' : ''}">
+                    2.4k
+                    ratings
                 </div>
             </div>
-            <div class="nd-rating-right" th:if="${userLogin != null}">
+            <div class="nd-rating-right">
                 <div class="nd-rating-cta">Rate this novel:</div>
                 <div class="nd-rate-stars" th:data-novel-id="${novel.id}">
                     <button class="nd-rate-star" th:each="i : ${#numbers.sequence(1,5)}" th:data-score="${i}">
@@ -244,22 +230,13 @@
                     </button>
                 </div>
             </div>
-            <div class="nd-rating-right" th:if="${userLogin == null}">
-                <div class="nd-rating-cta">Rate this novel:</div>
-                <a th:href="@{/login}" style="text-decoration:none; color:#c9a46a; font-size:0.82rem;">Login to rate</a>
-            </div>
         </div>
 
-        <!-- Comment Form (only when logged in) -->
-        <form th:if="${userLogin != null}" th:action="@{/comments/save/{publicId} (publicId=${novel.publicId})}"
-              th:method="post"
+        <!-- Comment Form -->
+        <form th:action="@{/comments/save/{publicId} (publicId=${novel.publicId})}" th:method="post"
               th:object="${novelComment}" class="nd-comment-form">
-            <div class="nd-comment-avatar">
-                <img th:if="${userLogin.user.avatarUrl != null and !userLogin.user.avatarUrl.isEmpty()}"
-                     th:src="${userLogin.user.avatarUrl}" alt="avatar"
-                     style="width:100%;height:100%;object-fit:cover;border-radius:9999px;"/>
-                <span th:if="${userLogin.user.avatarUrl == null or userLogin.user.avatarUrl.isEmpty()}"
-                      th:text="${userLogin.user.lastName != null and !userLogin.user.lastName.isEmpty()} ? ${userLogin.user.lastName.substring(0, 1)} : 'U'">U</span>
+            <div class="nd-comment-avatar"
+                 th:text="${userLogin.user.lastName} != null ? ${userLogin.user.lastName.substring(0, 1)} : 'U'">U
             </div>
             <div class="nd-comment-form-body">
                     <textarea class="nd-comment-textarea"
@@ -271,10 +248,6 @@
                 </div>
             </div>
         </form>
-        <!-- Login prompt when not logged in -->
-        <div th:if="${userLogin == null}" class="nd-comment-form" style="justify-content: center; padding: 16px;">
-            <a th:href="@{/login}" class="nd-btn-post" style="text-decoration: none;">Login to comment</a>
-        </div>
 
         <!-- Comments (shown when data exists) -->
         <!-- Comments Section -->
@@ -284,14 +257,10 @@
 
                 <!-- Avatar comment gốc -->
                 <div class="nd-comment-user-avatar">
-                    <img th:if="${comment.user.avatarUrl != null and !comment.user.avatarUrl.isEmpty()}"
-                         th:src="${comment.user.avatarUrl}" alt="avatar"
-                         style="width:100%;height:100%;object-fit:cover;border-radius:9999px;"/>
-                    <div th:if="${comment.user.avatarUrl == null or comment.user.avatarUrl.isEmpty()}"
-                         style="width:100%;height:100%;background:#6366f1;display:flex;
+                    <div style="width:100%;height:100%;background:#6366f1;display:flex;
                         align-items:center;justify-content:center;color:#fff;
                         font-size:14px;font-weight:600;border-radius:9999px;"
-                         th:text="${comment.user.lastName != null and !comment.user.lastName.isEmpty()
+                         th:text="${comment.user.lastName != null
                            ? comment.user.lastName.substring(0, 1) : 'U'}">
                     </div>
                 </div>
@@ -307,29 +276,24 @@
 
                     <p class="nd-comment-text" th:text="${comment.content}"></p>
 
-                    <!-- Nút reply cấp 1 (only when logged in) -->
-                    <button th:if="${userLogin != null}" class="nd-comment-reply-link reply-comment-button"
+                    <!-- Nút reply cấp 1 -->
+                    <button class="nd-comment-reply-link reply-comment-button"
                             th:attr="data-form-id=${comment.id},
                              data-mention=''">
                         Reply
                     </button>
 
-                    <!-- Form reply cấp 1 (only when logged in) -->
-                    <form th:if="${userLogin != null}"
-                          th:action="@{/comments/save/{publicId}(publicId=${novel.publicId})}"
+                    <!-- Form reply cấp 1 -->
+                    <form th:action="@{/comments/save/{publicId}(publicId=${novel.publicId})}"
                           method="post"
                           th:id="'reply-form-' + ${comment.id}"
                           class="nd-comment-form reply-comment-form hidden">
 
                         <input type="hidden" name="parentId" th:value="${comment.id}"/>
 
-                        <div class="nd-comment-avatar">
-                            <img th:if="${userLogin.user.avatarUrl != null and !userLogin.user.avatarUrl.isEmpty()}"
-                                 th:src="${userLogin.user.avatarUrl}" alt="avatar"
-                                 style="width:100%;height:100%;object-fit:cover;border-radius:9999px;"/>
-                            <span th:if="${userLogin.user.avatarUrl == null or userLogin.user.avatarUrl.isEmpty()}"
-                                  th:text="${userLogin.user.lastName != null and !userLogin.user.lastName.isEmpty()
-                                    ? userLogin.user.lastName.substring(0,1) : 'U'}">U</span>
+                        <div class="nd-comment-avatar"
+                             th:text="${userLogin.user.lastName != null
+                               ? userLogin.user.lastName.substring(0,1) : 'U'}">
                         </div>
                         <div class="nd-comment-form-body">
                     <textarea class="nd-comment-textarea"
@@ -349,14 +313,10 @@
 
                             <!-- Avatar reply cấp 2 -->
                             <div class="nd-comment-user-avatar">
-                                <img th:if="${reply.user.avatarUrl != null and !reply.user.avatarUrl.isEmpty()}"
-                                     th:src="${reply.user.avatarUrl}" alt="avatar"
-                                     style="width:100%;height:100%;object-fit:cover;border-radius:9999px;"/>
-                                <div th:if="${reply.user.avatarUrl == null or reply.user.avatarUrl.isEmpty()}"
-                                     style="width:100%;height:100%;background:#10b981;display:flex;
+                                <div style="width:100%;height:100%;background:#10b981;display:flex;
                                     align-items:center;justify-content:center;color:#fff;
                                     font-size:14px;font-weight:600;border-radius:9999px;"
-                                     th:text="${reply.user.lastName != null and !reply.user.lastName.isEmpty()
+                                     th:text="${reply.user.lastName != null
                                        ? reply.user.lastName.substring(0,1) : 'U'}">
                                 </div>
                             </div>
@@ -372,8 +332,9 @@
 
                                 <p class="nd-comment-text" th:text="${reply.content}"></p>
 
-                                <!-- Nút reply cấp 2 (only when logged in) -->
-                                <button th:if="${userLogin != null}" class="nd-comment-reply-link reply-comment-button"
+                                <!-- Nút reply cấp 2 → form vẫn là reply-form của ROOT comment -->
+                                <!-- data-form-id trỏ về ROOT, data-mention là tên người được reply -->
+                                <button class="nd-comment-reply-link reply-comment-button"
                                         th:attr="data-form-id=${comment.id},
                                          data-mention=${reply.user.firstName + ' ' + reply.user.lastName}">
                                     Reply
@@ -405,7 +366,235 @@
 
         <!-- Load more button (shown when comments exist) -->
     </div>
-    <script th:src="@{/js/novel-detail.js}"></script>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script>
+        function toggleSynopsis() {
+            const text = document.getElementById('synopsisText');
+            const btn = document.getElementById('readMoreBtn');
+            text.classList.toggle('expanded');
+            btn.classList.toggle('expanded');
+            btn.childNodes[0].textContent = text.classList.contains('expanded') ? 'Show Less ' : 'Read More ';
+        }
+
+        // CSRF helpers
+        var csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+        var csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
+
+        function apiPost(url, data) {
+            var headers = {'Content-Type': 'application/json'};
+            if (csrfHeader && csrfToken) { headers[csrfHeader] = csrfToken; }
+            return fetch(url, { method: 'POST', headers: headers, body: JSON.stringify(data), credentials: 'same-origin' }).then(r => r.json());
+        }
+
+        function apiGet(url) {
+            return fetch(url, { credentials: 'same-origin' }).then(r => r.json());
+        }
+
+        // ── Star Rating ──
+        var userRating = 0;
+        var rateStarsContainer = document.querySelector('.nd-rate-stars');
+        var novelIdForRating = rateStarsContainer?.getAttribute('data-novel-id');
+
+        function renderRateStars(score) {
+            document.querySelectorAll('.nd-rate-star').forEach((s, i) => {
+                const path = s.querySelector('path');
+                if (i < score) {
+                    path.setAttribute('fill', '#c9a46a');
+                    path.setAttribute('stroke', 'none');
+                } else {
+                    path.setAttribute('fill', 'none');
+                    path.setAttribute('stroke', '#94a3b8');
+                }
+            });
+        }
+
+        // Load user's existing rating
+        if (novelIdForRating) {
+            apiGet('/api/novels/' + novelIdForRating + '/rating/user').then(data => {
+                userRating = data.score || 0;
+                renderRateStars(userRating);
+            });
+        }
+
+        document.querySelectorAll('.nd-rate-star').forEach((star, idx) => {
+            star.addEventListener('mouseenter', () => renderRateStars(idx + 1));
+            star.addEventListener('click', () => {
+                var score = parseInt(star.getAttribute('data-score'));
+                apiPost('/api/novels/' + novelIdForRating + '/rate', { score: score }).then(data => {
+                    userRating = data.score;
+                    renderRateStars(userRating);
+                    // Update displayed average
+                    var avgEl = document.querySelector('.nd-rating-big');
+                    if (avgEl) avgEl.textContent = data.averageRating;
+                    var totalEl = document.querySelector('.nd-rating-total');
+                    if (totalEl && data.averageRating > 0) totalEl.textContent = data.averageRating + ' ratings';
+                });
+            });
+        });
+
+        rateStarsContainer?.addEventListener('mouseleave', () => renderRateStars(userRating));
+
+        // ── Favorite Toggle ──
+        var favoriteBtn = document.getElementById('favoriteBtn');
+        var favoriteIcon = document.getElementById('favoriteIcon');
+        var favoriteBtnText = document.getElementById('favoriteBtnText');
+
+        function setFavoriteUI(isFavorited) {
+            if (isFavorited) {
+                favoriteIcon?.setAttribute('fill', '#f87171');
+                if (favoriteBtnText) favoriteBtnText.textContent = 'Saved';
+            } else {
+                favoriteIcon?.setAttribute('fill', 'none');
+                if (favoriteBtnText) favoriteBtnText.textContent = 'Save';
+            }
+        }
+
+        if (favoriteBtn) {
+            var novelIdForFav = favoriteBtn.getAttribute('data-novel-id');
+            // Load current status
+            apiGet('/api/novels/' + novelIdForFav + '/favorite/status').then(data => setFavoriteUI(data.favorited));
+            // Toggle on click
+            favoriteBtn.addEventListener('click', () => {
+                apiPost('/api/novels/' + novelIdForFav + '/favorite', {}).then(data => setFavoriteUI(data.favorited));
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const COMMENTS_PER_PAGE = 5;
+
+            // Lấy đúng selector - chỉ lấy comment con trực tiếp của container
+            const container = document.getElementById("nd-comments-container");
+
+            // Kiểm tra container tồn tại không
+            if (!container) {
+                console.warn("Không tìm thấy #nd-comments-container");
+                return;
+            }
+
+            const allComments = Array.from(container.querySelectorAll(":scope > .nd-comment"));
+            console.log("Tổng số comments:", allComments.length); // Debug
+
+            let currentShown = COMMENTS_PER_PAGE;
+
+            // ===== Init: ẩn comment từ index 5 trở đi =====
+            function initComments() {
+                allComments.forEach((comment, index) => {
+                    if (index >= COMMENTS_PER_PAGE) {
+                        comment.style.display = "none"; // dùng style thay vì class hidden
+                    }
+                });
+
+                const btn = document.getElementById("load-more-btn");
+                if (!btn) return;
+
+                // Ẩn nút nếu tổng comment <= 5
+                if (allComments.length <= COMMENTS_PER_PAGE) {
+                    btn.closest(".nd-load-more-wrapper").style.display = "none";
+                }
+            }
+
+            // ===== Load More =====
+            async function loadMoreComments() {
+                const btn = document.getElementById("load-more-btn");
+                const spinner = document.getElementById("load-more-spinner");
+                const btnText = document.getElementById("load-more-text");
+
+                if (!btn || !spinner || !btnText) return;
+
+                // Hiện loading
+                btn.disabled = true;
+                spinner.style.display = "inline-block";
+                btnText.textContent = "Loading...";
+
+                // Delay giả lập loading
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                // Show thêm comment với stagger
+                const nextBatch = allComments.slice(currentShown, currentShown + COMMENTS_PER_PAGE);
+
+                if (nextBatch.length === 0) {
+                    btn.closest(".nd-load-more-wrapper").style.display = "none";
+                    return;
+                }
+
+                nextBatch.forEach((comment, index) => {
+                    setTimeout(() => {
+                        comment.style.display = "flex"; // hoặc "block" tùy CSS của bạn
+                        comment.style.animation = "commentFadeIn 0.3s ease forwards";
+                    }, index * 120);
+                });
+
+                currentShown += COMMENTS_PER_PAGE;
+
+                // Ẩn nút nếu đã hết
+                if (currentShown >= allComments.length) {
+                    setTimeout(() => {
+                        btn.closest(".nd-load-more-wrapper").style.display = "none";
+                    }, nextBatch.length * 120 + 100);
+                } else {
+                    btn.disabled = false;
+                    spinner.style.display = "none";
+                    btnText.textContent = "Load more comments";
+                }
+            }
+
+            // ===== Reply buttons =====
+            function initReplyButtons() {
+                const replyBtns = document.querySelectorAll(".reply-comment-button");
+                console.log("Tổng số reply buttons:", replyBtns.length); // Debug
+
+                replyBtns.forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        const formId = btn.getAttribute("data-form-id");
+                        const mention = btn.getAttribute("data-mention");
+                        const targetForm = document.getElementById("reply-form-" + formId);
+
+                        if (!targetForm) {
+                            console.warn("Không tìm thấy form reply-form-" + formId);
+                            return;
+                        }
+
+                        // Đóng tất cả form khác
+                        document.querySelectorAll(".reply-comment-form").forEach((form) => {
+                            if (form !== targetForm) {
+                                form.style.display = "none";
+                                const ta = form.querySelector("textarea");
+                                if (ta) ta.value = "";
+                            }
+                        });
+
+                        // Toggle form hiện tại
+                        const isHidden = targetForm.style.display === "none" || targetForm.style.display === "";
+                        targetForm.style.display = isHidden ? "flex" : "none";
+
+                        if (isHidden) {
+                            const textarea = targetForm.querySelector("textarea");
+                            if (textarea) {
+                                textarea.value = mention && mention.trim() !== "" ? "@" + mention + " " : "";
+                                textarea.focus();
+                                textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+                            }
+                        }
+                    });
+                });
+            }
+
+            // ===== Gắn event Load More =====
+            const loadMoreBtn = document.getElementById("load-more-btn");
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener("click", loadMoreComments);
+            }
+
+            // ===== Chạy init =====
+            initComments();
+            initReplyButtons();
+
+        });
+
+
+    </script>
 
 </main>
 

@@ -3,6 +3,10 @@ package com.example.SE2.models;
 import jakarta.persistence.*;
 
 @Entity
+@Table(
+        name = "reading_progress",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "chapter_id"})
+)
 public class ReadingProgress extends AbstractEntity {
 
     @Id

@@ -298,7 +298,7 @@ public class DataSeeder implements CommandLineRunner {
         user.setProvider(provider);
         user.setRoles(roles);
         user.setLoggedIn(false);
-        user.setDeleted(false);
+//        user.setDeleted(false);
         return userRepository.save(user);
     }
 

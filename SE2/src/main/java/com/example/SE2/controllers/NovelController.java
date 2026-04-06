@@ -207,7 +207,7 @@ public class NovelController {
   model.addAttribute("hasChapters", !chapters.isEmpty());
   model.addAttribute("ratingCount", ratingCount);
 
-  // ✅ Tính reading progress
+  // Tính reading progress
   int currentChapter = 0;
   int progressPct = 0;
 

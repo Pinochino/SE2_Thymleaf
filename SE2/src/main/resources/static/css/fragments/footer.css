@@ -1,0 +1,207 @@
+/* ── Shared ───────────────────────────────────────────────── */
+.footer-link {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #94a3b8;
+    text-decoration: none;
+    line-height: 20px;
+    transition: color 0.15s;
+}
+
+.footer-link:hover {
+    color: #ffffff;
+}
+
+/* ============================================================
+   DESKTOP / TABLET FOOTER
+   ============================================================ */
+.footer-desktop {
+    display: none;
+    background-color: #111827;
+    border-top: 1px solid #1f2937;
+}
+
+.footer-desktop-inner {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 51px 2rem 2rem;
+}
+
+/* ── Four-column grid ─────────────────────────────────────── */
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+/* ── Brand column ─────────────────────────────────────────── */
+.footer-brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.footer-brand-logo-icon {
+    width: 27.5px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-brand-logo-text {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: #ffffff;
+}
+
+.footer-brand-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #94a3b8;
+    line-height: 22.75px;
+    margin: 0;
+}
+
+/* ── Nav columns ──────────────────────────────────────────── */
+.footer-col-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #ffffff;
+    line-height: 24px;
+    margin: 0 0 1rem 0;
+}
+
+.footer-col-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* ── Bottom bar ───────────────────────────────────────────── */
+.footer-bottom {
+    border-top: 1px solid #1f2937;
+    padding-top: 2rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.footer-copyright {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #6b7280;
+    line-height: 16px;
+    margin: 0;
+}
+
+.footer-socials {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer-social-link {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #6b7280;
+    text-decoration: none;
+    line-height: 16px;
+    transition: color 0.15s;
+}
+
+.footer-social-link:hover {
+    color: #94a3b8;
+}
+
+/* ============================================================
+   MOBILE FOOTER
+   ============================================================ */
+.footer-mobile {
+    display: block;
+    background-color: #111621;
+    border-top: 1px solid rgba(20, 75, 184, 0.1);
+    padding: 2.5rem 1.5rem 1.5rem;
+}
+
+.footer-mobile-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.footer-mobile-title {
+    font-family: 'Noto Serif', serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: #144bb8;
+    line-height: 32px;
+    margin: 0;
+}
+
+.footer-mobile-desc {
+    font-family: 'Noto Serif', serif;
+    font-size: 14px;
+    color: #94a3b8;
+    line-height: 22.75px;
+    margin: 0;
+}
+
+.footer-mobile-copyright-wrapper {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 1rem;
+}
+
+.footer-mobile-copyright {
+    font-family: 'Noto Serif', serif;
+    font-size: 12px;
+    color: #64748b;
+    text-align: center;
+    line-height: 16px;
+    margin: 0;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+
+/* Mobile: show mobile footer, hide desktop */
+@media (max-width: 639px) {
+    .footer-desktop {
+        display: none;
+    }
+
+    .footer-mobile {
+        display: block;
+    }
+}
+
+/* Tablet and up: show desktop footer, hide mobile */
+@media (min-width: 640px) {
+    .footer-desktop {
+        display: block;
+    }
+
+    .footer-mobile {
+        display: none;
+    }
+
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Large screens: 4-column grid */
+@media (min-width: 1024px) {
+    .footer-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

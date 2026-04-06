@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/fragments/pagination.css}">
+</head>
 <!--
   Reusable pagination fragment (0-based).
   Required model attributes:
@@ -9,39 +12,53 @@
     - extraParams  : (optional) extra query string like "genre=FANTASY"
 -->
 <div th:fragment="pagination" th:if="${totalPages != null and totalPages > 1}"
-     class="mt-10 flex justify-center items-center gap-2 flex-wrap pb-4">
+     class="pagination">
+
+    <!-- Prev arrow -->
     <a th:href="${baseUrl + '?page=' + (currentPage > 0 ? currentPage - 1 : 0) + (extraParams != null and !extraParams.isEmpty() ? '&' + extraParams : '')}"
-       th:classappend="${currentPage == 0} ? 'pointer-events-none opacity-50' : ''"
-       class="w-[40px] h-[40px] rounded-[8px] bg-[#1e293b] text-[#94a3b8] flex items-center justify-center hover:bg-[#2d3446] transition text-[14px]">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+       th:classappend="${currentPage == 0} ? 'pagination-btn--disabled' : ''"
+       class="pagination-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
         </svg>
     </a>
 
     <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+        <!-- First page shortcut -->
         <a th:if="${i == 0 and currentPage > 2}"
            th:href="${baseUrl + '?page=0' + (extraParams != null and !extraParams.isEmpty() ? '&' + extraParams : '')}"
-           class="w-[40px] h-[40px] rounded-[8px] flex items-center justify-center text-[14px] font-bold transition bg-[#1e293b] text-[#94a3b8] hover:bg-[#2d3446]">1</a>
-        <span th:if="${i == 0 and currentPage > 3}" class="w-[40px] h-[40px] flex items-center justify-center text-[#94a3b8]">...</span>
+           class="pagination-btn">1</a>
+
+        <!-- Leading ellipsis -->
+        <span th:if="${i == 0 and currentPage > 3}"
+              class="pagination-ellipsis">...</span>
+
+        <!-- Windowed page numbers -->
         <a th:if="${i >= currentPage - 2 and i <= currentPage + 2}"
            th:href="${baseUrl + '?page=' + i + (extraParams != null and !extraParams.isEmpty() ? '&' + extraParams : '')}"
-           class="w-[40px] h-[40px] rounded-[8px] flex items-center justify-center text-[14px] font-bold transition"
-           th:classappend="${i == currentPage} ? 'bg-[#144bb8] text-white' : 'bg-[#1e293b] text-[#94a3b8] hover:bg-[#2d3446]'"
+           th:classappend="${i == currentPage} ? 'pagination-btn--active' : ''"
+           class="pagination-btn"
            th:text="${i + 1}">1</a>
 
-        <span th:if="${i == totalPages - 1 and currentPage < totalPages - 4}" class="w-[40px] h-[40px] flex items-center justify-center text-[#94a3b8]">...</span>
+        <!-- Trailing ellipsis -->
+        <span th:if="${i == totalPages - 1 and currentPage < totalPages - 4}"
+              class="pagination-ellipsis">...</span>
+
+        <!-- Last page shortcut -->
         <a th:if="${i == totalPages - 1 and currentPage < totalPages - 3}"
            th:href="${baseUrl + '?page=' + (totalPages - 1) + (extraParams != null and !extraParams.isEmpty() ? '&' + extraParams : '')}"
-           class="w-[40px] h-[40px] rounded-[8px] flex items-center justify-center text-[14px] font-bold transition bg-[#1e293b] text-[#94a3b8] hover:bg-[#2d3446]"
+           class="pagination-btn"
            th:text="${totalPages}">99</a>
     </th:block>
 
+    <!-- Next arrow -->
     <a th:href="${baseUrl + '?page=' + (currentPage < totalPages - 1 ? currentPage + 1 : totalPages - 1) + (extraParams != null and !extraParams.isEmpty() ? '&' + extraParams : '')}"
-       th:classappend="${currentPage >= totalPages - 1} ? 'pointer-events-none opacity-50' : ''"
-       class="w-[40px] h-[40px] rounded-[8px] bg-[#1e293b] text-[#94a3b8] flex items-center justify-center hover:bg-[#2d3446] transition text-[14px]">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+       th:classappend="${currentPage >= totalPages - 1} ? 'pagination-btn--disabled' : ''"
+       class="pagination-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
         </svg>
     </a>
+
 </div>
 </html>

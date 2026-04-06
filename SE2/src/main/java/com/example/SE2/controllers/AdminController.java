@@ -67,7 +67,6 @@ public class AdminController {
 
     @GetMapping("/novels/create")
     public String createNovel(Model model) {
-//        model.addAttribute("activePage", "novels");
         model.addAttribute("novel", new Novel());
         model.addAttribute("genres", genreRepository.findAll());
         return "admin/novel-create";

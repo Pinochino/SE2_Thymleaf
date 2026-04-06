@@ -49,7 +49,7 @@ public class EmbeddingServiceImpl implements EmbeddingService {
                     .optModelName("model")
                     .optEngine("OnnxRuntime")
                     .optTranslatorFactory(new TextEmbeddingTranslatorFactory())
-                    .optArgument("includeTokenTypes", true)   // ← key fix
+                    .optArgument("includeTokenTypes", true)
                     .optArgument("pooling", "mean")
                     .optArgument("normalize", true)
                     .build();

@@ -3,36 +3,38 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Footer</title>
+
 </head>
 <body>
 
 <footer th:fragment="footer">
 
-    <!-- ===== DESKTOP / TABLET FOOTER (hidden on mobile) ===== -->
-    <div class="hidden sm:block bg-[#111827] border-t border-[#1f2937]">
-        <div class="max-w-[1280px] mx-auto px-8 pt-[51px] pb-8">
+    <!-- ===== DESKTOP / TABLET FOOTER ===== -->
+    <div class="footer-desktop">
+        <div class="footer-desktop-inner">
 
             <!-- Main footer content -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+            <div class="footer-grid">
 
                 <!-- Brand -->
                 <div>
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="w-[27.5px] h-[24px] flex items-center justify-center">
-                            <svg width="28" height="24" viewBox="0 0 33 29" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="2" y="4" width="12" height="21" rx="2" stroke="#7c3aed" stroke-width="2.5" fill="none"/>
-                                <rect x="19" y="4" width="12" height="21" rx="2" stroke="#7c3aed" stroke-width="2.5" fill="none"/>
+                    <div class="footer-brand-logo">
+                        <div class="footer-brand-logo-icon">
+                            <svg width="28" height="24" viewBox="0 0 33 29" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <rect x="2" y="4" width="12" height="21" rx="2" stroke="#7c3aed" stroke-width="2.5"
+                                      fill="none"/>
+                                <rect x="19" y="4" width="12" height="21" rx="2" stroke="#7c3aed" stroke-width="2.5"
+                                      fill="none"/>
                                 <path d="M14 8 L19 8" stroke="#7c3aed" stroke-width="2"/>
                                 <path d="M14 14 L19 14" stroke="#7c3aed" stroke-width="2"/>
                                 <path d="M14 20 L19 20" stroke="#7c3aed" stroke-width="2"/>
                             </svg>
                         </div>
-                        <span class="font-['Cinzel'] font-bold text-[20px] text-white">NRW</span>
+                        <span class="footer-brand-logo-text">NRW</span>
                     </div>
-                    <p class="font-['Inter'] text-[14px] text-[#94a3b8] leading-[22.75px]">
+                    <p class="footer-brand-desc">
                         The next generation of reading.<br>
                         Experience AI-powered translations and<br>
                         personalized discoveries.
@@ -41,64 +43,61 @@
 
                 <!-- Platform -->
                 <div>
-                    <h4 class="font-['Inter'] font-bold text-[16px] text-white leading-[24px] mb-4">Platform</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="font-['Inter'] text-[14px] text-[#94a3b8] hover:text-white transition-colors leading-[20px]">Trending</a></li>
-                        <li><a href="#" class="font-['Inter'] text-[14px] text-[#94a3b8] hover:text-white transition-colors leading-[20px]">Latest Updates</a></li>
-                        <li><a href="#" class="font-['Inter'] text-[14px] text-[#94a3b8] hover:text-white transition-colors leading-[20px]">Completed</a></li>
-                        <li><a href="#" class="font-['Inter'] text-[14px] text-[#94a3b8] hover:text-white transition-colors leading-[20px]">AI Recommendations</a></li>
+                    <h4 class="footer-col-title">Platform</h4>
+                    <ul class="footer-col-list">
+                        <li><a href="#" class="footer-link">Trending</a></li>
+                        <li><a href="#" class="footer-link">Latest Updates</a></li>
+                        <li><a href="#" class="footer-link">Completed</a></li>
+                        <li><a href="#" class="footer-link">AI Recommendations</a></li>
                     </ul>
                 </div>
 
                 <!-- Community -->
                 <div>
-                    <h4 class="font-['Inter'] font-bold text-[16px] text-white leading-[24px] mb-4">Community</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="font-['Inter'] text-[14px] text-[#94a3b8] hover:text-white transition-colors leading-[20px]">Forums</a></li>
-                        <li><a href="#" class="font-['Inter'] text-[14px] text-[#94a3b8] hover:text-white transition-colors leading-[20px]">Discord Server</a></li>
-                        <li><a href="#" class="font-['Inter'] text-[14px] text-[#94a3b8] hover:text-white transition-colors leading-[20px]">Translator Recruitment</a></li>
-                        <li><a href="#" class="font-['Inter'] text-[14px] text-[#94a3b8] hover:text-white transition-colors leading-[20px]">Writer Portal</a></li>
+                    <h4 class="footer-col-title">Community</h4>
+                    <ul class="footer-col-list">
+                        <li><a href="#" class="footer-link">Forums</a></li>
+                        <li><a href="#" class="footer-link">Discord Server</a></li>
+                        <li><a href="#" class="footer-link">Translator Recruitment</a></li>
+                        <li><a href="#" class="footer-link">Writer Portal</a></li>
                     </ul>
                 </div>
 
                 <!-- Support -->
                 <div>
-                    <h4 class="font-['Inter'] font-bold text-[16px] text-white leading-[24px] mb-4">Support</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="font-['Inter'] text-[14px] text-[#94a3b8] hover:text-white transition-colors leading-[20px]">Help Center</a></li>
-                        <li><a href="#" class="font-['Inter'] text-[14px] text-[#94a3b8] hover:text-white transition-colors leading-[20px]">Report Issue</a></li>
-                        <li><a href="#" class="font-['Inter'] text-[14px] text-[#94a3b8] hover:text-white transition-colors leading-[20px]">Privacy Policy</a></li>
-                        <li><a href="#" class="font-['Inter'] text-[14px] text-[#94a3b8] hover:text-white transition-colors leading-[20px]">Terms of Service</a></li>
+                    <h4 class="footer-col-title">Support</h4>
+                    <ul class="footer-col-list">
+                        <li><a href="#" class="footer-link">Help Center</a></li>
+                        <li><a href="#" class="footer-link">Report Issue</a></li>
+                        <li><a href="#" class="footer-link">Privacy Policy</a></li>
+                        <li><a href="#" class="footer-link">Terms of Service</a></li>
                     </ul>
                 </div>
             </div>
 
             <!-- Bottom bar -->
-            <div class="border-t border-[#1f2937] pt-8 flex flex-row items-center justify-between gap-3">
-                <p class="font-['Inter'] text-[12px] text-[#6b7280] leading-[16px]">&copy; 2026 NRW. All rights reserved.</p>
-                <div class="flex gap-4">
-                    <a href="#" class="font-['Inter'] text-[12px] text-[#6b7280] hover:text-[#94a3b8] transition-colors leading-[16px]">Twitter</a>
-                    <a href="#" class="font-['Inter'] text-[12px] text-[#6b7280] hover:text-[#94a3b8] transition-colors leading-[16px]">Instagram</a>
-                    <a href="#" class="font-['Inter'] text-[12px] text-[#6b7280] hover:text-[#94a3b8] transition-colors leading-[16px]">Facebook</a>
+            <div class="footer-bottom">
+                <p class="footer-copyright">&copy; 2026 NRW. All rights reserved.</p>
+                <div class="footer-socials">
+                    <a href="#" class="footer-social-link">Twitter</a>
+                    <a href="#" class="footer-social-link">Instagram</a>
+                    <a href="#" class="footer-social-link">Facebook</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ===== MOBILE FOOTER (visible only on mobile) ===== -->
-    <div class="sm:hidden bg-[#111621] border-t border-[rgba(20,75,184,0.1)] px-6 pt-10 pb-6">
-        <div class="flex flex-col gap-6">
-            <!-- Title -->
-            <h2 class="font-['Noto_Serif'] font-bold text-[24px] text-[#144bb8] leading-[32px]">Novel Reading Website</h2>
-            <!-- Description -->
-            <p class="font-['Noto_Serif'] text-[14px] text-[#94a3b8] leading-[22.75px]">
+    <!-- ===== MOBILE FOOTER ===== -->
+    <div class="footer-mobile">
+        <div class="footer-mobile-inner">
+            <h2 class="footer-mobile-title">Novel Reading Website</h2>
+            <p class="footer-mobile-desc">
                 The ultimate destination for digital storytelling.
                 Discover thousands of original web novels, light
                 novels, and comics across all genres.
             </p>
-            <!-- Copyright -->
-            <div class="flex justify-center pb-4">
-                <p class="font-['Noto_Serif'] text-[12px] text-[#64748b] text-center leading-[16px]">&copy; 2024 NovelStream Inc. All rights reserved.</p>
+            <div class="footer-mobile-copyright-wrapper">
+                <p class="footer-mobile-copyright">&copy; 2024 NovelStream Inc. All rights reserved.</p>
             </div>
         </div>
     </div>

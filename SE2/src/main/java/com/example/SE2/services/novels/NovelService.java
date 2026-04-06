@@ -15,8 +15,6 @@ public interface NovelService {
 
     List<Novel> getCurrentlyReadingNovels(String userId);
 
-
-
     List<Novel> getRecommendedNovels(String userId);
 
     void indexNovel(Novel novel);

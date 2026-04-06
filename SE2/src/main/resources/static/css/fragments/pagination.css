@@ -1,0 +1,65 @@
+/* ── Wrapper ──────────────────────────────────────────────── */
+.pagination {
+    margin-top: 2.5rem;
+    padding-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* ── Shared button/link base ──────────────────────────────── */
+.pagination-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    background-color: #1e293b;
+    color: #94a3b8;
+    transition: background-color 0.15s;
+    flex-shrink: 0;
+}
+
+.pagination-btn:hover {
+    background-color: #2d3446;
+}
+
+/* ── Active (current) page ────────────────────────────────── */
+.pagination-btn--active {
+    background-color: #144bb8;
+    color: #ffffff;
+}
+
+.pagination-btn--active:hover {
+    background-color: #144bb8;
+}
+
+/* ── Disabled prev/next arrows ────────────────────────────── */
+.pagination-btn--disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* ── Arrow icons ──────────────────────────────────────────── */
+.pagination-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* ── Ellipsis ─────────────────────────────────────────────── */
+.pagination-ellipsis {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    font-size: 14px;
+    flex-shrink: 0;
+}

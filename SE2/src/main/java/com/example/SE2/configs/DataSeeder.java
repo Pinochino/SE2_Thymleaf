@@ -3,6 +3,7 @@ package com.example.SE2.configs;
 import com.example.SE2.constants.*;
 import com.example.SE2.models.*;
 import com.example.SE2.repositories.*;
+import com.example.SE2.services.novels.NovelServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,7 @@ public class DataSeeder implements CommandLineRunner {
     private final ReadingProgressRepository readingProgressRepository;
     private final ReadingSettingRepository readingSettingRepository;
     private final PasswordEncoder passwordEncoder;
+    private final NovelServiceImpl novelService;
 
     public DataSeeder(RoleRepository roleRepository,
                       UserRepository userRepository,
@@ -34,7 +36,8 @@ public class DataSeeder implements CommandLineRunner {
                       BookmarkRepository bookmarkRepository,
                       ReadingProgressRepository readingProgressRepository,
                       ReadingSettingRepository readingSettingRepository,
-                      PasswordEncoder passwordEncoder) {
+                      PasswordEncoder passwordEncoder,
+                      NovelServiceImpl novelService) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.genreRepository = genreRepository;
@@ -45,6 +48,7 @@ public class DataSeeder implements CommandLineRunner {
         this.readingProgressRepository = readingProgressRepository;
         this.readingSettingRepository = readingSettingRepository;
         this.passwordEncoder = passwordEncoder;
+        this.novelService = novelService;
     }
 
     @Override
@@ -87,6 +91,7 @@ public class DataSeeder implements CommandLineRunner {
         fantasy.getNovels().add(novel1);
         adventure.getNovels().add(novel1);
         genreRepository.saveAll(List.of(fantasy, adventure));
+        novelService.indexNovel(novel1);
 
         // Chapters for Novel 1
         Chapter ch1 = createChapter(novel1, 1L, "The Beginning",
@@ -161,6 +166,7 @@ public class DataSeeder implements CommandLineRunner {
         scifi.getNovels().add(novel2);
         mystery.getNovels().add(novel2);
         genreRepository.saveAll(List.of(scifi, mystery));
+        novelService.indexNovel(novel1);
 
         Chapter ch2_1 = createChapter(novel2, 1L, "Awakening",
                 "The server room hummed with the quiet intensity of a cathedral. Rows upon rows of processors blinked in synchronized patterns, their collective warmth raising the temperature despite the industrial cooling system working at full capacity.\n\n" +
@@ -202,6 +208,7 @@ public class DataSeeder implements CommandLineRunner {
         );
         romance.getNovels().add(novel3);
         genreRepository.save(romance);
+        novelService.indexNovel(novel1);
 
         Chapter ch3_1 = createChapter(novel3, 1L, "The Assignment",
                 "Professor Lena Park had exactly three rules for fieldwork: always label your specimens, never trust the weather forecast, and under absolutely no circumstances work with anyone from Harwood University.\n\n" +

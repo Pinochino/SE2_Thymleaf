@@ -168,6 +168,7 @@ body { background: var(--bg-base); color: var(--nor); font-family: var(--font-no
     background: var(--bg-card); border: 1px solid #1a2540; border-radius: 14px;
     overflow: hidden; display: flex; flex-direction: column;
     transition: all 0.2s ease;
+    min-width: 195px; min-height:150px;
 }
 .novel-card:hover { border-color: #254070; background: var(--bg-hover); }
 .novel-card:hover .card-title { color: var(--accent2); }
@@ -241,7 +242,7 @@ main {
 /* Genre scrolls horizontally on mobile */
 #genre-list {
     display: flex; flex-direction: row;
-    flex-wrap: nowrap; overflow-x: auto;
+    flex-wrap: wrap; overflow-x: auto;
     gap: 14px;
     padding-bottom: 4px;
 }
@@ -268,7 +269,6 @@ main {
     /* Genre switches back to vertical column */
     #genre-list {
         flex-direction: column;
-        flex-wrap: wrap;
         overflow-x: unset;
         gap: 9px;
     }

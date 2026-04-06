@@ -36,6 +36,4 @@ build/
 
 /.env.dev
 /.env
-/.claude/settings.local.json
-
 src/main/application.properties

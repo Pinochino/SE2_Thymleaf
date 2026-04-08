@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="_csrf" th:content="${_csrf.token}">
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
-    <title th:text="'Chapter ' + ${chapter.chapterNumber} + ': ' + ${chapter.title} + ' - ' + ${novel.title}">Chapter</title>
+    <title th:text="'Chapter ' + ${chapter.chapterNumber} + ': ' + ${chapter.title} + ' - ' + ${novel.title}">
+        Chapter</title>
     <link rel="stylesheet" th:href="@{/css/chapter.css}">
 </head>
 <body th:classappend="${(readingSettings != null && readingSettings.theme != null ? 'theme-' + readingSettings.theme.name().toLowerCase() : 'theme-sepia') + (readingSettings != null && readingSettings.fontFamily != null && readingSettings.fontFamily.name() == 'SANS_SERIF' ? ' font-sans-serif' : '')}">
@@ -13,26 +14,30 @@
 
     <!-- Progress Bar -->
     <div class="progress-track">
-        <div class="progress-fill" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Reading progress"></div>
+        <div class="progress-fill" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+             aria-label="Reading progress"></div>
     </div>
 
     <!-- Sticky Header -->
     <header class="chapter-header">
         <nav class="header-inner" aria-label="Main navigation">
             <div class="header-left">
-                <a th:href="@{/novels/information/{publicId}(publicId=${novel.publicId})}" class="btn-icon" aria-label="Go back">
+                <a th:href="@{/novels/information/{publicId}(publicId=${novel.publicId})}" class="btn-icon"
+                   aria-label="Go back">
                     <img th:src="@{/img/back-arrow.svg}" alt="">
                 </a>
                 <div class="header-title-group">
                     <span class="header-novel-title" th:text="${novel.title}">Novel Title</span>
-                    <span class="header-chapter-title" th:text="'Chapter ' + ${chapter.chapterNumber} + ': ' + ${chapter.title}">Chapter Title</span>
+                    <span class="header-chapter-title"
+                          th:text="'Chapter ' + ${chapter.chapterNumber} + ': ' + ${chapter.title}">Chapter Title</span>
                 </div>
             </div>
             <div class="header-right">
                 <button class="btn-icon" aria-label="Table of contents" onclick="openSidebar('tocSidebar')">
                     <img th:src="@{/img/menu.svg}" alt="">
                 </button>
-                <a th:href="@{/user/submit-translation(novelId=${novel.id}, chapterId=${chapter.id})}" class="btn-contribute" style="text-decoration:none;">
+                <a th:href="@{/user/submit-translation(novelId=${novel.id}, chapterId=${chapter.id})}"
+                   class="btn-contribute" style="text-decoration:none;">
                     <img th:src="@{/img/translate.svg}" alt="">
                     <span>Contribute</span>
                 </a>
@@ -47,12 +52,15 @@
                         </div>
                         <div class="chapter-dropdown-body" id="bookmarksList">
                             <th:block th:if="${#lists.isEmpty(bookmarks)}">
-                                <p class="bookmark-empty-msg" style="padding: 12px; color: #9ca3af; font-size: 13px;">No bookmarks yet. Click the bookmark icon on any paragraph to save it.</p>
+                                <p class="bookmark-empty-msg" style="padding: 12px; color: #9ca3af; font-size: 13px;">No
+                                    bookmarks yet. Click the bookmark icon on any paragraph to save it.</p>
                             </th:block>
                             <th:block th:each="bookmark, stat : ${bookmarks}">
                                 <div class="bookmark-item" th:attr="data-paragraph-index=${bookmark.paragraphIndex}">
-                                    <p class="bookmark-text" th:if="${bookmark.paragraphIndex < #lists.size(paragraphs)}"
-                                       th:text="${#strings.abbreviate(paragraphs[bookmark.paragraphIndex], 120)}">Bookmark text</p>
+                                    <p class="bookmark-text"
+                                       th:if="${bookmark.paragraphIndex < #lists.size(paragraphs)}"
+                                       th:text="${#strings.abbreviate(paragraphs[bookmark.paragraphIndex], 120)}">
+                                        Bookmark text</p>
                                 </div>
                                 <div class="bookmark-divider" th:if="${!stat.last}"></div>
                             </th:block>
@@ -61,7 +69,8 @@
                 </div>
                 <!-- Appearance button with dropdown -->
                 <div class="chapter-dropdown-wrapper">
-                    <button class="btn-icon" aria-label="Appearance settings" onclick="toggleChapterDropdown('appearance')">
+                    <button class="btn-icon" aria-label="Appearance settings"
+                            onclick="toggleChapterDropdown('appearance')">
                         <img th:src="@{/img/appearance.png}" alt="" style="width:20px;height:20px;">
                     </button>
                     <div class="chapter-dropdown chapter-dropdown-appearance" id="dropdown-appearance">
@@ -70,15 +79,27 @@
                             <div class="theme-options">
                                 <button class="theme-btn theme-light" data-theme="light"
                                         th:classappend="${readingSettings == null || readingSettings.theme == null || readingSettings.theme.name() == 'LIGHT' ? 'active' : ''}">
-                                    <svg th:if="${readingSettings == null || readingSettings.theme == null || readingSettings.theme.name() == 'LIGHT'}" width="17" height="13" viewBox="0 0 17 13" fill="none"><path d="M1.5 7L6 11.5L15.5 1.5" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    <svg th:if="${readingSettings == null || readingSettings.theme == null || readingSettings.theme.name() == 'LIGHT'}"
+                                         width="17" height="13" viewBox="0 0 17 13" fill="none">
+                                        <path d="M1.5 7L6 11.5L15.5 1.5" stroke="#8b5cf6" stroke-width="2"
+                                              stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
                                 </button>
                                 <button class="theme-btn theme-sepia" data-theme="sepia"
                                         th:classappend="${readingSettings != null && readingSettings.theme != null && readingSettings.theme.name() == 'SEPIA' ? 'active' : ''}">
-                                    <svg th:if="${readingSettings != null && readingSettings.theme != null && readingSettings.theme.name() == 'SEPIA'}" width="17" height="13" viewBox="0 0 17 13" fill="none"><path d="M1.5 7L6 11.5L15.5 1.5" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    <svg th:if="${readingSettings != null && readingSettings.theme != null && readingSettings.theme.name() == 'SEPIA'}"
+                                         width="17" height="13" viewBox="0 0 17 13" fill="none">
+                                        <path d="M1.5 7L6 11.5L15.5 1.5" stroke="#8b5cf6" stroke-width="2"
+                                              stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
                                 </button>
                                 <button class="theme-btn theme-dark" data-theme="dark"
                                         th:classappend="${readingSettings != null && readingSettings.theme != null && readingSettings.theme.name() == 'DARK' ? 'active' : ''}">
-                                    <svg th:if="${readingSettings != null && readingSettings.theme != null && readingSettings.theme.name() == 'DARK'}" width="17" height="13" viewBox="0 0 17 13" fill="none"><path d="M1.5 7L6 11.5L15.5 1.5" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    <svg th:if="${readingSettings != null && readingSettings.theme != null && readingSettings.theme.name() == 'DARK'}"
+                                         width="17" height="13" viewBox="0 0 17 13" fill="none">
+                                        <path d="M1.5 7L6 11.5L15.5 1.5" stroke="#8b5cf6" stroke-width="2"
+                                              stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
                                 </button>
                             </div>
                         </div>
@@ -95,9 +116,13 @@
                             <div class="appearance-label">Font Family</div>
                             <div class="font-toggle">
                                 <button class="font-toggle-btn" data-font="serif"
-                                        th:classappend="${readingSettings == null || readingSettings.fontFamily == null || readingSettings.fontFamily.name() == 'SERIF' ? 'active' : ''}">Serif</button>
+                                        th:classappend="${readingSettings == null || readingSettings.fontFamily == null || readingSettings.fontFamily.name() == 'SERIF' ? 'active' : ''}">
+                                    Serif
+                                </button>
                                 <button class="font-toggle-btn" data-font="sans-serif"
-                                        th:classappend="${readingSettings != null && readingSettings.fontFamily != null && readingSettings.fontFamily.name() == 'SANS_SERIF' ? 'active' : ''}">Sans-Serif</button>
+                                        th:classappend="${readingSettings != null && readingSettings.fontFamily != null && readingSettings.fontFamily.name() == 'SANS_SERIF' ? 'active' : ''}">
+                                    Sans-Serif
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -115,7 +140,10 @@
         </div>
         <div class="sidebar-search">
             <i class="search-icon">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="5" stroke="#6b7280" stroke-width="1.5"/><path d="M10 10L13 13" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round"/></svg>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <circle cx="6" cy="6" r="5" stroke="#6b7280" stroke-width="1.5"/>
+                    <path d="M10 10L13 13" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
             </i>
             <input type="text" placeholder="Search chapters..." class="sidebar-search-input" id="tocSearchInput">
         </div>
@@ -143,19 +171,24 @@
             <p id="commentQuoteText"></p>
         </div>
         <div class="comments-body" id="commentsBody">
-            <p class="comments-empty-msg" style="padding: 20px; color: #9ca3af; text-align: center;">Click a comment icon on a paragraph to view its comments.</p>
+            <p class="comments-empty-msg" style="padding: 20px; color: #9ca3af; text-align: center;">Click a comment
+                icon on a paragraph to view its comments.</p>
         </div>
         <div class="comments-input" th:if="${isLoggedIn}">
             <div class="reply-indicator" id="replyIndicator" style="display:none;">
                 <div class="reply-indicator-text">
-                    Replying to <span class="reply-indicator-name" id="replyToName"></span>: <span id="replyToPreview"></span>
+                    Replying to <span class="reply-indicator-name" id="replyToName"></span>: <span
+                        id="replyToPreview"></span>
                 </div>
                 <button class="reply-indicator-close" id="replyCancelBtn">&times;</button>
             </div>
             <div style="position:relative;">
                 <input type="text" placeholder="Add a comment..." class="comment-input-field" id="commentInput">
                 <button class="comment-send-btn" id="commentSendBtn">
-                    <svg width="15" height="13" viewBox="0 0 15 13" fill="none"><path d="M1 6.5L13.5 1L8 6.5M1 6.5L8 6.5M1 6.5L13.5 12L8 6.5" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <svg width="15" height="13" viewBox="0 0 15 13" fill="none">
+                        <path d="M1 6.5L13.5 1L8 6.5M1 6.5L8 6.5M1 6.5L13.5 12L8 6.5" stroke="#8b5cf6"
+                              stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                 </button>
             </div>
         </div>
@@ -167,11 +200,13 @@
 
             <!-- Chapter Info -->
             <header class="chapter-info">
-                <h1 class="chapter-title" th:text="'Chapter ' + ${chapter.chapterNumber} + ': ' + ${chapter.title}">Chapter Title</h1>
+                <h1 class="chapter-title" th:text="'Chapter ' + ${chapter.chapterNumber} + ': ' + ${chapter.title}">
+                    Chapter Title</h1>
                 <div class="chapter-meta">
                     <span th:text="${wordCount} + ' words'">0 words</span>
                     <span class="dot"></span>
-                    <span th:if="${chapter.updatedAt != null}" th:text="'Updated ' + ${#temporals.format(chapter.updatedAt, 'MMM dd, yyyy')}">Updated date</span>
+                    <span th:if="${chapter.updatedAt != null}"
+                          th:text="'Updated ' + ${#temporals.format(chapter.updatedAt, 'MMM dd, yyyy')}">Updated date</span>
                 </div>
             </header>
 
@@ -219,13 +254,15 @@
     <footer class="chapter-footer">
         <nav class="footer-inner" aria-label="Chapter navigation">
             <div class="footer-nav-slot footer-nav-slot-left">
-                <a th:if="${prevChapter != null}" th:href="@{'/novels/chapter/' + ${prevChapter.id}}" class="footer-nav-link">
+                <a th:if="${prevChapter != null}" th:href="@{'/novels/chapter/' + ${prevChapter.id}}"
+                   class="footer-nav-link">
                     <div class="footer-nav-arrow">
                         <img th:src="@{/img/prev-chapter.svg}" alt="">
                     </div>
                     <div class="footer-nav-text">
                         <span class="footer-nav-label">Previous</span>
-                        <span class="footer-nav-title" th:text="'Chapter ' + ${prevChapter.chapterNumber} + ': ' + ${prevChapter.title}">Previous Chapter</span>
+                        <span class="footer-nav-title"
+                              th:text="'Chapter ' + ${prevChapter.chapterNumber} + ': ' + ${prevChapter.title}">Previous Chapter</span>
                     </div>
                 </a>
             </div>
@@ -236,10 +273,12 @@
             </div>
 
             <div class="footer-nav-slot footer-nav-slot-right">
-                <a th:if="${nextChapter != null}" th:href="@{'/novels/chapter/' + ${nextChapter.id}}" class="footer-nav-link">
+                <a th:if="${nextChapter != null}" th:href="@{'/novels/chapter/' + ${nextChapter.id}}"
+                   class="footer-nav-link">
                     <div class="footer-nav-text footer-nav-text-right">
                         <span class="footer-nav-label">Next</span>
-                        <span class="footer-nav-title" th:text="'Chapter ' + ${nextChapter.chapterNumber} + ': ' + ${nextChapter.title}">Next Chapter</span>
+                        <span class="footer-nav-title"
+                              th:text="'Chapter ' + ${nextChapter.chapterNumber} + ': ' + ${nextChapter.title}">Next Chapter</span>
                     </div>
                     <div class="footer-nav-arrow-next">
                         <img th:src="@{/img/next-chapter.svg}" alt="">
@@ -261,16 +300,18 @@
     /*]]>*/
 
     // === LocalStorage settings (applied instantly on page load) ===
-    (function() {
-        var sizeMap = { 'SMALL': 16, 'MEDIUM': 20, 'LARGE': 24, 'EXTRA_LARGE': 28 };
+    (function () {
+        var sizeMap = {'SMALL': 16, 'MEDIUM': 20, 'LARGE': 24, 'EXTRA_LARGE': 28};
 
         // Theme: localStorage overrides server setting
         var lsTheme = localStorage.getItem('reader-theme');
         if (lsTheme) {
             document.body.classList.remove('theme-light', 'theme-sepia', 'theme-dark');
             document.body.classList.add('theme-' + lsTheme);
-            // Update active button
-            document.querySelectorAll('.theme-btn').forEach(function(b) { b.classList.remove('active'); b.innerHTML = ''; });
+            document.querySelectorAll('.theme-btn').forEach(function (b) {
+                b.classList.remove('active');
+                b.innerHTML = '';
+            });
             var activeBtn = document.querySelector('.theme-btn[data-theme="' + lsTheme + '"]');
             if (activeBtn) {
                 activeBtn.classList.add('active');
@@ -286,7 +327,9 @@
             } else {
                 document.body.classList.remove('font-sans-serif');
             }
-            document.querySelectorAll('.font-toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+            document.querySelectorAll('.font-toggle-btn').forEach(function (b) {
+                b.classList.remove('active');
+            });
             var activeFont = document.querySelector('.font-toggle-btn[data-font="' + lsFont + '"]');
             if (activeFont) activeFont.classList.add('active');
         }
@@ -305,7 +348,7 @@
     var csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
 
     function apiPost(url, data) {
-        var headers = { 'Content-Type': 'application/json' };
+        var headers = {'Content-Type': 'application/json'};
         if (csrfHeader && csrfToken) {
             headers[csrfHeader] = csrfToken;
         }
@@ -314,7 +357,9 @@
             headers: headers,
             body: JSON.stringify(data),
             credentials: 'same-origin'
-        }).then(function(r) { return r.json(); });
+        }).then(function (r) {
+            return r.json();
+        });
     }
 
     // === Sidebar functions ===
@@ -325,8 +370,11 @@
         document.getElementById(id).classList.add('open');
         document.getElementById('sidebarOverlay').classList.add('active');
     }
+
     function closeSidebars() {
-        document.querySelectorAll('.chapter-sidebar').forEach(function(s) { s.classList.remove('open'); });
+        document.querySelectorAll('.chapter-sidebar').forEach(function (s) {
+            s.classList.remove('open');
+        });
         document.getElementById('sidebarOverlay').classList.remove('active');
     }
 
@@ -335,16 +383,23 @@
         var allDropdowns = document.querySelectorAll('.chapter-dropdown');
         var target = document.getElementById('dropdown-' + name);
         if (!target) {
-            allDropdowns.forEach(function(d) { d.classList.remove('active'); });
+            allDropdowns.forEach(function (d) {
+                d.classList.remove('active');
+            });
             return;
         }
         var isOpen = target.classList.contains('active');
-        allDropdowns.forEach(function(d) { d.classList.remove('active'); });
+        allDropdowns.forEach(function (d) {
+            d.classList.remove('active');
+        });
         if (!isOpen) target.classList.add('active');
     }
-    document.addEventListener('click', function(e) {
+
+    document.addEventListener('click', function (e) {
         if (!e.target.closest('.chapter-dropdown-wrapper')) {
-            document.querySelectorAll('.chapter-dropdown').forEach(function(d) { d.classList.remove('active'); });
+            document.querySelectorAll('.chapter-dropdown').forEach(function (d) {
+                d.classList.remove('active');
+            });
         }
     });
 
@@ -383,8 +438,8 @@
     }
 
     // === Comment action buttons (open sidebar for specific paragraph) ===
-    document.querySelectorAll('.comment-action-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
+    document.querySelectorAll('.comment-action-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
             activeParagraphIndex = parseInt(this.getAttribute('data-paragraph-index'));
             clearReply();
             loadParagraphComments(activeParagraphIndex);
@@ -399,23 +454,21 @@
         var actionBar = document.getElementById('paragraphActionBar');
         var allParagraphs = document.querySelectorAll('.chapter-paragraph');
 
-        // If clicking the same paragraph again, hide the action bar
         if (selectedParagraphIndex === index) {
             hideParagraphActionBar();
             return;
         }
 
-        // Update selected paragraph UI
-        allParagraphs.forEach(function(p) { p.classList.remove('selected'); });
+        allParagraphs.forEach(function (p) {
+            p.classList.remove('selected');
+        });
         if (index < allParagraphs.length) {
             allParagraphs[index].classList.add('selected');
         }
 
-        // Update action bar buttons
         selectedParagraphIndex = index;
         activeParagraphIndex = index;
 
-        // Update comment count
         var countSpan = document.getElementById('commentCountBar');
         var commentCountBtn = document.querySelector('.comment-action-btn[data-paragraph-index="' + index + '"] .comment-count');
         if (commentCountBtn && commentCountBtn.textContent) {
@@ -426,7 +479,6 @@
             countSpan.style.display = 'none';
         }
 
-        // Update bookmark button
         var bookmarkBtn = document.querySelector('.bookmark-action-btn[data-paragraph-index="' + index + '"]');
         var actionBarBookmarkBtn = document.getElementById('bookmarkActionBarBtn');
         if (bookmarkBtn && bookmarkBtn.classList.contains('bookmarked')) {
@@ -435,7 +487,6 @@
             actionBarBookmarkBtn.classList.remove('bookmarked');
         }
 
-        // Show action bar with animation
         actionBar.style.display = 'flex';
     }
 
@@ -443,48 +494,43 @@
         var actionBar = document.getElementById('paragraphActionBar');
         actionBar.style.display = 'none';
         var allParagraphs = document.querySelectorAll('.chapter-paragraph');
-        allParagraphs.forEach(function(p) { p.classList.remove('selected'); });
+        allParagraphs.forEach(function (p) {
+            p.classList.remove('selected');
+        });
         selectedParagraphIndex = null;
     }
 
-    // Add click listeners to paragraphs (mobile only)
     function setupMobileParagraphClickHandlers() {
         var isMobile = window.innerWidth <= 640;
         if (!isMobile) return;
 
         var paragraphs = document.querySelectorAll('.chapter-paragraph');
-        paragraphs.forEach(function(p, index) {
-            p.addEventListener('click', function(e) {
+        paragraphs.forEach(function (p, index) {
+            p.addEventListener('click', function (e) {
                 e.stopPropagation();
                 showParagraphActionBar(index);
             });
         });
     }
 
-    // Close action bar when clicking outside
-    document.addEventListener('click', function(e) {
-        // Don't close if clicking inside action bar or its buttons
+    document.addEventListener('click', function (e) {
         if (e.target.closest('.paragraph-action-bar') ||
             e.target.closest('.bookmark-action-bar-btn') ||
             e.target.closest('.comment-action-bar-btn')) {
             return;
         }
-
-        if (selectedParagraphIndex !== null &&
-            !e.target.closest('.chapter-paragraph')) {
+        if (selectedParagraphIndex !== null && !e.target.closest('.chapter-paragraph')) {
             hideParagraphActionBar();
         }
     });
 
-    // Mobile action bar buttons
     var bookmarkActionBarBtn = document.getElementById('bookmarkActionBarBtn');
     var commentActionBarBtn = document.getElementById('commentActionBarBtn');
 
     if (bookmarkActionBarBtn) {
-        bookmarkActionBarBtn.addEventListener('click', function(e) {
+        bookmarkActionBarBtn.addEventListener('click', function (e) {
             e.stopPropagation();
             if (selectedParagraphIndex !== null) {
-                // Find the actual bookmark button and trigger its click
                 var bookmarkBtn = document.querySelector('.bookmark-action-btn[data-paragraph-index="' + selectedParagraphIndex + '"]');
                 if (bookmarkBtn) bookmarkBtn.click();
             }
@@ -492,10 +538,9 @@
     }
 
     if (commentActionBarBtn) {
-        commentActionBarBtn.addEventListener('click', function(e) {
+        commentActionBarBtn.addEventListener('click', function (e) {
             e.stopPropagation();
             if (selectedParagraphIndex !== null) {
-                // Load comments and open sidebar
                 clearReply();
                 loadParagraphComments(selectedParagraphIndex);
                 openSidebar('commentsSidebar');
@@ -504,13 +549,11 @@
         });
     }
 
-    // Setup mobile paragraph handlers on page load
     setupMobileParagraphClickHandlers();
 
-    // Rebuild handlers when sidebar closes
     var sidebarOverlay = document.getElementById('sidebarOverlay');
     if (sidebarOverlay) {
-        sidebarOverlay.addEventListener('click', function() {
+        sidebarOverlay.addEventListener('click', function () {
             setupMobileParagraphClickHandlers();
         });
     }
@@ -533,14 +576,14 @@
         return '<div class="comment-item' + (isNested ? ' comment-item-nested' : '') + '">' +
             '<div class="comment-avatar' + sizeClass + '">' + avatarContent + '</div>' +
             '<div class="comment-content">' +
-                '<div class="comment-header">' +
-                    '<span class="comment-name"' + nameStyle + '>' + escapeHtml(c.userName) + '</span>' +
-                    '<span class="comment-time">' + timeAgo + '</span>' +
-                '</div>' +
-                '<p class="comment-text"' + textStyle + '>' + escapeHtml(c.content) + '</p>' +
-                '<div class="comment-actions">' + replyAction + '</div>' +
+            '<div class="comment-header">' +
+            '<span class="comment-name"' + nameStyle + '>' + escapeHtml(c.userName) + '</span>' +
+            '<span class="comment-time">' + timeAgo + '</span>' +
             '</div>' +
-        '</div>';
+            '<p class="comment-text"' + textStyle + '>' + escapeHtml(c.content) + '</p>' +
+            '<div class="comment-actions">' + replyAction + '</div>' +
+            '</div>' +
+            '</div>';
     }
 
     // === Load comments for a specific paragraph ===
@@ -562,33 +605,34 @@
 
         fetch('/api/chapter/' + chapterId + '/comments?paragraphIndex=' + pIndex, {
             credentials: 'same-origin'
-        }).then(function(r) { return r.json(); })
-        .then(function(comments) {
-            commentsBody.innerHTML = '';
-            if (comments.length === 0) {
-                commentsBody.innerHTML = '<p class="comments-empty-msg" style="padding: 20px; color: #9ca3af; text-align: center;">No comments on this paragraph yet. Be the first!</p>';
-                return;
-            }
-            comments.forEach(function(c) {
-                commentsBody.insertAdjacentHTML('beforeend', buildCommentHtml(c, false));
-                if (c.replies && c.replies.length > 0) {
-                    c.replies.forEach(function(r) {
-                        commentsBody.insertAdjacentHTML('beforeend',
-                            '<div class="comment-reply-thread">' + buildCommentHtml(r, true) + '</div>');
-                    });
+        }).then(function (r) {
+            return r.json();
+        })
+            .then(function (comments) {
+                commentsBody.innerHTML = '';
+                if (comments.length === 0) {
+                    commentsBody.innerHTML = '<p class="comments-empty-msg" style="padding: 20px; color: #9ca3af; text-align: center;">No comments on this paragraph yet. Be the first!</p>';
+                    return;
                 }
-            });
-            // Attach reply button listeners
-            commentsBody.querySelectorAll('.comment-reply-btn').forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    setReplyTo(
-                        parseInt(this.getAttribute('data-comment-id')),
-                        this.getAttribute('data-user-name'),
-                        this.getAttribute('data-comment-text')
-                    );
+                comments.forEach(function (c) {
+                    commentsBody.insertAdjacentHTML('beforeend', buildCommentHtml(c, false));
+                    if (c.replies && c.replies.length > 0) {
+                        c.replies.forEach(function (r) {
+                            commentsBody.insertAdjacentHTML('beforeend',
+                                '<div class="comment-reply-thread">' + buildCommentHtml(r, true) + '</div>');
+                        });
+                    }
                 });
-            });
-        }).catch(function(err) {
+                commentsBody.querySelectorAll('.comment-reply-btn').forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        setReplyTo(
+                            parseInt(this.getAttribute('data-comment-id')),
+                            this.getAttribute('data-user-name'),
+                            this.getAttribute('data-comment-text')
+                        );
+                    });
+                });
+            }).catch(function (err) {
             commentsBody.innerHTML = '<p style="padding: 20px; color: #e74c3c; text-align: center;">Failed to load comments.</p>';
             console.error('Failed to load comments:', err);
         });
@@ -600,7 +644,7 @@
 
     if (commentSendBtn && commentInput) {
         commentSendBtn.addEventListener('click', submitComment);
-        commentInput.addEventListener('keydown', function(e) {
+        commentInput.addEventListener('keydown', function (e) {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 submitComment();
@@ -623,14 +667,13 @@
             payload.parentCommentId = replyToCommentId;
         }
 
-        apiPost('/api/chapter/' + chapterId + '/comments', payload).then(function(data) {
+        apiPost('/api/chapter/' + chapterId + '/comments', payload).then(function (data) {
             if (data.error) {
                 alert(data.error);
                 return;
             }
             loadParagraphComments(activeParagraphIndex);
 
-            // Update comment count badge (only for top-level comments)
             if (!replyToCommentId) {
                 var countSpan = document.querySelector('.comment-action-btn[data-paragraph-index="' + activeParagraphIndex + '"] .comment-count');
                 if (countSpan) {
@@ -648,9 +691,9 @@
 
             commentInput.value = '';
             clearReply();
-        }).catch(function(err) {
+        }).catch(function (err) {
             console.error('Failed to post comment:', err);
-        }).finally(function() {
+        }).finally(function () {
             commentInput.disabled = false;
             commentSendBtn.disabled = false;
             commentInput.focus();
@@ -658,15 +701,15 @@
     }
 
     // === Toggle bookmark ===
-    document.querySelectorAll('.bookmark-action-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
+    document.querySelectorAll('.bookmark-action-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
             if (!isLoggedIn) return;
             var pIndex = parseInt(this.getAttribute('data-paragraph-index'));
             var btnRef = this;
 
             apiPost('/api/chapter/' + chapterId + '/bookmarks', {
                 paragraphIndex: pIndex
-            }).then(function(data) {
+            }).then(function (data) {
                 if (data.error) {
                     alert(data.error);
                     return;
@@ -678,11 +721,9 @@
                     btnRef.classList.remove('bookmarked');
                     removeBookmarkFromDropdown(pIndex);
                 }
-                // Refresh action bar to show updated state
                 if (selectedParagraphIndex === pIndex) {
                     var actionBar = document.getElementById('paragraphActionBar');
                     if (actionBar && actionBar.style.display === 'flex') {
-                        // Refresh the action bar state
                         var actionBarBookmarkBtn = document.getElementById('bookmarkActionBarBtn');
                         if (actionBarBookmarkBtn) {
                             if (data.bookmarked) {
@@ -693,7 +734,7 @@
                         }
                     }
                 }
-            }).catch(function(err) {
+            }).catch(function (err) {
                 console.error('Failed to toggle bookmark:', err);
             });
         });
@@ -713,10 +754,10 @@
         div.setAttribute('data-paragraph-index', pIndex);
         div.style.cursor = 'pointer';
         div.innerHTML = '<p class="bookmark-text">' + escapeHtml(text) + '</p>';
-        div.addEventListener('click', function() {
+        div.addEventListener('click', function () {
             var paragraphs = document.querySelectorAll('.paragraph-wrapper');
             if (paragraphs[pIndex]) {
-                paragraphs[pIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                paragraphs[pIndex].scrollIntoView({behavior: 'smooth', block: 'center'});
                 toggleChapterDropdown('__close__');
             }
         });
@@ -738,9 +779,12 @@
     }
 
     // === Theme buttons (with persist) ===
-    document.querySelectorAll('.theme-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.theme-btn').forEach(function(b) { b.classList.remove('active'); b.innerHTML = ''; });
+    document.querySelectorAll('.theme-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            document.querySelectorAll('.theme-btn').forEach(function (b) {
+                b.classList.remove('active');
+                b.innerHTML = '';
+            });
             btn.classList.add('active');
             btn.innerHTML = '<svg width="17" height="13" viewBox="0 0 17 13" fill="none"><path d="M1.5 7L6 11.5L15.5 1.5" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
             var theme = btn.getAttribute('data-theme');
@@ -748,15 +792,17 @@
             document.body.classList.add('theme-' + theme);
             localStorage.setItem('reader-theme', theme);
             if (isLoggedIn) {
-                apiPost('/api/chapter/settings', { theme: theme });
+                apiPost('/api/chapter/settings', {theme: theme});
             }
         });
     });
 
     // === Font family toggle (with persist) ===
-    document.querySelectorAll('.font-toggle-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.font-toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelectorAll('.font-toggle-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            document.querySelectorAll('.font-toggle-btn').forEach(function (b) {
+                b.classList.remove('active');
+            });
             btn.classList.add('active');
             var font = btn.getAttribute('data-font');
             if (font === 'sans-serif') {
@@ -767,7 +813,7 @@
             localStorage.setItem('reader-font', font);
             if (isLoggedIn) {
                 var fontFamily = font === 'sans-serif' ? 'SANS_SERIF' : 'SERIF';
-                apiPost('/api/chapter/settings', { fontFamily: fontFamily });
+                apiPost('/api/chapter/settings', {fontFamily: fontFamily});
             }
         });
     });
@@ -776,19 +822,19 @@
     var sizeSlider = document.querySelector('.size-slider');
     var sizeDebounce = null;
     if (sizeSlider) {
-        sizeSlider.addEventListener('input', function() {
+        sizeSlider.addEventListener('input', function () {
             var val = this.value;
             document.getElementById('chapterContent').style.fontSize = val + 'px';
             localStorage.setItem('reader-size', val);
             if (isLoggedIn) {
                 clearTimeout(sizeDebounce);
-                sizeDebounce = setTimeout(function() {
+                sizeDebounce = setTimeout(function () {
                     var sizeEnum;
                     if (val <= 16) sizeEnum = 'SMALL';
                     else if (val <= 20) sizeEnum = 'MEDIUM';
                     else if (val <= 24) sizeEnum = 'LARGE';
                     else sizeEnum = 'EXTRA_LARGE';
-                    apiPost('/api/chapter/settings', { fontSize: sizeEnum });
+                    apiPost('/api/chapter/settings', {fontSize: sizeEnum});
                 }, 500);
             }
         });
@@ -805,15 +851,16 @@
             fill.setAttribute('aria-valuenow', Math.round(progress));
         }
     }
+
     window.addEventListener('scroll', updateProgressBar);
     updateProgressBar();
 
     // === Save reading progress (debounced on scroll) ===
     var progressDebounce = null;
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         if (!isLoggedIn) return;
         clearTimeout(progressDebounce);
-        progressDebounce = setTimeout(function() {
+        progressDebounce = setTimeout(function () {
             var scrollPercent = Math.round((window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight)) * 100);
             apiPost('/api/chapter/' + chapterId + '/progress', {
                 position: scrollPercent
@@ -824,22 +871,22 @@
     // === TOC search filter ===
     var tocSearch = document.getElementById('tocSearchInput');
     if (tocSearch) {
-        tocSearch.addEventListener('input', function() {
+        tocSearch.addEventListener('input', function () {
             var query = this.value.toLowerCase();
-            document.querySelectorAll('.toc-chapter').forEach(function(ch) {
+            document.querySelectorAll('.toc-chapter').forEach(function (ch) {
                 ch.style.display = ch.textContent.toLowerCase().includes(query) ? '' : 'none';
             });
         });
     }
 
     // === Bookmark click: scroll to paragraph ===
-    document.querySelectorAll('.bookmark-item[data-paragraph-index]').forEach(function(item) {
+    document.querySelectorAll('.bookmark-item[data-paragraph-index]').forEach(function (item) {
         item.style.cursor = 'pointer';
-        item.addEventListener('click', function() {
+        item.addEventListener('click', function () {
             var idx = parseInt(this.getAttribute('data-paragraph-index'));
             var paragraphs = document.querySelectorAll('.paragraph-wrapper');
             if (paragraphs[idx]) {
-                paragraphs[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                paragraphs[idx].scrollIntoView({behavior: 'smooth', block: 'center'});
                 toggleChapterDropdown('__close__');
             }
         });
@@ -851,8 +898,7 @@
     }
 
     // Arrow keys (desktop)
-    document.addEventListener('keydown', function(e) {
-        // Don't trigger when typing in inputs
+    document.addEventListener('keydown', function (e) {
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
         if (e.key === 'ArrowLeft') {
             e.preventDefault();
@@ -864,7 +910,7 @@
     });
 
     // Swipe detection (mobile/tablet)
-    (function() {
+    (function () {
         var touchStartX = 0;
         var touchStartY = 0;
         var touchEndX = 0;
@@ -874,19 +920,18 @@
         var swipeLabel = document.getElementById('swipeLabel');
         var minSwipe = 80;
 
-        document.addEventListener('touchstart', function(e) {
+        document.addEventListener('touchstart', function (e) {
             touchStartX = e.changedTouches[0].screenX;
             touchStartY = e.changedTouches[0].screenY;
             swiping = false;
-        }, { passive: true });
+        }, {passive: true});
 
-        document.addEventListener('touchmove', function(e) {
+        document.addEventListener('touchmove', function (e) {
             touchEndX = e.changedTouches[0].screenX;
             touchEndY = e.changedTouches[0].screenY;
             var dx = touchEndX - touchStartX;
             var dy = Math.abs(touchEndY - touchStartY);
 
-            // Only trigger horizontal swipe (dx must be bigger than dy)
             if (Math.abs(dx) > 40 && Math.abs(dx) > dy * 1.5) {
                 swiping = true;
                 if (swipeIndicator) {
@@ -901,9 +946,9 @@
                     }
                 }
             }
-        }, { passive: true });
+        }, {passive: true});
 
-        document.addEventListener('touchend', function(e) {
+        document.addEventListener('touchend', function (e) {
             if (swipeIndicator) {
                 swipeIndicator.className = 'swipe-indicator';
             }
@@ -917,7 +962,7 @@
                     navigateChapter(nextChapterUrl);
                 }
             }
-        }, { passive: true });
+        }, {passive: true});
     })();
 
     // === Utility ===
@@ -929,15 +974,13 @@
 
     // ── Auto-save Reading Progress by Paragraph Index ──
     (function () {
-        // Thymeleaf inject giá trị vào JS
-        const chapterId   = /*[[${chapter.id}]]*/ null;
-        const isLoggedIn  = /*[[${isLoggedIn}]]*/ false;
+        const chapterId = /*[[${chapter.id}]]*/ null;
+        const isLoggedIn = /*[[${isLoggedIn}]]*/ false;
         if (!isLoggedIn || !chapterId) return;
 
-        const csrfToken  = document.querySelector('meta[name="_csrf"]')?.content;
+        const csrfToken = document.querySelector('meta[name="_csrf"]')?.content;
         const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.content;
 
-        // Lấy tất cả các paragraph element trong chapter
         const paragraphs = Array.from(document.querySelectorAll('.chapter-paragraph'));
         if (paragraphs.length === 0) return;
 
@@ -945,7 +988,6 @@
         let lastSavedIndex = -1;
 
         function getVisibleParagraphIndex() {
-            // Tìm paragraph đầu tiên đang nằm trong viewport
             const viewportMid = window.scrollY + window.innerHeight / 2;
             let closestIndex = 0;
             let closestDist = Infinity;
@@ -966,24 +1008,20 @@
             if (paragraphIndex === lastSavedIndex) return;
             lastSavedIndex = paragraphIndex;
 
-            const headers = { 'Content-Type': 'application/json' };
+            const headers = {'Content-Type': 'application/json'};
             if (csrfHeader && csrfToken) headers[csrfHeader] = csrfToken;
 
-            navigator.sendBeacon
-                // sendBeacon khi beforeunload (không bị cancel bởi browser)
-                ? null
-                : null; // chỉ dùng fetch ở đây
-
-            fetch(`/api/chapter/${chapterId}/progress`, {  // ← thêm /api
+            fetch(`/api/chapter/${chapterId}/progress`, {
                 method: 'POST',
                 headers,
-                body: JSON.stringify({ paragraphIndex }),
+                body: JSON.stringify({paragraphIndex}),
                 credentials: 'same-origin',
                 keepalive: true
-            }).catch(() => {});
+            }).catch(() => {
+            });
         }
 
-        // Debounce scroll → save sau 1.5s dừng scroll
+        // Debounce scroll → save after 1.5s idle
         window.addEventListener('scroll', () => {
             clearTimeout(saveTimer);
             saveTimer = setTimeout(() => {
@@ -992,58 +1030,57 @@
             }, 1500);
         });
 
-        // Dùng sendBeacon khi rời trang — đảm bảo request không bị huỷ
+        // Use fetch with keepalive on page hide to ensure request completes
         window.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'hidden') {
                 const idx = getVisibleParagraphIndex();
                 if (idx !== lastSavedIndex) {
-                    const headers = { 'Content-Type': 'application/json' };
+                    const headers = {'Content-Type': 'application/json'};
                     if (csrfHeader && csrfToken) headers[csrfHeader] = csrfToken;
-                    // sendBeacon không set custom header được → fallback fetch sync
-                    fetch(`/novels/chapter/${chapterId}/progress`, {
+                    fetch(`/api/chapter/${chapterId}/progress`, {
                         method: 'POST',
                         headers,
-                        body: JSON.stringify({ paragraphIndex: idx }),
+                        body: JSON.stringify({paragraphIndex: idx}),
                         credentials: 'same-origin',
-                        keepalive: true  // ← đảm bảo request hoàn thành dù page unload
-                    }).catch(() => {});
+                        keepalive: true
+                    }).catch(() => {
+                    });
                 }
             }
         });
 
-        // Restore scroll position nếu user quay lại chapter đang đọc dở
+        // Restore scroll position if user returns to a chapter in progress
         const savedParagraphIndex = /*[[${lastParagraphIndex != null ? lastParagraphIndex : 0}]]*/ 0;
         if (savedParagraphIndex > 0 && paragraphs[savedParagraphIndex]) {
-            // Delay nhỏ để chờ layout ổn định
             setTimeout(() => {
-                paragraphs[savedParagraphIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                paragraphs[savedParagraphIndex].scrollIntoView({behavior: 'smooth', block: 'center'});
             }, 300);
         }
     })();
 
-    (function() {
-        document.addEventListener('selectstart', function(e) {
+    // === Content Protection ===
+    (function () {
+        document.addEventListener('selectstart', function (e) {
             if (e.target.closest('.chapter-content')) e.preventDefault();
         });
 
-        document.addEventListener('keydown', function(e) {
-            if ((e.ctrlKey || e.metaKey) && ['c','p','s','u'].includes(e.key.toLowerCase())) {
+        document.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) && ['c', 'p', 's', 'u'].includes(e.key.toLowerCase())) {
                 e.preventDefault();
             }
             if (e.key === 'F12') e.preventDefault();
-            if ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i','j','c'].includes(e.key.toLowerCase())) {
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i', 'j', 'c'].includes(e.key.toLowerCase())) {
                 e.preventDefault();
             }
         });
 
-        document.addEventListener('contextmenu', function(e) {
+        document.addEventListener('contextmenu', function (e) {
             if (e.target.closest('.chapter-content')) e.preventDefault();
         });
 
-        // Detect devtools open via debugger timing
         (function detectDevTools() {
             var threshold = 160;
-            setInterval(function() {
+            setInterval(function () {
                 var start = performance.now();
                 debugger;
                 if (performance.now() - start > threshold) {

@@ -856,17 +856,17 @@
     updateProgressBar();
 
     // === Save reading progress (debounced on scroll) ===
-    var progressDebounce = null;
-    window.addEventListener('scroll', function () {
-        if (!isLoggedIn) return;
-        clearTimeout(progressDebounce);
-        progressDebounce = setTimeout(function () {
-            var scrollPercent = Math.round((window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight)) * 100);
-            apiPost('/api/chapter/' + chapterId + '/progress', {
-                position: scrollPercent
-            });
-        }, 2000);
-    });
+    // var progressDebounce = null;
+    // window.addEventListener('scroll', function () {
+    //     if (!isLoggedIn) return;
+    //     clearTimeout(progressDebounce);
+    //     progressDebounce = setTimeout(function () {
+    //         var scrollPercent = Math.round((window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight)) * 100);
+    //         apiPost('/api/chapter/' + chapterId + '/progress', {
+    //             position: scrollPercent
+    //         });
+    //     }, 2000);
+    // });
 
     // === TOC search filter ===
     var tocSearch = document.getElementById('tocSearchInput');
@@ -973,26 +973,24 @@
     }
 
     // ── Auto-save Reading Progress by Paragraph Index ──
+    // ── Reading Progress: lưu theo paragraphIndex, restore từ ?pi= hoặc server ──
     (function () {
-        const chapterId = /*[[${chapter.id}]]*/ null;
-        const isLoggedIn = /*[[${isLoggedIn}]]*/ false;
         if (!isLoggedIn || !chapterId) return;
 
         const csrfToken = document.querySelector('meta[name="_csrf"]')?.content;
         const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.content;
-
         const paragraphs = Array.from(document.querySelectorAll('.chapter-paragraph'));
         if (paragraphs.length === 0) return;
 
         let saveTimer = null;
         let lastSavedIndex = -1;
 
+        // Tìm paragraph đang ở giữa màn hình
         function getVisibleParagraphIndex() {
             const viewportMid = window.scrollY + window.innerHeight / 2;
             let closestIndex = 0;
             let closestDist = Infinity;
-
-            paragraphs.forEach((p, idx) => {
+            paragraphs.forEach(function (p, idx) {
                 const rect = p.getBoundingClientRect();
                 const absTop = rect.top + window.scrollY;
                 const dist = Math.abs(absTop - viewportMid);
@@ -1007,54 +1005,77 @@
         function saveProgress(paragraphIndex) {
             if (paragraphIndex === lastSavedIndex) return;
             lastSavedIndex = paragraphIndex;
-
             const headers = {'Content-Type': 'application/json'};
             if (csrfHeader && csrfToken) headers[csrfHeader] = csrfToken;
-
-            fetch(`/api/chapter/${chapterId}/progress`, {
+            fetch('/api/chapter/' + chapterId + '/progress', {
                 method: 'POST',
-                headers,
-                body: JSON.stringify({paragraphIndex}),
+                headers: headers,
+                body: JSON.stringify({paragraphIndex: paragraphIndex}),
                 credentials: 'same-origin',
                 keepalive: true
-            }).catch(() => {
+            }).catch(function () {
             });
         }
 
-        // Debounce scroll → save after 1.5s idle
-        window.addEventListener('scroll', () => {
+        // Lưu khi scroll (debounce 1.5s)
+        window.addEventListener('scroll', function () {
             clearTimeout(saveTimer);
-            saveTimer = setTimeout(() => {
-                const idx = getVisibleParagraphIndex();
-                saveProgress(idx);
+            saveTimer = setTimeout(function () {
+                saveProgress(getVisibleParagraphIndex());
             }, 1500);
         });
 
-        // Use fetch with keepalive on page hide to ensure request completes
-        window.addEventListener('visibilitychange', () => {
+        // Lưu ngay khi thoát tab/trình duyệt
+        document.addEventListener('visibilitychange', function () {
             if (document.visibilityState === 'hidden') {
                 const idx = getVisibleParagraphIndex();
                 if (idx !== lastSavedIndex) {
                     const headers = {'Content-Type': 'application/json'};
                     if (csrfHeader && csrfToken) headers[csrfHeader] = csrfToken;
-                    fetch(`/api/chapter/${chapterId}/progress`, {
+                    fetch('/api/chapter/' + chapterId + '/progress', {
                         method: 'POST',
-                        headers,
+                        headers: headers,
                         body: JSON.stringify({paragraphIndex: idx}),
                         credentials: 'same-origin',
                         keepalive: true
-                    }).catch(() => {
+                    }).catch(function () {
                     });
                 }
             }
         });
 
-        // Restore scroll position if user returns to a chapter in progress
-        const savedParagraphIndex = /*[[${lastParagraphIndex != null ? lastParagraphIndex : 0}]]*/ 0;
-        if (savedParagraphIndex > 0 && paragraphs[savedParagraphIndex]) {
-            setTimeout(() => {
-                paragraphs[savedParagraphIndex].scrollIntoView({behavior: 'smooth', block: 'center'});
-            }, 300);
+        // ── Restore: ưu tiên ?pi= trên URL, fallback về server-side value ──
+        function restorePosition() {
+            // Đọc ?pi= từ URL (được truyền từ novel-detail "Continue Reading")
+            const urlParams = new URLSearchParams(window.location.search);
+            const piFromUrl = urlParams.get('pi');
+
+            // Server-side fallback (Thymeleaf inject)
+            const serverIndex = /*[[${lastParagraphIndex != null ? lastParagraphIndex : 0}]]*/ 0;
+
+            const targetIndex = piFromUrl !== null ? parseInt(piFromUrl, 10) : serverIndex;
+
+            if (targetIndex > 0 && paragraphs[targetIndex]) {
+                // Đợi layout xong rồi mới scroll
+                requestAnimationFrame(function () {
+                    requestAnimationFrame(function () {
+                        paragraphs[targetIndex].scrollIntoView({behavior: 'auto', block: 'center'});
+                        // Xóa ?pi= khỏi URL để refresh không bị scroll lại
+                        if (piFromUrl !== null) {
+                            const url = new URL(window.location.href);
+                            url.searchParams.delete('pi');
+                            history.replaceState(null, '', url.toString());
+                        }
+                    });
+                });
+            }
+        }
+
+        // Chạy restore sau khi DOM và ảnh load xong
+        if (document.readyState === 'complete') {
+            restorePosition();
+        } else {
+            window.addEventListener('load', restorePosition);
         }
     })();
 

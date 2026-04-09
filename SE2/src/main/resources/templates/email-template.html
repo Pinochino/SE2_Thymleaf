@@ -1,56 +1,56 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Email Template</title>
-    <style>
-        /* Thêm CSS tại đây để tạo giao diện email đẹp hơn */
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background-color: #e8e8e8;
-            font-family: 'Roboto', sans-serif;
-            color: #222;
-        }
-        p {
-            line-height: 28px;
-        }
-        .container {
-            width: 600px;
-            margin: 20px auto auto;
-            background-color: #fff;
-            padding: 20px;
-        }
-        header h1 {
-            text-align: center;
-            margin-bottom: 16px;
-        }
-        section span {
-            font-weight: bold;
-        }
-        footer {
-            margin-top: 20px;
-        }
 
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
     </style>
 </head>
-<body>
-<div class="container">
-    <header>
-        <h1>Thông Báo</h1>
-    </header>
-    <section>
-        <p>Xin chào <span th:text="${name}"></span>,</p>
-        <p>Chúng tôi xin gửi thông báo quan trọng cho bạn:</p>
-        <p th:utext="${content}"></p>
-    </section>
-    <footer>
-        <p>Trân trọng,</p>
-        <p>Đội ngũ của chúng tôi</p>
-    </footer>
+
+<body class="bg-gray-100 py-10">
+
+<div class="max-w-xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+
+    <!-- Header -->
+    <div class="bg-blue-600 text-white text-center py-6">
+        <h1 class="text-2xl font-bold tracking-wide">📢 Thông Báo</h1>
+    </div>
+
+    <!-- Content -->
+    <div class="p-6 text-gray-700">
+        <p class="mb-4">
+            Xin chào
+            <span class="font-semibold text-gray-900" th:text="${name}"></span>,
+        </p>
+
+        <p class="mb-4">
+            Chúng tôi xin gửi thông báo quan trọng cho bạn:
+        </p>
+
+        <div class="bg-gray-50 border-l-4 border-blue-500 p-4 rounded mb-6">
+            <p class="leading-relaxed" th:utext="${content}"></p>
+        </div>
+
+        <p class="mb-1">Trân trọng,</p>
+        <p class="font-medium text-gray-900">Đội ngũ của chúng tôi</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="bg-gray-50 text-center text-sm text-gray-500 py-4">
+        © 2026 Company. All rights reserved.
+    </div>
+
 </div>
+
 </body>
 </html>

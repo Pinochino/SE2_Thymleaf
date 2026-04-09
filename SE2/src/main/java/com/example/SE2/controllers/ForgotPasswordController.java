@@ -95,7 +95,7 @@ public class ForgotPasswordController {
             model.addAttribute("message", "Password changed successfully");
         }
 
-        return "message";
+        return "redirect:/login";
 
     }
 

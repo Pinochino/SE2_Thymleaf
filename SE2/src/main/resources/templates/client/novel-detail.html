@@ -256,7 +256,7 @@
         <form th:action="@{/comments/save/{publicId} (publicId=${novel.publicId})}" th:method="post"
               th:object="${novelComment}" class="nd-comment-form">
             <div class="nd-comment-avatar"
-                 th:text="${userLogin.user.lastName} != null ? ${userLogin.user.lastName.substring(0, 1)} : 'U'">U
+                 th:text="${userLogin.user.email} != null ? ${userLogin.user.email.substring(0, 1)} : 'U'">U
             </div>
             <div class="nd-comment-form-body">
                     <textarea class="nd-comment-textarea"
@@ -280,8 +280,8 @@
                     <div style="width:100%;height:100%;background:#6366f1;display:flex;
                         align-items:center;justify-content:center;color:#fff;
                         font-size:14px;font-weight:600;border-radius:9999px;"
-                         th:text="${comment.user.lastName != null
-                           ? comment.user.lastName.substring(0, 1) : 'U'}">
+                         th:text="${comment.user.email != null
+                           ? comment.user.email.substring(0, 1) : 'U'}">
                     </div>
                 </div>
 
@@ -289,7 +289,7 @@
                 <div class="nd-comment-body">
                     <div class="nd-comment-header">
                 <span class="nd-comment-author"
-                      th:text="${comment.user.firstName + ' ' + comment.user.lastName}"></span>
+                      th:text="${comment.user.email}"></span>
                         <span class="nd-comment-time"
                               th:text="${timeUtils.timeAgo(comment.createdAt)}"></span>
                     </div>
@@ -312,8 +312,8 @@
                         <input type="hidden" name="parentId" th:value="${comment.id}"/>
 
                         <div class="nd-comment-avatar"
-                             th:text="${userLogin.user.lastName != null
-                               ? userLogin.user.lastName.substring(0,1) : 'U'}">
+                             th:text="${userLogin.user.email != null
+                               ? userLogin.user.email.substring(0,1) : 'U'}">
                         </div>
                         <div class="nd-comment-form-body">
                     <textarea class="nd-comment-textarea"
@@ -336,8 +336,8 @@
                                 <div style="width:100%;height:100%;background:#10b981;display:flex;
                                     align-items:center;justify-content:center;color:#fff;
                                     font-size:14px;font-weight:600;border-radius:9999px;"
-                                     th:text="${reply.user.lastName != null
-                                       ? reply.user.lastName.substring(0,1) : 'U'}">
+                                     th:text="${reply.user.email != null
+                                       ? reply.user.email.substring(0,1) : 'U'}">
                                 </div>
                             </div>
 
@@ -345,7 +345,7 @@
                             <div class="nd-comment-body">
                                 <div class="nd-comment-header">
                             <span class="nd-comment-author"
-                                  th:text="${reply.user.firstName + ' ' + reply.user.lastName}"></span>
+                                  th:text="${reply.user.email}"></span>
                                     <span class="nd-comment-time"
                                           th:text="${timeUtils.timeAgo(reply.createdAt)}"></span>
                                 </div>
@@ -356,7 +356,7 @@
                                 <!-- data-form-id trỏ về ROOT, data-mention là tên người được reply -->
                                 <button class="nd-comment-reply-link reply-comment-button"
                                         th:attr="data-form-id=${comment.id},
-                                         data-mention=${reply.user.firstName + ' ' + reply.user.lastName}">
+                                         data-mention=${reply.user.email}">
                                     Reply
                                 </button>
 

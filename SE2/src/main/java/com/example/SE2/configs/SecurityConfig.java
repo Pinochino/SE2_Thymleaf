@@ -59,7 +59,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(PUBLIC_WHITELIST).permitAll()
-                        .requestMatchers("/admin/**").hasRole("SUPER_ADMIN")
+//                        .requestMatchers("/admin/**").hasRole("SUPER_ADMIN")
                         .anyRequest().authenticated())
                 .cors(Customizer.withDefaults())
                 .formLogin(form ->

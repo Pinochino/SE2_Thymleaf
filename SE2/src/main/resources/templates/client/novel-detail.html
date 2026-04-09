@@ -44,12 +44,11 @@
                                 <path d="M4 1V0M4 4h4M4 6.5h4" stroke="#94a3b8" stroke-width="0.8"/>
                             </svg>
                             <span>Trans:</span>
-                            <span class="nd-meta-value"
-                            >Moonlight Team</span>
+                            <span class="nd-meta-value">Moonlight Team</span>
                         </div>
 
                         <!-- Rating row -->
-                        <div class="nd-rating ">
+                        <div class="nd-rating">
                             <div class="nd-stars" th:with="ratingVal=${novel != null ? novel.averageRating : 0}">
                                 <svg th:each="i : ${#numbers.sequence(1,5)}" viewBox="0 0 20 19" fill="none">
                                     <path d="M10 0l2.47 7.6h7.99l-6.47 4.7 2.47 7.6L10 15.2l-6.47 4.7 2.47-7.6L-.47 7.6h7.99z"
@@ -77,7 +76,7 @@
             <!-- Action Buttons -->
             <div class="nd-actions">
 
-                <!-- ① Đã có progress → Continue Reading (link kèm ?pi= để restore vị trí) -->
+                <!-- ① Đã có progress → Continue Reading -->
                 <a th:if="${readingProgress != null}"
                    th:href="@{/novels/chapter/{id}(id=${readingProgress.chapter.id},
                    pi=${readingProgress.lastPosition})}">
@@ -89,21 +88,39 @@
                         Continue Reading
                         <span class="nd-continue-hint"
                               th:text="'Ch.' + ${readingProgress.chapter.chapterNumber}">
-            </span>
+                        </span>
                     </button>
                 </a>
 
-                <!-- ② Chưa đọc → Read Now (chapter đầu tiên) -->
-                <a th:if="${readingProgress == null and hasChapters and !chapters.isEmpty()}"
-                   th:href="@{/novels/chapter/{id}(id=${chapters[0].id})}">
-                    <button class="nd-btn-read">
-                        <svg width="22" height="16" viewBox="0 0 22 16" fill="none">
-                            <path d="M1 1h8c1 0 2 1 2 2v11S10 13 9 13H1V1zM21 1h-8c-1 0-2 1-2 2v11s1-1 2-1h8V1z"
-                                  stroke="#0f1115" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Read Now
-                    </button>
-                </a>
+                <!-- ② Chưa đọc → Read Now (chỉ hiện khi đã login) -->
+                <div th:if="${userLogin != null}">
+                    <a th:if="${readingProgress == null and hasChapters and !chapters.isEmpty()}"
+                       th:href="@{/novels/chapter/{id}(id=${chapters[0].id})}">
+                        <button class="nd-btn-read">
+                            <svg width="22" height="16" viewBox="0 0 22 16" fill="none">
+                                <path d="M1 1h8c1 0 2 1 2 2v11S10 13 9 13H1V1zM21 1h-8c-1 0-2 1-2 2v11s1-1 2-1h8V1z"
+                                      stroke="#0f1115" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            Read Now
+                        </button>
+                    </a>
+                </div>
+
+                <!-- ③ Chưa login → nút Read dẫn đến trang login -->
+                <div th:if="${userLogin == null}">
+                    <a th:if="${hasChapters and !chapters.isEmpty()}"
+                       href="/login">
+                        <button class="nd-btn-read">
+                            <svg width="22" height="16" viewBox="0 0 22 16" fill="none">
+                                <path d="M1 1h8c1 0 2 1 2 2v11S10 13 9 13H1V1zM21 1h-8c-1 0-2 1-2 2v11s1-1 2-1h8V1z"
+                                      stroke="#0f1115" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            Read Now
+                        </button>
+                    </a>
+                </div>
 
                 <button class="nd-btn-save" id="favoriteBtn"
                         th:data-novel-id="${novel.id}">
@@ -117,26 +134,27 @@
             </div>
         </div>
 
-        <!-- Reading Progress (shown when chapters exist) -->
-        <div class="nd-progress" th:if="${hasChapters == null || hasChapters}">
-            <div class="nd-progress-header">
-                <div>
-                    <div class="nd-progress-label">Reading Progress</div>
-                    <!--                        <div class="nd-progress-chapter">-->
-                    Currently at Chapter <span th:text="${currentChapter != null ? currentChapter : 0}">0</span>
-                    <span th:text="'/ ' + (${totalChapters != null ? totalChapters : 1245})">/ 1245</span>
+        <!-- Reading Progress (chỉ hiện khi đã login) -->
+        <div th:if="${userLogin != null}" class="space-y-5">
+            <div class="nd-progress" th:if="${hasChapters == null || hasChapters}">
+                <div class="nd-progress-header">
+                    <div>
+                        <div class="nd-progress-label">Reading Progress</div>
+                        Currently at Chapter <span th:text="${currentChapter != null ? currentChapter : 0}">0</span>
+                        <span th:text="'/ ' + (${totalChapters != null ? totalChapters : 1245})">/ 1245</span>
+                    </div>
+                </div>
+                <div class="nd-progress-pct" th:text="${progressPct != null ? progressPct + '%' : '0%'}">0%</div>
+            </div>
+            <div class="nd-progress-bar mt-5">
+                <div class="nd-progress-fill"
+                     th:style="'width:' + (${progressPct != null ? progressPct : 0}) + '%'">
                 </div>
             </div>
-            <div class="nd-progress-pct" th:text="${progressPct != null ? progressPct + '%' : '0%'}">0%</div>
-        </div>
-        <div class="nd-progress-bar">
-            <div class="nd-progress-fill"
-                 th:style="'width:' + (${progressPct != null ? progressPct : 0}) + '%'">
+            <div class="nd-progress-footer">
+                <span>Start</span>
+                <span th:text="'Latest: Ch. ' + (${totalChapters != null ? totalChapters : 1245})">Latest: Ch. 1245</span>
             </div>
-        </div>
-        <div class="nd-progress-footer">
-            <span>Start</span>
-            <span th:text="'Latest: Ch. ' + (${totalChapters != null ? totalChapters : 1245})">Latest: Ch. 1245</span>
         </div>
     </div>
 
@@ -235,8 +253,7 @@
                 </div>
                 <div class="nd-rating-total"
                      th:text="${novel.averageRating != null && novel.averageRating > 0 ? novel.averageRating + ' ratings' : ''}">
-                    2.4k
-                    ratings
+                    2.4k ratings
                 </div>
             </div>
             <div class="nd-rating-right">
@@ -252,24 +269,31 @@
             </div>
         </div>
 
-        <!-- Comment Form -->
-        <form th:action="@{/comments/save/{publicId} (publicId=${novel.publicId})}" th:method="post"
-              th:object="${novelComment}" class="nd-comment-form">
-            <div class="nd-comment-avatar"
-                 th:text="${userLogin.user.email} != null ? ${userLogin.user.email.substring(0, 1)} : 'U'">U
-            </div>
-            <div class="nd-comment-form-body">
+        <!-- Comment Form — chỉ hiện khi đã login -->
+        <div th:if="${userLogin != null}">
+            <form th:action="@{/comments/save/{publicId} (publicId=${novel.publicId})}" th:method="post"
+                  th:object="${novelComment}" class="nd-comment-form">
+                <div class="nd-comment-avatar"
+                     th:text="${userLogin.username != null ? userLogin.username.substring(0,1) : 'U'}">
+                    U
+                </div>
+                <div class="nd-comment-form-body">
                     <textarea class="nd-comment-textarea"
                               placeholder="Share your thoughts about this novel..." th:field="*{content}">
-
                     </textarea>
-                <div class="nd-comment-submit">
-                    <button class="nd-btn-post">Post Comment</button>
+                    <div class="nd-comment-submit">
+                        <button class="nd-btn-post">Post Comment</button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
 
-        <!-- Comments (shown when data exists) -->
+        <!-- Thông báo khi chưa login -->
+        <div th:if="${userLogin == null}"
+             style="padding:14px 16px;background:#1e2330;border-radius:8px;color:#94a3b8;font-size:14px;margin-bottom:16px;">
+            Please <a href="/login" style="color:#c9a46a;text-decoration:underline;">login</a> to leave a comment.
+        </div>
+
         <!-- Comments Section -->
         <div class="nd-comments" id="nd-comments-container">
             <!-- Loop qua từng comment gốc -->
@@ -280,7 +304,7 @@
                     <div style="width:100%;height:100%;background:#6366f1;display:flex;
                         align-items:center;justify-content:center;color:#fff;
                         font-size:14px;font-weight:600;border-radius:9999px;"
-                         th:text="${comment.user.email != null
+                         th:text="${comment.user != null && comment.user.email != null
                            ? comment.user.email.substring(0, 1) : 'U'}">
                     </div>
                 </div>
@@ -288,23 +312,25 @@
                 <!-- Body comment gốc -->
                 <div class="nd-comment-body">
                     <div class="nd-comment-header">
-                <span class="nd-comment-author"
-                      th:text="${comment.user.email}"></span>
+                        <span class="nd-comment-author"
+                              th:text="${comment.user != null ? comment.user.email : 'Unknown'}"></span>
                         <span class="nd-comment-time"
                               th:text="${timeUtils.timeAgo(comment.createdAt)}"></span>
                     </div>
 
                     <p class="nd-comment-text" th:text="${comment.content}"></p>
 
-                    <!-- Nút reply cấp 1 -->
-                    <button class="nd-comment-reply-link reply-comment-button"
+                    <!-- Nút reply chỉ hiện khi đã login -->
+                    <button th:if="${userLogin != null}"
+                            class="nd-comment-reply-link reply-comment-button"
                             th:attr="data-form-id=${comment.id},
                              data-mention=''">
                         Reply
                     </button>
 
-                    <!-- Form reply cấp 1 -->
-                    <form th:action="@{/comments/save/{publicId}(publicId=${novel.publicId})}"
+                    <!-- Form reply cấp 1 — chỉ render khi đã login -->
+                    <form th:if="${userLogin != null}"
+                          th:action="@{/comments/save/{publicId}(publicId=${novel.publicId})}"
                           method="post"
                           th:id="'reply-form-' + ${comment.id}"
                           class="nd-comment-form reply-comment-form hidden">
@@ -312,13 +338,12 @@
                         <input type="hidden" name="parentId" th:value="${comment.id}"/>
 
                         <div class="nd-comment-avatar"
-                             th:text="${userLogin.user.email != null
-                               ? userLogin.user.email.substring(0,1) : 'U'}">
+                             th:text="${userLogin.username != null ? userLogin.username.substring(0,1) : 'U'}">
                         </div>
                         <div class="nd-comment-form-body">
-                    <textarea class="nd-comment-textarea"
-                              name="content"
-                              placeholder="Reply to this comment..."></textarea>
+                            <textarea class="nd-comment-textarea"
+                                      name="content"
+                                      placeholder="Reply to this comment..."></textarea>
                             <div class="nd-comment-submit">
                                 <button type="submit" class="nd-btn-post">Post Reply</button>
                             </div>
@@ -336,7 +361,7 @@
                                 <div style="width:100%;height:100%;background:#10b981;display:flex;
                                     align-items:center;justify-content:center;color:#fff;
                                     font-size:14px;font-weight:600;border-radius:9999px;"
-                                     th:text="${reply.user.email != null
+                                     th:text="${reply.user != null && reply.user.email != null
                                        ? reply.user.email.substring(0,1) : 'U'}">
                                 </div>
                             </div>
@@ -344,22 +369,21 @@
                             <!-- Body reply cấp 2 -->
                             <div class="nd-comment-body">
                                 <div class="nd-comment-header">
-                            <span class="nd-comment-author"
-                                  th:text="${reply.user.email}"></span>
+                                    <span class="nd-comment-author"
+                                          th:text="${reply.user != null ? reply.user.email : 'Unknown'}"></span>
                                     <span class="nd-comment-time"
                                           th:text="${timeUtils.timeAgo(reply.createdAt)}"></span>
                                 </div>
 
                                 <p class="nd-comment-text" th:text="${reply.content}"></p>
 
-                                <!-- Nút reply cấp 2 → form vẫn là reply-form của ROOT comment -->
-                                <!-- data-form-id trỏ về ROOT, data-mention là tên người được reply -->
-                                <button class="nd-comment-reply-link reply-comment-button"
+                                <!-- Nút reply cấp 2 — chỉ hiện khi đã login -->
+                                <button th:if="${userLogin != null}"
+                                        class="nd-comment-reply-link reply-comment-button"
                                         th:attr="data-form-id=${comment.id},
-                                         data-mention=${reply.user.email}">
+                                         data-mention=${reply.user != null ? reply.user.email : ''}">
                                     Reply
                                 </button>
-
                             </div>
                         </div>
                     </div>
@@ -368,7 +392,8 @@
                 </div>
             </div>
         </div>
-        <!-- Nút Load More - đặt NGOÀI nd-comments -->
+
+        <!-- Nút Load More -->
         <div class="nd-load-more-wrapper !text-center">
             <button class="nd-load-more-btn" id="load-more-btn">
                 <svg id="load-more-spinner"
@@ -382,9 +407,6 @@
                 <span id="load-more-text">Load more comments</span>
             </button>
         </div>
-
-
-        <!-- Load more button (shown when comments exist) -->
     </div>
 
     <!-- ==================== SCRIPTS ==================== -->
@@ -441,7 +463,7 @@
             apiGet('/api/novels/' + novelIdForRating + '/rating/user').then(data => {
                 userRating = data.score || 0;
                 renderRateStars(userRating);
-            });
+            }).catch(() => {});
         }
 
         document.querySelectorAll('.nd-rate-star').forEach((star, idx) => {
@@ -451,12 +473,11 @@
                 apiPost('/api/novels/' + novelIdForRating + '/rate', {score: score}).then(data => {
                     userRating = data.score;
                     renderRateStars(userRating);
-                    // Update displayed average
                     var avgEl = document.querySelector('.nd-rating-big');
                     if (avgEl) avgEl.textContent = data.averageRating;
                     var totalEl = document.querySelector('.nd-rating-total');
                     if (totalEl && data.averageRating > 0) totalEl.textContent = data.averageRating + ' ratings';
-                });
+                }).catch(() => {});
             });
         });
 
@@ -479,11 +500,9 @@
 
         if (favoriteBtn) {
             var novelIdForFav = favoriteBtn.getAttribute('data-novel-id');
-            // Load current status
-            apiGet('/api/novels/' + novelIdForFav + '/favorite/status').then(data => setFavoriteUI(data.favorited));
-            // Toggle on click
+            apiGet('/api/novels/' + novelIdForFav + '/favorite/status').then(data => setFavoriteUI(data.favorited)).catch(() => {});
             favoriteBtn.addEventListener('click', () => {
-                apiPost('/api/novels/' + novelIdForFav + '/favorite', {}).then(data => setFavoriteUI(data.favorited));
+                apiPost('/api/novels/' + novelIdForFav + '/favorite', {}).then(data => setFavoriteUI(data.favorited)).catch(() => {});
             });
         }
 
@@ -491,32 +510,27 @@
 
             const COMMENTS_PER_PAGE = 5;
 
-            // Lấy đúng selector - chỉ lấy comment con trực tiếp của container
             const container = document.getElementById("nd-comments-container");
 
-            // Kiểm tra container tồn tại không
             if (!container) {
                 console.warn("Không tìm thấy #nd-comments-container");
                 return;
             }
 
             const allComments = Array.from(container.querySelectorAll(":scope > .nd-comment"));
-            console.log("Tổng số comments:", allComments.length); // Debug
-
             let currentShown = COMMENTS_PER_PAGE;
 
             // ===== Init: ẩn comment từ index 5 trở đi =====
             function initComments() {
                 allComments.forEach((comment, index) => {
                     if (index >= COMMENTS_PER_PAGE) {
-                        comment.style.display = "none"; // dùng style thay vì class hidden
+                        comment.style.display = "none";
                     }
                 });
 
                 const btn = document.getElementById("load-more-btn");
                 if (!btn) return;
 
-                // Ẩn nút nếu tổng comment <= 5
                 if (allComments.length <= COMMENTS_PER_PAGE) {
                     btn.closest(".nd-load-more-wrapper").style.display = "none";
                 }
@@ -530,15 +544,12 @@
 
                 if (!btn || !spinner || !btnText) return;
 
-                // Hiện loading
                 btn.disabled = true;
                 spinner.style.display = "inline-block";
                 btnText.textContent = "Loading...";
 
-                // Delay giả lập loading
                 await new Promise(resolve => setTimeout(resolve, 800));
 
-                // Show thêm comment với stagger
                 const nextBatch = allComments.slice(currentShown, currentShown + COMMENTS_PER_PAGE);
 
                 if (nextBatch.length === 0) {
@@ -548,14 +559,13 @@
 
                 nextBatch.forEach((comment, index) => {
                     setTimeout(() => {
-                        comment.style.display = "flex"; // hoặc "block" tùy CSS của bạn
+                        comment.style.display = "flex";
                         comment.style.animation = "commentFadeIn 0.3s ease forwards";
                     }, index * 120);
                 });
 
                 currentShown += COMMENTS_PER_PAGE;
 
-                // Ẩn nút nếu đã hết
                 if (currentShown >= allComments.length) {
                     setTimeout(() => {
                         btn.closest(".nd-load-more-wrapper").style.display = "none";
@@ -570,7 +580,6 @@
             // ===== Reply buttons =====
             function initReplyButtons() {
                 const replyBtns = document.querySelectorAll(".reply-comment-button");
-                console.log("Tổng số reply buttons:", replyBtns.length); // Debug
 
                 replyBtns.forEach((btn) => {
                     btn.addEventListener("click", () => {
@@ -583,7 +592,6 @@
                             return;
                         }
 
-                        // Đóng tất cả form khác
                         document.querySelectorAll(".reply-comment-form").forEach((form) => {
                             if (form !== targetForm) {
                                 form.style.display = "none";
@@ -592,7 +600,6 @@
                             }
                         });
 
-                        // Toggle form hiện tại
                         const isHidden = targetForm.style.display === "none" || targetForm.style.display === "";
                         targetForm.style.display = isHidden ? "flex" : "none";
 
@@ -617,10 +624,7 @@
             // ===== Chạy init =====
             initComments();
             initReplyButtons();
-
         });
-
-
     </script>
 
 </main>

@@ -19,9 +19,14 @@
                 <div class="relative flex-shrink-0">
                     <div class="w-[128px] h-[128px] rounded-full bg-[#f2cfc1] flex items-center justify-center border-4 border-[rgba(20,75,184,0.2)] overflow-hidden">
                         <img id="avatarImg"
-                             th:src="${user.avatarUrl != null && !user.avatarUrl.isEmpty()} ? ${user.avatarUrl} : @{/images/default-avatar.png}"
+                             th:if="${user.avatarUrl != null && !user.avatarUrl.isEmpty()}"
+                             th:src="${user.avatarUrl}"
                              alt="Avatar" class="w-full h-full object-cover"
-                             onerror="this.src='/images/default-avatar.png';">
+                             onerror="this.style.display='none'; document.getElementById('avatarLetter').style.display='flex';">
+                        <div id="avatarLetter"
+                             th:style="${user.avatarUrl != null && !user.avatarUrl.isEmpty()} ? 'display:none' : 'display:flex'"
+                             class="w-full h-full items-center justify-center text-[#144bb8] text-[56px] font-serif font-bold uppercase"
+                             th:text="${user.email != null && !user.email.isEmpty()} ? ${#strings.substring(user.email, 0, 1)} : '?'"></div>
                     </div>
                     <button onclick="document.getElementById('avatarModal').classList.remove('hidden')"
                             class="absolute bottom-1 right-1 w-7 h-7 rounded-full bg-[#144bb8] text-white text-[12px] flex items-center justify-center hover:bg-[#1a5ce0] transition">
@@ -100,72 +105,72 @@
         <div class="bg-[#1a1f2e] border border-[#2d3446] rounded-2xl w-full max-w-[420px] mx-4 p-6 shadow-2xl">
             <div class="flex items-center justify-between mb-5">
                 <h3 class="text-[18px] font-serif text-[#f1f5f9] font-semibold">Update Avatar</h3>
-                <button onclick="document.getElementById('avatarModal').classList.add('hidden')"
+                <button type="button" onclick="document.getElementById('avatarModal').classList.add('hidden')"
                         class="text-[#94a3b8] hover:text-white transition text-xl leading-none">&times;</button>
             </div>
-            <div class="mb-4">
-                <label class="block text-[13px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Image URL</label>
-                <input id="avatarUrlInput" type="url" placeholder="https://example.com/avatar.jpg"
-                       th:value="${user.avatarUrl}"
-                       class="w-full bg-[#111621] border border-[#2d3446] rounded-lg p-3 text-[#f1f5f9] placeholder-[#475569] focus:outline-none focus:ring-2 focus:ring-[#144bb8] text-[14px]">
-            </div>
-            <div id="avatarPreviewWrap" class="mb-5 flex justify-center">
-                <div class="w-[80px] h-[80px] rounded-full overflow-hidden border-2 border-[#2d3446] bg-[#111621]">
-                    <img id="avatarPreview" src="" alt="Preview" class="w-full h-full object-cover hidden">
-                    <div id="avatarPreviewPlaceholder" class="w-full h-full flex items-center justify-center text-[#475569] text-[11px]">Preview</div>
+            <form id="avatarForm" th:action="@{/user/profile/avatar}" method="post" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label class="block text-[13px] text-[#cbd5e1] mb-2 font-['Noto_Sans'] font-bold">Choose image</label>
+                    <input id="avatarFileInput" name="avatarFile" type="file" accept="image/*"
+                           class="w-full bg-[#111621] border border-[#2d3446] rounded-lg p-3 text-[#f1f5f9] file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:bg-[#144bb8] file:text-white file:text-[12px] file:font-bold hover:file:bg-[#1a5ce0] text-[13px] cursor-pointer">
+                    <p class="text-[11px] text-[#64748b] mt-2">JPG, PNG or GIF. Max 5MB.</p>
                 </div>
-            </div>
-            <div class="flex justify-end gap-3">
-                <button onclick="document.getElementById('avatarModal').classList.add('hidden')"
-                        class="px-5 py-2 rounded-lg border border-[#2d3446] text-[#94a3b8] hover:bg-[#111621] transition text-[13px] font-['Noto_Sans']">Cancel</button>
-                <button onclick="saveAvatar()"
-                        class="px-5 py-2 rounded-lg bg-[#144bb8] text-white hover:bg-[#1a5ce0] transition font-bold text-[13px] font-['Noto_Sans']">Save</button>
-            </div>
+                <div id="avatarPreviewWrap" class="mb-5 flex justify-center">
+                    <div class="w-[80px] h-[80px] rounded-full overflow-hidden border-2 border-[#2d3446] bg-[#111621]">
+                        <img id="avatarPreview" src="" alt="Preview" class="w-full h-full object-cover hidden">
+                        <div id="avatarPreviewPlaceholder" class="w-full h-full flex items-center justify-center text-[#475569] text-[11px]">Preview</div>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center gap-3">
+                    <button type="submit" name="remove" value="true"
+                            th:if="${user.avatarUrl != null && !user.avatarUrl.isEmpty()}"
+                            onclick="return confirm('Remove current avatar?');"
+                            class="px-4 py-2 rounded-lg border border-[#7f1d1d] text-[#fca5a5] hover:bg-[#7f1d1d]/20 transition text-[12px] font-['Noto_Sans']">Remove</button>
+                    <div class="flex gap-3 ml-auto">
+                        <button type="button" onclick="document.getElementById('avatarModal').classList.add('hidden')"
+                                class="px-5 py-2 rounded-lg border border-[#2d3446] text-[#94a3b8] hover:bg-[#111621] transition text-[13px] font-['Noto_Sans']">Cancel</button>
+                        <button type="submit"
+                                class="px-5 py-2 rounded-lg bg-[#144bb8] text-white hover:bg-[#1a5ce0] transition font-bold text-[13px] font-['Noto_Sans']">Upload</button>
+                    </div>
+                </div>
+            </form>
+            <p th:if="${avatarError}" th:text="${avatarError}" class="mt-3 text-[12px] text-[#fca5a5]"></p>
         </div>
     </div>
 
     <script>
-        var avatarUrlInput = document.getElementById('avatarUrlInput');
+        var avatarFileInput = document.getElementById('avatarFileInput');
         var avatarPreview = document.getElementById('avatarPreview');
         var avatarPreviewPlaceholder = document.getElementById('avatarPreviewPlaceholder');
-        if (avatarUrlInput) {
-            avatarUrlInput.addEventListener('input', function() {
-                var url = this.value.trim();
-                if (url) {
-                    avatarPreview.src = url;
-                    avatarPreview.classList.remove('hidden');
-                    avatarPreviewPlaceholder.classList.add('hidden');
-                    avatarPreview.onerror = function() {
-                        avatarPreview.classList.add('hidden');
-                        avatarPreviewPlaceholder.classList.remove('hidden');
-                        avatarPreviewPlaceholder.textContent = 'Invalid URL';
-                    };
-                } else {
+        var MAX_AVATAR_BYTES = 5 * 1024 * 1024; // 5MB
+
+        if (avatarFileInput) {
+            avatarFileInput.addEventListener('change', function() {
+                var file = this.files && this.files[0];
+                if (!file) {
                     avatarPreview.classList.add('hidden');
+                    avatarPreview.src = '';
                     avatarPreviewPlaceholder.classList.remove('hidden');
                     avatarPreviewPlaceholder.textContent = 'Preview';
+                    return;
                 }
-            });
-            if (avatarUrlInput.value.trim()) avatarUrlInput.dispatchEvent(new Event('input'));
-        }
-
-        function saveAvatar() {
-            var url = document.getElementById('avatarUrlInput').value.trim();
-            var csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
-            var csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
-            var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
-            if (csrfHeader && csrfToken) headers[csrfHeader] = csrfToken;
-
-            fetch('/user/profile/avatar', {
-                method: 'POST',
-                headers: headers,
-                body: 'avatarUrl=' + encodeURIComponent(url),
-                credentials: 'same-origin'
-            }).then(function(r) {
-                if (r.ok) {
-                    document.getElementById('avatarImg').src = url || '/images/default-avatar.png';
-                    document.getElementById('avatarModal').classList.add('hidden');
+                if (!file.type.startsWith('image/')) {
+                    this.value = '';
+                    avatarPreviewPlaceholder.textContent = 'Not an image';
+                    return;
                 }
+                if (file.size > MAX_AVATAR_BYTES) {
+                    this.value = '';
+                    avatarPreviewPlaceholder.textContent = 'Max 5MB';
+                    return;
+                }
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    avatarPreview.src = e.target.result;
+                    avatarPreview.classList.remove('hidden');
+                    avatarPreviewPlaceholder.classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
             });
         }
 

@@ -5,6 +5,7 @@ import com.example.SE2.models.*;
 import com.example.SE2.repositories.*;
 import com.example.SE2.security.UserDetailImpl;
 import com.example.SE2.services.chapter.ChapterService;
+import com.example.SE2.services.file.CloudinaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,7 +14,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -30,6 +34,8 @@ public class UserController {
     ChapterService chapterService;
     @Autowired
     ChapterRepository chapterRepository;
+    @Autowired
+    CloudinaryService cloudinaryService;
 
     @GetMapping(value = {"/user/profile"})
     public String userProfile(@AuthenticationPrincipal UserDetailImpl userDetails, Model model) {
@@ -40,10 +46,35 @@ public class UserController {
 
     @PostMapping("/user/profile/avatar")
     public String updateAvatar(@AuthenticationPrincipal UserDetailImpl userDetails,
-                               @RequestParam String avatarUrl) {
+                               @RequestParam(value = "avatarFile", required = false) MultipartFile avatarFile,
+                               @RequestParam(value = "remove", required = false) String remove,
+                               RedirectAttributes redirectAttributes) {
         User user = userDetails.getUser();
-        user.setAvatarUrl(avatarUrl);
-        userRepository.save(user);
+
+        if (remove != null && !remove.isBlank()) {
+            user.setAvatarUrl(null);
+            userRepository.save(user);
+            return "redirect:/user/profile";
+        }
+
+        if (avatarFile == null || avatarFile.isEmpty()) {
+            redirectAttributes.addFlashAttribute("avatarError", "Please select an image file.");
+            return "redirect:/user/profile";
+        }
+
+        String contentType = avatarFile.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            redirectAttributes.addFlashAttribute("avatarError", "Only image files are allowed.");
+            return "redirect:/user/profile";
+        }
+
+        try {
+            String secureUrl = cloudinaryService.uploadImage(avatarFile, "se2/avatars");
+            user.setAvatarUrl(secureUrl);
+            userRepository.save(user);
+        } catch (IOException e) {
+            redirectAttributes.addFlashAttribute("avatarError", "Upload failed: " + e.getMessage());
+        }
         return "redirect:/user/profile";
     }
 

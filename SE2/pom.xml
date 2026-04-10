@@ -172,11 +172,15 @@
             <artifactId>onnxruntime</artifactId>
             <version>1.20.0</version>
         </dependency>
-
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>1.17.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary-http5</artifactId>
+            <version>2.0.0</version>
         </dependency>
     </dependencies>
     <dependencyManagement>

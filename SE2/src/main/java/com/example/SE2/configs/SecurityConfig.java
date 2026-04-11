@@ -1,6 +1,9 @@
 package com.example.SE2.configs;
 
 
+import com.example.SE2.models.User;
+import com.example.SE2.repositories.UserRepository;
+import com.example.SE2.security.UserDetailImpl;
 import com.example.SE2.security.UserDetailServiceImpl;
 import com.example.SE2.security.oauth2.CustomOAuth2User;
 import com.example.SE2.security.oauth2.CustomOAuth2UserService;
@@ -16,7 +19,9 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -45,14 +50,17 @@ public class SecurityConfig {
     private final CustomOAuth2UserService oAuth2UserService;
     private final UserService userService;
     private final UserDetailServiceImpl userDetailService;
+    private final UserRepository userRepository;
 
     @Autowired
     public SecurityConfig(CustomOAuth2UserService oAuth2UserService,
                           UserService userService,
-                          UserDetailServiceImpl userDetailService) {
+                          UserDetailServiceImpl userDetailService,
+                          UserRepository userRepository) {
         this.oAuth2UserService = oAuth2UserService;
         this.userService = userService;
         this.userDetailService = userDetailService;
+        this.userRepository = userRepository;
     }
 
     @Bean
@@ -88,6 +96,14 @@ public class SecurityConfig {
                                 }
 
                                 userService.processOAuthPostLogin(oauthUser.getEmail(), oauthUser.getName());
+
+                                User user = userRepository.findUserByEmail(oauthUser.getEmail());
+                                if (user != null) {
+                                    UserDetailImpl userDetail = new UserDetailImpl(user);
+                                    UsernamePasswordAuthenticationToken newAuth =
+                                            new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
+                                    SecurityContextHolder.getContext().setAuthentication(newAuth);
+                                }
 
                                 response.sendRedirect("/");
                             }

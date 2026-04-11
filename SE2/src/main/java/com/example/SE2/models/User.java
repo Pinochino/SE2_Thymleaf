@@ -35,7 +35,7 @@ public class User extends AbstractEntity {
 
     private boolean isLoggedIn = Boolean.FALSE;
 
-//    private boolean isDeleted = Boolean.FALSE;
+    private boolean isDeleted = Boolean.FALSE;
 
     @Enumerated(EnumType.STRING)
     private Provider provider;
@@ -128,13 +128,13 @@ public class User extends AbstractEntity {
         isLoggedIn = loggedIn;
     }
 
-//    public boolean isDeleted() {
-//        return isDeleted;
-//    }
-//
-//    public void setDeleted(boolean deleted) {
-//        isDeleted = deleted;
-//    }
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
 
     public Provider getProvider() {
         return provider;

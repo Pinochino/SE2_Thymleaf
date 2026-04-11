@@ -125,8 +125,8 @@
                                 <img th:if="${loggedInAvatarUrl != null && !loggedInAvatarUrl.isEmpty()}" th:src="${loggedInAvatarUrl}" alt="Avatar" class="w-full h-full object-cover"/>
                                 <span th:if="${loggedInAvatarUrl == null || loggedInAvatarUrl.isEmpty()}" th:text="${loggedInUser?.substring(0,1)?.toUpperCase() ?: 'U'}">U</span>
                             </div>
-                            <div>
-                                <div class="text-[13px] font-semibold text-[#e2e8f0]"
+                            <div class="min-w-0">
+                                <div class="text-[13px] font-semibold text-[#e2e8f0] truncate"
                                      th:text="${loggedInUser ?: 'User'}">User
                                 </div>
                             </div>
